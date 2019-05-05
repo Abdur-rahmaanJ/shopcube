@@ -1,0 +1,33 @@
+{% extends "prods_base.html" %}
+
+{% block pagehead %}
+<title>SpareParts</title>
+{% endblock %}
+
+{% block content %}
+
+  <h2>products for manufacturer {{manufac}}</h2>
+    <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>barcode</th>
+                <th>price</th>
+                <th>vat price</th>
+                <th>selling price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for p in prods%}
+              <tr>
+                <td>{{p.barcode}}</td>
+                <td>{{p.price}}</td>
+                <td>{{p.vat_price}}</td>
+                <td>{{p.selling_price}}</td>
+                <td><a href="/prods/delete/{{manufac}}/{{p.barcode}}" class="btn btn-danger" role="button">delete</a></td>
+                <td><a href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-info" role="button">edit</a></td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+
+{% endblock %}

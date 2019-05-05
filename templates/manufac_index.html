@@ -1,0 +1,45 @@
+{% extends "manufac_base.html" %}
+
+{% block pagehead %}
+<title>SpareParts</title>
+<style>
+  .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+$(function() {
+    
+  });
+</script>
+  {%for m in manufacs%}
+  <a href="" >
+    <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
+      <a href="/manufac/delete/{{m.name}}" style="text-decoration: none;">
+        <button class="btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+      </a>
+      &nbsp;
+      <a href="/prods/list_prods/{{m.name}}" style="text-decoration: none;">
+        <button class="btn btn-info" type=""><i class="fas fa-scroll"></i></button>
+      </a>
+      &nbsp;
+      <a href="/manufac/edit/{{m.name}}" style="text-decoration: none;">
+        <button data-name="{{m.name}}" class="btn btn-warning" type=""><i id='ico-{{m.name}}' class="fas fa-pencil-alt"></i></button>
+      </a>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div style='display: inline-block;'>
+        <input disabled  id="{{m.name}}" type="text" class="form-control"
+      name="manufac_name" placeholder="Barcode" value="{{m.name}}">
+
+      </div>
+    </div>
+
+  </a><br><br>
+
+  {%endfor%}
+{% endblock %}

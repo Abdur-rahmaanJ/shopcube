@@ -1,0 +1,24 @@
+{% extends "manufac_base.html" %}
+
+{% block pagehead %}
+<title>edit</title>
+{% endblock %}
+
+{% block content %}
+
+<form action='/manufac/update' method="post">
+  <label>barcode</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-tag"></i></span>
+    </div>
+    <input required  id="manufac" type="text" class="form-control" 
+      name="manufac_name" placeholder="Manufac" value="{{ manufac }}">
+    <input required  id="manufac2" type="hidden" class="form-control" 
+      name="old_manufac_name" placeholder="Manufac" value="{{ manufac }}">
+  </div>
+
+  <br>
+  <input required  type="submit" class="btn btn-info" value="edit">
+</form>
+{% endblock %}

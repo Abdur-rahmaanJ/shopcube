@@ -1,0 +1,53 @@
+{% extends "prods_base.html" %}
+
+{% block pagehead %}
+<title>add product</title>
+{% endblock %}
+
+{% block content %}
+
+<h2>Add Product for manufacturer {{manufac}}</h2>
+
+<form action="/prods/add/{{manufac}}" method="post">
+
+  <label>barcode</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="barcode" type="text" class="form-control" 
+    name="barcode" placeholder="Barcode">
+    <input type="hidden" autocomplete="off" id="manufac" class="form-control" 
+    name="manufac" placeholder="manufac" value="{{manufac}}">
+  </div>
+
+  <label>price</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="price" type="number" class="form-control" 
+        name="price" placeholder="Price">
+  </div>
+
+  <label>vat price</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="vat_price" type="number" class="form-control" 
+        name="vat_price" placeholder="Vat Price">
+  </div>
+
+  <label>selling price</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="selling_price" type="number" class="form-control" 
+        name="selling_price" placeholder="Selling Price">
+  </div>
+  
+  <input required  type="submit" class="btn btn-info" value="add">
+</form>
+{% endblock %}

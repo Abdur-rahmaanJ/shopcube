@@ -1,0 +1,53 @@
+{% extends "prods_base.html" %}
+
+{% block pagehead %}
+<title>edit</title>
+{% endblock %}
+
+{% block content %}
+<h2>Edit product for manufacturer {{manufac}}</h2>
+<form action='/prods/update' method="post">
+  <label>barcode</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-tag"></i></span>
+    </div>
+    <input required  autocomplete="off" id="barcode" type="text" class="form-control" 
+      name="barcode" placeholder="Barcode" value="{{ barcode }}">
+    <input required  id="oldbarcode" type="hidden" class="form-control" 
+      name="oldbarcode" placeholder="Barcode" value="{{ barcode }}">
+    <input required  id="manufac" type="hidden" class="form-control" 
+      name="manufac" placeholder="Manufac" value="{{ manufac }}">
+  </div>
+
+  <label>price</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  id="price" type="text" class="form-control" 
+      name="price" placeholder="Price" value="{{ price }}">
+  </div>
+
+  <label>vat price</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-th"></i></span>
+    </div>
+    <input required  id="vat_price" type="number" class="form-control" 
+      name="vat_price" placeholder="Vat Price" value="{{ vat_price }}">
+  </div>
+
+  <label>selling price</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+    </div>
+    <input required  id="selling_price" type="number" class="form-control" 
+      name="selling_price" placeholder="Selling price" value="{{ selling_price }}">
+  </div>
+
+  <br>
+  <input required  type="submit" class="btn btn-info" value="edit">
+</form>
+{% endblock %}
