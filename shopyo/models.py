@@ -3,8 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 
 class Products(db.Model):
     __tablename__ = 'products'
@@ -19,4 +20,8 @@ class Manufacturers(db.Model):
     __tablename__ = 'manufacturers'
     name = db.Column(db.String(100), primary_key=True)
 
+class Settings(db.Model):
+    __tablename__ = 'settings'
+    setting = db.Column(db.String(100), primary_key=True)
+    value = db.Column(db.String(100))
 # db.DateTime, default=db.func.current_timestamp()

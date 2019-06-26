@@ -8,6 +8,10 @@ run initialise.py
 python initialise.py
 ```
 
+```python
+python apply_settings.py
+```
+
 then run the app
 
 ```python
