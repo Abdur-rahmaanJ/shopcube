@@ -20,5 +20,27 @@ python app.py
 
 the go to the indicated url
 
+# Screenshots
+
+Manufacturer is the section and products are the items
+
+## Manufacturer Add
+![](screenshots/add_manufac.png)
+
+## Manufacturer View
+![](screenshots/manufac_view.png)
+
+## Products Add
+![](screenshots/products_add.png)
+
+## Products View
+![](screenshots/products_view.png)
+
+## Lookup
+![](screenshots/lookup.png)
+
+## Settings
+![](screenshots/settings.png)
+
 
 
