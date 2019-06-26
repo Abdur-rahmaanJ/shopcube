@@ -1,5 +1,14 @@
 # Shopyo
-Open inventory management  and Point of sales (powered by python) for small shops. 
+:gift: Open inventory management  and Point of sales (powered by python) for small shops. 
+
+- :ok_hand: Crisp UI
+- :heartpulse: Intuitive
+- :sparkler: Instant lookup
+- :pencil2: Towards customisation
+
+# Contributing countries
+
+🇲🇺
 
 # Run instructions
 run initialise.py
