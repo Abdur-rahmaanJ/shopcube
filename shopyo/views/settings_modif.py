@@ -24,5 +24,6 @@ def settings_update():
     settings_value = request.form['settings_value']
     s = Settings.query.get(settings_name)
     s.value = settings_value
+    db.session.commit()
     settings =  Settings.query.all()
     return render_template('settings_index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))

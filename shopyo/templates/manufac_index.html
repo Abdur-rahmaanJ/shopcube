@@ -14,15 +14,26 @@
 
 {% block content %}
 <script type="text/javascript">
-$(function() {
-    
+  $(function() {
+    $('.delete_me').click(function(){
+      var id = $(this).attr('id');
+      console.log(id);
+      var name = id.split('-')[1];
+      console.log(name);
+      var ask = confirm("Do you want to delete ?");
+      if( ask == true ) {
+        window.open("/manufac/delete/"+name,"_self")
+      } else {
+
+      }
+    });
   });
 </script>
   {%for m in manufacs%}
   <a href="" >
     <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
-      <a href="/manufac/delete/{{m.name}}" style="text-decoration: none;">
-        <button class="btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+      <a href="#" style="text-decoration: none;">
+        <button id='del-{{m.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
       </a>
       &nbsp;
       <a href="/prods/list_prods/{{m.name}}" style="text-decoration: none;">

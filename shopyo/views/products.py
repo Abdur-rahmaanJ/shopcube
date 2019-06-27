@@ -21,7 +21,9 @@ product_schema = ProductSchema(many=True)
 @prod_blueprint.route("/list_prods/<manufac_name>")
 def list_prods(manufac_name):
     products = Products.query.filter_by(manufacturer=manufac_name)
-    return render_template('prods_list.html', prods=products, manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('prods_list.html', prods=products, manufac=manufac_name, 
+        OUR_APP_NAME=get_value('OUR_APP_NAME'), SECTION_ITEMS=get_value('SECTION_ITEMS'),
+        SECTION_NAME=get_value('SECTION_NAME'))
 
 
 @prod_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
@@ -37,7 +39,8 @@ def prods_add(manufac_name):
         db.session.add(p)
         db.session.commit()
         return redirect('/prods/add/{}'.format(manufac_name))
-    return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+        SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
 
 @prod_blueprint.route('/delete/<manufac_name>/<barcode>', methods=['GET', 'POST'])
@@ -55,7 +58,8 @@ def prods_edit(manufac_name, barcode):
         ).first()
     return render_template(
         'prods_edit.html', barcode=p.barcode, price=p.price, vat_price=p.vat_price,
-        selling_price=p.selling_price, manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+        selling_price=p.selling_price, manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+        SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
 
 @prod_blueprint.route('/update', methods=['GET', 'POST'])
@@ -82,7 +86,8 @@ def prods_update():
 
 @prod_blueprint.route("/lookup/<manufac_name>")
 def lookup_prods(manufac_name):
-    return render_template('prods_lookup.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('prods_lookup.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+        SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
 # api
 @prod_blueprint.route("/search/<manufac_name>/barcode/<barcode>", methods=["GET"])

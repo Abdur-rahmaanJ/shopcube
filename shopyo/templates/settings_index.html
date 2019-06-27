@@ -24,13 +24,15 @@ $(function() {
     <tr>
       <th scope="col">Settings</th>
       <th scope="col">Value </th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
 {% for setting in settings %}
     <tr>
       <td>{{setting.setting}}</td>
-      <td><a href="/settings/edit/{{setting.setting}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a> {{setting.value}} </td>
+      <td>{{setting.value}} </td>
+      <td><a href="/settings/edit/{{setting.setting}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>
     </tr>
 {%endfor%}
   </tbody>

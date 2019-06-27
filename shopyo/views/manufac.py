@@ -10,7 +10,8 @@ manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 
 @manufac_blueprint.route("/")
 def manufac():
-    return render_template('manufac_index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('manufac_index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'),
+        SECTION_NAME=get_value('SECTION_NAME'))
 
 
 @manufac_blueprint.route('/add', methods=['GET', 'POST'])
@@ -28,7 +29,7 @@ def manufac_add():
 def manufac_delete(name):
     Manufacturers.query.filter(Manufacturers.name == name).delete()
     db.session.commit()
-    return render_template('manufac_index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return redirect('/manufac')
 
 
 @manufac_blueprint.route('/update', methods=['GET', 'POST'])
@@ -44,7 +45,8 @@ def manufac_update():
             # return redirect('/manufac/')
             render_template('manufac_message.html', 
                 message="you cannot modify to an already existing manufacturer",
-                redirect_url="/manufac/", OUR_APP_NAME=get_value('OUR_APP_NAME'))
+                redirect_url="/manufac/", OUR_APP_NAME=get_value('OUR_APP_NAME'), 
+                SECTION_NAME=get_value('SECTION_NAME'))
         #return redirect(url_for('edit', barcode=barcode))
         return redirect('/manufac/')
 
@@ -53,4 +55,5 @@ def manufac_update():
 def manufac_edit(manufac_name):
     m = Manufacturers.query.get(manufac_name)
     return render_template(
-        'manufac_edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+        'manufac_edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'), 
+        SECTION_NAME=get_value('SECTION_NAME'))
