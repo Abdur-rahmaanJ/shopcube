@@ -8,7 +8,7 @@
 
 # Contributing countries
 
-🇲🇺
+🇲🇺🇩🇪
 
 # Run instructions
 run initialise.py
