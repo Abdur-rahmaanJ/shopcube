@@ -10,6 +10,12 @@
 
 🇲🇺
 
+# Just added features
+
+- Confirmation before deleting section
+- Settings fully operationable
+- Apply settings works for existing and non-existing db
+
 # Run instructions
 run initialise.py
 
