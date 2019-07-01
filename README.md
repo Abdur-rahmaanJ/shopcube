@@ -6,6 +6,10 @@
 - :sparkler: Instant lookup
 - :pencil2: Towards customisation
 
+#
+![](shopyo.png)
+
+
 # Contributing countries
 
 🇲🇺🇩🇪
