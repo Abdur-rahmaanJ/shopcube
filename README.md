@@ -8,7 +8,7 @@
 
 # Contributing countries
 
-🇲🇺
+🇲🇺🇩🇪
 
 # Just added features
 
