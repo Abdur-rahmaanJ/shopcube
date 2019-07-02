@@ -39,6 +39,8 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
 
+- Add your country flag in readme after accepted PR
+
 # 💬 Community: Discord
 [https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
 
