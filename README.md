@@ -6,25 +6,24 @@
   <br>
 </h1>
 
-#
-:gift: Open inventory management  and Point of sales (powered by python) for small shops. 
+🎁 Open inventory management  and Point of sales (powered by python) for small shops. 
 
 - :ok_hand: Crisp UI
 - :heartpulse: Intuitive
 - :sparkler: Instant lookup
 - :pencil2: Towards customisation
 
-# Contributing countries
+# 💌 Contributing Countries
 
 🇲🇺🇩🇪
 
-# Just added features
+# 🔥 Just Added Features
 
 - Confirmation before deleting section
 - Settings fully operationable
 - Apply settings works for existing and non-existing db
 
-# History
+# 📖 History
 
 Months ago i was searching github, looking for a point of sales solution using Python. What pricked me was that a good many had an annoying point. Some mandatorily required Posgres as though it ships with your computer, others' codebases were a tkinter spaghetti mess, yet others were django-based accounting monsters ...
 
@@ -34,18 +33,22 @@ For the UI, we used the latest, bootstrap4, fa5 and jq3. Interestingly enough, i
 
 It's still in dev and supports instant lookup. Long story short, with some programming skills, you can solve some everyday problems. And yes, no cdn, all libs are bundled so that you can use it completely offline
 
-you can still see the linked-in post [here](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328).
+See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328) linked-in article!
 
-# Community: Discord
+# ♨️ Contributing
+
+If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
+
+# 💬 Community: Discord
 [https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
 
-# Install instructions
+# 🔧 Install instructions
 
 - download python3.7
 - clone and cd into project
 - run ```python -m pip install -r requirements.txt```
 
-# Run instructions
+# 👟 Run instructions
 run initialise.py
 
 ```python
@@ -64,7 +67,7 @@ python app.py
 
 the go to the indicated url
 
-## In Action
+## 🍳 In Action
 ![](shopyo_min.gif)
 
 
