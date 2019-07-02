@@ -13,6 +13,10 @@
 - :sparkler: Instant lookup
 - :pencil2: Towards customisation
 
+# ⚗️ Stability
+
+**alpha** - highly volatile, core features not yet finished
+
 # 💌 Contributing Countries
 
 🇲🇺🇩🇪
