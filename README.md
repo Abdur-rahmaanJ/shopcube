@@ -1,14 +1,18 @@
-# Shopyo
+<h1 align="center">
+  <br>
+  <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/shopyo.png" alt="shopyo"></a>
+  <br>
+  Shopyo
+  <br>
+</h1>
+
+#
 :gift: Open inventory management  and Point of sales (powered by python) for small shops. 
 
 - :ok_hand: Crisp UI
 - :heartpulse: Intuitive
 - :sparkler: Instant lookup
 - :pencil2: Towards customisation
-
-#
-![](shopyo.png)
-
 
 # Contributing countries
 
