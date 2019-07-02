@@ -14,6 +14,7 @@
                 <th>price</th>
                 <th>vat price</th>
                 <th>selling price</th>
+                <th style="border: none;"></th>
               </tr>
             </thead>
             <tbody>
@@ -23,8 +24,15 @@
                 <td>{{p.price}}</td>
                 <td>{{p.vat_price}}</td>
                 <td>{{p.selling_price}}</td>
-                <td><a href="/prods/delete/{{manufac}}/{{p.barcode}}" class="btn btn-danger" role="button">delete</a></td>
-                <td><a href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-info" role="button">edit</a></td>
+                <td style="border: none;">
+                  <a style="width: 100px;"
+                      href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-warning" role="button">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <a href="/prods/delete/{{manufac}}/{{p.barcode}}" class="btn btn-danger" role="button">
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
               </tr>
               {%endfor%}
             </tbody>
