@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for
     )
-from models import db, Manufacturers, Settings
+from models import db, Manufacturers, Products, Settings
 from flask_sqlalchemy import sqlalchemy
 from settings import get_value
 
@@ -28,6 +28,7 @@ def manufac_add():
 @manufac_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
 def manufac_delete(name):
     Manufacturers.query.filter(Manufacturers.name == name).delete()
+    Products.query.filter(Products.manufacturer == name).delete()
     db.session.commit()
     return redirect('/manufac')
 
