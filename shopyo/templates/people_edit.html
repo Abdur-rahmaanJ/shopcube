@@ -1,50 +1,48 @@
-{% extends "prods_base.html" %}
+{% extends "people_base.html" %}
 
 {% block pagehead %}
 <title>edit</title>
 {% endblock %}
 
 {% block content %}
-<h2>Edit product for manufacturer {{manufac}}</h2>
-<form action='/prods/update' method="post">
-  <label>barcode</label>
+<h2>Edit person</h2>
+<form action='/people/update' method="post">
+  <label>name</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-tag"></i></span>
     </div>
-    <input required  autocomplete="off" id="barcode" type="text" class="form-control" 
-      name="barcode" placeholder="Barcode" value="{{ barcode }}">
-    <input required  id="oldbarcode" type="hidden" class="form-control" 
-      name="oldbarcode" placeholder="Barcode" value="{{ barcode }}">
-    <input required  id="manufac" type="hidden" class="form-control" 
-      name="manufac" placeholder="Manufac" value="{{ manufac }}">
+    <input required  autocomplete="off" id="name" type="text" class="form-control" 
+      name="name" placeholder="Name" value="{{ name }}">
+    <input required  id="oldname" type="hidden" class="form-control" 
+      name="oldname" placeholder="Name" value="{{ name }}">
   </div>
 
-  <label>price</label>
+  <label>birthday</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required  id="price" type="text" class="form-control" 
-      name="price" placeholder="Price" value="{{ price }}">
+    <input required  id="birthday" type="date" class="form-control" 
+      name="birthday" placeholder="Birthday" value="{{ birthday }}">
   </div>
 
-  <label>vat price</label>
+  <label>about</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-th"></i></span>
     </div>
-    <input required  id="vat_price" type="number" class="form-control" 
-      name="vat_price" placeholder="Vat Price" value="{{ vat_price }}">
+    <input required  id="about" type="text" class="form-control" 
+      name="about" placeholder="About" value="{{ about }}">
   </div>
 
-  <label>selling price</label>
+  <label>social media</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
     </div>
-    <input required  id="selling_price" type="number" class="form-control" 
-      name="selling_price" placeholder="Selling price" value="{{ selling_price }}">
+    <input required  id="social_media" type="text" class="form-control" 
+      name="social_media" placeholder="Social Media" value="{{ social_media }}">
   </div>
 
   <br>

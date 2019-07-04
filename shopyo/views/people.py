@@ -56,7 +56,7 @@ def people_edit(person_name):
     p = People.query.filter(
         People.name == person_name).first()
     return render_template(
-        'people_edit.html', name=p.name, birthday=p.birthday, age=p.age,
+        'people_edit.html', name=p.name, birthday=p.birthday,
         about=p.about, social_media=p.social_media, OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
@@ -64,24 +64,23 @@ def people_edit(person_name):
 @person_blueprint.route('/update', methods=['GET', 'POST'])
 def people_update():
     if request.method == 'POST': #this block is only entered when the form is submitted
-        barcode = request.form['barcode']
-        oldbarcode = request.form['oldbarcode']
-        price = request.form['price']
-        vat_price = request.form['vat_price']
-        selling_price = request.form['selling_price']
-        manufacturer = request.form['manufac']
+        name = request.form['name']
+        oldname = request.form['oldname']
+        birthday = request.form['birthday']
+        age = age_from_birthday(birthday)
+        about = request.form['about']
+        social_media = request.form['social_media']
 
-        p = Products.query.filter(
-            Products.barcode == oldbarcode and Products.manufacturer == manufac
+        p = People.query.filter(
+            People.name == oldname 
         ).first()
-        p.barcode = barcode
-        p.price = price
-        p.vat_price = vat_price
-        p.selling_price = selling_price
-        p.manufacturer = manufacturer
+        p.name = name
+        p.birthday = birthday
+        p.about = about
+        p.social_media = social_media
+        p.age = age
         db.session.commit()
-        #return redirect(url_for('edit', barcode=barcode))
-        return redirect('/people/list_people/{}'.format(manufacturer))
+        return redirect('/people/list_people')
 
 @person_blueprint.route("/lookup/<manufac_name>")
 def lookup_people(manufac_name):
