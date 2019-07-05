@@ -24,4 +24,10 @@ class Settings(db.Model):
     __tablename__ = 'settings'
     setting = db.Column(db.String(100), primary_key=True)
     value = db.Column(db.String(100))
+
+class Patients(db.Model):
+    __tablename__ = 'patients'
+    first_name = db.Column(db.String(100), primary_key=True)
+    last_name = db.Column(db.String(100))
+
 # db.DateTime, default=db.func.current_timestamp()
