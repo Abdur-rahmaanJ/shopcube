@@ -15,6 +15,13 @@ class Products(db.Model):
     selling_price = db.Column(db.Float)
     manufacturer = db.Column(db.String(100), db.ForeignKey('manufacturers.name'))
 
+class People(db.Model):
+    __tablename__ = 'people'
+    name = db.Column(db.String(100), primary_key=True)
+    age = db.Column(db.Integer)
+    birthday = db.Column(db.String(100))
+    about = db.Column(db.String(100))
+    social_media = db.Column(db.String(100))
 
 class Manufacturers(db.Model):
     __tablename__ = 'manufacturers'

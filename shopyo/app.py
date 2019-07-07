@@ -4,10 +4,12 @@ from flask import (
 from models import app
 from views.manufac  import manufac_blueprint
 from views.products import prod_blueprint
+from views.people import person_blueprint
 from views.settings_modif import settings_blueprint
 
 app.register_blueprint(manufac_blueprint)
 app.register_blueprint(prod_blueprint)
+app.register_blueprint(person_blueprint)
 app.register_blueprint(settings_blueprint)
 
 @app.route('/')
