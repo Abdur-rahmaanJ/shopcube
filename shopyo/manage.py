@@ -15,7 +15,7 @@ def exec_gen_modules():
     generate_modules(path_now, 'all')
 
 commands = {
-    'loadmodule': exec_gen_modules
+    'loadmodules': exec_gen_modules
 }
 
 if __name__ == '__main__':
