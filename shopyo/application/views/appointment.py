@@ -10,7 +10,7 @@ appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointm
 @appointment_blueprint.route("/")
 def appointment_main():
     settings = Settings.query.all()
-    return render_template('appointment_index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('appointment_index.html')
 
 
 
