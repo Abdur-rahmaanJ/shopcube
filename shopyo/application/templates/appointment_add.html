@@ -1,0 +1,23 @@
+{% extends "appointment_base.html" %}
+
+{% block pagehead %}
+<title>add appointment</title>
+{% endblock %}
+
+{% block content %}
+
+<h2>Add Appointment</h2>
+
+<form action="/appointment/add" method="post">
+
+  <label>Meeting Name</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+  </div>
+  
+  <input required  type="submit" class="btn btn-info" value="add">
+</form>
+{% endblock %}

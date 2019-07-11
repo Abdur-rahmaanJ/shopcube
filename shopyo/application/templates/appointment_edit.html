@@ -6,16 +6,16 @@
 
 {% block content %}
 
-<form action='/settings/update' method="post">
+<form action='/appointment/update' method="post">
   <label>value</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-tag"></i></span>
     </div>
     <input required type="text" class="form-control" 
-      name="settings_value" placeholder="Input Value" value="{{ current_value }}">
+      name="appointment_value" placeholder="Input Value" value="{{ current_value }}">
     <input required type="hidden" class="form-control" 
-      name="settings_name" placeholder="input Value" value="{{ settings_name }}">
+      name="appointment_name" placeholder="input Value" value="{{ settings_name }}">
   </div>
 
   <br>

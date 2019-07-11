@@ -28,11 +28,11 @@ $(function() {
     </tr>
   </thead>
   <tbody>
-{% for setting in settings %}
+{% for appointment in appointments %}
     <tr>
-      <td>{{setting.setting}}</td>
-      <td>{{setting.value}} </td>
-      <td><a href="/settings/edit/{{setting.setting}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>
+      <td>{{appointment.name}}</td>
+      <td>{{appointment.name}} </td>
+      <td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>
     </tr>
 {%endfor%}
   </tbody>
