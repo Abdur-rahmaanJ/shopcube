@@ -27,6 +27,10 @@ class Manufacturers(db.Model):
     __tablename__ = 'manufacturers'
     name = db.Column(db.String(100), primary_key=True)
 
+class Appointments (db.Model):
+    __tablename__ = 'appointments'
+    name = db.Column(db.String(100), primary_key=True)
+
 class Settings(db.Model):
     __tablename__ = 'settings'
     setting = db.Column(db.String(100), primary_key=True)
