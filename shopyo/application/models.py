@@ -30,6 +30,7 @@ class Manufacturers(db.Model):
 class Appointments(db.Model):
     __tablename__ = 'appointments'
     name = db.Column(db.String(100), primary_key=True)
+    time = db.Column(db.String(100), primary_key=True)
 
 class Settings(db.Model):
     __tablename__ = 'settings'
