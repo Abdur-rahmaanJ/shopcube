@@ -11,13 +11,13 @@
             display: inline-block;
         }
 
-        .actived {
+        .active {
             width:6rem;
             color: white;
             background-color: #34ce57;
         }
 
-        .deactived {
+        .inactive {
             width:6rem;
             color: white;
             background-color: #ff253a;
@@ -58,7 +58,7 @@
                 <td>
                     <div style='display: inline-block; '>
                         <a style="text-decoration: none;">
-                            <button id='delete' class="delete_me btn btn-danger" type="" name="{{ appointment.id }}"><i
+                            <button id='delete' class="delete_me btn btn-dark" type="" name="{{ appointment.id }}"><i
                                     class="fas fa-trash-alt"></i></button>
                         </a>
                         &nbsp;
@@ -67,10 +67,10 @@
                                                                                                   class="fas fa-pencil-alt"></i>
                             </button>
                         </a>
-                        <a href="/appointment/{% if appointment.active == "actived" %}deactived{% else %}actived{% endif %}/{{ appointment.id }}"
+                        <a href="/appointment/{% if appointment.active == "active" %}inactive{% else %}active{% endif %}/{{ appointment.id }}"
                            style="text-decoration: none; padding-left: 1rem">
                             <button id="active-btn" data-name="{{ appointment.name }}"
-                                    class="btn {% if appointment.active == "actived" %}actived{% else %}deactived{% endif %}">{{ appointment.active }}
+                                    class="btn {% if appointment.active == "active" %}active{% else %}inactive{% endif %}">{{ appointment.active }}
                             </button>
                         </a>
 

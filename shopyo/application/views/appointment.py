@@ -56,19 +56,19 @@ def settings_update():
     return render_template('appointment_index.html', appointments=appointments, OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 
-@appointment_blueprint.route('/actived/<ids>', methods=['GET', 'POST'])
+@appointment_blueprint.route('/active/<ids>', methods=['GET', 'POST'])
 def active(ids):
     s = Appointments.query.get(ids)
-    s.active = "actived"
+    s.active = "active"
     db.session.commit()
     appointments = Appointments.query.all()
     return render_template('appointment_index.html', appointments=appointments, OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 
-@appointment_blueprint.route('/deactived/<ids>', methods=['GET', 'POST'])
+@appointment_blueprint.route('/inactive/<ids>', methods=['GET', 'POST'])
 def deactive(ids):
     s = Appointments.query.get(ids)
-    s.active = "deactived"
+    s.active = "inactive"
     db.session.commit()
     appointments = Appointments.query.all()
     return render_template('appointment_index.html', appointments=appointments, OUR_APP_NAME=get_value('OUR_APP_NAME'))
