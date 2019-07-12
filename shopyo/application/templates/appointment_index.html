@@ -10,6 +10,16 @@
         .show {
             display: inline-block;
         }
+
+        .actived {
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .deactived {
+            color: black;
+            background-color: red;
+        }
     </style>
 {% endblock %}
 
@@ -24,7 +34,8 @@
                 } else {
 
                 }
-            });});
+            });
+        });
 
     </script>
 
@@ -50,10 +61,17 @@
                         </a>
                         &nbsp;
                         <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
-                            <button data-name="{{ appointment.name }}" class="btn btn-primary" type=""><i id='ico'
-                                                                                                          class="fas fa-pencil-alt"></i>
+                            <button data-name="{{ appointment.name }}" class="btn btn-primary"><i id='ico'
+                                                                                                  class="fas fa-pencil-alt"></i>
                             </button>
                         </a>
+                        <a href="/appointment/{% if appointment.active == "actived" %}deactived{% else %}actived{% endif %}/{{ appointment.id }}"
+                           style="text-decoration: none; padding-left: 1rem">
+                            <button id="active-btn" data-name="{{ appointment.name }}"
+                                    class="btn {% if appointment.active == "actived" %}actived{% else %}deactived{% endif %}">{{ appointment.active }}
+                            </button>
+                        </a>
+
                     </div>
                 </td>
             </tr>
