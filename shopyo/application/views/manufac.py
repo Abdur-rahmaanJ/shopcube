@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for
     )
-from models import db, Manufacturers, Products, Settings
+from models import db, Manufacturers, Products, Settings, Appointments
 from flask_sqlalchemy import sqlalchemy
 from settings import get_value
 

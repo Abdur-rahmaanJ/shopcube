@@ -1,0 +1,84 @@
+{% extends "appointment_base.html" %}
+
+{% block pagehead %}
+    <title>Settings</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width:6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width:6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript">
+        $(function () {
+            $('#delete').click(function () {
+                var id = $(this).attr('name');
+                var ask = confirm("Do you want to delete ?");
+                if (ask == true) {
+                    window.open("/appointment/delete/" + id)
+                } else {
+
+                }
+            });
+        });
+
+    </script>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Meeting Name</th>
+            <th scope="col">Date</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.name }}</td>
+                <td>{{ appointment.date }}</td>
+                <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
+                <td>
+                    <div style='display: inline-block; '>
+                        <a style="text-decoration: none;">
+                            <button id='delete' class="delete_me btn btn-dark" type="" name="{{ appointment.id }}"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </a>
+                        &nbsp;
+                        <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
+                            <button data-name="{{ appointment.name }}" class="btn btn-primary"><i id='ico'
+                                                                                                  class="fas fa-pencil-alt"></i>
+                            </button>
+                        </a>
+                        <a href="/appointment/{% if appointment.active == "active" %}inactive{% else %}active{% endif %}/{{ appointment.id }}"
+                           style="text-decoration: none; padding-left: 1rem">
+                            <button id="active-btn" data-name="{{ appointment.name }}"
+                                    class="btn {% if appointment.active == "active" %}active{% else %}inactive{% endif %}">{{ appointment.active }}
+                            </button>
+                        </a>
+
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

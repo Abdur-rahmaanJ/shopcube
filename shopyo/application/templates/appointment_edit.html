@@ -1,0 +1,28 @@
+{% extends "appointment_base.html" %}
+
+{% block pagehead %}
+    <title>edit</title>
+{% endblock %}
+
+{% block content %}
+
+    <form action='/appointment/update' method="post">
+        <label>Edit Appointment</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-tag"></i></span>
+            </div>
+            <input required type="text" class="form-control"
+                   name="appointment_name" placeholder="Meeting name" value="{{ name }}">
+            <input required type="date" class="form-control"
+                   name="appointment_date" placeholder="Meeting date" value="{{ date }}">
+            <input required type="hidden" class="form-control"
+                   name="appointment_id" placeholder="#" value="{{ id }}">
+            <input required type="hidden" class="form-control"
+                   name="appointment_active" placeholder="#" value="{{ active }}">
+        </div>
+
+        <br>
+        <input required type="submit" class="btn btn-info" value="edit">
+    </form>
+{% endblock %}
