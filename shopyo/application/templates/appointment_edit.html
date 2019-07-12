@@ -7,15 +7,17 @@
 {% block content %}
 
 <form action='/appointment/update' method="post">
-  <label>value</label>
+  <label>Edit Appointment</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-tag"></i></span>
     </div>
     <input required type="text" class="form-control" 
-      name="appointment_value" placeholder="Input Value" value="{{ current_value }}">
-    <input required type="hidden" class="form-control" 
-      name="appointment_name" placeholder="input Value" value="{{ settings_name }}">
+      name="appointment_name" placeholder="Meeting name" value="{{ name }}">
+    <input required type="text" class="form-control"
+      name="appointment_time" placeholder="Meeting time" value="{{ time }}">
+    <input required type="hidden" class="form-control"
+      name="appointment_id" placeholder="#" value="{{ id }}">
   </div>
 
   <br>

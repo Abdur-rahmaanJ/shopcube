@@ -1,41 +1,56 @@
 {% extends "appointment_base.html" %}
 
 {% block pagehead %}
-<title>Settings</title>
-<style>
-  .hidden{
-    display: none;
-  }
-  .show{
-    display: inline-block;
-  }
-</style>
+    <title>Settings</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<script type="text/javascript">
-$(function() {
-    
-  });
-</script>
+    <script type="text/javascript">
+        $(function () {
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Meeting Name</th>
-      <th scope="col">Time </th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-{% for appointment in appointments %}
-    <tr>
-      <td>{{appointment.name}}</td>
-      <td>{{appointment.time}} </td>
-      <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
-    </tr>
-{%endfor%}
-  </tbody>
-</table>
+        });
+    </script>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Meeting Name</th>
+            <th scope="col">Time</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.name }}</td>
+                <td>{{ appointment.time }}</td>
+                <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
+                <td>
+                    <div style='display: inline-block; '>
+                        <a href="/appointment/delete/{{ appointment.id }}" style="text-decoration: none;">
+                            <button id='delete' class="delete_me btn btn-danger" type=""><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </a>
+                        &nbsp;
+                        <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
+                            <button data-name="{{ appointment.name }}" class="btn btn-primary" type=""><i id='ico'
+                                                                                                          class="fas fa-pencil-alt"></i>
+                            </button>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
