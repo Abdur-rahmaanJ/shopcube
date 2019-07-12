@@ -29,8 +29,9 @@ class Manufacturers(db.Model):
 
 class Appointments(db.Model):
     __tablename__ = 'appointments'
-    name = db.Column(db.String(100), primary_key=True)
-    time = db.Column(db.String(100), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    time = db.Column(db.String(100))
 
 class Settings(db.Model):
     __tablename__ = 'settings'
