@@ -42,7 +42,7 @@ def appointment_edit(ids):
 
 
 @appointment_blueprint.route('/update', methods=['GET', 'POST'])
-def settings_update():
+def appointment_update():
     appointment_name = request.form['appointment_name']
     appointment_date = request.form['appointment_date']
     appointment_id = request.form['appointment_id']
@@ -54,3 +54,19 @@ def settings_update():
     db.session.commit()
     appointments = Appointments.query.all()
     return render_template('appointment_index.html', appointments=appointments, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+
+
+@appointment_blueprint.route('/deactived/<ids>', methods=['GET', 'POST'])
+def appointment_deactived(ids):
+    a = Appointments.query.get(ids)
+    a.active = 'deactived'
+    db.session.commit()
+    return redirect('/appointment')
+
+
+@appointment_blueprint.route('/actived/<ids>', methods=['GET', 'POST'])
+def appointment_actived(ids):
+    a = Appointments.query.get(ids)
+    a.active = 'actived'
+    db.session.commit()
+    return redirect('/appointment')
