@@ -55,17 +55,17 @@ def appointment_update():
     return redirect('/appointment')
 
 
-@appointment_blueprint.route('/deactived/<ids>', methods=['GET', 'POST'])
-def appointment_deactived(ids):
-    a = Appointments.query.get(ids)
-    a.active = 'deactived'
+@appointment_blueprint.route('/active/<ids>', methods=['GET', 'POST'])
+def active(ids):
+    s = Appointments.query.get(ids)
+    s.active = "active"
     db.session.commit()
     return redirect('/appointment')
 
 
-@appointment_blueprint.route('/actived/<ids>', methods=['GET', 'POST'])
-def appointment_actived(ids):
-    a = Appointments.query.get(ids)
-    a.active = 'actived'
+@appointment_blueprint.route('/inactive/<ids>', methods=['GET', 'POST'])
+def deactive(ids):
+    s = Appointments.query.get(ids)
+    s.active = "inactive"
     db.session.commit()
     return redirect('/appointment')
