@@ -16,8 +16,16 @@
 {% block content %}
     <script type="text/javascript">
         $(function () {
+            $('#delete').click(function () {
+                var id = $(this).attr('name');
+                var ask = confirm("Do you want to delete ?");
+                if (ask == true) {
+                    window.open("/appointment/delete/" + id)
+                } else {
 
-        });
+                }
+            });});
+
     </script>
 
     <table class="table">
@@ -36,8 +44,8 @@
                 <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
                 <td>
                     <div style='display: inline-block; '>
-                        <a href="/appointment/delete/{{ appointment.id }}" style="text-decoration: none;">
-                            <button id='delete' class="delete_me btn btn-danger" type=""><i
+                        <a style="text-decoration: none;">
+                            <button id='delete' class="delete_me btn btn-danger" type="" name="{{ appointment.id }}"><i
                                     class="fas fa-trash-alt"></i></button>
                         </a>
                         &nbsp;
