@@ -52,8 +52,7 @@ def appointment_update():
     s.date = appointment_date
     s.active = appointment_active
     db.session.commit()
-    appointments = Appointments.query.all()
-    return render_template('appointment_index.html', appointments=appointments, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return redirect('/appointment')
 
 
 @appointment_blueprint.route('/deactived/<ids>', methods=['GET', 'POST'])
