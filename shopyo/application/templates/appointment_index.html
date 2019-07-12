@@ -24,7 +24,7 @@
         <thead>
         <tr>
             <th scope="col">Meeting Name</th>
-            <th scope="col">Time</th>
+            <th scope="col">Date</th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -32,7 +32,7 @@
         {% for appointment in appointments %}
             <tr>
                 <td>{{ appointment.name }}</td>
-                <td>{{ appointment.time }}</td>
+                <td>{{ appointment.date }}</td>
                 <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
                 <td>
                     <div style='display: inline-block; '>

@@ -7,6 +7,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+
 class Products(db.Model):
     __tablename__ = 'products'
     barcode = db.Column(db.String(100), primary_key=True)
@@ -14,6 +15,7 @@ class Products(db.Model):
     vat_price = db.Column(db.Float)
     selling_price = db.Column(db.Float)
     manufacturer = db.Column(db.String(100), db.ForeignKey('manufacturers.name'))
+
 
 class People(db.Model):
     __tablename__ = 'people'
@@ -23,20 +25,25 @@ class People(db.Model):
     about = db.Column(db.String(100))
     social_media = db.Column(db.String(100))
 
+
 class Manufacturers(db.Model):
     __tablename__ = 'manufacturers'
     name = db.Column(db.String(100), primary_key=True)
+
 
 class Appointments(db.Model):
     __tablename__ = 'appointments'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    time = db.Column(db.String(100))
+    date = db.Column(db.String(20))
+    active = db.Column(db.String(1))  # active应该使用boolean类型,这里还有点问题
+
 
 class Settings(db.Model):
     __tablename__ = 'settings'
     setting = db.Column(db.String(100), primary_key=True)
     value = db.Column(db.String(100))
+
 
 class Patients(db.Model):
     __tablename__ = 'patients'
