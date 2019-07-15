@@ -19,7 +19,7 @@
 
 # 💌 Contributing Countries
 
-🇲🇺🇩🇪
+🇲🇺🇩🇪 🇨🇳
 
 # 🔥 Just Added Features
 
