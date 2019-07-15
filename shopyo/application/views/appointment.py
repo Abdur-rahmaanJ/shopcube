@@ -27,14 +27,14 @@ def appointment_add():
     return render_template('appointment_add.html', OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 
-@appointment_blueprint.route('/delete/<ids>', methods=['GET', 'POSE'])
+@appointment_blueprint.route('/delete/<ids>', methods=['GET', 'POST'])
 def appointment_delete(ids):
     Appointments.query.filter(Appointments.id == ids).delete()
     db.session.commit()
     return redirect('/appointment')
 
 
-@appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POSE'])
+@appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
 def appointment_edit(ids):
     a = Appointments.query.get(ids)
     return render_template('appointment_edit.html', id=a.id, name=a.name, date=a.date, active=a.active,
