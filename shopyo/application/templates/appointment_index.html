@@ -12,15 +12,19 @@
         }
 
         .active {
-            width:6rem;
+            width: 6rem;
             color: white;
             background-color: #34ce57;
         }
 
         .inactive {
-            width:6rem;
+            width: 6rem;
             color: white;
             background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
         }
     </style>
 {% endblock %}
@@ -37,7 +41,17 @@
 
                 }
             });
+            $('#isActive').change(function () {
+
+                if ($('#isActive').is(':checked')) {
+                    $('.all_not').addClass('all_inactive');
+                } else {
+                    $('.all_not').removeClass('all_inactive');
+                }
+
+            });
         });
+
 
     </script>
 
@@ -46,12 +60,15 @@
         <tr>
             <th scope="col">Meeting Name</th>
             <th scope="col">Date</th>
-            <th scope="col"></th>
+            <th scope="col"><label style="margin-bottom: auto">Only active&nbsp&nbsp&nbsp<input name="activeBox"
+                                                                                                id="isActive"
+                                                                                                type="checkbox"/></label>
+            </th>
         </tr>
         </thead>
         <tbody>
         {% for appointment in appointments %}
-            <tr>
+            <tr class="{% if appointment.active == "inactive" %}all_not{% endif %}">
                 <td>{{ appointment.name }}</td>
                 <td>{{ appointment.date }}</td>
                 <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
