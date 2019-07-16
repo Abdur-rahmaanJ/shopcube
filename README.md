@@ -19,13 +19,15 @@
 
 # 💌 Contributing Countries
 
-🇲🇺🇩🇪 🇨🇳
+🇲🇺 🇩🇪 🇨🇳 🇬🇧
 
 # 🔥 Just Added Features
 
 - Confirmation before deleting section
 - Settings fully operationable
 - Apply settings works for existing and non-existing db
+
+# Testimonial
 
 # 📖 History
 
