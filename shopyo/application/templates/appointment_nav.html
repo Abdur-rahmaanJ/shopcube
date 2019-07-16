@@ -1,0 +1,14 @@
+{% if active_page != 'appointments' %}
+<li class="nav-item">
+    <a class="nav-link" href="/appointment" title="Appointment"><i class="fas fa-users"></i></a>
+</li>
+{% else %}
+<li class="nav-item">
+    <a class="nav-link" href="/appointment/add" title="Add Appointment"><i
+                            class="fas fa-plus-circle"></i></a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="/appointment" title="Appointment"><i class="fas fa-users"></i></a>
+</li>
+{% endif %}

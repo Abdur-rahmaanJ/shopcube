@@ -1,0 +1,11 @@
+{% if active_page == 'products' %}
+<li class="nav-item">
+  <a class="nav-link" href="/prods/list_prods/{{manufac}}" title="{{manufac}} List"><i class="fas fa-warehouse"></i></a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/prods/add/{{manufac}}" title="Add Product"><i class="fas fa-plus-circle"></i></a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/prods/lookup/{{manufac}}" title="Search"><i class="fas fa-search"></i></a>
+</li>
+{% endif %}
