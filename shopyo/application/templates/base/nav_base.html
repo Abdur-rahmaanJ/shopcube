@@ -1,0 +1,40 @@
+{% set nav_bar_log = [
+  ('manufacturer'),
+  ('appointments'),
+  ('products'),
+  ('people')
+  ] %}
+
+{% set active_page = active_page|default('manufacturer') %}
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="#"> <img src="/static/shopyo.svg" width="35" height="30"> {{OUR_APP_NAME}} | {{active_page.capitalize()}}</a>
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/" title="Main Page"><i class="fas fa-home"></i></a>
+    </li>
+    {% if active_page == nav_bar_log[0] %}
+
+      {% include "manufac_nav.html" %}
+      {% include "settings_nav.html" %}
+      {% include "appointment_nav.html" %}
+      <!-- too few manufacs for lookup
+      <li class="nav-item">
+        <a class="nav-link" href="/manufac/lookup"><i class="fas fa-search"></i></a>
+      </li>
+      --> 
+    {% elif active_page == nav_bar_log[1] %}
+      {% include "appointment_nav.html" %}
+      
+    {% elif active_page == nav_bar_log[2] %}
+      {% include "prods_nav.html" %}
+
+    {% elif active_page == nav_bar_log[3] %}
+      {% include "people_nav.html" %}
+
+    {% endif %}  
+  </ul>
+</nav>
