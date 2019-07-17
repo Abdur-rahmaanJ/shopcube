@@ -2,14 +2,15 @@
   ('manufacturer'),
   ('appointments'),
   ('products'),
-  ('people')
+  ('settings')
   ] %}
 
-{% set active_page = active_page|default('manufacturer') %}
+{% set active_page = active_page|default('none') %}
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <!-- Brand/logo -->
-  <a class="navbar-brand" href="#"> <img src="/static/shopyo.svg" width="35" height="30"> {{OUR_APP_NAME}} | {{active_page.capitalize()}}</a>
+  <a class="navbar-brand" href="#"> <img src="/static/shopyo.svg" width="35" heigh
+    t="30"> {{OUR_APP_NAME}} | {{active_page.capitalize()}}</a>
 
   <!-- Links -->
   <ul class="navbar-nav">
@@ -33,8 +34,7 @@
       {% include "prods_nav.html" %}
 
     {% elif active_page == nav_bar_log[3] %}
-      {% include "people_nav.html" %}
-
-    {% endif %}  
+      {% include "settings_nav.html" %}
+      {% endif %}
   </ul>
 </nav>
