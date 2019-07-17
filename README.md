@@ -27,6 +27,8 @@
 - Settings fully operationable
 - Apply settings works for existing and non-existing db
 
+# Testimonial
+
 # 📖 History
 
 Months ago i was searching github, looking for a point of sales solution using Python. What pricked me was that a good many had an annoying point. Some mandatorily required Posgres as though it ships with your computer, others' codebases were a tkinter spaghetti mess, yet others were django-based accounting monsters ...
