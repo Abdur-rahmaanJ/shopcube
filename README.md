@@ -93,7 +93,7 @@ Inside the template folder create a file ending ``_index.html``.
 
 	* /template
 		* /base
-		* changeme_index.html (swap changeme for section name).
+		* <changeme>_index.html (swap <changeme> for section name).
  
 
 #### Create a subsection template.
@@ -104,7 +104,7 @@ Inside the template folder create a new file keeping the same section name as ``
 	* /template	
 		* /base
 		* example_index.html
-		* example_changeme.html (swap changeme for subsection name).
+		* example_<changeme>.html (swap <changeme> for subsection name).
 
 #### Create navigation elements for a new section.
 
@@ -114,11 +114,11 @@ Inside the template folder create a file with the same section name as ``_index.
 	* /template
 		* /base
 		* example_index.html
-		* example_changeme.html (swap changeme for subsection name.)
+		* example_<changeme>.html (swap changeme for subsection name.)
 		* example_nav.html
 
 
-In the  _nav .html file elements for the navigation can be created.
+In the  ```_nav``` .html file elements for the navigation can be created.
 
 
 #### To display the navagation elements.
