@@ -15,16 +15,32 @@
         <label>Add Meeting</label>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
             </div>
             <input required autocomplete="off" id="name" type="text" class="form-control" name="name"
                    placeholder="Name">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+            </div>
             <input required autocomplete="off" id="date" type="date" class="form-control" name="date"
-                   placeholder="Time">
+                   placeholder="">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-clock"></i></span>
+            </div>
+            <input required autocomplete="off" id="time" type="time" class="form-control" name="time"
+                   placeholder="">
+        </div>
+        <div class="input-group mb-3">
             <input required autocomplete="off" id="active" type="hidden" class="form-control" name="active" value="active"
                    placeholder="Active">
         </div>
+        <div class="input-group mb-3">
+             <input required type="submit" class="btn btn-info" value="add">
+        </div>
 
-        <input required type="submit" class="btn btn-info" value="add">
     </form>
 {% endblock %}
