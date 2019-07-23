@@ -38,7 +38,9 @@ def appointment_delete(ids):
 @appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
 def appointment_edit(ids):
     a = Appointments.query.get(ids)
-    return render_template('appointment_edit.html', id=a.id, name=a.name, date=a.date, time=a.time, active=a.active,
+    return render_template('appointment_edit.html', 
+                           id=a.id, name=a.name, date=a.date,
+                           time=a.time, active=a.active,
                            OUR_APP_NAME=get_value('OUR_APP_NAME'), SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
 
