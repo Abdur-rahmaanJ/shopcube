@@ -20,7 +20,8 @@ def appointment_add():
         name = request.form['name']
         date = request.form['date']
         active = request.form['active']
-        m = Appointments(name=name, date=date, active=active)
+        time = request.form['time']
+        m = Appointments(name=name, date=date, time=time, active=active)
         db.session.add(m)
         db.session.commit()
         return redirect('/appointment/add')
@@ -37,7 +38,9 @@ def appointment_delete(ids):
 @appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
 def appointment_edit(ids):
     a = Appointments.query.get(ids)
-    return render_template('appointment_edit.html', id=a.id, name=a.name, date=a.date, active=a.active,
+    return render_template('appointment_edit.html', id=a.id,
+                           name=a.name, date=a.date,
+                           time=a.time, active=a.active,
                            OUR_APP_NAME=get_value('OUR_APP_NAME'), SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
 
@@ -45,11 +48,13 @@ def appointment_edit(ids):
 def appointment_update():
     appointment_name = request.form['appointment_name']
     appointment_date = request.form['appointment_date']
+    appointment_time = request.form['appointment_time']
     appointment_id = request.form['appointment_id']
     appointment_active = request.form['appointment_active']
     s = Appointments.query.get(appointment_id)
     s.name = appointment_name
     s.date = appointment_date
+    s.time = appointment_time
     s.active = appointment_active
     db.session.commit()
     return redirect('/appointment')

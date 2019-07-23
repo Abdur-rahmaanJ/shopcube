@@ -62,6 +62,7 @@
         <tr>
             <th scope="col">Meeting Name</th>
             <th scope="col">Date</th>
+            <th scope="col">Time</th>
             <th scope="col"><label style="margin-bottom: auto">Only active&nbsp&nbsp&nbsp<input name="activeBox"
                                                                                                 id="isActive"
                                                                                                 type="checkbox"/></label>
@@ -73,6 +74,7 @@
             <tr class="{% if appointment.active == "inactive" %}all_not{% endif %}">
                 <td>{{ appointment.name }}</td>
                 <td>{{ appointment.date }}</td>
+                <td>{{ appointment.time }}</td>
                 <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
                 <td>
                     <div style='display: inline-block; '>
