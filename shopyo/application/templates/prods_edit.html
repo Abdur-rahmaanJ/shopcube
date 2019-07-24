@@ -27,7 +27,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required  id="price" type="text" class="form-control" 
+    <input required  id="price" type="number" step="0.01" class="form-control" 
       name="price" placeholder="Price" value="{{ price }}">
   </div>
 
@@ -36,7 +36,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-th"></i></span>
     </div>
-    <input required  id="vat_price" type="number" class="form-control" 
+    <input required  id="vat_price" type="number" step="0.01" class="form-control" 
       name="vat_price" placeholder="Vat Price" value="{{ vat_price }}">
   </div>
 
@@ -45,7 +45,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
     </div>
-    <input required  id="selling_price" type="number" class="form-control" 
+    <input required  id="selling_price" type="number" step="0.01" class="form-control" 
       name="selling_price" placeholder="Selling price" value="{{ selling_price }}">
   </div>
 
