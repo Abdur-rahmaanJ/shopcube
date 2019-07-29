@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/shopyo.png" alt="shopyo"></a>
+  <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/shopyo.png" alt="shopyo" width="300px" height="300px"></a>
   <br>
   Shopyo
   <br>
@@ -148,6 +148,12 @@ Now enter a new elif statement containing a reference to the _nav.html
 ```
 
 Then the navagation elements will be displayed in the new section.
+
+# Windows Deployment
+
+[Abdur-rahmaanJ/shopyo-windows](https://github.com/Abdur-rahmaanJ/shopyo-windows)
+
+[youtube demo](https://youtu.be/fOUEyuMgZ0U)
 
 ## 🍳 In Action
 ![](shopyo_min.gif)
