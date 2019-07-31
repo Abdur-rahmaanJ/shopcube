@@ -36,17 +36,20 @@ def prods_add(manufac_name):
         vat_price = request.form['vat_price']
         selling_price = request.form['selling_price']
         manufac = request.form['manufac']
-        has_product = db.session.query(exists().where(Products.barcode==barcode)).scalar()
-        if has_product == False:
+        has_product = db.session.query(
+            exists().where(Products.barcode == barcode)).scalar()
+        if has_product is False:
             p = Products(barcode=barcode, price=price, vat_price=vat_price,
             selling_price=selling_price, manufacturer=manufac)
             db.session.add(p)
             db.session.commit()
 
-        return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
-        SECTION_ITEMS=get_value('SECTION_ITEMS'), has_product=str(has_product))
-    return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
-        SECTION_ITEMS=get_value('SECTION_ITEMS'), has_product=str(has_product))
+        return render_template('prods_add.html', manufac=manufac_name,
+        OUR_APP_NAME=get_value('OUR_APP_NAME'), SECTION_ITEMS=get_value('SECTION_ITEMS'),
+        has_product=str(has_product))
+    return render_template('prods_add.html', manufac=manufac_name,
+        OUR_APP_NAME=get_value('OUR_APP_NAME'), SECTION_ITEMS=get_value('SECTION_ITEMS'),
+        has_product=str(has_product))
 
 
 @prod_blueprint.route('/delete/<manufac_name>/<barcode>', methods=['GET', 'POST'])
