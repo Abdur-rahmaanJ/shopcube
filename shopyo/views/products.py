@@ -4,6 +4,7 @@ from flask import (
 from models import app, db, Products, Settings
 from flask_marshmallow import Marshmallow
 from settings import get_value
+from sqlalchemy import exists
 
 prod_blueprint = Blueprint('prods', __name__, url_prefix='/prods')
 
@@ -28,19 +29,24 @@ def list_prods(manufac_name):
 
 @prod_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
 def prods_add(manufac_name):
+    has_product = False
     if request.method == 'POST':
         barcode = request.form['barcode']
         price = request.form['price']
         vat_price = request.form['vat_price']
         selling_price = request.form['selling_price']
         manufac = request.form['manufac']
-        p = Products(barcode=barcode, price=price, vat_price=vat_price,
+        has_product = db.session.query(exists().where(Products.barcode==barcode)).scalar()
+        if has_product == False:
+            p = Products(barcode=barcode, price=price, vat_price=vat_price,
             selling_price=selling_price, manufacturer=manufac)
-        db.session.add(p)
-        db.session.commit()
-        return redirect('/prods/add/{}'.format(manufac_name))
+            db.session.add(p)
+            db.session.commit()
+
+        return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+        SECTION_ITEMS=get_value('SECTION_ITEMS'), has_product=str(has_product))
     return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
-        SECTION_ITEMS=get_value('SECTION_ITEMS'))
+        SECTION_ITEMS=get_value('SECTION_ITEMS'), has_product=str(has_product))
 
 
 @prod_blueprint.route('/delete/<manufac_name>/<barcode>', methods=['GET', 'POST'])
