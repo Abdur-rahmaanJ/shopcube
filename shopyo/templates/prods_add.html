@@ -9,7 +9,9 @@
 {% block content %}
 
 <h2>Add Product for {{SECTION_NAME}} {{manufac}}</h2>
-
+{% if has_product == 'True' %}
+  <h2>Product alreadly Listed.</h2>
+{% endif %}
 <form action="/prods/add/{{manufac}}" method="post">
 
   <label>barcode</label>
