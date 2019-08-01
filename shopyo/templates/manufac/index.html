@@ -34,22 +34,28 @@
   {%for m in manufacs%}
   <a href="" >
     <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
-      <a href="#" style="text-decoration: none;">
+      
+      <a href="/prods/list_prods/{{m.name}}" style="text-decoration: none;">
+        <button style="width:75px;" class="btn btn-info" type=""><i class="fas fa-cube"></i></button>
+      </a>
+      
+      &nbsp;&nbsp;
+      <div style='display: inline-block;'>
+        <input disabled  
+              id="{{m.name}}" 
+              type="text" 
+              class="form-control"
+              name="manufac_name" 
+              placeholder="Barcode" 
+              value="{{m.name}}">
+      </div>
+      <a href="#" style="text-decoration: none; float:right;">
         <button id='del-{{m.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
       </a>
       &nbsp;
-      <a href="/prods/list_prods/{{m.name}}" style="text-decoration: none;">
-        <button style="width:75px;" class="btn btn-info" type=""><i class="fas fa-scroll"></i></button>
-      </a>
-      &nbsp;
-      <a href="/manufac/edit/{{m.name}}" style="text-decoration: none;">
+      <a href="/manufac/edit/{{m.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
         <button data-name="{{m.name}}" class="btn btn-warning" type=""><i id='ico-{{m.name}}' class="fas fa-pencil-alt"></i></button>
       </a>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div style='display: inline-block;'>
-        <input disabled  id="{{m.name}}" type="text" class="form-control"
-      name="manufac_name" placeholder="Barcode" value="{{m.name}}">
-
-      </div>
     </div>
 
   </a><br><br>

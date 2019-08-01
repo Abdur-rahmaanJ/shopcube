@@ -122,3 +122,9 @@ def search(manufac_name, barcode):
         ).all()
     result = product_schema.dump(all_p)
     return jsonify(result.data)
+
+# api 
+@prod_blueprint.route("/check/<barcode>", methods=["GET"])
+def check(barcode):
+    has_product = db.session.query(exists().where(Products.barcode == barcode)).scalar()
+    return jsonify({"exists":has_product})

@@ -7,17 +7,35 @@
 {% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+$(function() {
+    // pos
+    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    $('#barcode').on('input', function() {
+        $.getJSON( "/prods/check/"+$("#barcode").val(), function( data ) {
+            $("#check").html("<i class='fa fa-list-alt'></i>");
+            if (data['exists'] === true){
+              $("#check").html("<i style='color:red;' class='fas fa-exclamation-triangle'></i>");
+            }
+        })
+    });
+  });
+</script>
+{% if has_product == 'True' %}
+  
+  <div class="alert alert-danger" role="alert">
+    Product alreadly Listed
+  </div>
+{% endif %}
 
 <h2>Add Product for {{SECTION_NAME}} {{manufac}}</h2>
-{% if has_product == 'True' %}
-  <h2>Product alreadly Listed.</h2>
-{% endif %}
+
 <form action="/prods/add/{{manufac}}" method="post">
 
   <label>barcode</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+      <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required  autocomplete="off" id="barcode" type="text" class="form-control" 
     name="barcode" placeholder="Barcode">
