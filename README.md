@@ -88,7 +88,7 @@ Each landing page and subsection should contain the following headers.
 
 #### Create the main landing page of a new section in the template folder.
 
-Inside the template folder create a file ending ``_index.html``.
+Inside the template folder create a folder named as you want
 
 ```
 /template
@@ -99,12 +99,12 @@ Inside the template folder create a file ending ``_index.html``.
 
 #### Create a subsection template.
 
-Inside the template folder create a new file.
+Inside the template folder create a new file under the folder named same as the section.
 
 ```
 /template 
     /base
-    /<changeme> (swap <changeme> for subsection name).
+    /section_name
         index.html
         anotherfile.html 
 ```
@@ -112,7 +112,7 @@ Inside the template folder create a new file.
 #### Create navigation elements for a new section.
 
 
-Inside the template folder create a file with the same section name as ``index.html``. Changing ``index.html`` for ``nav.html``.
+Inside the template folder create a file named ``nav.html``.
 
 ```
 /template
