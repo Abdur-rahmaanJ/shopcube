@@ -110,7 +110,7 @@ test.db
 .idea/
 
 # win
-.exe
-.cs
-.bat
-.vbs
+*.exe
+*.cs
+*.bat
+*.vbs
