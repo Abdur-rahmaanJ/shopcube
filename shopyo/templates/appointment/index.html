@@ -38,7 +38,8 @@
                 var id = $(this).attr('name');
                 var ask = confirm("Do you want to delete ?");
                 if (ask == true) {
-                    window.open("/appointment/delete/" + id, "_self")
+                    window.location.replace("/appointment/delete/" + id, "_self");
+                    return false;
                 } else {
 
                 }
