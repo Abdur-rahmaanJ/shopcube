@@ -108,3 +108,9 @@ test.db
 
 # pycharm
 .idea/
+
+# win
+.exe
+.cs
+.bat
+.vbs
