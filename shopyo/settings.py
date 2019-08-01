@@ -5,6 +5,6 @@ def get_value(name):
     return s.value
 
 OUR_APP_NAME = 'Demo'
-SECTION_NAME = 'Manufacturers'
+SECTION_NAME = 'Manufacturer'
 SECTION_ITEMS = 'Products'
 

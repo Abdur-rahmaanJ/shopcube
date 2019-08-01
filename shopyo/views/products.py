@@ -22,7 +22,7 @@ product_schema = ProductSchema(many=True)
 @prod_blueprint.route("/list_prods/<manufac_name>")
 def list_prods(manufac_name):
     products = Products.query.filter_by(manufacturer=manufac_name)
-    return render_template('prods_list.html', prods=products, manufac=manufac_name, 
+    return render_template('prods/list.html', prods=products, manufac=manufac_name, 
         OUR_APP_NAME=get_value('OUR_APP_NAME'), SECTION_ITEMS=get_value('SECTION_ITEMS'),
         SECTION_NAME=get_value('SECTION_NAME'))
 
@@ -43,9 +43,9 @@ def prods_add(manufac_name):
             db.session.add(p)
             db.session.commit()
 
-        return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+        return render_template('prods/add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_ITEMS=get_value('SECTION_ITEMS'), has_product=str(has_product))
-    return render_template('prods_add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+    return render_template('prods/add.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_ITEMS=get_value('SECTION_ITEMS'), has_product=str(has_product))
 
 
@@ -62,8 +62,8 @@ def prods_edit(manufac_name, barcode):
     p = Products.query.filter(
         Products.barcode == barcode and Products.manufacturer == manufac_name
         ).first()
-    return render_template(
-        'prods_edit.html', barcode=p.barcode, price=p.price, vat_price=p.vat_price,
+    return render_template('prods/edit.html', 
+        barcode=p.barcode, price=p.price, vat_price=p.vat_price,
         selling_price=p.selling_price, manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
@@ -92,7 +92,7 @@ def prods_update():
 
 @prod_blueprint.route("/lookup/<manufac_name>")
 def lookup_prods(manufac_name):
-    return render_template('prods_lookup.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
+    return render_template('prods/lookup.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_ITEMS=get_value('SECTION_ITEMS'))
 
 # api

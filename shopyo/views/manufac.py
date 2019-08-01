@@ -10,7 +10,7 @@ manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 
 @manufac_blueprint.route("/")
 def manufac():
-    return render_template('manufac_index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'),
+    return render_template('manufac/index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_NAME=get_value('SECTION_NAME'))
 
 
@@ -22,7 +22,7 @@ def manufac_add():
         db.session.add(m)
         db.session.commit()
         return redirect('/manufac/add')
-    return render_template('manufac_add.html', OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('manufac/add.html', OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 
 @manufac_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
@@ -44,7 +44,7 @@ def manufac_update():
             db.session.commit()
         except sqlalchemy.exc.IntegrityError:
             # return redirect('/manufac/')
-            render_template('manufac_message.html', 
+            render_template('manufac/message.html', 
                 message="you cannot modify to an already existing manufacturer",
                 redirect_url="/manufac/", OUR_APP_NAME=get_value('OUR_APP_NAME'), 
                 SECTION_NAME=get_value('SECTION_NAME'))
@@ -55,6 +55,5 @@ def manufac_update():
 @manufac_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
 def manufac_edit(manufac_name):
     m = Manufacturers.query.get(manufac_name)
-    return render_template(
-        'manufac_edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'), 
+    return render_template('manufac/edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'), 
         SECTION_NAME=get_value('SECTION_NAME'))

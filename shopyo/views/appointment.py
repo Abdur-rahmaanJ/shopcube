@@ -10,7 +10,7 @@ appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointm
 
 @appointment_blueprint.route("/")
 def appointment_main():
-    return render_template('appointment_index.html', 
+    return render_template('appointment/index.html', 
                             appointments=Appointments.query.all(),
                             OUR_APP_NAME=get_value('OUR_APP_NAME'), 
                             SECTION_NAME=get_value('SECTION_NAME')
@@ -28,7 +28,7 @@ def appointment_add():
         db.session.add(m)
         db.session.commit()
         return redirect('/appointment/add')
-    return render_template('appointment_add.html', OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('appointment/add.html', OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 
 @appointment_blueprint.route('/delete/<ids>', methods=['GET', 'POST'])
@@ -41,7 +41,7 @@ def appointment_delete(ids):
 @appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
 def appointment_edit(ids):
     a = Appointments.query.get(ids)
-    return render_template('appointment_edit.html', id=a.id,
+    return render_template('appointment/edit.html', id=a.id,
                            name=a.name, date=a.date,
                            time=a.time, active=a.active,
                            OUR_APP_NAME=get_value('OUR_APP_NAME'), 

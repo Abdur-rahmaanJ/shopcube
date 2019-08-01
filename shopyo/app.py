@@ -18,4 +18,4 @@ def index():
     return redirect('/manufac/')
 
 if __name__ == '__main__':
-    app.run(debug=False, host='127.0.0.1', use_evalex=False)
+    app.run(debug=True, host='127.0.0.1')

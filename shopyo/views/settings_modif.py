@@ -10,13 +10,13 @@ settings_blueprint = Blueprint('settings', __name__, url_prefix='/settings')
 @settings_blueprint.route("/")
 def settings_main():
     settings =  Settings.query.all()
-    return render_template('settings_index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('settings/index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 @settings_blueprint.route('/edit/<settings_name>', methods=['GET', 'POST'])
 def settings_edit(settings_name):
     s = Settings.query.get(settings_name)
     return render_template(
-        'settings_edit.html', settings_name=settings_name, current_value=s.value, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+        'settings/edit.html', settings_name=settings_name, current_value=s.value, OUR_APP_NAME=get_value('OUR_APP_NAME'))
 
 @settings_blueprint.route('/update', methods=['GET', 'POST'])
 def settings_update():
@@ -26,4 +26,4 @@ def settings_update():
     s.value = settings_value
     db.session.commit()
     settings =  Settings.query.all()
-    return render_template('settings_index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('settings/index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))

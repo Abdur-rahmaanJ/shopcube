@@ -90,35 +90,39 @@ Each landing page and subsection should contain the following headers.
 
 Inside the template folder create a file ending ``_index.html``.
 
-
-	* /template
-		* /base
-		* <changeme>_index.html (swap <changeme> for section name).
- 
+```
+/template
+    /base
+    /<changeme> (swap <changeme> for section name).
+        index.html
+```
 
 #### Create a subsection template.
 
-Inside the template folder create a new file keeping the same section name as `` _index .html``.
+Inside the template folder create a new file.
 
-
-	* /template	
-		* /base
-		* example_index.html
-		* example_<changeme>.html (swap <changeme> for subsection name).
+```
+/template 
+    /base
+    /<changeme> (swap <changeme> for subsection name).
+        index.html
+        anotherfile.html 
+```
 
 #### Create navigation elements for a new section.
 
-Inside the template folder create a file with the same section name as ``_index.html``. Changing ``_index.html`` for ``_nav.html``.
 
+Inside the template folder create a file with the same section name as ``index.html``. Changing ``index.html`` for ``nav.html``.
 
-	* /template
-		* /base
-		* example_index.html
-		* example_<changeme>.html (swap changeme for subsection name.)
-		* example_nav.html
+```
+/template
+    /base
+    /example_section_name
+        index.html
+        nav.html
+```
 
-
-In the  ```_nav``` .html file elements for the navigation can be created.
+In the  ```nav.html```  file elements for the navigation can be created.
 
 
 #### To display the navagation elements.
@@ -138,13 +142,13 @@ In the ``nav_bar_log([])`` array. Enter the section name last in the list.
 Now enter a new elif statement containing a reference to the _nav.html
 
     {% elif active_page == nav_bar_log[0] %}
-      {% include "section0_nav.html" %}
+      {% include "section0/nav.html" %}
       
     {% elif active_page == nav_bar_log[1] %}
-      {% include "section1_nav.html" %}
+      {% include "section1/nav.html" %}
 
     {% elif active_page == nav_bar_log[2] %} <- - - Add 1 to index.
-      {% include "new_section_nav.html" %}
+      {% include "new_section/nav.html" %}
 ```
 
 Then the navagation elements will be displayed in the new section.

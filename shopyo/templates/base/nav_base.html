@@ -19,22 +19,18 @@
     </li>
     {% if active_page == nav_bar_log[0] %}
 
-      {% include "manufac_nav.html" %}
-      {% include "settings_nav.html" %}
-      {% include "appointment_nav.html" %}
-      <!-- too few manufacs for lookup
-      <li class="nav-item">
-        <a class="nav-link" href="/manufac/lookup"><i class="fas fa-search"></i></a>
-      </li>
-      --> 
+      {% include "manufac/nav.html" %}
+      {% include "settings/nav.html" %}
+      {% include "appointment/nav.html" %}
+
     {% elif active_page == nav_bar_log[1] %}
-      {% include "appointment_nav.html" %}
+      {% include "appointment/nav.html" %}
       
     {% elif active_page == nav_bar_log[2] %}
-      {% include "prods_nav.html" %}
+      {% include "prods/nav.html" %}
 
     {% elif active_page == nav_bar_log[3] %}
-      {% include "settings_nav.html" %}
+      {% include "settings/nav.html" %}
       {% endif %}
   </ul>
 </nav>
