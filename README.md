@@ -27,7 +27,9 @@
 - Settings fully operationable
 - Apply settings works for existing and non-existing db
 - Instantly checks duplicate
+
 ![](shopyoduplicatecheck.png)
+
 - Appointment section
 
 # Testimonial
