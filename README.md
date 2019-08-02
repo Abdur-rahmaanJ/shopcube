@@ -26,6 +26,8 @@
 - Confirmation before deleting section
 - Settings fully operationable
 - Apply settings works for existing and non-existing db
+- Instantly checks duplicate
+- Appointment section
 
 # Testimonial
 
