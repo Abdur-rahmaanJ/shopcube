@@ -1,0 +1,72 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='people' %}
+
+{% block pagehead %}
+<title>add people</title>
+{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+  $(function () {
+    var error = document.getElementById("error");
+    error.style.visibility = "hidden";
+
+    $(".submit").click(function () {
+      var id = document.getElementById("birthday");
+      var enteredDate = new Date(id.value);
+      var currentDate = new Date();
+
+      if (enteredDate > currentDate) {
+        error.innerHTML = 'Date of birth cannot be greater than current date.';
+        error.style.visibility = "visible";
+        return false;
+      }
+
+    });
+  });
+</script>
+
+
+<h2>Add People</h2>
+
+<form action="/people/add" method="post">
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+    </div>
+    <input required autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+    {{message}}
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+    </div>
+    <input required autocomplete="off" id="birthday" type="date" class="form-control" name="birthday" placeholder="">
+    <span id="error" type="text" vissiblity='hidden'></span>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required autocomplete="off" id="about" type="text" class="form-control" name="about" placeholder="About">
+  </div>
+
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required autocomplete="off" id="social_media" type="text" class="form-control" name="social_media"
+      placeholder="Social Media">
+  </div>
+
+  <div class="input-group mb-3">
+    <input required type="submit" class="submit btn btn-info" value="add">
+  </div>
+</form>
+{% endblock %}

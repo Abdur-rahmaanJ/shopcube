@@ -18,7 +18,8 @@ class Products(db.Model):
 
 class People(db.Model):
     __tablename__ = 'people'
-    name = db.Column(db.String(100), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
     age = db.Column(db.Integer)
     birthday = db.Column(db.String(100))
     about = db.Column(db.String(100))
