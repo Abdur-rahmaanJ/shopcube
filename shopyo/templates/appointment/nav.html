@@ -1,14 +1,13 @@
 {% if active_page != 'appointments' %}
 <li class="nav-item">
-    <a class="nav-link" href="/appointment" title="Appointment"><i class="fas fa-calendar-day"></i></a>
+    <a class="nav-link" href="/appointment" title="Appointment"><i class="fas fa-clock"></i></a>
 </li>
 {% else %}
 <li class="nav-item">
-    <a class="nav-link" href="/appointment/add" title="Add Appointment"><i
-                            class="fas fa-plus-circle"></i></a>
+    <a class="nav-link" href="/appointment" title="Appointment"><i class="fas fa-clock"></i></a>
 </li>
-
 <li class="nav-item">
-    <a class="nav-link" href="/appointment" title="Appointment"><i class="fas fa-calendar-day"></i></a>
+    <a class="nav-link" href="/appointment/add" title="Add Appointment">
+        <i class="fas fa-plus-circle"></i></a>
 </li>
 {% endif %}

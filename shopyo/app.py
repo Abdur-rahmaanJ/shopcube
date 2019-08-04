@@ -20,6 +20,7 @@ from views.appointment import appointment_blueprint
 from views.people import people_blueprint
 from views.admin_modif import admin_blueprint
 from views.login import login_blueprint
+from views.save import save_blueprint
 
 
 app.register_blueprint(manufac_blueprint)
@@ -29,7 +30,7 @@ app.register_blueprint(appointment_blueprint)
 app.register_blueprint(people_blueprint)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(login_blueprint)
-
+app.register_blueprint(save_blueprint)
 
 @app.route('/')
 def index():
