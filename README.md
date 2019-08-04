@@ -78,7 +78,17 @@ then run the app in shopyo/shopyo
 python app.py
 ```
 
-the go to the indicated url
+then go to the indicated url
+
+**Migrations**
+If you change models
+
+```
+python manage.py db init #  if db not present:
+python manage.py db migrate
+python manage.py db upgrade
+```
+
 
 Super User password
 
