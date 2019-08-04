@@ -3,8 +3,6 @@ from flask import (
     )
 from models import db, Manufacturers, Products, Settings, Appointments
 from flask_sqlalchemy import sqlalchemy
-from flask_login import login_required, current_user
-
 from settings import get_value
 from sqlalchemy import exists
 
@@ -12,14 +10,12 @@ manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 
 
 @manufac_blueprint.route("/")
-@login_required
 def manufac():
     return render_template('manufac/index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_NAME=get_value('SECTION_NAME'))
 
 
 @manufac_blueprint.route('/add', methods=['GET', 'POST'])
-@login_required
 def manufac_add():
     has_manufac = False
     if request.method == 'POST':
@@ -40,7 +36,6 @@ def manufac_add():
 
 
 @manufac_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
-@login_required
 def manufac_delete(name):
     Manufacturers.query.filter(Manufacturers.name == name).delete()
     Products.query.filter(Products.manufacturer == name).delete()
@@ -49,7 +44,6 @@ def manufac_delete(name):
 
 
 @manufac_blueprint.route('/update', methods=['GET', 'POST'])
-@login_required
 def manufac_update():
     if request.method == 'POST': #this block is only entered when the form is submitted
         name = request.form['manufac_name']
@@ -69,7 +63,6 @@ def manufac_update():
 
 
 @manufac_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
-@login_required
 def manufac_edit(manufac_name):
     m = Manufacturers.query.get(manufac_name)
     return render_template('manufac/edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'), 
@@ -77,7 +70,6 @@ def manufac_edit(manufac_name):
 
 # api 
 @manufac_blueprint.route("/check/<manufac_name>", methods=["GET"])
-@login_required
 def check(manufac_name):
     has_manufac = db.session.query(exists().where(Manufacturers.name == manufac_name)).scalar()
     return jsonify({"exists":has_manufac})
