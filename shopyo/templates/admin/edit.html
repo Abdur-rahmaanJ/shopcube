@@ -1,0 +1,38 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page = "admin" %}
+
+{% block pagehead %}
+    <title>edit</title>
+{% endblock %}
+
+{% block content %}
+<h2>Edit User</h2>
+
+<form action='/admin/update' method="post">
+        <label>Edit User:<span> {{ id }} </span></label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+              </div>
+              <input required type="text" class="form-control"
+                     name="name" id="user_name" value="{{ name }}" autocomplete="off">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-key"></i></span>
+              </div>
+              <input type="password" name="password" class="form-control" id="user_password" value="{{ password }}" required autocomplete="off">
+        </div>
+            <div class="input-group mb-3">
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" name="admin_user" id="admin_user" class="custom-control-input" value="True" autocomplete="off">
+                  <label for="admin_user" class="custom-control-label">Admin User</label>
+              </div>
+            </div>
+            <input required name="id"  id="user_id" type="hidden" class="form-control"  value="{{ id }}">  
+        <div class="input-group mb-3">
+            <input required type="submit" class="btn btn-info" value="edit">
+          </div>
+    </form>
+{% endblock %}
