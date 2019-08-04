@@ -3,6 +3,8 @@ from flask import (
     )
 from models import app, db, Products, Settings
 from flask_marshmallow import Marshmallow
+from flask_login import login_required, current_user
+
 from settings import get_value
 from sqlalchemy import exists
 
@@ -20,6 +22,7 @@ product_schema = ProductSchema(many=True)
 
 
 @prod_blueprint.route("/list_prods/<manufac_name>")
+@login_required
 def list_prods(manufac_name):
     products = Products.query.filter_by(manufacturer=manufac_name)
     return render_template(
@@ -32,6 +35,7 @@ def list_prods(manufac_name):
 
 
 @prod_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
+@login_required
 def prods_add(manufac_name):
     has_product = False
     if request.method == 'POST':
@@ -61,6 +65,7 @@ def prods_add(manufac_name):
 
 
 @prod_blueprint.route('/delete/<manufac_name>/<barcode>', methods=['GET', 'POST'])
+@login_required
 def prods_delete(manufac_name, barcode):
     Products.query.filter(
         Products.barcode == barcode and Products.manufacturer == manufac_name).delete()
@@ -69,6 +74,7 @@ def prods_delete(manufac_name, barcode):
 
 
 @prod_blueprint.route('/edit/<manufac_name>/<barcode>', methods=['GET', 'POST'])
+@login_required
 def prods_edit(manufac_name, barcode):
     p = Products.query.filter(
         Products.barcode == barcode and Products.manufacturer == manufac_name
@@ -85,6 +91,7 @@ def prods_edit(manufac_name, barcode):
 
 
 @prod_blueprint.route('/update', methods=['GET', 'POST'])
+@login_required
 def prods_update():
     if request.method == 'POST':  # this block is only entered when the form is submitted
         barcode = request.form['barcode']
@@ -107,6 +114,7 @@ def prods_update():
         return redirect('/prods/list_prods/{}'.format(manufacturer))
 
 @prod_blueprint.route("/lookup/<manufac_name>")
+@login_required
 def lookup_prods(manufac_name):
     return render_template(
                         'prods/lookup.html',
@@ -116,6 +124,7 @@ def lookup_prods(manufac_name):
 
 # api
 @prod_blueprint.route("/search/<manufac_name>/barcode/<barcode>", methods=["GET"])
+@login_required
 def search(manufac_name, barcode):
     all_p = Products.query.filter(
             (Products.barcode.like('%'+barcode+'%')) & (Products.manufacturer == manufac_name)
@@ -125,6 +134,7 @@ def search(manufac_name, barcode):
 
 # api 
 @prod_blueprint.route("/check/<barcode>", methods=["GET"])
+@login_required
 def check(barcode):
     has_product = db.session.query(exists().where(Products.barcode == barcode)).scalar()
     return jsonify({"exists":has_product})
