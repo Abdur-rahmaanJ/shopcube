@@ -1,0 +1,15 @@
+{% if active_page == 'admin' %}
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/admin/add" title="Add User"><i
+                            class="fas fa-plus-circle"></i></a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/admin" title="Admin Home"><i
+                            class="fas fa-user-lock"></i></a>
+</li>
+{% else %}
+<li class="nav-item">
+    <a class="nav-link" href="/admin" title="Admin Home"><i
+                            class="fas fa-user-lock"></i></a>
+{% endif %}

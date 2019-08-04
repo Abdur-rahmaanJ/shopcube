@@ -80,6 +80,13 @@ python app.py
 
 the go to the indicated url
 
+Super User password
+
+```python
+User ID: user 
+password: pass
+```
+
 # :construction: Developing a template.
 
 Each landing page and subsection should contain the following headers.

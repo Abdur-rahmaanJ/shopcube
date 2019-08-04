@@ -1,0 +1,60 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page = "login" %}
+{% block pagehead %}
+	<title>{{active_page.capitalize()}}</title>
+	<style>
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width: 6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width: 6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
+        }
+    </style>  
+
+{% endblock %}
+{% block content %}
+
+	<div class="container col-md-6 off-set-2 text-center">
+        <img src="/static/shopyo.svg" width="175" height="150">
+        
+         <form action="/login/" method="post">
+            {% with error = get_flashed_messages() %}
+                {% if error %}
+                    <span>{{ error[0] }}</span>
+                {% endif %}
+            {% endwith %}
+            <p class="h2">Login</p>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                </div>
+                <input type="text" name="user_id" class="form-control" id="user_id" required autocomplete="off">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="password" name="password" class="form-control" id="password" required autocomplete="off">
+            </div>
+            <input type="submit" class="btn btn-info" value="Login" required>
+        </form>
+             
+{% endblock %}

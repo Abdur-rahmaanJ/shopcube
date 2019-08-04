@@ -1,0 +1,72 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='admin' %}
+
+{% block pagehead %}
+<title>{{active_page.capitalize()}}</title>
+<style>
+  .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+        $(function () {
+            $('.delete_me').click(function () {
+                var id = $(this).attr('name');
+                var ask = confirm("Do you want to delete ?");
+                if (ask == true) {
+                    window.open("/admin/delete/" + id, "_self")
+                } else {
+
+                }
+            });
+        });
+
+
+    </script>
+<div class="container">
+  <h2>{{active_page.capitalize()}}</h2>
+    <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Password</th>
+                <th>Admin</th>
+                <th style="border: none;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr>
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>*******</td>
+                <td>{{user.admin_user}}</td>
+                <td style="border: none;">
+                  <div style='display: inline-block; '>
+                        <a style="text-decoration: none;">
+                            <button id='delete' class="delete_me btn btn-dark" type="" name="{{ user.id }}"><i
+                                class="fas fa-trash-alt"></i></button>
+                        </a>
+          				&nbsp;
+                        <a href="/admin/edit/{{ user.id }}" style="text-decoration: none;">
+                            <button data-name="{{ user.id }}" class="btn btn-warning"><i id="ico-{{user.id}}"" class="fas fa-pencil-alt"></i>
+                            </button>
+                        </a>
+
+                    </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+{% endblock %}
