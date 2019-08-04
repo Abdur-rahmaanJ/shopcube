@@ -1,0 +1,58 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='people' %}
+
+{% block pagehead %}
+<title>People</title>
+<style>
+  .hidden {
+    display: none;
+  }
+
+  .show {
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+  $(function () {
+    $('.delete_me').click(function () {
+      var id = $(this).attr('id');
+      console.log(id);
+      var name = id.split('-')[1];
+      console.log(name);
+      var ask = confirm("Do you want to delete ?");
+      if (ask == true) {
+        window.open("/people/delete/" + name, "_self")
+      } else {
+
+      }
+    });
+  });
+</script>
+
+{%for p in peoples%}
+
+<a href="">
+  <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
+    <a href="#" style="text-decoration: none;">
+      <button id='del-{{p.id}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+    </a>
+    &nbsp;
+    <a href="/people/edit/{{p.id}}" style="text-decoration: none;">
+      <button data-name="{{p.id}}" class="btn btn-warning" type=""><i id='ico-{{p.id}}'
+          class="fas fa-pencil-alt"></i></button>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div style='display: inline-block;'>
+      <input disabled id="{{p.name}}" type="text" class="form-control" name="name" placeholder="Barcode"
+        value="{{p.name}}">
+
+    </div>
+  </div>
+
+</a><br><br>
+
+{%endfor%}
+{% endblock %}

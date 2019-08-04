@@ -2,7 +2,9 @@
   ('manufacturer'),
   ('appointments'),
   ('products'),
-  ('settings')
+  ('settings'),
+  ('people'),
+  ('admin')
   ] %}
 
 {% set active_page = active_page|default('none') %}
@@ -22,6 +24,8 @@
       {% include "manufac/nav.html" %}
       {% include "settings/nav.html" %}
       {% include "appointment/nav.html" %}
+      {% include "people/nav.html" %}
+      {% include "admin/nav.html" %}
 
     {% elif active_page == nav_bar_log[1] %}
       {% include "appointment/nav.html" %}
@@ -31,6 +35,24 @@
 
     {% elif active_page == nav_bar_log[3] %}
       {% include "settings/nav.html" %}
-      {% endif %}
+
+    {% elif active_page == nav_bar_log[4] %}
+      {% include "people/nav.html" %}
+
+    {% elif active_page == nav_bar_log[5] %}
+      {% include "admin/nav.html" %}
+    
+    {% endif %}
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+    {% if current_user.admin_user == True and active_page != 'admin' %}
+      {% include "admin/nav.html" %}
+    {% endif %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{url_for('login.logout')}}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+    </li>
+
+
   </ul>
 </nav>
