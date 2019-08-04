@@ -1,6 +1,8 @@
 from flask import (
     Blueprint, render_template, request, redirect
 )
+from flask_login import login_required, current_user
+
 
 from models import db, Appointments
 from settings import get_value
@@ -9,6 +11,7 @@ appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointm
 
 
 @appointment_blueprint.route("/")
+@login_required
 def appointment_main():
     return render_template('appointment/index.html', 
                             appointments=Appointments.query.all(),
@@ -18,6 +21,7 @@ def appointment_main():
 
 
 @appointment_blueprint.route('/add', methods=['GET', 'POST'])
+@login_required
 def appointment_add():
     if request.method == 'POST':
         name = request.form['name']
@@ -32,6 +36,7 @@ def appointment_add():
 
 
 @appointment_blueprint.route('/delete/<ids>', methods=['GET', 'POST'])
+@login_required
 def appointment_delete(ids):
     Appointments.query.filter(Appointments.id == ids).delete()
     db.session.commit()
@@ -39,6 +44,7 @@ def appointment_delete(ids):
 
 
 @appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
+@login_required
 def appointment_edit(ids):
     a = Appointments.query.get(ids)
     return render_template('appointment/edit.html', id=a.id,
@@ -50,6 +56,7 @@ def appointment_edit(ids):
 
 
 @appointment_blueprint.route('/update', methods=['GET', 'POST'])
+@login_required
 def appointment_update():
     appointment_name = request.form['appointment_name']
     appointment_date = request.form['appointment_date']
@@ -66,6 +73,7 @@ def appointment_update():
 
 
 @appointment_blueprint.route('/active/<ids>', methods=['GET', 'POST'])
+@login_required
 def active(ids):
     s = Appointments.query.get(ids)
     s.active = "active"
@@ -74,6 +82,7 @@ def active(ids):
 
 
 @appointment_blueprint.route('/inactive/<ids>', methods=['GET', 'POST'])
+@login_required
 def deactive(ids):
     s = Appointments.query.get(ids)
     s.active = "inactive"
