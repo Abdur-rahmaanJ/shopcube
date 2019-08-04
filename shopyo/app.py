@@ -1,7 +1,6 @@
 from flask import (
     Flask, redirect, url_for, render_template
     )
-from functools import wraps
 from models import app
 
 from views.manufac  import manufac_blueprint
@@ -11,6 +10,7 @@ from views.appointment import appointment_blueprint
 from views.people import people_blueprint
 from views.admin_modif import admin_blueprint
 from views.login import login_blueprint
+
 
 
 app.register_blueprint(manufac_blueprint)
