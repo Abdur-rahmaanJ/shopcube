@@ -1,7 +1,8 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
-from models import app, db, Settings
+from models import Settings
+from app import app, db
 from flask_marshmallow import Marshmallow
 from settings import get_value
 

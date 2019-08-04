@@ -1,13 +1,13 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
-from models import db, Manufacturers, Products, Settings, Appointments
+from models import Manufacturers, Products, Settings, Appointments
+from app import db
 from flask_sqlalchemy import sqlalchemy
 from settings import get_value
 from sqlalchemy import exists
 
 manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
-
 
 @manufac_blueprint.route("/")
 def manufac():

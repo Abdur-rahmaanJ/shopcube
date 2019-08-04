@@ -1,7 +1,8 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
-from models import app, db, Products, Settings
+from models import Products, Settings
+from app import db, app
 from flask_marshmallow import Marshmallow
 from settings import get_value
 from sqlalchemy import exists

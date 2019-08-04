@@ -2,7 +2,8 @@ from flask import (
     Blueprint, render_template, request, redirect
 )
 
-from models import db, People
+from models import People
+from app import db
 from settings import get_value
 import datetime
 

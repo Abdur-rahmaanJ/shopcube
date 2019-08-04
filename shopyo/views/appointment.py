@@ -2,7 +2,8 @@ from flask import (
     Blueprint, render_template, request, redirect
 )
 
-from models import db, Appointments
+from models import Appointments
+from app import db
 from settings import get_value
 
 appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointment')
