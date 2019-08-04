@@ -22,7 +22,8 @@ class Users(UserMixin, db.Model):
 class Products(db.Model):
     __tablename__ = 'products'
     barcode = db.Column(db.String(100), primary_key=True)
-    price = db.Column(db.Float)
+    price = db.Column(db.Float)#
+   
     vat_price = db.Column(db.Float)
     selling_price = db.Column(db.Float)
     manufacturer = (db.Column(db.String(100),

@@ -25,34 +25,45 @@
       console.log(name);
       var ask = confirm("Do you want to delete ?");
       if (ask == true) {
-        window.open("/people/delete/" + name, "_self")
+        window.location.replace("/people/delete/" + name, "_self")
       } else {
 
       }
     });
   });
 </script>
+<table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Birthday</th>
+        <th>About</th>
+        <th>Social Media</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
 
 {%for p in peoples%}
+      <tr>
+        <td>{{p.name}}</td>
+        <td>{{p.age}}</td>
+        <td>{{p.birthday}}</td>
+        <td>{{p.about}}</td>
+        <td>{{p.social_media}}</td>
 
-<a href="">
-  <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
-    <a href="#" style="text-decoration: none;">
-      <button id='del-{{p.id}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
-    </a>
-    &nbsp;
-    <a href="/people/edit/{{p.id}}" style="text-decoration: none;">
-      <button data-name="{{p.id}}" class="btn btn-warning" type=""><i id='ico-{{p.id}}'
-          class="fas fa-pencil-alt"></i></button>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div style='display: inline-block;'>
-      <input disabled id="{{p.name}}" type="text" class="form-control" name="name" placeholder="Barcode"
-        value="{{p.name}}">
-
-    </div>
-  </div>
-
-</a><br><br>
-
+        <td>
+          <a href="#" style="text-decoration: none;">
+            <button id='del-{{p.id}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+          </a>
+          <a href="/people/edit/{{p.id}}" style="text-decoration: none;">
+            <button data-name="{{p.id}}" class="btn btn-warning" type=""><i id='ico-{{p.id}}'
+                class="fas fa-pencil-alt"></i></button>
+          </a>
+        </td>
+      </tr>
 {%endfor%}
+    </tbody>
+  </table>
 {% endblock %}
