@@ -114,3 +114,6 @@ test.db
 *.cs
 *.bat
 *.vbs
+
+# mig
+migrations/
