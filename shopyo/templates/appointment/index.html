@@ -57,7 +57,7 @@
 
 
     </script>
-
+    
     <table class="table">
         <thead>
         <tr>
@@ -80,12 +80,12 @@
                 <td>
                     <div style='display: inline-block; '>
                         <a style="text-decoration: none;">
-                            <button id='delete' class="delete_me btn btn-dark" type="" name="{{ appointment.id }}"><i
+                            <button id='delete' class="delete_me btn btn-danger" type="" name="{{ appointment.id }}"><i
                                     class="fas fa-trash-alt"></i></button>
                         </a>
                         &nbsp;
                         <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
-                            <button data-name="{{ appointment.name }}" class="btn btn-primary"><i id='ico'
+                            <button data-name="{{ appointment.name }}" class="btn btn-warning"><i id='ico'
                                                                                                   class="fas fa-pencil-alt"></i>
                             </button>
                         </a>
