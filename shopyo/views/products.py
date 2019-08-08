@@ -2,8 +2,9 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
 from models import Products, Settings
-from app import db, app
-from flask_marshmallow import Marshmallow
+from addon import db, ma
+#from app import app
+#from flask_marshmallow import Marshmallow
 from flask_login import login_required, current_user
 
 from settings import get_value
@@ -11,7 +12,7 @@ from sqlalchemy import exists
 
 prod_blueprint = Blueprint('prods', __name__, url_prefix='/prods')
 
-ma = Marshmallow(app)
+#ma = Marshmallow(app)
 
 class ProductSchema(ma.Schema):
     class Meta:

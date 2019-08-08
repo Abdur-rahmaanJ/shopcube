@@ -1,3 +1,5 @@
+#from models import db
+from addon import db, ma, login_manager
 from flask import (
     Flask, redirect, url_for, render_template
     )
@@ -11,7 +13,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'qow32ijjdkc756osk5dmck'  # Need a generator
 
-db = SQLAlchemy(app)
+#db = SQLAlchemy(app)
+db.init_app(app)
+ma.init_app(app)
+login_manager.init_app(app)
 
 from views.manufac import manufac_blueprint
 from views.products import prod_blueprint
@@ -36,4 +41,6 @@ app.register_blueprint(save_blueprint)
 def index():
     return redirect('/manufac/')
 
-
+if __name__ == '__main__':
+    
+    app.run()
