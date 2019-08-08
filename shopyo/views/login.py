@@ -3,8 +3,9 @@ from flask import (
 
     )
 from flask_login import login_required, current_user, login_user, logout_user
+from addon import db, login_manager
 from models import Users
-from app import db
+#from app import db
 from settings import get_value
 
 

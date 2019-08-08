@@ -8,14 +8,15 @@ from flask import (
 from flask_login import login_required, current_user
 from flask_marshmallow import Marshmallow
 
+from addon import db, ma
 from models import Appointments
-from app import db, app
+#from app import  app
 from settings import get_value
 
 
 appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointment')
 
-ma = Marshmallow(app)
+#ma = Marshmallow(app)
 
 class AppointmentSchema(ma.Schema):
     class Meta:

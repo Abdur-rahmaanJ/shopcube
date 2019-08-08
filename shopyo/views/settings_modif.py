@@ -1,8 +1,9 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
+from addon import db
 from models import Settings
-from app import app, db
+#from app import app, db
 from flask_marshmallow import Marshmallow
 from flask_login import login_required, current_user
 

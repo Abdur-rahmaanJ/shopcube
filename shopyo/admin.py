@@ -1,12 +1,13 @@
 from flask import flash, redirect, url_for
-from flask_login import LoginManager, current_user
+from flask_login import  current_user #LoginManager,
 from functools import wraps
 
+from addon import login_manager
 from models import Users
-from app import app
+#from app import app
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+#login_manager = LoginManager()
+#login_manager.init_app(app)
 login_manager.login_view = 'login.login'
 login_manager.login_message = 'Please login for access'
 
