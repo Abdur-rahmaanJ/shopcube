@@ -34,6 +34,12 @@
 
 # Testimonial
 
+ >  This is my first time contributing to a public repo and I have quite enjoyed it. If you're a ``first-time-contributor`` the community is very helpful and can help you progress. Since I have been helping in this repo, I have also learnt a few things myself. The owner of the repo is active and is always willing to help.
+>
+> Also, if I'm around and you're stuck give us a shout. I'll help if I can. ``@blips5``
+
+  
+
 # 📖 History
 
 Months ago i was searching github, looking for a point of sales solution using Python. What pricked me was that a good many had an annoying point. Some mandatorily required Posgres as though it ships with your computer, others' codebases were a tkinter spaghetti mess, yet others were django-based accounting monsters ...
@@ -61,8 +67,22 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 - clone and cd into project
 - run ```python -m pip install -r requirements.txt```
 
+**Migrations**
+If you change models or creating the database.
+
+``cd`` into shopyo/shopyo
+
+```
+python manage.py db init #  if db not present:
+python manage.py db migrate
+python manage.py db upgrade
+```
+
 # 👟 Run instructions
-run initialise.py
+
+``cd`` into shopyo/shopyo if not already.
+
+initialise and setup.
 
 ```python
 python initialise.py
@@ -72,25 +92,15 @@ python initialise.py
 python apply_settings.py
 ```
 
-then run the app in shopyo/shopyo
+run the app.
 
 ```python
-python app.py
+python app.py 
 ```
 
-then go to the indicated url
+go to the indicated url
 
-**Migrations**
-If you change models
-
-```
-python manage.py db init #  if db not present:
-python manage.py db migrate
-python manage.py db upgrade
-```
-
-
-Super User password
+**Super User password**
 
 ```python
 User ID: user 
