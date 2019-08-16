@@ -1,10 +1,11 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
+from flask_sqlalchemy import sqlalchemy
 from addon import db
 from models import Manufacturers, Products, Settings, Appointments
 #from app import db
-from flask_sqlalchemy import sqlalchemy
+
 from flask_login import login_required, current_user
 
 from settings import get_value
@@ -31,11 +32,11 @@ def manufac_add():
             db.session.add(m)
             db.session.commit()
         return render_template(
-                    'manufac/add.html', 
+                    'manufac/add.html',
                     OUR_APP_NAME=get_value('OUR_APP_NAME'),
                     has_manufac=str(has_manufac))
     return render_template(
-                'manufac/add.html', 
+                'manufac/add.html',
                 OUR_APP_NAME=get_value('OUR_APP_NAME'),
                 has_manufac=str(has_manufac))
 
@@ -58,12 +59,15 @@ def manufac_update():
         try:
             m = Manufacturers.query.get(old_name)
             m.name = name
+            products = Products.query.filter_by(manufacturer=old_name)
+            for product in products:
+                product.manufacturer = name
             db.session.commit()
         except sqlalchemy.exc.IntegrityError:
             # return redirect('/manufac/')
-            render_template('manufac/message.html', 
+            render_template('manufac/message.html',
                 message="you cannot modify to an already existing manufacturer",
-                redirect_url="/manufac/", OUR_APP_NAME=get_value('OUR_APP_NAME'), 
+                redirect_url="/manufac/", OUR_APP_NAME=get_value('OUR_APP_NAME'),
                 SECTION_NAME=get_value('SECTION_NAME'))
         #return redirect(url_for('edit', barcode=barcode))
         return redirect('/manufac/')
@@ -73,10 +77,10 @@ def manufac_update():
 @login_required
 def manufac_edit(manufac_name):
     m = Manufacturers.query.get(manufac_name)
-    return render_template('manufac/edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'), 
+    return render_template('manufac/edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
         SECTION_NAME=get_value('SECTION_NAME'))
 
-# api 
+# api
 @manufac_blueprint.route("/check/<manufac_name>", methods=["GET"])
 @login_required
 def check(manufac_name):
