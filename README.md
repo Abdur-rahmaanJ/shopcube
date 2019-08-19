@@ -95,7 +95,7 @@ python apply_settings.py
 run the app.
 
 ```python
-python app.py 
+python run.py 
 ```
 
 go to the indicated url
