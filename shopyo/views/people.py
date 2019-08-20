@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, render_template, request, redirect
 )
-
+from datetime import date
 from addon import db
 from models import People
 #from app import db
@@ -25,10 +25,11 @@ def people_add():
         about = request.form['about']
         social_media = request.form['social_media']
         # calculate age
-        today_date = datetime.datetime.now()
-        time_format = "%Y-%m-%d"
-        b_day = datetime.datetime.strptime(birthday, time_format)
-        age = str(today_date - b_day)
+        today_date = date.today()
+        date_format = "%Y-%m-%d"
+        b_day = datetime.datetime.strptime(birthday, date_format)
+        age = today_date.year - b_day.year - ((today_date.month, today_date.day) < (b_day.month, b_day.day)) 
+  
         # insert data into DB
         p = People(name=name, birthday=birthday, age=age,
                    about=about, social_media=social_media)
