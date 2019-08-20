@@ -173,7 +173,7 @@ In the ``nav_bar_log([])`` array. Enter the section name last in the list.
 
 Now enter a new elif statement containing a reference to the _nav.html
 
-    {% elif active_page == nav_bar_log[0] %}
+    {% if active_page == nav_bar_log[0] %}
       {% include "section0/nav.html" %}
       
     {% elif active_page == nav_bar_log[1] %}
