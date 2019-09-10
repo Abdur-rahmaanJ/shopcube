@@ -25,7 +25,7 @@ class Products(db.Model):
     __tablename__ = 'products'
     barcode = db.Column(db.String(100), primary_key=True)
     price = db.Column(db.Float)#
-   
+
     vat_price = db.Column(db.Float)
     selling_price = db.Column(db.Float)
     manufacturer = (db.Column(db.String(100),
@@ -36,10 +36,16 @@ class People(db.Model):
     __tablename__ = 'people'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
+    phone = db.Column(db.Integer)
+    mobile = db.Column(db.Integer)
+    email = db.Column(db.String(100))
+    facebook = db.Column(db.String(128))
+    twitter = db.Column(db.String(128))
+    linkedin = db.Column(db.String(128))
     age = db.Column(db.Integer)
     birthday = db.Column(db.String(100))
-    about = db.Column(db.String(100))
-    social_media = db.Column(db.String(100))
+    notes = db.Column(db.String(100))
+
 
 
 class Manufacturers(db.Model):

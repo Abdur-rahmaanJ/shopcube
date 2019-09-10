@@ -3,8 +3,7 @@ from flask import (
     )
 from models import Products, Settings
 from addon import db, ma
-#from app import app
-#from flask_marshmallow import Marshmallow
+
 from flask_login import login_required, current_user
 
 from settings import get_value
@@ -12,7 +11,6 @@ from sqlalchemy import exists
 
 prod_blueprint = Blueprint('prods', __name__, url_prefix='/prods')
 
-#ma = Marshmallow(app)
 
 class ProductSchema(ma.Schema):
     class Meta:
@@ -86,7 +84,7 @@ def prods_edit(manufac_name, barcode):
                     barcode=p.barcode,
                     price=p.price,
                     vat_price=p.vat_price,
-                    selling_price=p.selling_price, 
+                    selling_price=p.selling_price,
                     manufac=manufac_name,
                     OUR_APP_NAME=get_value('OUR_APP_NAME'),
                     SECTION_ITEMS=get_value('SECTION_ITEMS'))
@@ -134,7 +132,7 @@ def search(manufac_name, barcode):
     result = product_schema.dump(all_p)
     return jsonify(result.data)
 
-# api 
+# api
 @prod_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
