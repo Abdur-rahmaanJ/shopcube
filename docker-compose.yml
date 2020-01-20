@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    # docker image build -t shopyo .
+    image: shopyo
+    ports:
+      - "5000:5000"
