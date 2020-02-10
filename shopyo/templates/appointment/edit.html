@@ -38,6 +38,7 @@
             <input required type="hidden" class="form-control"
                    name="appointment_active" placeholder="#" value="{{ active }}">
         <br>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="input-group mb-3">
             <input required type="submit" class="btn btn-info" value="edit">
           </div>

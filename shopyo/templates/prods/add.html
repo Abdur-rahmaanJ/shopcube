@@ -71,5 +71,6 @@ $(function() {
   </div>
   
   <input required  type="submit" class="btn btn-info" value="add">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 </form>
 {% endblock %}

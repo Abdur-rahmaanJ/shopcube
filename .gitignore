@@ -117,3 +117,6 @@ test.db
 
 # mig
 migrations/
+
+#vscode
+.vscode

@@ -6,6 +6,7 @@ from flask import (
 
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ app.config['SECRET_KEY'] = 'qow32ijjdkc756osk5dmck'  # Need a generator
 db.init_app(app)
 ma.init_app(app)
 login_manager.init_app(app)
+csrf = CSRFProtect(app)
 
 from views.manufac import manufac_blueprint
 from views.products import prod_blueprint

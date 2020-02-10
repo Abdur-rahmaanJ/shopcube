@@ -54,6 +54,7 @@
                 </div>
                 <input type="password" name="password" class="form-control" id="password" required autocomplete="off">
             </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="submit" class="btn btn-info" value="Login" required>
         </form>
              

@@ -51,5 +51,6 @@
 
   <br>
   <input required  type="submit" class="btn btn-info" value="edit">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 </form>
 {% endblock %}

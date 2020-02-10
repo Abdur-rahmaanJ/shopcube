@@ -5,4 +5,5 @@ flask_marshmallow
 flask_migrate
 flask_script
 flask_login
+Flask-WTF
 requests
