@@ -107,6 +107,7 @@
     <div class="input-group mb-3">
       <input required type="submit" class="submit btn btn-info" value="Save">
     </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   </form>
 </div>
 {% endblock %}

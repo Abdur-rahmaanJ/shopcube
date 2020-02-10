@@ -38,6 +38,7 @@ $(function() {
       <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required  autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   </div>
   
   <input required  type="submit" class="btn btn-info" value="add">

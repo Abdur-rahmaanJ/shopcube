@@ -38,6 +38,7 @@
             <input required autocomplete="off" id="active" type="hidden" class="form-control" name="active" value="active"
                    placeholder="Active">
         </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="input-group mb-3">
              <input required type="submit" class="btn btn-info" value="add">
         </div>
