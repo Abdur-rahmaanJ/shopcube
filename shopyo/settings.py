@@ -1,8 +1,3 @@
-from models import Settings
-
-def get_value(name):
-    s = Settings.query.get(name)
-    return s.value
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
 
