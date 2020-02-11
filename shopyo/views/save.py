@@ -17,16 +17,34 @@ save_blueprint = Blueprint('save', __name__, url_prefix='/save')
 @login_required
 def save_main():
     def has_internet():
-        url='http://www.google.com/'
-        timeout=5
+        url = 'http://www.google.com/'
+        timeout = 5
         try:
             _ = requests.get(url, timeout=timeout)
             return True
         except requests.ConnectionError:
-            print("İnternet bağlantısı yok.")
+            pass
         return False
     return render_template('save/index.html',
                             has_internet = has_internet(),
+                            OUR_APP_NAME=get_value('OUR_APP_NAME'), 
+                            SECTION_NAME=get_value('SECTION_NAME')
+                        )
+
+@save_blueprint.route("/upload")
+@login_required
+def upload_db():
+    def has_internet():
+        url = 'http://www.google.com/'
+        timeout = 5
+        try:
+            _ = requests.get(url, timeout=timeout)
+            return True
+        except requests.ConnectionError:
+            pass
+        return False
+    return render_template('save/index.html',
+                            has_internet=has_internet(),
                             OUR_APP_NAME=get_value('OUR_APP_NAME'), 
                             SECTION_NAME=get_value('SECTION_NAME')
                         )

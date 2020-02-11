@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from addon import db, login_manager
 from models import Users
 #from app import db
-from settings import get_value
+from project_api import base_context
 from sqlalchemy import exists
 from admin import admin_required
 
@@ -19,15 +19,16 @@ admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 @login_required
 @admin_required
 def user_list():
-    return render_template('admin/index.html', users=Users.query.all(),
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           SECTION_NAME=get_value('SECTION_NAME'))
+    context = base_context.copy()
+    context['users'] = Users.query.all()
+    return render_template('admin/index.html', **context)
 
 
 @admin_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def user_add():
+    context = base_context.copy()
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
@@ -45,12 +46,8 @@ def user_add():
             new_user.set_hash(password)
             db.session.add(new_user)
             db.session.commit()
-            return render_template('admin/add.html',
-                                   OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                                   SECTION_NAME=get_value('SECTION_NAME'))
-    return render_template('admin/add.html',
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           SECTION_NAME=get_value('SECTION_NAME'))
+            return render_template('admin/add.html', **context)
+    return render_template('admin/add.html', **context)
 
 
 @admin_blueprint.route('/delete/<id>', methods=['GET', 'POST'])
@@ -66,12 +63,13 @@ def admin_delete(id):
 @login_required
 @admin_required
 def appointment_edit(id):
+    context = base_context.copy()
     u = Users.query.get(id)
-    return render_template('admin/edit.html', id=u.id,
-                           name=u.name, password=u.password,
-                           admin_user=u.admin_user,
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           SECTION_ITEMS=get_value('SECTION_ITEMS'))
+    context['id'] = u.id
+    context['name'] = u.name
+    context['password'] = u.password
+    context['admin_user'] = u.admin_user
+    return render_template('admin/edit.html', **context)
 
 
 @admin_blueprint.route('/update', methods=['GET', 'POST'])

@@ -5,7 +5,9 @@
 {% block pagehead %}
 <title>Save</title>
 <style>
-
+    .myaction{
+        min-height: 100px;
+    }
 </style>
 {% endblock %}
 
@@ -15,4 +17,22 @@
     {% else %}
       <i style="color: red;" class="fas fa-wifi"></i> offline
     {% endif %}
+    <br><br>
+    <div class="row ">
+        <div class="col-sm-4 text-center" >
+            <div class="card action">
+                <div class="card-header">
+                    Save
+                </div>
+                <div class="card-body">
+                    <a href="/save/upload">
+                        <button class="btn btn-primary"><i style="" class="fas fa-save"></i></button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            
+        </div>
+    </div>
 {% endblock %}

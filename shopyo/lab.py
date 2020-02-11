@@ -1,16 +1,32 @@
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import Users
+# see https://pythonhosted.org/PyDrive/quickstart.html
+# see https://pythonhosted.org/PyDrive/oauth.html#sample-settings-yaml
+# see https://github.com/googledrive/PyDrive
 
-from flaksqlalchemy.sqlalchemy import  create_engine
-from flaksqlalchemy.sqlalchemy.orm import sessionmaker
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+import webbrowser
+import datetime
+# Create local webserver and auto handles authentication.
+# Standard webbrowser gave an error, JonB found the solution
+if not hasattr(webbrowser,'_open'):
+    webbrowser._open=webbrowser.open
+def wbopen(url, *args,**kwargs):
+    return webbrowser._open(url)
+webbrowser.open=wbopen
 
-engine = create_engine('sqlite:///test.db')
-engine.connect()
-Session = sessionmaker(bind=engine)
-session = Session()
+gauth = GoogleAuth()
+gauth.LocalWebserverAuth()
 
-user = Users(id='user', name='Super User',
-                 password=generate_password_hash('pass', method='sha256'),
-                 admin_user=True)
-session.add(user)
-session.commit()
+# upload 
+drive = GoogleDrive(gauth)
+
+'''
+with open("test.db", "rb") as file1:
+    drive_file = drive.CreateFile({'title': os.path.basename(file1.name)})  # Create GoogleDriveFile instance with title 'Hello.txt'.
+    drive_file.SetContentFile(file1.read()) # Set content of the file from given string.
+    drive_file.Upload()
+'''
+
+file1 = drive.CreateFile({'title': 'shopyo__db_{}.db'.format(datetime.datetime.now().strftime("%d_%m_%Y__%H_%M_%S"))})  # Create GoogleDriveFile instance with title 'Hello.txt'.
+file1.SetContentFile('test.db') # Set content of the file from given string.
+file1.Upload()
