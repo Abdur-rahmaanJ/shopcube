@@ -11,7 +11,7 @@ from flask_marshmallow import Marshmallow
 from addon import db, ma
 from models import Appointments
 #from app import  app
-from settings import get_value
+from project_api import base_context
 
 
 appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointment')
@@ -29,16 +29,17 @@ appointment_schema = AppointmentSchema(many=True)
 @appointment_blueprint.route("/")
 @login_required
 def appointment_main():
-    return render_template('appointment/index.html', 
-                            appointments=Appointments.query.all(),
-                            OUR_APP_NAME=get_value('OUR_APP_NAME'), 
-                            SECTION_NAME=get_value('SECTION_NAME')
-                        )
+    context = base_context.copy()
+
+    context['appointments'] = Appointments.query.all()
+    return render_template('appointment/index.html', **context)
 
 
 @appointment_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 def appointment_add():
+    context = base_context.copy()
+
     if request.method == 'POST':
         name = request.form['name']
         date = request.form['date']
@@ -48,7 +49,7 @@ def appointment_add():
         db.session.add(m)
         db.session.commit()
         return redirect('/appointment/add')
-    return render_template('appointment/add.html', OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    return render_template('appointment/add.html', **context)
 
 
 @appointment_blueprint.route('/delete/<ids>', methods=['GET', 'POST'])
@@ -62,13 +63,15 @@ def appointment_delete(ids):
 @appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
 @login_required
 def appointment_edit(ids):
+    context = base_context.copy()
+
     a = Appointments.query.get(ids)
-    return render_template('appointment/edit.html', id=a.id,
-                           name=a.name, date=a.date,
-                           time=a.time, active=a.active,
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'), 
-                           SECTION_ITEMS=get_value('SECTION_ITEMS')
-                        )
+    context['id'] = a.id
+    context['name'] = a.name
+    context['date'] = a.date
+    context['time'] = a.time
+    context['active'] = a.active
+    return render_template('appointment/edit.html', **context)
 
 
 @appointment_blueprint.route('/update', methods=['GET', 'POST'])
@@ -108,9 +111,9 @@ def deactive(ids):
 @appointment_blueprint.route('/lookup', methods=['GET', 'POST'])
 @login_required
 def lookup():
-    return render_template('appointment/lookup.html', 
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'), 
-                           SECTION_ITEMS=get_value('SECTION_ITEMS'))
+    context = base_context.copy()
+
+    return render_template('appointment/lookup.html', **context)
 
 # api
 @appointment_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])

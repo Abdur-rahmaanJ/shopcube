@@ -6,7 +6,7 @@ from addon import db, ma
 
 from flask_login import login_required, current_user
 
-from settings import get_value
+from project_api import base_context
 from sqlalchemy import exists
 
 prod_blueprint = Blueprint('prods', __name__, url_prefix='/prods')
@@ -29,19 +29,19 @@ product_schema = ProductSchema(many=True)
 @prod_blueprint.route("/list_prods/<manufac_name>")
 @login_required
 def list_prods(manufac_name):
+    context = base_context.copy()
+
     products = Products.query.filter_by(manufacturer=manufac_name)
-    return render_template(
-                'prods/list.html',
-                prods=products,
-                manufac=manufac_name,
-                OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                SECTION_ITEMS=get_value('SECTION_ITEMS'),
-                SECTION_NAME=get_value('SECTION_NAME'))
+    context['prods'] = products
+    context['manufac'] = manufac_name
+    return render_template('prods/list.html', **context)
 
 
 @prod_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
 @login_required
 def prods_add(manufac_name):
+    context = base_context.copy()
+
     has_product = False
     if request.method == 'POST':
         barcode = request.form['barcode']
@@ -59,18 +59,13 @@ def prods_add(manufac_name):
                          manufacturer=manufac)
             db.session.add(p)
             db.session.commit()
-        return render_template(
-                        'prods/add.html',
-                        manufac=manufac_name,
-                        OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                        SECTION_ITEMS=get_value('SECTION_ITEMS'),
-                        has_product=str(has_product))
-    return render_template(
-                    'prods/add.html',
-                    manufac=manufac_name,
-                    OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                    SECTION_ITEMS=get_value('SECTION_ITEMS'),
-                    has_product=str(has_product))
+        context['manufac'] = manufac_name
+        context['has_product'] = str(has_product)
+        return render_template('prods/add.html', **context)
+
+    context['manufac'] = manufac_name
+    context['has_product'] = str(has_product)
+    return render_template('prods/add.html', **context)
 
 
 @prod_blueprint.route('/delete/<manufac_name>/<barcode>',
@@ -84,22 +79,21 @@ def prods_delete(manufac_name, barcode):
     return redirect('/prods/list_prods/{}'.format(manufac_name))
 
 
-@prod_blueprint.route('/edit/<manufac_name>/<barcode>',
-                      methods=['GET', 'POST'])
+@prod_blueprint.route('/edit/<manufac_name>/<barcode>', methods=['GET', 'POST'])
 @login_required
 def prods_edit(manufac_name, barcode):
+    context = base_context.copy()
+
     p = Products.query.filter(
         Products.barcode == barcode and Products.manufacturer == manufac_name
-        ).first()
-    return render_template(
-                    'prods/edit.html',
-                    barcode=p.barcode,
-                    price=p.price,
-                    vat_price=p.vat_price,
-                    selling_price=p.selling_price,
-                    manufac=manufac_name,
-                    OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                    SECTION_ITEMS=get_value('SECTION_ITEMS'))
+    ).first()
+
+    context['barcode'] = p.barcode
+    context['price'] = p.price
+    context['vat_price'] = p.vat_price
+    context['selling_price'] = p.selling_price
+    context['manufac'] = manufac_name
+    return render_template('prods/edit.html', **context)
 
 
 @prod_blueprint.route('/update', methods=['GET', 'POST'])
@@ -130,11 +124,10 @@ def prods_update():
 @prod_blueprint.route("/lookup/<manufac_name>")
 @login_required
 def lookup_prods(manufac_name):
-    return render_template(
-                        'prods/lookup.html',
-                        manufac=manufac_name,
-                        OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                        SECTION_ITEMS=get_value('SECTION_ITEMS'))
+    context = base_context.copy()
+
+    context['manufac'] = manufac_name
+    return render_template('prods/lookup.html', **context)
 
 # api
 @prod_blueprint.route("/search/<manufac_name>/barcode/<barcode>",

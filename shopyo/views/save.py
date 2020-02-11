@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 from addon import db, login_manager
 from models import Appointments
 #from app import db
-from settings import get_value
+from project_api import base_context
 
 import requests
 
@@ -16,6 +16,8 @@ save_blueprint = Blueprint('save', __name__, url_prefix='/save')
 @save_blueprint.route("/")
 @login_required
 def save_main():
+    context = base_context.copy()
+
     def has_internet():
         url = 'http://www.google.com/'
         timeout = 5
@@ -25,15 +27,14 @@ def save_main():
         except requests.ConnectionError:
             pass
         return False
-    return render_template('save/index.html',
-                            has_internet = has_internet(),
-                            OUR_APP_NAME=get_value('OUR_APP_NAME'), 
-                            SECTION_NAME=get_value('SECTION_NAME')
-                        )
+
+    context['has_internet'] = has_internet()
+    return render_template('save/index.html', **context)
 
 @save_blueprint.route("/upload")
 @login_required
 def upload_db():
+    context = base_context.copy()
     def has_internet():
         url = 'http://www.google.com/'
         timeout = 5
@@ -43,8 +44,6 @@ def upload_db():
         except requests.ConnectionError:
             pass
         return False
-    return render_template('save/index.html',
-                            has_internet=has_internet(),
-                            OUR_APP_NAME=get_value('OUR_APP_NAME'), 
-                            SECTION_NAME=get_value('SECTION_NAME')
-                        )
+
+    context['has_internet'] = has_internet()
+    return render_template('save/index.html', **context)

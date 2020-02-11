@@ -7,30 +7,44 @@ from models import Settings
 from flask_marshmallow import Marshmallow
 from flask_login import login_required, current_user
 
-from settings import get_value
+from project_api import base_context
 
 settings_blueprint = Blueprint('settings', __name__, url_prefix='/settings')
 
 @settings_blueprint.route("/")
 @login_required
 def settings_main():
+    context = base_context.copy()
+
     settings =  Settings.query.all()
-    return render_template('settings/index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+
+    context['settings'] = settings
+    return render_template('settings/index.html', **context)
+
 
 @settings_blueprint.route('/edit/<settings_name>', methods=['GET', 'POST'])
 @login_required
 def settings_edit(settings_name):
+    context = base_context.copy()
+
     s = Settings.query.get(settings_name)
-    return render_template(
-        'settings/edit.html', settings_name=settings_name, current_value=s.value, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+    
+    context['settings_name'] = settings_name
+    context['current_value'] = s.value
+
+    return render_template('settings/edit.html', **context)
 
 @settings_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
 def settings_update():
+    context = base_context.copy()
+
     settings_name = request.form['settings_name']
     settings_value = request.form['settings_value']
     s = Settings.query.get(settings_name)
     s.value = settings_value
     db.session.commit()
     settings =  Settings.query.all()
-    return render_template('settings/index.html', settings=settings, OUR_APP_NAME=get_value('OUR_APP_NAME'))
+
+    context['settings'] = settings
+    return render_template('settings/index.html', **context)

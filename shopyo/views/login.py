@@ -6,7 +6,7 @@ from flask_login import login_required, current_user, login_user, logout_user
 from addon import db, login_manager
 from models import Users
 #from app import db
-from settings import get_value
+from project_api import base_context
 
 
 login_blueprint = Blueprint('login', __name__, url_prefix='/login')
@@ -14,6 +14,8 @@ login_blueprint = Blueprint('login', __name__, url_prefix='/login')
 
 @login_blueprint.route('/', methods=['GET', 'POST'])
 def login():
+    context = base_context.copy()
+
     if request.method == 'POST':
         user_id = request.form['user_id']
         password = request.form['password']
@@ -23,9 +25,7 @@ def login():
             return redirect(url_for('login.login'))
         login_user(user)
         return redirect(url_for('manufac.manufac'))
-    return render_template('admin/login.html',
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           SECTION_NAME=get_value('SECTION_NAME'))
+    return render_template('admin/login.html', **context)
 
 
 @login_blueprint.route('/logout')

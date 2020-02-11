@@ -5,7 +5,7 @@ from datetime import date
 from addon import db
 from models import People
 
-from settings import get_value
+from project_api import base_context
 import datetime
 
 people_blueprint = Blueprint('people', __name__, url_prefix='/people')
@@ -13,13 +13,16 @@ people_blueprint = Blueprint('people', __name__, url_prefix='/people')
 
 @people_blueprint.route("/")
 def people_main():
-    return render_template('people/index.html', peoples=People.query.all(),
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           SECTION_NAME=get_value('SECTION_NAME'))
+    context = base_context.copy()
+
+    context['people'] = People.query.all()
+    return render_template('people/index.html', **context)
 
 
 @people_blueprint.route('/add', methods=['GET', 'POST'])
 def people_add():
+    context = base_context.copy()
+
     if request.method == 'POST':
         name = request.form['name']
         phone = request.form['phone']
@@ -44,9 +47,8 @@ def people_add():
         db.session.add(person)
         db.session.commit()
         return redirect('/people/add')
-    return render_template('people/add.html',
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           message='')
+    context['message'] = ''
+    return render_template('people/add.html', **context)
 
 
 @people_blueprint.route('/delete/<id>', methods=['GET', 'POST'])
@@ -58,16 +60,22 @@ def people_delete(id):
 
 @people_blueprint.route('/edit/<id>', methods=['GET', 'POST'])
 def people_edit(id):
+    context = base_context.copy()
+
     a = People.query.get(id)
-    return render_template('people/edit.html',
-                           id=a.id,
-                           name=a.name, phone=a.phone,
-                           mobile=a.mobile, email=a.email,
-                           linkedin=a.linkedin, facebook=a.facebook,
-                           twitter=a.twitter, age=a.age,
-                           birthday=a.birthday, notes=a.notes,
-                           OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                           SECTION_ITEMS=get_value('SECTION_ITEMS'))
+
+    context['id'] = a.id
+    context['name'] = a.name
+    context['phone'] = a.phone
+    context['mobile'] = a.mobile
+    context['email'] = a.email
+    context['linkedin'] = a.linkedin
+    context['facebook'] = a.facebook
+    context['twitter'] = a.twitter
+    context['age'] = a.age
+    context['birthday'] = a.birthday
+    context['notes'] = a.notes
+    return render_template('people/edit.html', **context)
 
 
 @people_blueprint.route('/update', methods=['GET', 'POST'])

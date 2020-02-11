@@ -8,7 +8,7 @@ from models import Manufacturers, Products, Settings, Appointments
 
 from flask_login import login_required, current_user
 
-from settings import get_value
+from project_api import base_context
 from sqlalchemy import exists
 
 manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
@@ -16,13 +16,17 @@ manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 @manufac_blueprint.route("/")
 @login_required
 def manufac():
-    return render_template('manufac/index.html', manufacs=Manufacturers.query.all(), OUR_APP_NAME=get_value('OUR_APP_NAME'),
-        SECTION_NAME=get_value('SECTION_NAME'))
+    context = base_context.copy()
+
+    context['manufacs'] = Manufacturers.query.all()
+    return render_template('manufac/index.html', **context)
 
 
 @manufac_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 def manufac_add():
+    context = base_context.copy()
+
     has_manufac = False
     if request.method == 'POST':
         name = request.form['name']
@@ -31,14 +35,10 @@ def manufac_add():
             m = Manufacturers(name=name)
             db.session.add(m)
             db.session.commit()
-        return render_template(
-                    'manufac/add.html',
-                    OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                    has_manufac=str(has_manufac))
-    return render_template(
-                'manufac/add.html',
-                OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                has_manufac=str(has_manufac))
+        return render_template('manufac/add.html', **context)
+
+    context['has_manufac'] = str(has_manufac)
+    return render_template('manufac/add.html', **context)
 
 
 @manufac_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
@@ -53,6 +53,8 @@ def manufac_delete(name):
 @manufac_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
 def manufac_update():
+    context = base_context.copy()
+
     if request.method == 'POST': #this block is only entered when the form is submitted
         name = request.form['manufac_name']
         old_name = request.form['old_manufac_name']
@@ -65,10 +67,9 @@ def manufac_update():
             db.session.commit()
         except sqlalchemy.exc.IntegrityError:
             # return redirect('/manufac/')
-            render_template('manufac/message.html',
-                message="you cannot modify to an already existing manufacturer",
-                redirect_url="/manufac/", OUR_APP_NAME=get_value('OUR_APP_NAME'),
-                SECTION_NAME=get_value('SECTION_NAME'))
+            context['message'] = "you cannot modify to an already existing manufacturer"
+            context['redirect_url'] = "/manufac/"
+            render_template('manufac/message.html', **context)
         #return redirect(url_for('edit', barcode=barcode))
         return redirect('/manufac/')
 
@@ -76,9 +77,11 @@ def manufac_update():
 @manufac_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
 @login_required
 def manufac_edit(manufac_name):
+    context = base_context.copy()
+
     m = Manufacturers.query.get(manufac_name)
-    return render_template('manufac/edit.html', manufac=manufac_name, OUR_APP_NAME=get_value('OUR_APP_NAME'),
-        SECTION_NAME=get_value('SECTION_NAME'))
+    context['manufac_name'] = manufac_name
+    return render_template('manufac/edit.html', **context)
 
 # api
 @manufac_blueprint.route("/check/<manufac_name>", methods=["GET"])
