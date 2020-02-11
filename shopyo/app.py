@@ -7,12 +7,14 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_wtf.csrf import CSRFProtect
+import settings
+
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'qow32ijjdkc756osk5dmck'  # Need a generator
+app.config['SQLALCHEMY_DATABASE_URI'] = settings.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
+app.config['SECRET_KEY'] = settings.SECRET_KEY
 
 #db = SQLAlchemy(app)
 db.init_app(app)
@@ -41,7 +43,7 @@ app.register_blueprint(save_blueprint)
 
 @app.route('/')
 def index():
-    return redirect('/manufac/')
+    return redirect(settings.HOMEPAGE_URL)
 
 if __name__ == '__main__':
     
