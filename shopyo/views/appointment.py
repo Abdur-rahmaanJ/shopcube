@@ -29,7 +29,7 @@ appointment_schema = AppointmentSchema(many=True)
 @appointment_blueprint.route("/")
 @login_required
 def appointment_main():
-    context = base_context.copy()
+    context = base_context()
 
     context['appointments'] = Appointments.query.all()
     return render_template('appointment/index.html', **context)
@@ -38,7 +38,7 @@ def appointment_main():
 @appointment_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 def appointment_add():
-    context = base_context.copy()
+    context = base_context()
 
     if request.method == 'POST':
         name = request.form['name']
@@ -63,7 +63,7 @@ def appointment_delete(ids):
 @appointment_blueprint.route('/edit/<ids>', methods=['GET', 'POST'])
 @login_required
 def appointment_edit(ids):
-    context = base_context.copy()
+    context = base_context()
 
     a = Appointments.query.get(ids)
     context['id'] = a.id
@@ -111,7 +111,7 @@ def deactive(ids):
 @appointment_blueprint.route('/lookup', methods=['GET', 'POST'])
 @login_required
 def lookup():
-    context = base_context.copy()
+    context = base_context()
 
     return render_template('appointment/lookup.html', **context)
 

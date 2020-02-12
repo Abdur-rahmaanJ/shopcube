@@ -1,7 +1,8 @@
-from werkzeug.security import generate_password_hash, check_password_hash
-from app import app
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from addon import db
 from models import Users
+from run import app
 
 
 def add_admin():
@@ -15,4 +16,5 @@ def add_admin():
         db.session.add(user)
         db.session.commit()
 
-# add_admin()
+
+add_admin()

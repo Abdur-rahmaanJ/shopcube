@@ -2,7 +2,7 @@ import os
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from app import app
+from run import app
 from models import db
 
 from initialise import add_admin

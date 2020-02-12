@@ -29,7 +29,7 @@ product_schema = ProductSchema(many=True)
 @prod_blueprint.route("/list_prods/<manufac_name>")
 @login_required
 def list_prods(manufac_name):
-    context = base_context.copy()
+    context = base_context()
 
     products = Products.query.filter_by(manufacturer=manufac_name)
     context['prods'] = products
@@ -40,7 +40,7 @@ def list_prods(manufac_name):
 @prod_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
 @login_required
 def prods_add(manufac_name):
-    context = base_context.copy()
+    context = base_context()
 
     has_product = False
     if request.method == 'POST':
@@ -82,7 +82,7 @@ def prods_delete(manufac_name, barcode):
 @prod_blueprint.route('/edit/<manufac_name>/<barcode>', methods=['GET', 'POST'])
 @login_required
 def prods_edit(manufac_name, barcode):
-    context = base_context.copy()
+    context = base_context()
 
     p = Products.query.filter(
         Products.barcode == barcode and Products.manufacturer == manufac_name
@@ -124,7 +124,7 @@ def prods_update():
 @prod_blueprint.route("/lookup/<manufac_name>")
 @login_required
 def lookup_prods(manufac_name):
-    context = base_context.copy()
+    context = base_context()
 
     context['manufac'] = manufac_name
     return render_template('prods/lookup.html', **context)

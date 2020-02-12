@@ -13,7 +13,7 @@ people_blueprint = Blueprint('people', __name__, url_prefix='/people')
 
 @people_blueprint.route("/")
 def people_main():
-    context = base_context.copy()
+    context = base_context()
 
     context['people'] = People.query.all()
     return render_template('people/index.html', **context)
@@ -21,7 +21,7 @@ def people_main():
 
 @people_blueprint.route('/add', methods=['GET', 'POST'])
 def people_add():
-    context = base_context.copy()
+    context = base_context()
 
     if request.method == 'POST':
         name = request.form['name']
@@ -60,7 +60,7 @@ def people_delete(id):
 
 @people_blueprint.route('/edit/<id>', methods=['GET', 'POST'])
 def people_edit(id):
-    context = base_context.copy()
+    context = base_context()
 
     a = People.query.get(id)
 

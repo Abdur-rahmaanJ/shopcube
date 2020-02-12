@@ -19,7 +19,7 @@ admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 @login_required
 @admin_required
 def user_list():
-    context = base_context.copy()
+    context = base_context()
     context['users'] = Users.query.all()
     return render_template('admin/index.html', **context)
 
@@ -28,7 +28,7 @@ def user_list():
 @login_required
 @admin_required
 def user_add():
-    context = base_context.copy()
+    context = base_context()
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
@@ -63,7 +63,7 @@ def admin_delete(id):
 @login_required
 @admin_required
 def appointment_edit(id):
-    context = base_context.copy()
+    context = base_context()
     u = Users.query.get(id)
     context['id'] = u.id
     context['name'] = u.name

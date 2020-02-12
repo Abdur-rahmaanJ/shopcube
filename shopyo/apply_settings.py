@@ -1,8 +1,8 @@
 from addon import db
-from app import app 
+from run import app
 from models import Settings
 from settings import *
-#from app import db
+
 
 def add_setting(name, value):
 	with app.app_context():
