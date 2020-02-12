@@ -14,7 +14,7 @@ login_blueprint = Blueprint('login', __name__, url_prefix='/login')
 
 @login_blueprint.route('/', methods=['GET', 'POST'])
 def login():
-    context = base_context.copy()
+    context = base_context()
 
     if request.method == 'POST':
         user_id = request.form['user_id']

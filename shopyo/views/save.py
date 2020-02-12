@@ -16,7 +16,7 @@ save_blueprint = Blueprint('save', __name__, url_prefix='/save')
 @save_blueprint.route("/")
 @login_required
 def save_main():
-    context = base_context.copy()
+    context = base_context()
 
     def has_internet():
         url = 'http://www.google.com/'
@@ -34,7 +34,7 @@ def save_main():
 @save_blueprint.route("/upload")
 @login_required
 def upload_db():
-    context = base_context.copy()
+    context = base_context()
     def has_internet():
         url = 'http://www.google.com/'
         timeout = 5

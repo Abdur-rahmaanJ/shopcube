@@ -16,7 +16,7 @@ manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 @manufac_blueprint.route("/")
 @login_required
 def manufac():
-    context = base_context.copy()
+    context = base_context()
 
     context['manufacs'] = Manufacturers.query.all()
     return render_template('manufac/index.html', **context)
@@ -25,7 +25,7 @@ def manufac():
 @manufac_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 def manufac_add():
-    context = base_context.copy()
+    context = base_context()
 
     has_manufac = False
     if request.method == 'POST':
@@ -53,7 +53,7 @@ def manufac_delete(name):
 @manufac_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
 def manufac_update():
-    context = base_context.copy()
+    context = base_context()
 
     if request.method == 'POST': #this block is only entered when the form is submitted
         name = request.form['manufac_name']
@@ -77,7 +77,7 @@ def manufac_update():
 @manufac_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
 @login_required
 def manufac_edit(manufac_name):
-    context = base_context.copy()
+    context = base_context()
 
     m = Manufacturers.query.get(manufac_name)
     context['manufac_name'] = manufac_name

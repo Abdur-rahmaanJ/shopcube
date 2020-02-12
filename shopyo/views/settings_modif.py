@@ -14,7 +14,7 @@ settings_blueprint = Blueprint('settings', __name__, url_prefix='/settings')
 @settings_blueprint.route("/")
 @login_required
 def settings_main():
-    context = base_context.copy()
+    context = base_context()
 
     settings =  Settings.query.all()
 
@@ -25,7 +25,7 @@ def settings_main():
 @settings_blueprint.route('/edit/<settings_name>', methods=['GET', 'POST'])
 @login_required
 def settings_edit(settings_name):
-    context = base_context.copy()
+    context = base_context()
 
     s = Settings.query.get(settings_name)
     
@@ -37,7 +37,7 @@ def settings_edit(settings_name):
 @settings_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
 def settings_update():
-    context = base_context.copy()
+    context = base_context()
 
     settings_name = request.form['settings_name']
     settings_value = request.form['settings_value']
