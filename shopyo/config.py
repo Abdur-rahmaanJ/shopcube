@@ -1,4 +1,6 @@
-class Config(object):
+import settings
+
+class Config:
     """Parent configuration class."""
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
@@ -17,4 +19,6 @@ class DevelopmentConfig(Config):
 
 app_config = {
     'development': DevelopmentConfig,
+    'production': Config
 }
+ 

@@ -12,4 +12,4 @@ def base_context():
         'SECTION_NAME': get_setting('SECTION_NAME'),
         'SECTION_ITEMS': get_setting('SECTION_ITEMS')
     }
-    return base_context
+    return base_context.copy()
