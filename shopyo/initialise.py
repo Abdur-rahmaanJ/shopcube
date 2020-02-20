@@ -7,7 +7,7 @@ from run import app
 
 def add_admin():
     with app.app_context():
-        #db.create_all()
+        db.create_all()
         user = Users(
                      id='user',
                      name='Super User',
