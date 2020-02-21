@@ -5,7 +5,6 @@ from flask_login import login_required, current_user
 
 from addon import db, login_manager
 from models import Appointments
-#from app import db
 from project_api import base_context
 
 import requests
