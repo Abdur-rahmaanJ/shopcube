@@ -1,11 +1,8 @@
-#from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from addon import db
-#from app import db
 from flask_login import UserMixin
 
 
-#db = SQLAlchemy()
 
 class Users(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -73,4 +70,3 @@ class Patients(db.Model):
     first_name = db.Column(db.String(100), primary_key=True)
     last_name = db.Column(db.String(100))
 
-# db.DateTime, default=db.func.current_timestamp()

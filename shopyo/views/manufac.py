@@ -4,7 +4,6 @@ from flask import (
 from flask_sqlalchemy import sqlalchemy
 from addon import db
 from models import Manufacturers, Products, Settings, Appointments
-#from app import db
 
 from flask_login import login_required, current_user
 
@@ -66,11 +65,9 @@ def manufac_update():
                 product.manufacturer = name
             db.session.commit()
         except sqlalchemy.exc.IntegrityError:
-            # return redirect('/manufac/')
             context['message'] = "you cannot modify to an already existing manufacturer"
             context['redirect_url'] = "/manufac/"
             render_template('manufac/message.html', **context)
-        #return redirect(url_for('edit', barcode=barcode))
         return redirect('/manufac/')
 
 
