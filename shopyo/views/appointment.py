@@ -10,13 +10,11 @@ from flask_marshmallow import Marshmallow
 
 from addon import db, ma
 from models import Appointments
-#from app import  app
 from project_api import base_context
 
 
 appointment_blueprint = Blueprint('appointment', __name__, url_prefix='/appointment')
 
-#ma = Marshmallow(app)
 
 class AppointmentSchema(ma.Schema):
     class Meta:

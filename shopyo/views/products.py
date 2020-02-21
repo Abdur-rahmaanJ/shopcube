@@ -117,7 +117,6 @@ def prods_update():
         p.selling_price = selling_price
         p.manufacturer = manufacturer
         db.session.commit()
-        # return redirect(url_for('edit', barcode=barcode))
         return redirect('/prods/list_prods/{}'.format(manufacturer))
 
 

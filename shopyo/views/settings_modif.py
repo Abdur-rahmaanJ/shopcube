@@ -3,7 +3,6 @@ from flask import (
     )
 from addon import db
 from models import Settings
-#from app import app, db
 from flask_marshmallow import Marshmallow
 from flask_login import login_required, current_user
 
