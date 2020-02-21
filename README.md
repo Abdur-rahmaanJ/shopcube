@@ -88,7 +88,7 @@ python manage.py db upgrade
 initialise and setup.
 
 ```python
-python initialise.py
+python manage.py initialise
 ```
 
 ```python
