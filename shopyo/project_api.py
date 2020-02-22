@@ -8,7 +8,7 @@ def get_setting(name):
 
 def base_context():
     base_context = {
-        'OUR_APP_NAME': get_setting('OUR_APP_NAME'),
+        'APP_NAME': get_setting('APP_NAME'),
         'SECTION_NAME': get_setting('SECTION_NAME'),
         'SECTION_ITEMS': get_setting('SECTION_ITEMS')
     }

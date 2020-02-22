@@ -39,3 +39,11 @@ def create_app(config_name):
         return redirect(app_config[config_name].HOMEPAGE_URL)
 
     return app
+
+
+app = create_app('development')
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+
