@@ -6,6 +6,8 @@
   <br>
 </h1>
 
+Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
+
 🎁 Open inventory management  and Point of sales (powered by python) for small shops. 
 
 - :ok_hand: Crisp UI
@@ -86,7 +88,7 @@ python manage.py db upgrade
 initialise and setup.
 
 ```python
-python initialise.py
+python manage.py initialise
 ```
 
 ```python

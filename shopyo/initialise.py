@@ -15,6 +15,3 @@ def add_admin():
                      admin_user=True)
         db.session.add(user)
         db.session.commit()
-
-
-add_admin()
