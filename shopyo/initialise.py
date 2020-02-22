@@ -8,10 +8,10 @@ from models import Users, Settings
 def add_admin(user_id, name, password, admin):
     with app.app_context():
         user = Users(
-                     id=user_id,
-                     name=name,
-                     password=generate_password_hash(password, method='sha256'),
-                     admin_user=admin
+                 id=user_id,
+                 name=name,
+                 password=generate_password_hash(password, method='sha256'),
+                 admin_user=admin
         )
         db.session.add(user)
         db.session.commit()
@@ -27,4 +27,3 @@ def add_setting(name, value):
             s = Settings(setting=name, value=value)
             db.session.add(s)
             db.session.commit()
-
