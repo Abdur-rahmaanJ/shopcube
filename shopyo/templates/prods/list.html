@@ -13,9 +13,17 @@
             <thead>
               <tr>
                 <th>barcode</th>
+                <th>name</th>
+                <th>description</th>
+                <th>category</th>
+                <th>category_id</th>
                 <th>price</th>
                 <th>vat price</th>
                 <th>selling price</th>
+                <th>stock</th>
+                <th>supplier</th>
+                <th>supplier_id</th>
+                <th>discontinued</th>
                 <th style="border: none;"></th>
               </tr>
             </thead>
@@ -23,9 +31,17 @@
               {%for p in prods%}
               <tr>
                 <td>{{p.barcode}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.description}}</td>
+                <td>{{p.category}}</td>
+                <td>{{p.category_id}}</td>
                 <td>{{p.price}}</td>
                 <td>{{p.vat_price}}</td>
                 <td>{{p.selling_price}}</td>
+                <td>{{p.stock}}</td>
+                <td>{{p.supplier}}</td>
+                <td>{{p.supplier_id}}</td>
+                <td>{{p.discontinued}}</td>
                 <td style="border: none;">
                   <a style="width: 100px;"
                       href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-warning" role="button">

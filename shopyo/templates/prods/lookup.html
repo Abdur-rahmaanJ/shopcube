@@ -20,9 +20,17 @@ $(function() {
                 
                 $('#results_table tr:last').after("<tr>"+
                 "<td>"+result['barcode']+"</td>"+
+                "<td>"+result['name']+"</td>"+
+                "<td>"+result['description']+"</td>"+
+                "<td>"+result['category']+"</td>"+
+                "<td>"+result['category_id']+"</td>"+
                 "<td>"+result['price']+"</td>"+
                 "<td>"+result['vat_price']+"</td>"+
                 "<td>"+result['selling_price']+"</td>"+
+                "<td>"+result['stock']+"</td>"+
+                "<td>"+result['supplier']+"</td>"+
+                "<td>"+result['supplier_id']+"</td>"+
+                "<td>"+result['discontinued']+"</td>"
                 '<td><a href="/prods/delete/'+result['manufacturer']+'/'+result['barcode']+'" class="btn btn-danger" role="button">delete</a></td>'+
                 '<td><a href="/prods/edit/'+result['manufacturer']+'/'+result['barcode']+'" class="btn btn-info" role="button">edit</a></td>'+"</tr>");
                 //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
@@ -60,12 +68,18 @@ $(function() {
   <table id="results_table" class="table table-bordered">
             <thead>
               <tr>
-                <th>barcode</th>
-                <th>price</th>
-                <th>vat price</th>
-                <th>selling price</th>
-                <th></th>
-                <th></th>
+                <td>{{p.barcode}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.description}}</td>
+                <td>{{p.category}}</td>
+                <td>{{p.category_id}}</td>
+                <td>{{p.price}}</td>
+                <td>{{p.vat_price}}</td>
+                <td>{{p.selling_price}}</td>
+                <td>{{p.stock}}</td>
+                <td>{{p.supplier}}</td>
+                <td>{{p.supplier_id}}</td>
+                <td>{{p.discontinued}}</td>
               </tr>
             </thead>
             <tbody>
