@@ -115,7 +115,7 @@ test.db
 *.bat
 *.vbs
 
-# mig
+#migrations
 migrations/
 
 #vscode
