@@ -91,14 +91,10 @@ initialise and setup.
 python manage.py initialise
 ```
 
-```python
-python apply_settings.py
-```
-
 run the app.
 
 ```python
-python run.py 
+python manage.py runsever
 ```
 
 go to the indicated url
