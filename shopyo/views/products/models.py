@@ -4,7 +4,7 @@ from addon import db
 class Product(db.Model):
     __tablename__ = 'product'
     barcode = db.Column(db.String(100), primary_key=True)
-    price = db.Column(db.Float)#
+    price = db.Column(db.Float)
     name = db.Column(db.String(100))
     description = db.Column(db.String(300))
     category = db.Column(db.String(50))

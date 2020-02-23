@@ -1,6 +1,7 @@
 from addon import db
 from sqlalchemy import exists
 
+
 class Manufacturer(db.Model):
     __tablename__ = 'manufacturer'
     id = db.Column(db.Integer, primary_key=True)
@@ -25,4 +26,3 @@ class Manufacturer(db.Model):
     @classmethod
     def manufacturer_exists(cls, name):
         return db.session.query(exists().where(cls.name == name)).scalar()
-
