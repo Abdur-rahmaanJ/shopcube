@@ -2,7 +2,8 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
 from flask_sqlalchemy import sqlalchemy
-from models import Manufacturer, Product, Settings, Appointments
+from views.manufacturer.models import Manufacturer
+
 
 from flask_login import login_required, current_user
 

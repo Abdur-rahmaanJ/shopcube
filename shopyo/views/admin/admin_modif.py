@@ -5,11 +5,11 @@ from flask import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, current_user
 from addon import db, login_manager
-from models import Users
+
 from project_api import base_context
 from sqlalchemy import exists
-from admin import admin_required
-
+from views.admin.admin import admin_required
+from views.admin.models import Users
 # Should maybe change URL?
 admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 
