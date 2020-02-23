@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
-from models import Products, Settings
+from models import Product, Settings, Manufacturer
 from addon import db, ma
 
 from flask_login import login_required, current_user
@@ -12,7 +12,7 @@ from sqlalchemy import exists
 prod_blueprint = Blueprint('prods', __name__, url_prefix='/prods')
 
 
-class ProductSchema(ma.Schema):
+class Productchema(ma.Schema):
     class Meta:
         # Fields to expose
         fields = ('barcode',
@@ -22,8 +22,8 @@ class ProductSchema(ma.Schema):
                   'manufacturer')
 
 
-product_schema = ProductSchema()
-product_schema = ProductSchema(many=True)
+product_schema = Productchema()
+product_schema = Productchema(many=True)
 
 
 @prod_blueprint.route("/list_prods/<manufac_name>")
@@ -31,8 +31,9 @@ product_schema = ProductSchema(many=True)
 def list_prods(manufac_name):
     context = base_context()
 
-    products = Products.query.filter_by(manufacturer=manufac_name)
-    context['prods'] = products
+    manufac = Manufacturer.query.filter(
+        Manufacturer.name == manufac_name).first()
+    context['prods'] = manufac.products
     context['manufac'] = manufac_name
     return render_template('prods/list.html', **context)
 
@@ -48,15 +49,17 @@ def prods_add(manufac_name):
         price = request.form['price']
         vat_price = request.form['vat_price']
         selling_price = request.form['selling_price']
-        manufac = request.form['manufac']
+        manufacturer = Manufacturer.query.filter(
+            Manufacturer.name == manufac_name).first()
         has_product = db.session.query(exists().where(
-            Products.barcode == barcode)).scalar()
+            Product.barcode == barcode)).scalar()
         if has_product == False:
-            p = Products(barcode=barcode,
-                         price=price,
-                         vat_price=vat_price,
-                         selling_price=selling_price,
-                         manufacturer=manufac)
+            p = Product()
+            p.barcode = barcode
+            p.price = price
+            p.vat_price = vat_price
+            p.selling_price = selling_price
+            p.manufacturer = manufacturer.id
             db.session.add(p)
             db.session.commit()
         context['manufac'] = manufac_name
@@ -72,9 +75,9 @@ def prods_add(manufac_name):
                       methods=['GET', 'POST'])
 @login_required
 def prods_delete(manufac_name, barcode):
-    Products.query.filter(
-        Products.barcode == barcode and
-        Products.manufacturer == manufac_name).delete()
+    Product.query.filter(
+        Product.barcode == barcode and
+        Product.manufacturer == manufac_name).delete()
     db.session.commit()
     return redirect('/prods/list_prods/{}'.format(manufac_name))
 
@@ -84,8 +87,8 @@ def prods_delete(manufac_name, barcode):
 def prods_edit(manufac_name, barcode):
     context = base_context()
 
-    p = Products.query.filter(
-        Products.barcode == barcode and Products.manufacturer == manufac_name
+    p = Product.query.filter(
+        Product.barcode == barcode and Product.manufacturer == manufac_name
     ).first()
 
     context['barcode'] = p.barcode
@@ -108,8 +111,8 @@ def prods_update():
         selling_price = request.form['selling_price']
         manufacturer = request.form['manufac']
 
-        p = Products.query.filter(
-            Products.barcode == oldbarcode and Products.manufacturer == manufac
+        p = Product.query.filter(
+            Product.barcode == oldbarcode and Product.manufacturer == manufac
         ).first()
         p.barcode = barcode
         p.price = price
@@ -133,9 +136,9 @@ def lookup_prods(manufac_name):
                       methods=["GET"])
 @login_required
 def search(manufac_name, barcode):
-    all_p = Products.query.filter(
-            (Products.barcode.like('%'+barcode+'%')) &
-            (Products.manufacturer == manufac_name)
+    all_p = Product.query.filter(
+            (Product.barcode.like('%'+barcode+'%')) &
+            (Product.manufacturer == manufac_name)
         ).all()
     result = product_schema.dump(all_p)
     return jsonify(result.data)
@@ -145,5 +148,5 @@ def search(manufac_name, barcode):
 @login_required
 def check(barcode):
     has_product = db.session.query(exists().where(
-        Products.barcode == barcode)).scalar()
+        Product.barcode == barcode)).scalar()
     return jsonify({"exists": has_product})

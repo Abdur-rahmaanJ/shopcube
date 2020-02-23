@@ -70,17 +70,6 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 - clone and cd into project
 - run ```python -m pip install -r requirements.txt```
 
-**Migrations**
-If you change models or creating the database.
-
-``cd`` into shopyo/shopyo
-
-```
-python manage.py db init #  if db not present:
-python manage.py db migrate
-python manage.py db upgrade
-```
-
 # 👟 Run instructions
 
 ``cd`` into shopyo/shopyo if not already.

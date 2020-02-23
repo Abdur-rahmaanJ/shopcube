@@ -2,13 +2,11 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
 from flask_sqlalchemy import sqlalchemy
-from addon import db
-from models import Manufacturers, Products, Settings, Appointments
+from models import Manufacturer, Product, Settings, Appointments
 
 from flask_login import login_required, current_user
 
 from project_api import base_context
-from sqlalchemy import exists
 
 manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 
@@ -16,8 +14,7 @@ manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
 @login_required
 def manufac():
     context = base_context()
-
-    context['manufacs'] = Manufacturers.query.all()
+    context['manufacs'] = Manufacturer.query.all()
     return render_template('manufac/index.html', **context)
 
 
@@ -29,11 +26,10 @@ def manufac_add():
     has_manufac = False
     if request.method == 'POST':
         name = request.form['name']
-        has_manufac = db.session.query(exists().where(Manufacturers.name == name)).scalar()
+        has_manufac = Manufacturer.manufacturer_exists(name)
         if has_manufac == False:
-            m = Manufacturers(name=name)
-            db.session.add(m)
-            db.session.commit()
+            m = Manufacturer(name=name)
+            m.insert()
         return render_template('manufac/add.html', **context)
 
     context['has_manufac'] = str(has_manufac)
@@ -43,9 +39,8 @@ def manufac_add():
 @manufac_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
 @login_required
 def manufac_delete(name):
-    Manufacturers.query.filter(Manufacturers.name == name).delete()
-    Products.query.filter(Products.manufacturer == name).delete()
-    db.session.commit()
+    manufac = Manufacturer.query.filter(Manufacturer.name == name).first()
+    manufac.delete()
     return redirect('/manufac')
 
 
@@ -58,12 +53,9 @@ def manufac_update():
         name = request.form['manufac_name']
         old_name = request.form['old_manufac_name']
         try:
-            m = Manufacturers.query.get(old_name)
+            m = Manufacturer.query.get(old_name)
             m.name = name
-            products = Products.query.filter_by(manufacturer=old_name)
-            for product in products:
-                product.manufacturer = name
-            db.session.commit()
+            m.update()
         except sqlalchemy.exc.IntegrityError:
             context['message'] = "you cannot modify to an already existing manufacturer"
             context['redirect_url'] = "/manufac/"
@@ -76,7 +68,7 @@ def manufac_update():
 def manufac_edit(manufac_name):
     context = base_context()
 
-    m = Manufacturers.query.get(manufac_name)
+    m = Manufacturer.query.get(manufac_name)
     context['manufac_name'] = manufac_name
     return render_template('manufac/edit.html', **context)
 
@@ -84,5 +76,5 @@ def manufac_edit(manufac_name):
 @manufac_blueprint.route("/check/<manufac_name>", methods=["GET"])
 @login_required
 def check(manufac_name):
-    has_manufac = db.session.query(exists().where(Manufacturers.name == manufac_name)).scalar()
+    has_manufac = Manufacturer.manufacturer_exists(manufac_name)
     return jsonify({"exists":has_manufac})

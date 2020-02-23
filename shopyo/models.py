@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from addon import db
 from flask_login import UserMixin
-
+from sqlalchemy import exists
 
 
 class Users(UserMixin, db.Model):
@@ -18,15 +18,15 @@ class Users(UserMixin, db.Model):
         return check_password_hash(self.password, password)
 
 
-class Products(db.Model):
-    __tablename__ = 'products'
+class Product(db.Model):
+    __tablename__ = 'product'
     barcode = db.Column(db.String(100), primary_key=True)
     price = db.Column(db.Float)#
 
     vat_price = db.Column(db.Float)
     selling_price = db.Column(db.Float)
-    manufacturer = (db.Column(db.String(100),
-                    db.ForeignKey('manufacturers.name')))
+    manufacturer = (db.Column(db.Integer(),
+                    db.ForeignKey('manufacturer.id'), nullable=False))
 
 
 class People(db.Model):
@@ -44,10 +44,30 @@ class People(db.Model):
     notes = db.Column(db.String(100))
 
 
+class Manufacturer(db.Model):
+    __tablename__ = 'manufacturer'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    products = db.relationship(
+        'Product', backref='manufacturers', lazy=True, cascade="all, delete")
 
-class Manufacturers(db.Model):
-    __tablename__ = 'manufacturers'
-    name = db.Column(db.String(100), primary_key=True)
+    def insert(self):
+        """Save manufacturer to the database"""
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        """Update manufacturer"""
+        db.session.commit()
+
+    def delete(self):
+        """delete manufacturer"""
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def manufacturer_exists(cls, name):
+        return db.session.query(exists().where(cls.name == name)).scalar()
 
 
 class Appointments(db.Model):
@@ -69,4 +89,3 @@ class Patients(db.Model):
     __tablename__ = 'patients'
     first_name = db.Column(db.String(100), primary_key=True)
     last_name = db.Column(db.String(100))
-
