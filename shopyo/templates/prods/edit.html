@@ -12,41 +12,117 @@
   <label>barcode</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-tag"></i></span>
+      <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required  autocomplete="off" id="barcode" type="text" class="form-control" 
-      name="barcode" placeholder="Barcode" value="{{ barcode }}">
-    <input required  id="oldbarcode" type="hidden" class="form-control" 
-      name="oldbarcode" placeholder="Barcode" value="{{ barcode }}">
-    <input required  id="manufac" type="hidden" class="form-control" 
-      name="manufac" placeholder="Manufac" value="{{ manufac }}">
+    name="barcode" placeholder="Barcode">
+    <input type="hidden" autocomplete="off" id="manufac" class="form-control" 
+    name="manufac" placeholder="manufac" value="{{manufac}}">
   </div>
+
+
+  <label>name</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="name" type="text" class="form-control" 
+        name="name" placeholder="Product Name">
+  </div>
+
+  <label>description</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="description" type="text" class="form-control" 
+        name="description" placeholder="Product Description">
+  </div>
+
+  <label>category</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="category" type="text" class="form-control" 
+        name="category" placeholder="Product Category">
+  </div>
+
+  <label>category_id</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="category_id" type="number" step="1" class="form-control" 
+        name="category_id" placeholder="Category ID">
+  </div>
+
 
   <label>price</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required  id="price" type="number" step="0.01" class="form-control" 
-      name="price" placeholder="Price" value="{{ price }}">
+    <input required  autocomplete="off" id="price" type="number" step="0.01" class="form-control" 
+        name="price" placeholder="Price">
   </div>
 
   <label>vat price</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-th"></i></span>
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required  id="vat_price" type="number" step="0.01" class="form-control" 
-      name="vat_price" placeholder="Vat Price" value="{{ vat_price }}">
+    <input required  autocomplete="off" id="vat_price" type="number" step="0.01" class="form-control" 
+        name="vat_price" placeholder="Vat Price">
   </div>
 
   <label>selling price</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required  id="selling_price" type="number" step="0.01" class="form-control" 
-      name="selling_price" placeholder="Selling price" value="{{ selling_price }}">
+    <input required  autocomplete="off" id="selling_price" type="number" step="0.01" class="form-control" 
+        name="selling_price" placeholder="Selling Price">
+  </div>
+
+  <label>stock</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="stock" type="number" step="1" class="form-control" 
+        name="stock" placeholder="Stock">
+  </div>
+
+  <label>supplier</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="supplier" type="text" class="form-control" 
+        name="supplier" placeholder="Product Supplier">
+  </div>
+
+  <label>supplier_id</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="supplier_id" type="number" step="1" class="form-control" 
+        name="supplier_id" placeholder="Supplier ID">
+  </div>
+
+  <label>discontinued</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="yes" type="radio" class="form-control" 
+        name="discontinued" placeholder="Discontinued?" value="True">
+    <label for="yes">Yes</label>
+    <input required  autocomplete="off" id="no" type="radio" class="form-control" 
+    name="discontinued" placeholder="Discontinued?" value="False">
+    <label for="no">No</label>
   </div>
 
   <br>
