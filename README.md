@@ -191,5 +191,25 @@ Then the navagation elements will be displayed in the new section.
 ## 🍳 In Action
 ![](shopyo_min.gif)
 
+# Roadmap
 
+- ✔️ Models
+- ✔️ Migrations
+- ✔️ Restful Api
+- ✔️ Manage.py
+- ✔️ CSRF protection
+- ✔️ Easy dev/production mode switch
+- ✔️ Login
+- ✔️ Api namespacing / apps
+
+In Progress
+
+- 🔃 Unit tests
+- 🔃 Integration tests
+- 🔃 Permission levels
+- 🔃 Django-like structure (where models, views and templates all in one  folder)
+
+Crossed Out
+
+- ✖️ Forms (We believe it should be to the front-end designer's taste)
 
