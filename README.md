@@ -95,6 +95,15 @@ User ID: user
 password: pass
 ```
 
+# 🔩 Migrations
+
+In case of change to models, do
+
+```
+python manage.py db migrate
+pyhton manage.py db upgrade
+```
+
 # :construction: Developing a template.
 
 Each landing page and subsection should contain the following headers.
