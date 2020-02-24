@@ -3,7 +3,7 @@ from flask import (
 )
 from datetime import date
 from addon import db
-from models import People
+from views.people.models import People
 
 from project_api import base_context
 import datetime

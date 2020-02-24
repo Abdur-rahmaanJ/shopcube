@@ -1,7 +1,9 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
-from models import Product, Settings, Manufacturer
+from views.products.models import Product
+from views.settings.models import Settings
+from views.manufacturer.models import Manufacturer
 from addon import db, ma
 
 from flask_login import login_required, current_user

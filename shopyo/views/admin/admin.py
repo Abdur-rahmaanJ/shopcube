@@ -3,7 +3,7 @@ from flask_login import  current_user #LoginManager,
 from functools import wraps
 
 from addon import login_manager
-from models import Users
+from views.admin.models import Users
 #from app import app
 
 #login_manager = LoginManager()

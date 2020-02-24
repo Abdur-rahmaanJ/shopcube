@@ -6,7 +6,7 @@ from flask_script import Manager
 from initialise import add_admin, add_setting
 from app import app
 
-from models import db
+from addon import db
 
 
 

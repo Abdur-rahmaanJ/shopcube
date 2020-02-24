@@ -4,7 +4,7 @@ from flask import (
     )
 from flask_login import login_required, current_user, login_user, logout_user
 from addon import db, login_manager
-from models import Users
+from views.admin.models import Users
 from project_api import base_context
 
 
