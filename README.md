@@ -40,6 +40,10 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 >
 > Also, if I'm around and you're stuck give us a shout. I'll help if I can. ``@blips5``
 
+
+# Understand Shopyo
+
+[Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://dev.to/abdurrahmaanj/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app-40j3)
   
 
 # 📖 History
