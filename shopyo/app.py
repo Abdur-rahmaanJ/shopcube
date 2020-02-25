@@ -1,3 +1,4 @@
+from jinja2 import FileSystemLoader
 from functools import wraps
 
 from flask import Flask, redirect
@@ -11,6 +12,17 @@ from config import app_config
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(app_config[config_name])
+    app.jinja_loader = FileSystemLoader([
+        'templates/',
+        'views/admin/templates/',
+        'views/appointment/templates/',
+        'views/manufacturer/templates/',
+        'views/people/templates/',
+        'views/products/templates/',
+        'views/save/templates/',
+        'views/settings/templates/'
+         ])
+
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)
@@ -23,7 +35,7 @@ def create_app(config_name):
     from views.people.people import people_blueprint
     from views.admin.admin_modif import admin_blueprint
     from views.admin.login import login_blueprint
-    from views.save import save_blueprint
+    from views.save.save import save_blueprint
 
     app.register_blueprint(manufac_blueprint)
     app.register_blueprint(prod_blueprint)

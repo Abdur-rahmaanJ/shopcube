@@ -2,7 +2,7 @@ from flask import (
     Blueprint, render_template, request, redirect
 
     )
-from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_login import login_required, current_user
 from addon import db, login_manager
 
