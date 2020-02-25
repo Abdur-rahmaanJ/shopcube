@@ -43,7 +43,7 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 # Understand Shopyo
 
-[Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://dev.to/abdurrahmaanj/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app-40j3)
+[Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://www.pythonmembers.club/2020/02/25/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app/)
   
 
 # 📖 History
