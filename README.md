@@ -81,7 +81,15 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
 ``cd`` into shopyo/shopyo if not already.
 
-initialise and setup.
+initialise database.
+
+```
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
+```
+
+initialise and setup app.
 
 ```python
 python manage.py initialise
