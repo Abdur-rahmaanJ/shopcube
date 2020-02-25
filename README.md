@@ -40,9 +40,15 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 >
 > Also, if I'm around and you're stuck give us a shout. I'll help if I can. ``@blips5``
 
+
+# Understand Shopyo
+
+Shopyo internals explained here: [Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://www.pythonmembers.club/2020/02/25/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app/)
   
 
 # 📖 History
+
+<details><summary><b>I want to learn!</b></summary>
 
 Months ago, I was searching github for a point of sales solution that used Python. What bothered me was that many of the applications I found were not ideal. Some required Posgres with the expectation that a user would already have this installed, others had codebases that were a mess of spaghetti code, yet others were django-based accounting monsters ...
 
@@ -52,6 +58,7 @@ For the UI, we used the latest, bootstrap4, fa5 and jq3. Interestingly enough, I
 
 It is still in devolopment and supports instant lookup. Long story short, with some programming skills, you can solve some everyday problems. And yes, no cdn, all libs are bundled so that you can use it completely offline
 
+</details>
 
 See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328) linked-in article!
 
@@ -95,7 +102,18 @@ User ID: user
 password: pass
 ```
 
+# 🔩 Migrations
+
+In case of change to models, do
+
+```
+python manage.py db migrate
+pyhton manage.py db upgrade
+```
+
 # :construction: Developing a template.
+
+<details><summary><b>Show me how</b></summary>
 
 Each landing page and subsection should contain the following headers.
 
@@ -173,14 +191,40 @@ Now enter a new elif statement containing a reference to the _nav.html
 
 Then the navagation elements will be displayed in the new section.
 
+</details>
+
+
+
 # Windows Deployment
 
-[Abdur-rahmaanJ/shopyo-windows](https://github.com/Abdur-rahmaanJ/shopyo-windows)
+<details><summary><b>Show me how</b></summary>
 
 [youtube demo](https://youtu.be/fOUEyuMgZ0U)
+
+</details>
 
 ## 🍳 In Action
 ![](shopyo_min.gif)
 
+# Roadmap
 
+- ✔️ Models
+- ✔️ Migrations
+- ✔️ Restful Api
+- ✔️ Manage.py
+- ✔️ CSRF protection
+- ✔️ Easy dev/production mode switch
+- ✔️ Login
+- ✔️ Api namespacing / apps
+
+In Progress
+
+- 🔃 Unit tests
+- 🔃 Integration tests
+- 🔃 Permission levels
+- 🔃 Django-like structure (where models, views and templates all in one  folder)
+
+Crossed Out
+
+- ✖️ Forms (We believe it should be to the front-end designer's taste)
 
