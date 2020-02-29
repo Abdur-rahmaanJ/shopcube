@@ -1,15 +1,23 @@
 from flask import (
-    Blueprint, render_template, request, redirect
+    Blueprint, render_template, request, redirect, jsonify
 )
+from flask_login import login_required
 from datetime import date
-from addon import db
+from addon import db, ma
 from views.people.models import People
 
 from project_api import base_context
 import datetime
 
-people_blueprint = Blueprint('people', __name__, url_prefix='/people')
+people_blueprint = Blueprint('people', __name__, url_prefix='gitl/people')
 
+class PeopleSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'name', 'phone', 'mobile', 'email', 'facebook', 'twitter', 'linkedin', 'age','birthday','notes')
+
+people_schema = PeopleSchema()
+people_schema = PeopleSchema(many=True)
 
 @people_blueprint.route("/")
 def people_main():
@@ -112,3 +120,22 @@ def people_update():
         db.session.commit()
 
         return redirect('/people')
+
+@people_blueprint.route('/lookup', methods=['GET', 'POST'])
+@login_required
+def lookup():
+    context = base_context()
+    context['people'] = People.query.all()
+    return render_template('people/lookup.html', **context)
+
+# api
+@people_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])
+@login_required
+def search_name(name):
+    if name=='searchValueIsEmpty':
+        all_a = People.query.all();
+    else:
+        all_a = People.query.filter(People.name.like('%'+name+'%')).all()
+    result = people_schema.dump(all_a)
+    return jsonify(result)
+
