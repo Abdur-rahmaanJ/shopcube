@@ -9,7 +9,7 @@ from views.people.models import People
 from project_api import base_context
 import datetime
 
-people_blueprint = Blueprint('people', __name__, url_prefix='gitl/people')
+people_blueprint = Blueprint('people', __name__, url_prefix='/people')
 
 class PeopleSchema(ma.Schema):
     class Meta:
