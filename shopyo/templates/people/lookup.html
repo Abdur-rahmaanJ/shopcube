@@ -55,7 +55,6 @@ $(function() {
                 '<td class="delete_me" data-id="'+result['id']+'"><a href="/people/delete/'+result['id']+'" class="btn btn-danger" role="button"><i class="fas fa-trash-alt"></i></a>'+
                 ' <a href="/people/edit/'+result['id']+'" class="btn btn-warning" role="button"><i class="fas fa-pencil-alt"></i></a></td>'+
                 "</tr>");
-                //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
             }
         })
     });
@@ -80,13 +79,6 @@ $(function() {
     });
   });
 </script>
-<!--
-      <div class="input-group">
-        <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
-        <div class="input-group-btn">
-          <button id="searchbtn" class="btn btn-default" ><i class="glyphicon glyphicon-search"></i></button>
-        </div>
-      </div>-->
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -113,7 +105,6 @@ $(function() {
                 <td>{{ person.name }}</td>
                 <td>{{ person.date }}</td>
                 <td>{{ person.time }}</td>
-                <!--<td><a href="/settings/edit/{{person.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
                 <td>
                     <div style='display: inline-block; '>
                         <a style="text-decoration: none;">
