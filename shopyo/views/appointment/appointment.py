@@ -110,13 +110,17 @@ def deactive(ids):
 @login_required
 def lookup():
     context = base_context()
-
+    context['appointments'] = Appointments.query.all()
     return render_template('appointment/lookup.html', **context)
 
 # api
 @appointment_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])
 @login_required
 def search_name(name):
-    all_a = Appointments.query.filter(Appointments.name.like('%'+name+'%')).all()
+    if name == 'searchValueIsEmpty':
+        all_a = Appointments.query.all()
+    else:
+        all_a = Appointments.query.filter(Appointments.name.\
+                                          like('%'+name+'%')).all()
     result = appointment_schema.dump(all_a)
-    return jsonify(result.data)
+    return jsonify(result)
