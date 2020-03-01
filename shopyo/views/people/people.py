@@ -11,10 +11,13 @@ import datetime
 
 people_blueprint = Blueprint('people', __name__, url_prefix='/people')
 
+
 class PeopleSchema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ('id', 'name', 'phone', 'mobile', 'email', 'facebook', 'twitter', 'linkedin', 'age','birthday','notes')
+        fields = ('id', 'name', 'phone', 'mobile', 'email', \
+                  'facebook', 'twitter', 'linkedin', 'age', 'birthday', 'notes')
+
 
 people_schema = PeopleSchema()
 people_schema = PeopleSchema(many=True)
@@ -121,6 +124,7 @@ def people_update():
 
         return redirect('/people')
 
+
 @people_blueprint.route('/lookup', methods=['GET', 'POST'])
 @login_required
 def lookup():
@@ -132,10 +136,9 @@ def lookup():
 @people_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])
 @login_required
 def search_name(name):
-    if name=='searchValueIsEmpty':
-        all_a = People.query.all();
+    if name == 'searchValueIsEmpty':
+        all_a = People.query.all()
     else:
         all_a = People.query.filter(People.name.like('%'+name+'%')).all()
     result = people_schema.dump(all_a)
     return jsonify(result)
-

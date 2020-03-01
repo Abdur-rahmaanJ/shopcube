@@ -117,10 +117,10 @@ def lookup():
 @appointment_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])
 @login_required
 def search_name(name):
-    if name=='searchValueIsEmpty':
-        all_a = Appointments.query.all();
+    if name == 'searchValueIsEmpty':
+        all_a = Appointments.query.all()
     else:
-        all_a = Appointments.query.filter(Appointments.name.like('%'+name+'%')).all()
+        all_a = Appointments.query.filter(Appointments.name.\
+                                          like('%'+name+'%')).all()
     result = appointment_schema.dump(all_a)
     return jsonify(result)
-

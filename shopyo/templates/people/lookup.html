@@ -40,6 +40,7 @@
 $(function() {
     $('#searchinput').on('input', function() {
        $("#results_table tbody").html("<tr></tr>");
+       var result;
        var valEntered = $(searchinput).val();
        if (valEntered == '') valEntered='searchValueIsEmpty';
         $.getJSON( "/people/search/name/"+valEntered, function( data ) {
