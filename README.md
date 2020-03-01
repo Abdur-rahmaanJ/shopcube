@@ -81,14 +81,6 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
 ``cd`` into shopyo/shopyo if not already.
 
-initialise database.
-
-```
-python manage.py db init
-python manage.py db migrate
-python manage.py db upgrade
-```
-
 initialise and setup app.
 
 ```python
@@ -118,6 +110,25 @@ In case of change to models, do
 python manage.py db migrate
 pyhton manage.py db upgrade
 ```
+
+# Complete commands
+
+initialise database.
+
+```
+python manage.py db init # create db from new
+python manage.py db migrate
+python manage.py db upgrade
+```
+
+clean project
+
+```
+python manage.py clean
+```
+
+removes `__pycache__/`, `test.db` and `migrations`.
+
 
 # :construction: Developing a template.
 
