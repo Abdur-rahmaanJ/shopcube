@@ -98,7 +98,7 @@ python manage.py initialise
 run the app.
 
 ```python
-python manage.py runsever
+python manage.py runserver
 ```
 
 go to the indicated url
