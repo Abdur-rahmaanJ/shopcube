@@ -90,36 +90,39 @@ $(function() {
   </div>
   <br><br>
   <table class="table" id="results_table">
-        <thead>
-        <tr>
-            <th scope="col">Meeting Name</th>
-            <th scope="col">Date</th>
-            <th scope="col">Time</th>
-            <th scope="col">Active</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for person in people %}
-            <tr class="{% if person.active == "inactive" %}all_not{% endif %}">
-                <td>{{ person.name }}</td>
-                <td>{{ person.date }}</td>
-                <td>{{ person.time }}</td>
-                <td>
-                    <div style='display: inline-block; '>
-                        <a style="text-decoration: none;">
-                            <button id='delete' class="delete_me btn btn-danger" type="" name="{{ person.id }}"><i
-                                    class="fas fa-trash-alt"></i></button>
-                        </a>
-                        &nbsp;
-                        <a href="/people/edit/{{ person.id }}" style="text-decoration: none;">
-                            <button data-name="{{ person.name }}" class="btn btn-warning"><i id='ico' class="fas fa-pencil-alt"></i>
-                            </button>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+      <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Note</th>
+          <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for person in people %}
+          <tr>
+              <td scope = "col">{{ person.name }}</td>
+              <td scope = "col">{{ person.phone }}</td>
+              <td scope = "col">{{ person.email }}</td>
+              <td scope = "col">{{ person.notes }}</td>
+              <td>
+                  <button type="button" class="btn btn-secondary" data-toggle="modal"
+                          data-target="#modal-{{ person.id }}">
+                      ..more info
+                  </button>
+                  <a href="/people/edit/{{ person.id }}" style="text-decoration: none;">
+                      <button data-name="{{ person.id }}" class="btn btn-warning" type=""><i
+                              id='ico-{{ person.id }}'
+                              class="fas fa-pencil-alt"></i></button>
+                  </a>
+                  <a href="#" style="text-decoration: none;">
+                      <button id='del-{{ person.id }}' class="delete_me btn btn-danger" type=""><i
+                              class="fas fa-trash-alt"></i></button>
+                  </a>
+              </td>
+          </tr>
+      {% endfor %}
+      </tbody>
     </table>
 {% endblock %}
