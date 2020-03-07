@@ -8,7 +8,10 @@ from flask_login import login_required, current_user
 
 from project_api import base_context
 
-settings_blueprint = Blueprint('settings', __name__,  template_folder='templates', url_prefix='/settings')
+settings_blueprint = Blueprint('settings', __name__,
+                               template_folder='templates',
+                               url_prefix='/settings'
+                               )
 
 
 @settings_blueprint.route("/")

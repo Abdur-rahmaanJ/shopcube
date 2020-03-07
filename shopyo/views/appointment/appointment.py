@@ -13,7 +13,10 @@ from views.appointment.models import Appointments
 from project_api import base_context
 
 
-appointment_blueprint = Blueprint('appointment', __name__, template_folder='templates', url_prefix='/appointment')
+appointment_blueprint = Blueprint('appointment', __name__,
+                                  template_folder='templates',
+                                  url_prefix='/appointment'
+                                  )
 
 
 class AppointmentSchema(ma.Schema):
