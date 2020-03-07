@@ -11,7 +11,7 @@ from sqlalchemy import exists
 from views.admin.admin import admin_required
 from views.admin.models import Users
 # Should maybe change URL?
-admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
+admin_blueprint = Blueprint('admin', __name__,  template_folder='templates', url_prefix='/admin')
 
 
 @admin_blueprint.route("/")

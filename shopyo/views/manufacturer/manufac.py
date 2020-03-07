@@ -9,7 +9,8 @@ from flask_login import login_required, current_user
 
 from project_api import base_context
 
-manufac_blueprint = Blueprint('manufac', __name__, url_prefix='/manufac')
+manufac_blueprint = Blueprint('manufac', __name__, template_folder='templates', url_prefix='/manufac')
+
 
 @manufac_blueprint.route("/")
 @login_required

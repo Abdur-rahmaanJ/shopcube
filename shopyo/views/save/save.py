@@ -9,7 +9,7 @@ from project_api import base_context
 
 import requests
 
-save_blueprint = Blueprint('save', __name__, url_prefix='/save')
+save_blueprint = Blueprint('save', __name__,  template_folder='templates', url_prefix='/save')
 
 
 @save_blueprint.route("/")
@@ -30,10 +30,12 @@ def save_main():
     context['has_internet'] = has_internet()
     return render_template('save/index.html', **context)
 
+
 @save_blueprint.route("/upload")
 @login_required
 def upload_db():
     context = base_context()
+
     def has_internet():
         url = 'http://www.google.com/'
         timeout = 5
