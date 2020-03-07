@@ -38,12 +38,12 @@
 
 <script type="text/javascript">
 $(function() {
-    // pos
-    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
     $('#searchinput').on('input', function() {
-      //$("#results_table tr").remove(); 
        $("#results_table tbody").html("<tr></tr>");
-        $.getJSON( "/appointment/search/name/"+$("#searchinput").val(), function( data ) {
+       var result;
+       var valEntered = $(searchinput).val();
+       if (valEntered == '') valEntered='searchValueIsEmpty';
+        $.getJSON( "/appointment/search/name/"+valEntered, function( data ) {
             for (var i = data.length - 1; i >= 0; i--) {
                 result = data[i];
                 
@@ -108,7 +108,35 @@ $(function() {
         </tr>
         </thead>
         <tbody>
-            <tr></tr>
+            {% for appointment in appointments %}
+            <tr class="{% if appointment.active == "inactive" %}all_not{% endif %}">
+                <td>{{ appointment.name }}</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.time }}</td>
+                <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
+                <td>
+                    <div style='display: inline-block; '>
+                        <a style="text-decoration: none;">
+                            <button id='delete' class="delete_me btn btn-danger" type="" name="{{ appointment.id }}"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </a>
+                        &nbsp;
+                        <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
+                            <button data-name="{{ appointment.name }}" class="btn btn-warning"><i id='ico'
+                                                                                                  class="fas fa-pencil-alt"></i>
+                            </button>
+                        </a>
+                        <a href="/appointment/{% if appointment.active == "active" %}inactive{% else %}active{% endif %}/{{ appointment.id }}"
+                           style="text-decoration: none; padding-left: 1rem">
+                            <button id="active-btn" data-name="{{ appointment.name }}"
+                                    class="btn {% if appointment.active == "active" %}active{% else %}inactive{% endif %}">{{ appointment.active }}
+                            </button>
+                        </a>
+
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

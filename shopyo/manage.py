@@ -1,5 +1,9 @@
 import os
 import json
+import shutil
+import sys
+import subprocess
+
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
@@ -25,13 +29,28 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def initialise():
+    print('Creating Db')
+    print('#######################')
+    subprocess.run([
+        sys.executable, 'manage.py', 'db', 'init'
+    ], stdout=subprocess.PIPE)
+    print('Migrating')
+    print('#######################')
+    subprocess.run([
+        sys.executable, 'manage.py', 'db', 'migrate'
+    ], stdout=subprocess.PIPE)
+    subprocess.run([
+        sys.executable, 'manage.py', 'db', 'upgrade'
+    ], stdout=subprocess.PIPE)
+
+
     print('Initialising User')
     print('#######################')
     add_admin(config['user']['id'], config['user']['name'],
               config['user']['password'], config['user']['admin'])
 
     print('Initialising Settings')
-    print('########################')
+    print('#######################')
     for name, value in config['settings'].items():
         add_setting(name, value)
     print('Done!')
@@ -44,6 +63,12 @@ def runserver():
 @manager.command
 def rundebug():
     app.run()
+
+@manager.command
+def clean():
+    os.remove('test.db')
+    shutil.rmtree('__pycache__')
+    shutil.rmtree('migrations')
 
 
 if __name__ == '__main__':
