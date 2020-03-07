@@ -9,7 +9,10 @@ from project_api import base_context
 
 import requests
 
-save_blueprint = Blueprint('save', __name__,  template_folder='templates', url_prefix='/save')
+save_blueprint = Blueprint('save', __name__,
+                           template_folder='templates',
+                           url_prefix='/save'
+                           )
 
 
 @save_blueprint.route("/")
