@@ -17,14 +17,15 @@ def create_app(config_name):
     login_manager.init_app(app)
     csrf = CSRFProtect(app)
 
-    from views.manufacturer.manufac import manufac_blueprint
-    from views.products.products import prod_blueprint
-    from views.settings.settings_modif import settings_blueprint
-    from views.appointment.appointment import appointment_blueprint
-    from views.people.people import people_blueprint
-    from views.admin.admin_modif import admin_blueprint
-    from views.login import login_blueprint
-    from views.save.save import save_blueprint
+    from modules.manufacturer.manufac import manufac_blueprint
+    from modules.products.products import prod_blueprint
+    from modules.settings.settings_modif import settings_blueprint
+    from modules.appointment.appointment import appointment_blueprint
+    from modules.people.people import people_blueprint
+    from modules.admin.admin_modif import admin_blueprint
+    from modules.login.login import login_blueprint
+    from modules.save.save import save_blueprint
+    from modules.base.base import base_blueprint
 
     app.register_blueprint(manufac_blueprint)
     app.register_blueprint(prod_blueprint)
@@ -34,6 +35,7 @@ def create_app(config_name):
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(login_blueprint)
     app.register_blueprint(save_blueprint)
+    app.register_blueprint(base_blueprint)
 
     @app.route('/')
     def index():

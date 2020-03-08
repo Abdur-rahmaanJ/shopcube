@@ -2,7 +2,7 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
 from addon import db
-from views.settings.models import Settings
+from modules.settings.models import Settings
 from flask_marshmallow import Marshmallow
 from flask_login import login_required, current_user
 

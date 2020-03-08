@@ -3,7 +3,7 @@ from flask_login import current_user
 from functools import wraps
 
 from addon import login_manager
-from views.admin.models import Users
+from modules.admin.models import Users
 
 login_manager.login_view = 'login.login'
 login_manager.login_message = 'Please login for access'

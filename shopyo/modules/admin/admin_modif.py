@@ -8,8 +8,8 @@ from addon import db, login_manager
 
 from project_api import base_context
 from sqlalchemy import exists
-from views.admin.admin import admin_required
-from views.admin.models import Users
+from modules.admin.admin import admin_required
+from modules.admin.models import Users
 
 # Should maybe change URL?
 admin_blueprint = Blueprint('admin', __name__,

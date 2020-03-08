@@ -4,7 +4,7 @@ from flask import (
 from flask_login import login_required
 from datetime import date
 from addon import db, ma
-from views.people.models import People
+from modules.people.models import People
 
 from project_api import base_context
 import datetime

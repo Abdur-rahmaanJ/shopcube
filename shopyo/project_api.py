@@ -1,4 +1,4 @@
-from views.settings.models import Settings
+from modules.settings.models import Settings
 
 
 def get_setting(name):

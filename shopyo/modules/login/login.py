@@ -4,11 +4,11 @@ from flask import (
     )
 from flask_login import login_required, current_user, login_user, logout_user
 from addon import db, login_manager
-from views.admin.models import Users
+from modules.admin.models import Users
 from project_api import base_context
 
 
-login_blueprint = Blueprint('login', __name__, url_prefix='/login')
+login_blueprint = Blueprint('login', __name__, url_prefix='/login', template_folder='templates')
 
 
 @login_blueprint.route('/', methods=['GET', 'POST'])

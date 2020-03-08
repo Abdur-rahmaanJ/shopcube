@@ -3,8 +3,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from addon import db
 from app import app
 
-from views.admin.models import Users
-from views.settings.models import Settings
+from modules.admin.models import Users
+from modules.settings.models import Settings
 
 
 def add_admin(user_id, name, password, admin):
