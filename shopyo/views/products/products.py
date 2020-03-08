@@ -11,7 +11,10 @@ from flask_login import login_required, current_user
 from project_api import base_context
 from sqlalchemy import exists
 
-prod_blueprint = Blueprint('prods', __name__, url_prefix='/prods')
+prod_blueprint = Blueprint('prods', __name__,
+                           template_folder='templates',
+                           url_prefix='/prods'
+                           )
 
 
 class Productchema(ma.Schema):
@@ -55,7 +58,7 @@ def prods_add(manufac_name):
             Manufacturer.name == manufac_name).first()
         has_product = db.session.query(exists().where(
             Product.barcode == barcode)).scalar()
-        if has_product == False:
+        if has_product is False:
             p = Product()
             p.barcode = barcode
             p.price = price

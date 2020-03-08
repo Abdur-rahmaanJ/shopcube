@@ -11,6 +11,7 @@ from config import app_config
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(app_config[config_name])
+
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)
@@ -22,8 +23,8 @@ def create_app(config_name):
     from views.appointment.appointment import appointment_blueprint
     from views.people.people import people_blueprint
     from views.admin.admin_modif import admin_blueprint
-    from views.admin.login import login_blueprint
-    from views.save import save_blueprint
+    from views.login import login_blueprint
+    from views.save.save import save_blueprint
 
     app.register_blueprint(manufac_blueprint)
     app.register_blueprint(prod_blueprint)

@@ -24,7 +24,7 @@ def login():
             return redirect(url_for('login.login'))
         login_user(user)
         return redirect(url_for('manufac.manufac'))
-    return render_template('admin/login.html', **context)
+    return render_template('/login.html', **context)
 
 
 @login_blueprint.route('/logout')

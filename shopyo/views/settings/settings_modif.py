@@ -8,7 +8,11 @@ from flask_login import login_required, current_user
 
 from project_api import base_context
 
-settings_blueprint = Blueprint('settings', __name__, url_prefix='/settings')
+settings_blueprint = Blueprint('settings', __name__,
+                               template_folder='templates',
+                               url_prefix='/settings'
+                               )
+
 
 @settings_blueprint.route("/")
 @login_required
@@ -32,6 +36,7 @@ def settings_edit(settings_name):
     context['current_value'] = s.value
 
     return render_template('settings/edit.html', **context)
+
 
 @settings_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
