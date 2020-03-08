@@ -17,7 +17,9 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 # ⚗️ Stability
 
-**alpha** - highly volatile, core features not yet finished
+**beta** - now in beta!
+
+~**alpha** - highly volatile, core features not yet finished~
 
 # 💌 Contributing Countries
 
