@@ -237,13 +237,13 @@ Then the navagation elements will be displayed in the new section.
 - ✔️ Easy dev/production mode switch
 - ✔️ Login
 - ✔️ Api namespacing / apps
+- ✔️ Django-like structure (where models, views and templates all in one  folder)
 
 In Progress
 
 - 🔃 Unit tests
 - 🔃 Integration tests
 - 🔃 Permission levels
-- 🔃 Django-like structure (where models, views and templates all in one  folder)
 
 Crossed Out
 
