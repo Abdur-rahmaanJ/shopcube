@@ -18,7 +18,13 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 
+class TestingConfig(Config):
+    """Configurations for testsing"""
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
+    DEBUG = True
+
 app_config = {
     'development': DevelopmentConfig,
     'production': Config,
+    'testing': TestingConfig,
 }
