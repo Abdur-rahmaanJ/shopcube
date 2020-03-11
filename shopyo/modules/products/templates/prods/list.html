@@ -39,9 +39,12 @@
                 <td>{{p.vat_price}}</td>
                 <td>{{p.selling_price}}</td>
                 <td>{{p.stock}}</td>
-                <td>{{p.supplier}}</td>
-                <td>{{p.supplier_id}}</td>
-                <td>{{p.discontinued}}</td>
+                {% with p.discontinued as discontinued %}
+                    {% if (discontinued == "True") or (discontinued == 1) %}
+                        <td>Yes</td>
+                    {% else %} <td>No</td>
+                    {% endif %}
+                {% endwith %}
                 <td style="border: none;">
                   <a style="width: 100px;"
                       href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-warning" role="button">
