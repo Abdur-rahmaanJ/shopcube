@@ -131,7 +131,15 @@ python manage.py clean
 
 removes `__pycache__/`, `test.db` and `migrations`.
 
-
+# :scroll: Docs
+       Sphinx docs generater
+       
+       To build the docs for Shopyo. ``cd`` inside the docs folder
+       run ``make html``
+       
+       To clean the build folder run 
+       ``make clean``
+       
 # :construction: Developing a template.
 
 <details><summary><b>Show me how</b></summary>
