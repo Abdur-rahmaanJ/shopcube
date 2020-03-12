@@ -1,3 +1,9 @@
+"""
+.. module:: AdminModels
+   :synopsis: Contains model of a user Record
+
+"""
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from addon import db
 from flask_login import UserMixin
@@ -5,6 +11,7 @@ from sqlalchemy import exists
 
 
 class Users(UserMixin, db.Model):
+    """ Users model """
     __tablename__ = 'users'
     id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(100))

@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Templating &#8212; Shopyo  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Models" href="models.html" />
+    <link rel="prev" title="Contributing to Shopyo" href="contrib.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/shopyo.ico" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Shopyo</a></h1>
+
+
+
+
+
+
+
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="contrib.html">Contributing to Shopyo</a><ul>
+      <li>Previous: <a href="contrib.html" title="previous chapter">Contributing to Shopyo</a></li>
+      <li>Next: <a href="models.html" title="next chapter">Models</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="contrib.html#community-discord">💬 Community: Discord</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Building a template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html">Creating a model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="views.html">Creating a view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unittests.html">Creating unittests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="templating">
+<h1>Templating<a class="headerlink" href="#templating" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="developing-a-template">
+<h2>Developing a template.<a class="headerlink" href="#developing-a-template" title="Permalink to this headline">¶</a></h2>
+<p>Each landing page and subsection should contain the following headers.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">extends</span> <span class="s2">&quot;base/main_base.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="nb">set</span> <span class="n">active_page</span> <span class="o">=</span><span class="s1">&#39;admin&#39;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>This extends the base.html file and
+sets the active section (change section name).</p>
+<p>Create the main landing page of a new section in the template folder.</p>
+<p>Inside the modules template folder create a folder named as you want:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modules</span>
+<span class="o">/</span><span class="n">section_name</span>
+    <span class="o">/</span><span class="n">templates</span>
+        <span class="o">/</span><span class="n">section_name</span>
+            <span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p><strong>Create a subsection template</strong>.</p>
+<p>Inside the module section template folder create a new file under the folder named same as the section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>modules
+    /section_name
+        /templates
+            /section_name
+                index.html``
+</pre></div>
+</div>
+<p><strong>Create navigation elements for a new section.</strong>
+Inside the template folder create a file named <code class="docutils literal notranslate"><span class="pre">nav.html</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">modules</span>
+    <span class="o">/</span><span class="n">section_name</span>
+        <span class="o">/</span><span class="n">templates</span>
+            <span class="o">/</span><span class="n">section_name</span>
+                <span class="n">index</span><span class="o">.</span><span class="n">html</span>
+                <span class="n">nav</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>In the  <code class="docutils literal notranslate"><span class="pre">nav.html</span></code>  file elements for the navigation can be created.</p>
+<p><strong>To display the navagation elements.</strong></p>
+<p>Open the modules <code class="docutils literal notranslate"><span class="pre">/base</span></code> folder and locate the <code class="docutils literal notranslate"><span class="pre">nav_base.html</span></code>.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">nav_bar_log([])</span></code> array. Enter the section name last in the list</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="nb">set</span> <span class="n">nav_bar_log</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">(</span><span class="s1">&#39;manufacturer&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;appointments&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;people&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;save&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+  <span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+
+</pre></div>
+</td></tr></table></div>
+<p>Now enter a new <code class="docutils literal notranslate"><span class="pre">elif</span></code> statement containing a reference
+to the <code class="docutils literal notranslate"><span class="pre">nav_base.html</span></code></p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;manufac/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;settings/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;appointment/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;people/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;save/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+
+    <span class="p">{</span><span class="o">%</span> <span class="k">elif</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;appointment/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+      
+    <span class="p">{</span><span class="o">%</span> <span class="k">elif</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;prods/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+
+    <span class="p">{</span><span class="o">%</span> <span class="k">elif</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;settings/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+    
+    <span class="p">{</span><span class="o">%</span> <span class="k">elif</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;people/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+
+    <span class="p">{</span><span class="o">%</span> <span class="k">elif</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;save/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+
+    <span class="p">{</span><span class="o">%</span> <span class="k">elif</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;admin/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>Then the navagation elements will be displayed in the new section.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/templates.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

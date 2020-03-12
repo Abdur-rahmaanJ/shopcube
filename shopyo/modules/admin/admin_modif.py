@@ -1,3 +1,9 @@
+"""
+.. module:: AdminViews
+   :synopsis: All endpoints of the admin views are defined here.
+
+"""
+
 from flask import (
     Blueprint, render_template, request, redirect
 
@@ -22,6 +28,12 @@ admin_blueprint = Blueprint('admin', __name__,
 @login_required
 @admin_required
 def user_list():
+    """
+           **Get The List of Users**
+
+            Lists all users in the database.
+
+    """
     context = base_context()
     context['users'] = Users.query.all()
     return render_template('admin/index.html', **context)
@@ -31,6 +43,12 @@ def user_list():
 @login_required
 @admin_required
 def user_add():
+    """
+               **Adds a User**
+
+            adds a user to database.
+
+    """
     context = base_context()
     if request.method == 'POST':
         id = request.form['id']
@@ -57,6 +75,13 @@ def user_add():
 @login_required
 @admin_required
 def admin_delete(id):
+    """
+                   **Delete a User**
+
+        :param id: id of the user
+        :type id: int
+
+    """
     Users.query.filter(Users.id == id).delete()
     db.session.commit()
     return redirect('/admin')
@@ -66,6 +91,13 @@ def admin_delete(id):
 @login_required
 @admin_required
 def appointment_edit(id):
+    """
+                   **Update information for a User**
+
+        :param id: id of the user
+        :type id: int
+
+    """
     context = base_context()
     u = Users.query.get(id)
     context['id'] = u.id
@@ -79,6 +111,10 @@ def appointment_edit(id):
 @login_required
 @admin_required
 def admin_update():
+    """
+                   **Update a User record**
+
+    """
     id = request.form['id']
     name = request.form['name']
     password = request.form['password']
