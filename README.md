@@ -67,7 +67,12 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 # ♨️ Contributing
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
-
+- Fork repo.
+- Create a new branch. For example: `bg-fix-migration-file`.
+- Once you have add your changes ensure tests are still passing.
+- Add tests for any new functionality added.
+- Ensure you commits follow the standard specified [here](https://udacity.github.io/git-styleguide/).
+- Follow the Pull request [template](.PULL_REQUEST_TEMPLATE.md).
 - Add your country flag in readme after accepted PR
 
 # 💬 Community: Discord
