@@ -129,17 +129,20 @@ clean project
 python manage.py clean
 ```
 
-removes `__pycache__/`, `test.db` and `migrations`.
+removes `__pycache__/`, `test.db` and ``migrations``.
 
 # :scroll: Docs
-       Sphinx docs generater
+Sphinx docs generater
        
-       To build the docs for Shopyo. ``cd`` inside the docs folder
-       run ``make html``
-       
-       To clean the build folder run 
-       ``make clean``
-       
+To build the docs for Shopyo. ``cd`` inside the docs folder
+run ``make html``
+
+To clean the build folder run 
+``make clean``
+
+[Read the docs for Sphinx Alablaster](
+https://alabaster.readthedocs.io/en/latest/ "Sphinx Alablaster") 
+     
 # :construction: Developing a template.
 
 <details><summary><b>Show me how</b></summary>
