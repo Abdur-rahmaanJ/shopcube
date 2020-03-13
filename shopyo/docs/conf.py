@@ -47,6 +47,7 @@ html_context = {
             "Issue Tracker", "https://github.com/Abdur-rahmaanJ/shopyo/issues",
         ]
 }
+html_logo = 'shopyo.ico'
 
 html_sidebars = {'**': ['about.html', 'relations.html', 'navigation.html', 'searchbox.html']}
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -56,8 +57,7 @@ html_theme = 'alabaster'
 html_theme_options = {
     'github_repo': 'Abdur-rahmaanJ/shopyo',
     'fixed_sidebar': 'true',
-    'logo': 'shopyo.ico',
-    'logo_name': 'true'
+
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
