@@ -49,7 +49,13 @@ html_context = {
 }
 html_logo = 'shopyo.ico'
 
-html_sidebars = {'**': ['about.html', 'relations.html', 'navigation.html', 'searchbox.html']}
+html_sidebars = {'**': [
+    'about.html',
+    'relations.html',
+    'navigation.html',
+    'searchbox.html'
+]}
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
