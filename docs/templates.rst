@@ -11,7 +11,7 @@ Developing a template.
 
 Each landing page and subsection should contain the following headers.
 
-.. literalinclude:: ../modules/admin/templates/admin/index.html
+.. literalinclude:: ../shopyo/modules/admin/templates/admin/index.html
    :language: python
    :linenos:
    :lines: 1-3
@@ -59,7 +59,7 @@ Open the modules ``/base`` folder and locate the ``nav_base.html``.
 
 In the ``nav_bar_log([])`` array. Enter the section name last in the list
 
-.. literalinclude:: ../modules/base/templates/base/nav_base.html
+.. literalinclude:: ../shopyo/modules/base/templates/base/nav_base.html
    :language: python
    :linenos:
    :lines: 1-10
@@ -68,7 +68,7 @@ In the ``nav_bar_log([])`` array. Enter the section name last in the list
 Now enter a new ``elif`` statement containing a reference
 to the ``nav_base.html``
 
-.. literalinclude:: ../modules/base/templates/base/nav_base.html
+.. literalinclude:: ../shopyo/modules/base/templates/base/nav_base.html
    :language: python
    :linenos:
    :lines: 25-50

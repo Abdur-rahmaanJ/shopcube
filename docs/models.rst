@@ -7,7 +7,7 @@ Models
 
 Creating a model
 ----------------
-.. literalinclude:: ../modules/admin/models.py
+.. literalinclude:: ../shopyo/modules/admin/models.py
    :language: python
    :linenos:
    :lines: 13-25
