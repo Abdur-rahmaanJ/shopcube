@@ -23,7 +23,7 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 # 💌 Contributing Countries
 
-🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬
+🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬 🇮🇳
 
 # 🔥 Just Added Features
 
