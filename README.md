@@ -70,7 +70,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 - Fork repo.
 
 ```
-git clone https://github.com/Abdur-rahmaanJ/shopyo.git
+git clone https://github.com/<your-username>/shopyo.git
 ```
 
 - Create a new branch. For example: `bg-fix-migration-file`.
