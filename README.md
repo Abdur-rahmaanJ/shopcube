@@ -68,12 +68,36 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
 - Fork repo.
+
+```
+git clone https://github.com/Abdur-rahmaanJ/shopyo.git
+```
+
 - Create a new branch. For example: `bg-fix-migration-file`.
+
+```
+git checkout -b bg-fix-migration-file
+```
+
 - Once you have add your changes ensure tests are still passing.
 - Add tests for any new functionality added.
 - Ensure you commits follow the standard specified [here](https://udacity.github.io/git-styleguide/).
 - Follow the Pull request [template](.PULL_REQUEST_TEMPLATE.md).
 - Add your country flag in readme after accepted PR
+- Update fork as below then
+- Push
+```
+git push origin head
+```
+
+# Update Fork
+
+```
+cd <your/local/cloned/repo/path/here>
+git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+git fetch upstream
+git pull upstream master
+```
 
 # 💬 Community: Discord
 [https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
