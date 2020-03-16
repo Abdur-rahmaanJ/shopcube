@@ -62,7 +62,7 @@ def runserver():
 
 @manager.command
 def rundebug():
-    app.run()
+    app.run(debug=True, host='0.0.0.0')
 
 @manager.command
 def clean():
