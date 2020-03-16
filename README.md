@@ -118,9 +118,9 @@ python manage.py db migrate
 pyhton manage.py db upgrade
 ```
 
-# Complete commands
+# 📟 Complete Commands
 
-initialise database.
+Initialise database.
 
 ```
 python manage.py db init # create db from new
