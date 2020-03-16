@@ -1,0 +1,8 @@
+[run]
+omit = 
+    # omit docs
+    docs/*
+    # omit ENV folder
+    ENV/*
+    # omit tests
+    */tests/*

@@ -1,7 +1,4 @@
-from functools import wraps
-
 from flask import Flask, redirect
-from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
 from addon import db, login_manager, ma
@@ -15,7 +12,7 @@ def create_app(config_name):
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)
-    csrf = CSRFProtect(app)
+    csrf = CSRFProtect(app) # noqa
 
     from modules.manufacturer.manufac import manufac_blueprint
     from modules.products.products import prod_blueprint

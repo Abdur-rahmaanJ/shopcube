@@ -1,11 +1,11 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, jsonify
+    Blueprint, render_template, request, redirect, jsonify
     )
 from flask_sqlalchemy import sqlalchemy
 from modules.manufacturer.models import Manufacturer
 
 
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from project_api import base_context
 
@@ -82,4 +82,4 @@ def manufac_edit(manufac_name):
 @login_required
 def check(manufac_name):
     has_manufac = Manufacturer.manufacturer_exists(manufac_name)
-    return jsonify({"exists":has_manufac})
+    return jsonify({"exists": has_manufac})
