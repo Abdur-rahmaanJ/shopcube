@@ -89,6 +89,7 @@ git checkout -b bg-fix-migration-file
 ```
 git push origin head
 ```
+- If it closes an issue, add `Fixes #94` for example, as seen [here](https://github.com/Abdur-rahmaanJ/shopyo/pull/95)
 
 # Update Fork
 
