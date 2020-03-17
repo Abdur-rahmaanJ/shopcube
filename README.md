@@ -25,7 +25,7 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 # 💌 Contributing Countries
 
-🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬 🇮🇳
+🇲🇺 x 1 | 🇩🇪 x ? | 🇨🇳 x ? | 🇬🇧 x ? | 🇸🇬 x ? | 🇺🇬 x 1 | 🇮🇳 x ? 
 
 # 🔥 Just Added Features
 
@@ -81,8 +81,8 @@ git clone https://github.com/<your-username>/shopyo.git
 git checkout -b bg-fix-migration-file
 ```
 
-- Once you have add your changes ensure tests are still passing.
-- Add tests for any new functionality added.
+- Once you have add your changes ensure tests are still passing. # beginners ignore this one until we write more explicit docs
+- Add tests for any new functionality added. # beginners ignore this one until we write more explicit docs
 - Ensure you commits follow the standard specified [here](https://udacity.github.io/git-styleguide/).
 - Follow the Pull request [template](.PULL_REQUEST_TEMPLATE.md).
 - Add your country flag in readme after accepted PR
