@@ -66,21 +66,13 @@ def rundebug():
 
 @manager.command
 def clean():
-    if os.path.exists('test.db'):
+    if os.path.exists('test.db') and os.path.exists('__pycache__') and os.path.exists('migrations'):
         os.remove('test.db')
-        print("The file was successfully deleted")
-    else:
-        print("The file doesn't exist")
-    if os.path.exists('__pycache__'):
         shutil.rmtree('__pycache__')
-        print("The directory was successfully deleted")
-    else:
-        print("The directory doesn't exist")
-    if os.path.exists('migrations'):
         shutil.rmtree('migrations')
-        print("The directory was successfully deleted")
+        print("Successfully deleted")
     else:
-        print("The directory doesn't exist")
+        print("Some file or directory doesn't exist")
 
 
 if __name__ == '__main__':
