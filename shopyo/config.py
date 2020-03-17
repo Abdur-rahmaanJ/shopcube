@@ -1,5 +1,3 @@
-
-
 class Config:
     """Parent configuration class."""
     DEBUG = False
@@ -22,6 +20,7 @@ class TestingConfig(Config):
     """Configurations for testsing"""
     SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
     DEBUG = True
+
 
 app_config = {
     'development': DevelopmentConfig,

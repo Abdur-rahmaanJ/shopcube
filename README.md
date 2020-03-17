@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Abdur-rahmaanJ/shopyo.svg?branch=master)](https://travis-ci.com/Abdur-rahmaanJ/shopyo)
+
 <h1 align="center">
   <br>
   <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/shopyo.png" alt="shopyo" width="300px" height="300px"></a>

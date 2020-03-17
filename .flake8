@@ -1,0 +1,11 @@
+[flake8]
+exclude =
+    .git,
+    __pycache__,
+    docs,
+    build,
+    .coverage,
+    sphinx_source,
+    migrations,
+    ENV,
+    sreenshots
