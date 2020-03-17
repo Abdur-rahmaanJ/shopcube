@@ -62,9 +62,21 @@ def rundebug():
 
 @manager.command
 def clean():
-    os.remove('test.db')
-    shutil.rmtree('__pycache__')
-    shutil.rmtree('migrations')
+    if os.path.exists('test.db'):
+        os.remove('test.db')
+        print("test.db successfully deleted")
+    else:   
+        print("test.db doesn't exist")
+    if os.path.exists('__pycache__'):
+        shutil.rmtree('__pycache__')
+        print("__pycache__ successfully deleted")
+    else:
+        print("__pycache__ doesn't exist")
+    if os.path.exists('migrations'):
+        shutil.rmtree('migrations')
+        print("migrations successfully deleted")
+    else:
+        print("migrations doesn't exist")
 
 
 if __name__ == '__main__':
