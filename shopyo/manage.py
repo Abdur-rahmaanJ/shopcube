@@ -65,7 +65,7 @@ def clean():
     if os.path.exists('test.db'):
         os.remove('test.db')
         print("test.db successfully deleted")
-    else:   
+    else:
         print("test.db doesn't exist")
     if os.path.exists('__pycache__'):
         shutil.rmtree('__pycache__')

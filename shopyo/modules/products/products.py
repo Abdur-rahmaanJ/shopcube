@@ -1,13 +1,10 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, jsonify
+    Blueprint, render_template, request, redirect, jsonify
     )
 from modules.products.models import Product
-from modules.settings.models import Settings
 from modules.manufacturer.models import Manufacturer
 from addon import db, ma
-
-from flask_login import login_required, current_user
-
+from flask_login import login_required
 from project_api import base_context
 from sqlalchemy import exists
 
@@ -87,7 +84,8 @@ def prods_delete(manufac_name, barcode):
     return redirect('/prods/list_prods/{}'.format(manufac_name))
 
 
-@prod_blueprint.route('/edit/<manufac_name>/<barcode>', methods=['GET', 'POST'])
+@prod_blueprint.route('/edit/<manufac_name>/<barcode>',
+                      methods=['GET', 'POST'])
 @login_required
 def prods_edit(manufac_name, barcode):
     context = base_context()
@@ -117,7 +115,8 @@ def prods_update():
         manufacturer = request.form['manufac']
 
         p = Product.query.filter(
-            Product.barcode == oldbarcode and Product.manufacturer == manufac
+            Product.barcode == oldbarcode and
+            Product.manufacturer == manufacturer
         ).first()
         p.barcode = barcode
         p.price = price
@@ -136,6 +135,7 @@ def lookup_prods(manufac_name):
     context['manufac'] = manufac_name
     return render_template('prods/lookup.html', **context)
 
+
 # api
 @prod_blueprint.route("/search/<manufac_name>/barcode/<barcode>",
                       methods=["GET"])
@@ -147,6 +147,7 @@ def search(manufac_name, barcode):
         ).all()
     result = product_schema.dump(all_p)
     return jsonify(result.data)
+
 
 # api
 @prod_blueprint.route("/check/<barcode>", methods=["GET"])

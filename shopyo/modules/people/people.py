@@ -18,12 +18,14 @@ people_blueprint = Blueprint('people', __name__,
 class PeopleSchema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ('id', 'name', 'phone', 'mobile', 'email', \
-                  'facebook', 'twitter', 'linkedin', 'age', 'birthday', 'notes')
+        fields = ('id', 'name', 'phone', 'mobile', 'email',
+                  'facebook', 'twitter', 'linkedin', 'age',
+                  'birthday', 'notes')
 
 
 people_schema = PeopleSchema()
 people_schema = PeopleSchema(many=True)
+
 
 @people_blueprint.route("/")
 def people_main():
@@ -101,7 +103,7 @@ def people_update():
         people_mobile = request.form['mobile']
         people_email = request.form['email']
         people_linkedin = request.form['linkedin']
-        people_facebook = request.form['facebook']
+        # people_facebook = request.form['facebook']
         people_twitter = request.form['twitter']
         people_birthday = request.form['birthday']
         people_notes = request.form['notes']
@@ -134,6 +136,7 @@ def lookup():
     context = base_context()
     context['people'] = People.query.all()
     return render_template('people/lookup.html', **context)
+
 
 # api
 @people_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])

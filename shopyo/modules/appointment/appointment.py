@@ -1,13 +1,11 @@
 from flask import (
-        Blueprint, 
-        render_template, 
-        request, 
-        redirect, 
+        Blueprint,
+        render_template,
+        request,
+        redirect,
         jsonify
 )
-from flask_login import login_required, current_user
-from flask_marshmallow import Marshmallow
-
+from flask_login import login_required
 from addon import db, ma
 from modules.appointment.models import Appointments
 from project_api import base_context
@@ -24,8 +22,10 @@ class AppointmentSchema(ma.Schema):
         # Fields to expose
         fields = ('id', 'name', 'date', 'time', 'active')
 
+
 appointment_schema = AppointmentSchema()
 appointment_schema = AppointmentSchema(many=True)
+
 
 @appointment_blueprint.route("/")
 @login_required
@@ -109,12 +109,14 @@ def deactive(ids):
     db.session.commit()
     return redirect('/appointment')
 
+
 @appointment_blueprint.route('/lookup', methods=['GET', 'POST'])
 @login_required
 def lookup():
     context = base_context()
     context['appointments'] = Appointments.query.all()
     return render_template('appointment/lookup.html', **context)
+
 
 # api
 @appointment_blueprint.route('/search/name/<name>', methods=['GET', 'POST'])
@@ -123,7 +125,7 @@ def search_name(name):
     if name == 'searchValueIsEmpty':
         all_a = Appointments.query.all()
     else:
-        all_a = Appointments.query.filter(Appointments.name.\
+        all_a = Appointments.query.filter(Appointments.name.
                                           like('%'+name+'%')).all()
     result = appointment_schema.dump(all_a)
     return jsonify(result)
