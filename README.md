@@ -17,6 +17,8 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 - :sparkler: Instant lookup
 - :pencil2: Towards customisation
 
+Shopyo makes a great Flask base. In continuous improvement.
+
 # ⚗️ Stability
 
 **beta** - now in beta!
@@ -26,6 +28,8 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 # 💌 Contributing Countries
 
 🇲🇺 x 1 | 🇩🇪 x ? | 🇨🇳 x ? | 🇬🇧 x ? | 🇸🇬 x ? | 🇺🇬 x 1 | 🇮🇳 x ? 
+
+[![Sparkline](https://stars.medv.io/abdur-rahmaanj/shopyo.svg)](https://stars.medv.io/abdur-rahmaanj/shopyo)
 
 # 🔥 Just Added Features
 
@@ -89,7 +93,7 @@ git checkout -b bg-fix-migration-file
 - Update fork as below then
 - Push
 ```
-git push origin head
+git push origin <branch-name>
 ```
 - If it closes an issue, add `Fixes #94` for example, as seen [here](https://github.com/Abdur-rahmaanJ/shopyo/pull/95)
 
