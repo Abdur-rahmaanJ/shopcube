@@ -1,10 +1,7 @@
 from flask import (
-    Blueprint, render_template, request, redirect
+    Blueprint, render_template
 )
-from flask_login import login_required, current_user
-
-from addon import db, login_manager
-from modules.appointment.models import Appointments
+from flask_login import login_required
 from project_api import base_context
 
 import requests

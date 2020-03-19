@@ -9,8 +9,8 @@ from flask import (
 
     )
 
-from flask_login import login_required, current_user
-from addon import db, login_manager
+from flask_login import login_required
+from addon import db
 
 from project_api import base_context
 from sqlalchemy import exists

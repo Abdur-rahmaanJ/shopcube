@@ -1,10 +1,9 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, jsonify
+    Blueprint, render_template, request
     )
 from addon import db
 from modules.settings.models import Settings
-from flask_marshmallow import Marshmallow
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from project_api import base_context
 
@@ -19,7 +18,7 @@ settings_blueprint = Blueprint('settings', __name__,
 def settings_main():
     context = base_context()
 
-    settings =  Settings.query.all()
+    settings = Settings.query.all()
 
     context['settings'] = settings
     return render_template('settings/index.html', **context)
@@ -31,7 +30,7 @@ def settings_edit(settings_name):
     context = base_context()
 
     s = Settings.query.get(settings_name)
-    
+
     context['settings_name'] = settings_name
     context['current_value'] = s.value
 
@@ -48,7 +47,7 @@ def settings_update():
     s = Settings.query.get(settings_name)
     s.value = settings_value
     db.session.commit()
-    settings =  Settings.query.all()
+    settings = Settings.query.all()
 
     context['settings'] = settings
     return render_template('settings/index.html', **context)

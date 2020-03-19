@@ -2,13 +2,13 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for, flash
 
     )
-from flask_login import login_required, current_user, login_user, logout_user
-from addon import db, login_manager
+from flask_login import login_required, login_user, logout_user
 from modules.admin.models import Users
 from project_api import base_context
 
 
-login_blueprint = Blueprint('login', __name__, url_prefix='/login', template_folder='templates')
+login_blueprint = Blueprint('login', __name__, url_prefix='/login',
+                            template_folder='templates')
 
 
 @login_blueprint.route('/', methods=['GET', 'POST'])

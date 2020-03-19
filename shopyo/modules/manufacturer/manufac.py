@@ -32,7 +32,7 @@ def manufac_add():
     if request.method == 'POST':
         name = request.form['name']
         has_manufac = Manufacturer.manufacturer_exists(name)
-        if has_manufac == False:
+        if has_manufac is False:
             m = Manufacturer(name=name)
             m.insert()
         return render_template('manufac/add.html', **context)
@@ -54,7 +54,8 @@ def manufac_delete(name):
 def manufac_update():
     context = base_context()
 
-    if request.method == 'POST': #this block is only entered when the form is submitted
+    if request.method == 'POST':
+        # this block is only entered when the form is submitted
         name = request.form['manufac_name']
         old_name = request.form['old_manufac_name']
         try:
@@ -62,7 +63,8 @@ def manufac_update():
             m.name = name
             m.update()
         except sqlalchemy.exc.IntegrityError:
-            context['message'] = "you cannot modify to an already existing manufacturer"
+            context['message'] = "you cannot modify to an " \
+                                 "already existing manufacturer"
             context['redirect_url'] = "/manufac/"
             render_template('manufac/message.html', **context)
         return redirect('/manufac/')
@@ -73,9 +75,9 @@ def manufac_update():
 def manufac_edit(manufac_name):
     context = base_context()
 
-    m = Manufacturer.query.get(manufac_name)
     context['manufac_name'] = manufac_name
     return render_template('manufac/edit.html', **context)
+
 
 # api
 @manufac_blueprint.route("/check/<manufac_name>", methods=["GET"])
