@@ -75,6 +75,24 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 - Follow the Pull request [template](.PULL_REQUEST_TEMPLATE.md).
 - Add your country flag in readme after accepted PR
 
+- Update fork as below then
+- Push
+```
+git push origin <branch-name>
+```
+- If it closes an issue, add `Fixes #94` for example, as seen [here](https://github.com/Abdur-rahmaanJ/shopyo/pull/95)
+-  PR against `dev` branch, not master
+
+# Update Fork
+
+```
+cd <your/local/cloned/repo/path/here>
+git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+git fetch upstream
+git pull upstream master
+```
+
+
 # 💬 Community: Discord
 [https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
 

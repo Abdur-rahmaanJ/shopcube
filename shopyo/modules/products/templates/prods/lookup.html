@@ -1,6 +1,6 @@
 {% extends "base/main_base.html" %}
 
-{% set active_page ='products' %}
+{% set active_page ="products" %}
 
 {% block pagehead %}
 <title>lookup</title>
@@ -30,12 +30,11 @@ $(function() {
                 "<td>"+result['name']+"</td>"+
                 "<td>"+result['description']+"</td>"+
                 "<td>"+result['category']+"</td>"+
-                "<td>"+result['category_id']+"</td>"+
+                "<td>"+result['date']+"</td>"+
                 "<td>"+result['price']+"</td>"+
-                "<td>"+result['vat_price']+"</td>"+
                 "<td>"+result['selling_price']+"</td>"+
-                "<td>"+result['stock']+"</td>"+
-                "<td>"+result['discontinued']+"</td>"
+                "<td>"+result['in_stock']+"</td>"+
+                "<td>"+result['discontinued']+"</td>"+
                 '<td><a href="/prods/delete/'+result['manufacturer']+'/'+result['barcode']+'" class="btn btn-danger" role="button">delete</a></td>'+
                 '<td><a href="/prods/edit/'+result['manufacturer']+'/'+result['barcode']+'" class="btn btn-info" role="button">edit</a></td>'+"</tr>");
                 //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
@@ -70,24 +69,28 @@ $(function() {
   <div id="search_results">
   </div>
   <br><br>
-  <table id="results_table" class="table table-bordered">
+  <table id="results_table" class="table">
             <thead>
               <tr>
-                <td>{{p.barcode}}</td>
-                <td>{{p.name}}</td>
-                <td>{{p.description}}</td>
-                <td>{{p.category}}</td>
-                <td>{{p.category_id}}</td>
-                <td>{{p.price}}</td>
-                <td>{{p.vat_price}}</td>
-                <td>{{p.selling_price}}</td>
-                <td>{{p.stock}}</td>
-                <td>{{p.discontinued}}</td>
+                <td>barcode</td>
+                <td>name</td>
+                <td>description</td>
+                <td>category</td>
+                <td>date</td>
+                <td>price</td>
+                <td>selling price</td>
+                <td>in stock</td>
+                <td>discontinued</td>
+                <td></td>
               </tr>
             </thead>
             <tbody>
               
               <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

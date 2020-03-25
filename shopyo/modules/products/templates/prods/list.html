@@ -9,44 +9,36 @@
 {% block content %}
 
   <h2>products for {{SECTION_NAME}} {{manufac}}</h2>
-    <table class="table table-bordered">
+    <table class="table">
             <thead>
               <tr>
                 <th>barcode</th>
                 <th>name</th>
                 <th>description</th>
                 <th>category</th>
-                <th>category_id</th>
+                <th>date</th>
                 <th>price</th>
-                <th>vat price</th>
                 <th>selling price</th>
-                <th>stock</th>
-                <th>supplier</th>
-                <th>supplier_id</th>
                 <th>discontinued</th>
-                <th style="border: none;"></th>
+                <th>in stock</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {%for p in prods%}
+              {%for p in products%}
               <tr>
                 <td>{{p.barcode}}</td>
                 <td>{{p.name}}</td>
                 <td>{{p.description}}</td>
                 <td>{{p.category}}</td>
-                <td>{{p.category_id}}</td>
+                <td>{{p.date}}</td>
                 <td>{{p.price}}</td>
-                <td>{{p.vat_price}}</td>
                 <td>{{p.selling_price}}</td>
-                <td>{{p.stock}}</td>
-                {% with p.discontinued as discontinued %}
-                    {% if (discontinued == "True") or (discontinued == 1) %}
-                        <td>Yes</td>
-                    {% else %} <td>No</td>
-                    {% endif %}
-                {% endwith %}
-                <td style="border: none;">
-                  <a style="width: 100px;"
+                <td>{{p.discontinued}}</td>
+                <td>{{p.in_stock}}</td>
+                
+                <td style="">
+                  <a 
                       href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-warning" role="button">
                     <i class="fas fa-pencil-alt"></i>
                   </a>

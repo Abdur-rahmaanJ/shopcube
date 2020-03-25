@@ -21,10 +21,13 @@ class Productchema(ma.Schema):
     class Meta:
         # Fields to expose
         fields = ('barcode',
+                  'name',
+                  'description',
+                  'category',
                   'price',
-                  'vat_price',
                   'selling_price',
-                  'manufacturer')
+                  'in_stock',
+                  'discontinued')
 
 
 product_schema = Productchema()
@@ -38,7 +41,7 @@ def list_prods(manufac_name):
 
     manufac = Manufacturer.query.filter(
         Manufacturer.name == manufac_name).first()
-    context['prods'] = manufac.products
+    context['products'] = db.session.query(Product).all()
     context['manufac'] = manufac_name
     return render_template('prods/list.html', **context)
 
@@ -51,20 +54,36 @@ def prods_add(manufac_name):
     has_product = False
     if request.method == 'POST':
         barcode = request.form['barcode']
+        name = request.form['name']
+        description = request.form['description']
+        category = request.form['category']
+        date = request.form['date']
         price = request.form['price']
-        vat_price = request.form['vat_price']
         selling_price = request.form['selling_price']
-        manufacturer = Manufacturer.query.filter(
-            Manufacturer.name == manufac_name).first()
+        in_stock = request.form['in_stock']
+        if request.form['discontinued'] == 'True':
+            discontinued = True
+        else:
+            discontinued = False
+        
+        # manufacturer = Manufacturer.query.filter(
+        #     Manufacturer.name == manufac_name).first()
+        # print(manufacturer, manufac_name, manufacturer.name)
         has_product = db.session.query(exists().where(
             Product.barcode == barcode)).scalar()
+
         if has_product is False:
-            p = Product()
-            p.barcode = barcode
-            p.price = price
-            p.vat_price = vat_price
-            p.selling_price = selling_price
-            p.manufacturer = manufacturer.id
+            p = Product(
+                barcode=barcode,
+                name=name,
+                description=description,
+                category=category,
+                date=date,
+                price=price,
+                selling_price=selling_price,
+                in_stock=in_stock,
+                discontinued=discontinued,
+                manufacturer_name=manufac_name)
             db.session.add(p)
             db.session.commit()
         context['manufac'] = manufac_name
@@ -92,14 +111,11 @@ def prods_delete(manufac_name, barcode):
 def prods_edit(manufac_name, barcode):
     context = base_context()
 
-    p = Product.query.filter(
+    product = Product.query.filter(
         Product.barcode == barcode and Product.manufacturer == manufac_name
     ).first()
 
-    context['barcode'] = p.barcode
-    context['price'] = p.price
-    context['vat_price'] = p.vat_price
-    context['selling_price'] = p.selling_price
+    context['product'] = product
     context['manufac'] = manufac_name
     return render_template('prods/edit.html', **context)
 
@@ -110,19 +126,34 @@ def prods_update():
     # this block is only entered when the form is submitted
     if request.method == 'POST':
         barcode = request.form['barcode']
-        oldbarcode = request.form['oldbarcode']
-        price = request.form['price']
-        vat_price = request.form['vat_price']
-        selling_price = request.form['selling_price']
+        old_barcode = request.form['old_barcode']
         manufacturer = request.form['manufac']
 
+        name = request.form['name']
+        description = request.form['description']
+        category = request.form['category']
+        date = request.form['date']
+        price = request.form['price']
+        selling_price = request.form['selling_price']
+        in_stock = request.form['in_stock']
+        if request.form['discontinued'] == 'True':
+            discontinued = True
+        else:
+            discontinued = False
+
         p = Product.query.filter(
-            Product.barcode == oldbarcode and Product.manufacturer == manufac
+            Product.barcode == old_barcode and
+            Product.manufacturer == manufacturer
         ).first()
         p.barcode = barcode
+        p.name = name
+        p.description = description
+        p.category = category
+        p.date = date
         p.price = price
-        p.vat_price = vat_price
         p.selling_price = selling_price
+        p.in_stock = in_stock
+        p.discontinued = discontinued
         p.manufacturer = manufacturer
         db.session.commit()
         return redirect('/prods/list_prods/{}'.format(manufacturer))
@@ -134,6 +165,7 @@ def lookup_prods(manufac_name):
     context = base_context()
 
     context['manufac'] = manufac_name
+
     return render_template('prods/lookup.html', **context)
 
 # api
@@ -143,10 +175,10 @@ def lookup_prods(manufac_name):
 def search(manufac_name, barcode):
     all_p = Product.query.filter(
             (Product.barcode.like('%'+barcode+'%')) &
-            (Product.manufacturer == manufac_name)
+            (Product.manufacturer_name == manufac_name)
         ).all()
     result = product_schema.dump(all_p)
-    return jsonify(result.data)
+    return jsonify(result)
 
 # api
 @prod_blueprint.route("/check/<barcode>", methods=["GET"])
