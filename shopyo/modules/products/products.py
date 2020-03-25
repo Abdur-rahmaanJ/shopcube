@@ -9,6 +9,7 @@ from addon import db, ma
 from flask_login import login_required, current_user
 
 from project_api import base_context
+from project_api import get_setting
 from sqlalchemy import exists
 
 prod_blueprint = Blueprint('prods', __name__,
@@ -43,6 +44,7 @@ def list_prods(manufac_name):
         Manufacturer.name == manufac_name).first()
     context['products'] = db.session.query(Product).all()
     context['manufac'] = manufac_name
+    
     return render_template('prods/list.html', **context)
 
 

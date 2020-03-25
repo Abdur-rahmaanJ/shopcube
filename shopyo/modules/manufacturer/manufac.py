@@ -8,6 +8,7 @@ from modules.manufacturer.models import Manufacturer
 from flask_login import login_required, current_user
 
 from project_api import base_context
+from project_api import get_setting
 
 manufac_blueprint = Blueprint('manufac', __name__,
                               template_folder='templates',
@@ -20,6 +21,7 @@ manufac_blueprint = Blueprint('manufac', __name__,
 def manufac():
     context = base_context()
     context['manufacs'] = Manufacturer.query.all()
+    context['active_page'] = get_setting('SECTION_NAME')
     return render_template('manufac/index.html', **context)
 
 
