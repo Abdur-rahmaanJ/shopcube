@@ -64,6 +64,19 @@ It is still in devolopment and supports instant lookup. Long story short, with s
 
 See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328) linked-in article!
 
+# 📰 In The News
+
+- Shopyo is [announced on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328)
+- Featured on Python Weekly issue 436
+- [Bhavesh Solanki](https://www.linkedin.com/in/bhavesh-solanki26/) tells about his Open Source experience [contributing to Shopyo](https://www.linkedin.com/feed/update/urn:li:activity:6569959051420098560/) on LinkedIn
+- [Arthur Nangai](https://www.linkedin.com/in/arthur-nangai/) from Andela joins the project as 3rd core committer
+- Project goes officially in Beta, v1.0.0 released
+- Duckduckgo recognises Shopyo
+![](screenshots/shopyo_duckduckgo.png)
+- Shopyo becomes a trending OpenSource project
+![](screenshots/shopyo_trending.png)
+
+
 # ♨️ Contributing
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
