@@ -295,3 +295,11 @@ Crossed Out
 
 - ✖️ Forms (We believe it should be to the front-end designer's taste)
 
+# 📞 Contact
+
+Support team if you are stuck
+
+- [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) - arj.python@gmail.com
+- [Nathan](https://github.com/blips5) - 
+- [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
+
