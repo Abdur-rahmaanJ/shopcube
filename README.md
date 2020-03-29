@@ -178,88 +178,36 @@ in `shopyo/` to generate docs
 [Read the docs for Sphinx Alablaster](
 https://alabaster.readthedocs.io/en/latest/ "Sphinx Alablaster") 
      
-# :construction: Developing a template.
+# :construction: Developing Modules
 
-<details><summary><b>Show me how</b></summary>
+Modules are found in the modules folder.
 
-Each landing page and subsection should contain the following headers.
-
-
-``{% extends "base/main_base.html" %}`` //  extends the base.html file.
-
-``{% set active_page = "sectionName" %}`` // sets the active section (change section name).
-
-
-
-#### Create the main landing page of a new section in the template folder.
-
-Inside the template folder create a folder named as you want
+A typical structure is as follows:
 
 ```
-/template
-    /base
-    /<changeme> (swap <changeme> for section name).
-        index.html
+apple/
+    templates/
+        apple/
+    view.py
+    models.py
+    info.json
 ```
 
-#### Create a subsection template.
+You must ensure that
+- The view is named `view.py`
+- The info is named `info.json`
+- The module folder and the folder inside templates both have the same name
+- Blueprints must be named `<nameofmodulefolder>_blueprint`, in this demo `apple_blueprint`
 
-Inside the template folder create a new file under the folder named same as the section.
+And ... the app will load all the modules, just make sure in info.json you keep url_prefix, type, name, and fa-icon
 
-```
-/template 
-    /base
-    /section_name
-        index.html
-        anotherfile.html 
-```
+For the time being it's best to look into existing modules and do the same.
 
-#### Create navigation elements for a new section.
+# FaQ
 
+**Why do we need another folder in templates?**
 
-Inside the template folder create a file named ``nav.html``.
-
-```
-/template
-    /base
-    /example_section_name
-        index.html
-        nav.html
-```
-
-In the  ```nav.html```  file elements for the navigation can be created.
-
-
-#### To display the navagation elements.
-
-Open the template ``/base`` folder and locate the ``nav_base.html``.
-
-In the ``nav_bar_log([])`` array. Enter the section name last in the list.
-
-
-```python3
-{% set nav_bar_log = [
-  ('section0'),
-  ('section1'),
-  ('new_section')
-  ] %}
-
-Now enter a new elif statement containing a reference to the _nav.html
-
-    {% if active_page == nav_bar_log[0] %}
-      {% include "section0/nav.html" %}
-      
-    {% elif active_page == nav_bar_log[1] %}
-      {% include "section1/nav.html" %}
-
-    {% elif active_page == nav_bar_log[2] %} <- - - Add 1 to index.
-      {% include "new_section/nav.html" %}
-```
-
-Then the navagation elements will be displayed in the new section.
-
-</details>
-
+Flask loads all templates in one namespace. If you specify `apple/index.html` flask will load the index.html in the apple folder in templates
 
 
 # Windows Deployment
