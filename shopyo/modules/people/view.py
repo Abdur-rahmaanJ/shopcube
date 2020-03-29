@@ -1,3 +1,6 @@
+import os
+import json
+
 from flask import (
     Blueprint, render_template, request, redirect, jsonify
 )
@@ -9,9 +12,16 @@ from modules.people.models import People
 from project_api import base_context
 import datetime
 
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + '/info.json') as f:
+    module_info = json.load(f)
+
 people_blueprint = Blueprint('people', __name__,
                              template_folder='templates',
-                             url_prefix='/people'
+                             url_prefix=module_info['url_prefix']
                              )
 
 

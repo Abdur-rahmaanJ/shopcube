@@ -3,6 +3,8 @@
    :synopsis: All endpoints of the admin views are defined here.
 
 """
+import os
+import json
 
 from flask import (
     Blueprint, render_template, request, redirect
@@ -17,10 +19,15 @@ from sqlalchemy import exists
 from modules.admin.admin import admin_required
 from modules.admin.models import Users
 
-# Should maybe change URL?
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + '/info.json') as f:
+    module_info = json.load(f)
+
 admin_blueprint = Blueprint('admin', __name__,
                             template_folder='templates',
-                            url_prefix='/admin'
+                            url_prefix=module_info['url_prefix']
                             )
 
 

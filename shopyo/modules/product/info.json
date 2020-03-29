@@ -1,5 +1,6 @@
 {
 	"name": "Products",
 	"type": "hidden",
-	"fa-icon": ""
+	"fa-icon": "",
+	"url_prefix": "/manufac"
 }

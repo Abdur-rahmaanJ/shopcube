@@ -32,7 +32,7 @@ def index():
             continue
         if module not in ['control_panel']:
             with open('modules/{}/info.json'.format(module)) as f:
-                module_info = json.loads(f.read())
+                module_info = json.load(f)
                 all_info[module] = module_info
 
     context['all_info'] = all_info

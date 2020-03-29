@@ -1,3 +1,6 @@
+import os
+import json
+
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
@@ -10,9 +13,16 @@ from flask_login import login_required, current_user
 from project_api import base_context
 from project_api import get_setting
 
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + '/info.json') as f:
+    module_info = json.load(f)
+
 manufacturer_blueprint = Blueprint('manufac', __name__,
                               template_folder='templates',
-                              url_prefix='/manufac'
+                              url_prefix=module_info['url_prefix']
                               )
 
 

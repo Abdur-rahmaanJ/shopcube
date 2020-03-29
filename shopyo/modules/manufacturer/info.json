@@ -1,5 +1,6 @@
 {
-	"name": "Manufacturer",
+	"name": "Items",
 	"type": "show",
-	"fa-icon": "fas fa-clock"
+	"fa-icon": "fa fa-bars",
+	"url_prefix": "/manufac"
 }

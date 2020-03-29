@@ -1,5 +1,6 @@
 {
-	"name": "Manufacturer",
+	"name": "Settings",
 	"type": "show",
-	"fa-icon": "fas fa-clock"
+	"fa-icon": "fa fa-cog",
+	"url_prefix": "/settings"
 }

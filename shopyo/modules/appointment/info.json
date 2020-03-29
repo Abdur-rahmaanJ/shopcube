@@ -1,5 +1,6 @@
 {
 	"name": "Appointments",
 	"type": "show",
-	"fa-icon": "fas fa-clock"
+	"fa-icon": "fas fa-clock",
+	"url_prefix": "/appointment"
 }

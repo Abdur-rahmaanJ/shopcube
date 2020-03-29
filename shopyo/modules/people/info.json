@@ -1,5 +1,6 @@
 {
-	"name": "Manufacturer",
+	"name": "People",
 	"type": "show",
-	"fa-icon": "fas fa-clock"
+	"fa-icon": "fa fa-users",
+	"url_prefix": "/people"
 }

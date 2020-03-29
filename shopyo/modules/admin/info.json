@@ -1,5 +1,6 @@
 {
 	"name": "Admin",
-	"type": "hidden",
-	"fa-icon": ""
+	"type": "show",
+	"fa-icon": "fas fa-user-lock",
+	"url_prefix": "/admin"
 }

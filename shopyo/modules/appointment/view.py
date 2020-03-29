@@ -1,3 +1,6 @@
+import os
+import json
+
 from flask import (
         Blueprint, 
         render_template, 
@@ -12,10 +15,15 @@ from addon import db, ma
 from modules.appointment.models import Appointments
 from project_api import base_context
 
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + '/info.json') as f:
+    module_info = json.load(f)
 
 appointment_blueprint = Blueprint('appointment', __name__,
                                   template_folder='templates',
-                                  url_prefix='/appointment'
+                                  url_prefix=module_info['url_prefix']
                                   )
 
 

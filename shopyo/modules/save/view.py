@@ -1,3 +1,6 @@
+import os
+import json
+
 from flask import (
     Blueprint, render_template, request, redirect
 )
@@ -9,9 +12,15 @@ from project_api import base_context
 
 import requests
 
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + '/info.json') as f:
+    module_info = json.load(f)
+
 save_blueprint = Blueprint('save', __name__,
                            template_folder='templates',
-                           url_prefix='/save'
+                           url_prefix=module_info['url_prefix']
                            )
 
 

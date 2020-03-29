@@ -1,5 +1,6 @@
 {
-	"name": "Appointments",
+	"name": "Save",
 	"type": "show",
-	"fa-icon": "fas fa-clock"
+	"fa-icon": "fa fa-save",
+	"url_prefix": "/save"
 }
