@@ -11,10 +11,14 @@
 
 {% block content %}
   {% include 'control_panel/nav.html' %}
+
   <br>
+    {% for info in all_info %}
+        <p>{{all_info[info]}}</p>
+    {% endfor %}
   <div class="card">
     <div class="card-body">
-      {{path}}
+
     </div>
     <div class="card-footer">
       
