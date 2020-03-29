@@ -1,0 +1,23 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='control panel' %}
+
+{% block pagehead %}
+<title></title>
+<style>
+
+</style>
+{% endblock %}
+
+{% block content %}
+  {% include 'control_panel/nav.html' %}
+  <br>
+  <div class="card">
+    <div class="card-body">
+      {{path}}
+    </div>
+    <div class="card-footer">
+      
+    </div>
+  </div>
+ {% endblock %}

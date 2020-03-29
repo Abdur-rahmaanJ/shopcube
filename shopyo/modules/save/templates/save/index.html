@@ -12,6 +12,8 @@
 {% endblock %}
 
 {% block content %}
+  {% include 'save/nav.html' %}
+  <br>
     {% if has_internet %}
       <i style="color: green;" class="fas fa-wifi"></i> connected
     {% else %}

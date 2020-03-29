@@ -9,7 +9,7 @@ class Config:
     APP_NAME = 'Demo'
     SECTION_NAME = 'Manufacturer'
     SECTION_ITEMS = 'Products'
-    HOMEPAGE_URL = '/manufac/'
+    HOMEPAGE_URL = '/control_panel'
 
 
 class DevelopmentConfig(Config):

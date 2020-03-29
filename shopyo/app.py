@@ -1,8 +1,12 @@
 from functools import wraps
+import importlib
+import os
 
 from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
+from werkzeug.utils import import_string
+from werkzeug.utils import find_modules
 
 from addon import db, login_manager, ma
 from config import app_config
@@ -17,6 +21,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     csrf = CSRFProtect(app)
 
+    '''
     from modules.manufacturer.manufac import manufac_blueprint
     from modules.products.products import prod_blueprint
     from modules.settings.settings_modif import settings_blueprint
@@ -26,6 +31,7 @@ def create_app(config_name):
     from modules.login.login import login_blueprint
     from modules.save.save import save_blueprint
     from modules.base.base import base_blueprint
+    from modules.control_panel.view import control_panel_blueprint
 
     app.register_blueprint(manufac_blueprint)
     app.register_blueprint(prod_blueprint)
@@ -36,6 +42,15 @@ def create_app(config_name):
     app.register_blueprint(login_blueprint)
     app.register_blueprint(save_blueprint)
     app.register_blueprint(base_blueprint)
+    app.register_blueprint(control_panel_blueprint)
+    '''
+
+    for module in os.listdir('modules'):
+        if module.startswith('__'):
+            continue
+        mod = importlib.import_module('modules.{}.view'.format(module))
+        app.register_blueprint(getattr(mod, '{}_blueprint'.format(module)))
+
 
     @app.route('/')
     def index():

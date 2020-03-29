@@ -1,9 +1,10 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, jsonify
     )
-from modules.products.models import Product
+from modules.product.models import Product
 from modules.settings.models import Settings
 from modules.manufacturer.models import Manufacturer
+
 from addon import db, ma
 
 from flask_login import login_required, current_user
@@ -12,7 +13,7 @@ from project_api import base_context
 from project_api import get_setting
 from sqlalchemy import exists
 
-prod_blueprint = Blueprint('prods', __name__,
+product_blueprint = Blueprint('prods', __name__,
                            template_folder='templates',
                            url_prefix='/prods'
                            )
@@ -35,7 +36,7 @@ product_schema = Productchema()
 product_schema = Productchema(many=True)
 
 
-@prod_blueprint.route("/list_prods/<manufac_name>")
+@product_blueprint.route("/list_prods/<manufac_name>")
 @login_required
 def list_prods(manufac_name):
     context = base_context()
@@ -51,7 +52,7 @@ def list_prods(manufac_name):
     return render_template('prods/list.html', **context)
 
 
-@prod_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
+@product_blueprint.route('/add/<manufac_name>', methods=['GET', 'POST'])
 @login_required
 def prods_add(manufac_name):
     context = base_context()
@@ -100,7 +101,7 @@ def prods_add(manufac_name):
     return render_template('prods/add.html', **context)
 
 
-@prod_blueprint.route('/delete/<manufac_name>/<barcode>',
+@product_blueprint.route('/delete/<manufac_name>/<barcode>',
                       methods=['GET', 'POST'])
 @login_required
 def prods_delete(manufac_name, barcode):
@@ -111,7 +112,7 @@ def prods_delete(manufac_name, barcode):
     return redirect('/prods/list_prods/{}'.format(manufac_name))
 
 
-@prod_blueprint.route('/edit/<manufac_name>/<barcode>', methods=['GET', 'POST'])
+@product_blueprint.route('/edit/<manufac_name>/<barcode>', methods=['GET', 'POST'])
 @login_required
 def prods_edit(manufac_name, barcode):
     context = base_context()
@@ -125,7 +126,7 @@ def prods_edit(manufac_name, barcode):
     return render_template('prods/edit.html', **context)
 
 
-@prod_blueprint.route('/update', methods=['GET', 'POST'])
+@product_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
 def prods_update():
     # this block is only entered when the form is submitted
@@ -164,7 +165,7 @@ def prods_update():
         return redirect('/prods/list_prods/{}'.format(manufacturer))
 
 
-@prod_blueprint.route("/lookup/<manufac_name>")
+@product_blueprint.route("/lookup/<manufac_name>")
 @login_required
 def lookup_prods(manufac_name):
     context = base_context()
@@ -175,7 +176,7 @@ def lookup_prods(manufac_name):
     return render_template('prods/lookup.html', **context)
 
 # api
-@prod_blueprint.route("/search/<manufac_name>/barcode/<user_input>",
+@product_blueprint.route("/search/<manufac_name>/barcode/<user_input>",
                       methods=["GET"])
 @login_required
 def search(manufac_name, user_input):
@@ -197,7 +198,7 @@ def search(manufac_name, user_input):
     return jsonify(result)
 
 # api
-@prod_blueprint.route("/check/<barcode>", methods=["GET"])
+@product_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
     has_product = db.session.query(exists().where(

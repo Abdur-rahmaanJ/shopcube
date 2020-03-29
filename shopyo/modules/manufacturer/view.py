@@ -10,13 +10,13 @@ from flask_login import login_required, current_user
 from project_api import base_context
 from project_api import get_setting
 
-manufac_blueprint = Blueprint('manufac', __name__,
+manufacturer_blueprint = Blueprint('manufac', __name__,
                               template_folder='templates',
                               url_prefix='/manufac'
                               )
 
 
-@manufac_blueprint.route("/")
+@manufacturer_blueprint.route("/")
 @login_required
 def manufac():
     context = base_context()
@@ -25,7 +25,7 @@ def manufac():
     return render_template('manufac/index.html', **context)
 
 
-@manufac_blueprint.route('/add', methods=['GET', 'POST'])
+@manufacturer_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 def manufac_add():
     context = base_context()
@@ -43,7 +43,7 @@ def manufac_add():
     return render_template('manufac/add.html', **context)
 
 
-@manufac_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
+@manufacturer_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
 @login_required
 def manufac_delete(name):
     manufac = Manufacturer.query.filter(Manufacturer.name == name).first()
@@ -51,7 +51,7 @@ def manufac_delete(name):
     return redirect('/manufac')
 
 
-@manufac_blueprint.route('/update', methods=['GET', 'POST'])
+@manufacturer_blueprint.route('/update', methods=['GET', 'POST'])
 @login_required
 def manufac_update():
     context = base_context()
@@ -70,7 +70,7 @@ def manufac_update():
         return redirect('/manufac/')
 
 
-@manufac_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
+@manufacturer_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
 @login_required
 def manufac_edit(manufac_name):
     context = base_context()
@@ -80,7 +80,7 @@ def manufac_edit(manufac_name):
     return render_template('manufac/edit.html', **context)
 
 # api
-@manufac_blueprint.route("/check/<manufac_name>", methods=["GET"])
+@manufacturer_blueprint.route("/check/<manufac_name>", methods=["GET"])
 @login_required
 def check(manufac_name):
     has_manufac = Manufacturer.manufacturer_exists(manufac_name)
