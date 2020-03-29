@@ -42,7 +42,10 @@ def list_prods(manufac_name):
 
     manufac = Manufacturer.query.filter(
         Manufacturer.name == manufac_name).first()
-    context['products'] = db.session.query(Product).all()
+    products = Product.query.filter(
+                Product.manufacturer_name == manufac_name
+            ).all()
+    context['products'] = products
     context['manufac'] = manufac_name
     
     return render_template('prods/list.html', **context)
@@ -167,19 +170,30 @@ def lookup_prods(manufac_name):
     context = base_context()
 
     context['manufac'] = manufac_name
+    context['fields'] = [key.replace('_', ' ') for key in Product.__table__.columns.keys() if key not in ['manufacturer_name']]
 
     return render_template('prods/lookup.html', **context)
 
 # api
-@prod_blueprint.route("/search/<manufac_name>/barcode/<barcode>",
+@prod_blueprint.route("/search/<manufac_name>/barcode/<user_input>",
                       methods=["GET"])
 @login_required
-def search(manufac_name, barcode):
-    all_p = Product.query.filter(
-            (Product.barcode.like('%'+barcode+'%')) &
-            (Product.manufacturer_name == manufac_name)
-        ).all()
-    result = product_schema.dump(all_p)
+def search(manufac_name, user_input):
+    if request.method == 'GET':
+        print(request.args['field'],  request.args['global_search'])
+        field = request.args['field']
+        global_search = request.args['global_search']
+        if global_search == 'True':
+            all_p = Product.query.filter(
+                (getattr(Product, field).like('%'+barcode+'%')) &
+                (Product.manufacturer_name == manufac_name)
+            ).all()
+            result = product_schema.dump(all_p)
+        else:
+            all_p = Product.query.filter(
+                getattr(Product, field).like('%'+user_input+'%')
+            ).all()
+            result = product_schema.dump(all_p)
     return jsonify(result)
 
 # api

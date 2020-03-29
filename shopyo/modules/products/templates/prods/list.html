@@ -8,7 +8,15 @@
 
 {% block content %}
 
-  <h2>products for {{SECTION_NAME}} {{manufac}}</h2>
+  {% include 'prods/nav.html' %}
+
+  <br>
+
+  <h2>products for 
+      <span class="badge badge-primary">{{SECTION_NAME}}</span>
+      <span class="badge badge-secondary">{{manufac}}</span>
+  </h2>
+  <br>
     <table class="table">
             <thead>
               <tr>

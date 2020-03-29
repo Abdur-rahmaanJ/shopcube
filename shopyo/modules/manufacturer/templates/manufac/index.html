@@ -1,5 +1,6 @@
 {% extends "base/main_base.html" %}
 
+{% set active_page ='manufacturer' %}
 
 {% block pagehead %}
 <title>SpareParts</title>
@@ -14,6 +15,9 @@
 {% endblock %}
 
 {% block content %}
+  {% include 'manufac/nav.html' %}
+  <br>
+
 <script type="text/javascript">
   $(function() {
     $('.delete_me').click(function(){
@@ -30,6 +34,7 @@
     });
   });
 </script>
+
   {%for m in manufacs%}
   <a href="" >
     <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>

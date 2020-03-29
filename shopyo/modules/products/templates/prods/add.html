@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content %}
+  {% include 'prods/nav.html' %}
+  <br>
+
 <script type="text/javascript">
 $(function() {
     // pos
@@ -28,7 +31,11 @@ $(function() {
   </div>
 {% endif %}
 
-<h2>Add Product for {{SECTION_NAME}} {{manufac}}</h2>
+  <h2>Add product for 
+      <span class="badge badge-primary">{{SECTION_NAME}}</span>
+      <span class="badge badge-secondary">{{manufac}}</span>
+  </h2>
+  <br>
 
 <form action="/prods/add/{{manufac}}" method="post">
 

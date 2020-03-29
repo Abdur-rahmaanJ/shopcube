@@ -7,7 +7,16 @@
 {% endblock %}
 
 {% block content %}
-<h2>Edit product for {{SECTION_NAME}} {{manufac}}</h2>
+  {% include 'prods/nav.html' %}
+
+  <br>
+
+  <h2>Edit product for 
+      <span class="badge badge-primary">{{SECTION_NAME}}</span>
+      <span class="badge badge-secondary">{{manufac}}</span>
+  </h2>
+  <br>
+
 <form action='/prods/update' method="post">
   <label>barcode</label>
   <div class="input-group mb-3">

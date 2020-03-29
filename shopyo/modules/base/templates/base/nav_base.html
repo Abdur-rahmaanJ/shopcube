@@ -24,7 +24,6 @@
     </li>
     {% if active_page == nav_bar_log[0] %}
 
-      {% include "manufac/nav.html" %}
       {% include "settings/nav.html" %}
       {% include "appointment/nav.html" %}
       {% include "people/nav.html" %}
@@ -32,9 +31,7 @@
 
     {% elif active_page == nav_bar_log[1] %}
       {% include "appointment/nav.html" %}
-      
-    {% elif active_page == nav_bar_log[2] %}
-      {% include "prods/nav.html" %}
+
 
     {% elif active_page == nav_bar_log[3] %}
       {% include "settings/nav.html" %}

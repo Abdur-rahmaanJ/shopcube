@@ -7,14 +7,28 @@
 {% endblock %}
 
 {% block content %}
+  {% include 'prods/nav.html' %}
+
+  <br>
+
 <script type="text/javascript">
 $(function() {
     // pos
     //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    var global_search = 'False';
+    var field = 'barcode';
     $('#searchinput').on('input', function() {
       //$("#results_table tr").remove(); 
+      if($("#global_search").prop("checked") == true){
+        global_search = 'True';
+      }
+      field = $("#choose_field input[type='radio']:checked").attr("value");
+
        $("#results_table tbody").html("<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-        $.getJSON( "/prods/search/{{manufac}}/barcode/"+$("#searchinput").val(), function( data ) {
+        $.getJSON( "/prods/search/{{manufac}}/barcode/"+$("#searchinput").val()+"?"+
+          "global_search="+global_search+"&"+
+          "field="+field, 
+              function( data ) {
             for (var i = data.length - 1; i >= 0; i--) {
                 result = data[i];
                 if ((result['discontinued'] === 'True') || (result['discontinued'] == 1))
@@ -64,6 +78,24 @@ $(function() {
       <span class="input-group-text"><i class="fas fa-search"></i></span>
     </div>
     <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
+  </div>
+
+  <div class="form-check">
+    <input 
+      name="global_search" class="form-check-input" type="checkbox" value="" id="global_search">
+    <label class="form-check-label" for="defaultCheck1">
+      Global Search
+    </label>
+  </div>
+
+  <div id="choose_field">
+    {%for field in fields%}
+      <div class="form-check form-check-inline">
+        <input 
+          name="field" class="form-check-input" type="radio" id="inlineCheckbox1" value="{{field}}">
+        <label class="form-check-label" for="inlineCheckbox1">{{field}}</label>
+      </div>
+    {%endfor%}
   </div>
   
   <div id="search_results">
