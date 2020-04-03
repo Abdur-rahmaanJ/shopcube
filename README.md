@@ -145,6 +145,12 @@ In case of change to models, do
 python manage.py db migrate
 pyhton manage.py db upgrade
 ```
+# Testing
+
+- To run tests cd into the `shopyo folder` and run the command. `pytest`.
+- To view coverage run the command. `coverage run -m pytest -v`.
+- You can then view the report by running the command. `coverage report`.
+- To ensure your code meets PEP8 standard, run the command. `flake8 shopyo`.
 
 # Complete commands
 
@@ -172,6 +178,7 @@ Run
 ```
 sphinx-build -b html sphinx_source docs
 ```
+
 
 in `shopyo/` to generate docs
 

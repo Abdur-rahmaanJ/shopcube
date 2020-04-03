@@ -1,10 +1,13 @@
+coverage
 flask
 flask_sqlalchemy
-marshmallow_sqlalchemy
 flask_marshmallow
 flask_migrate
 flask_script
 flask_login
 Flask-WTF
+flake8
+marshmallow_sqlalchemy
 requests
 Sphinx
+pytest
