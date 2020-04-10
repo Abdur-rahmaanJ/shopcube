@@ -1,19 +1,16 @@
-import os
 import json
+import os
 import shutil
-import sys
 import subprocess
-
+import sys
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-from initialise import add_admin, add_setting
-from app import app
 
 from addon import db
+from app import app
+from initialise import add_admin, add_setting
 
-
-# app.config.from_object(os.environ['APP_SETTINGS'])
 
 with open("config.json", "r") as config:
     config = json.load(config)
@@ -27,6 +24,7 @@ manager.add_command("db", MigrateCommand)
 
 @manager.command
 def initialise():
+
     print("Creating Db")
     print("#######################")
     subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
