@@ -6,10 +6,7 @@
 import os
 import json
 
-from flask import (
-    Blueprint, render_template, request, redirect
-
-    )
+from flask import Blueprint, render_template, request, redirect
 
 from flask_login import login_required, current_user
 from addon import db, login_manager
@@ -22,13 +19,12 @@ from modules.admin.models import Users
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
 
-with open(dirpath + '/info.json') as f:
+with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-admin_blueprint = Blueprint('admin', __name__,
-                            template_folder='templates',
-                            url_prefix=module_info['url_prefix']
-                            )
+admin_blueprint = Blueprint(
+    "admin", __name__, template_folder="templates", url_prefix=module_info["url_prefix"]
+)
 
 
 @admin_blueprint.route("/")
@@ -42,11 +38,11 @@ def user_list():
 
     """
     context = base_context()
-    context['users'] = Users.query.all()
-    return render_template('admin/index.html', **context)
+    context["users"] = Users.query.all()
+    return render_template("admin/index.html", **context)
 
 
-@admin_blueprint.route('/add', methods=['GET', 'POST'])
+@admin_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 @admin_required
 def user_add():
@@ -57,12 +53,12 @@ def user_add():
 
     """
     context = base_context()
-    if request.method == 'POST':
-        id = request.form['id']
-        name = request.form['name']
-        password = request.form['password']
-        admin_user = request.form.get('admin_user')
-        if admin_user == 'True':
+    if request.method == "POST":
+        id = request.form["id"]
+        name = request.form["name"]
+        password = request.form["password"]
+        admin_user = request.form.get("admin_user")
+        if admin_user == "True":
             admin_user = True
         else:
             admin_user = False
@@ -74,11 +70,11 @@ def user_add():
             new_user.set_hash(password)
             db.session.add(new_user)
             db.session.commit()
-            return render_template('admin/add.html', **context)
-    return render_template('admin/add.html', **context)
+            return render_template("admin/add.html", **context)
+    return render_template("admin/add.html", **context)
 
 
-@admin_blueprint.route('/delete/<id>', methods=['GET', 'POST'])
+@admin_blueprint.route("/delete/<id>", methods=["GET", "POST"])
 @login_required
 @admin_required
 def admin_delete(id):
@@ -91,10 +87,10 @@ def admin_delete(id):
     """
     Users.query.filter(Users.id == id).delete()
     db.session.commit()
-    return redirect('/admin')
+    return redirect("/admin")
 
 
-@admin_blueprint.route('/edit/<id>', methods=['GET', 'POST'])
+@admin_blueprint.route("/edit/<id>", methods=["GET", "POST"])
 @login_required
 @admin_required
 def appointment_edit(id):
@@ -107,14 +103,14 @@ def appointment_edit(id):
     """
     context = base_context()
     u = Users.query.get(id)
-    context['id'] = u.id
-    context['name'] = u.name
-    context['password'] = u.password
-    context['admin_user'] = u.admin_user
-    return render_template('admin/edit.html', **context)
+    context["id"] = u.id
+    context["name"] = u.name
+    context["password"] = u.password
+    context["admin_user"] = u.admin_user
+    return render_template("admin/edit.html", **context)
 
 
-@admin_blueprint.route('/update', methods=['GET', 'POST'])
+@admin_blueprint.route("/update", methods=["GET", "POST"])
 @login_required
 @admin_required
 def admin_update():
@@ -122,11 +118,11 @@ def admin_update():
                    **Update a User record**
 
     """
-    id = request.form['id']
-    name = request.form['name']
-    password = request.form['password']
-    admin_user = request.form.get('admin_user')
-    if admin_user == 'True':
+    id = request.form["id"]
+    name = request.form["name"]
+    password = request.form["password"]
+    admin_user = request.form.get("admin_user")
+    if admin_user == "True":
         admin_user = True
     else:
         admin_user = False
@@ -136,4 +132,4 @@ def admin_update():
     u.admin_user = admin_user
     db.session.add(u)
     db.session.commit()
-    return redirect('/admin')
+    return redirect("/admin")

@@ -1,9 +1,7 @@
 import os
 import json
 
-from flask import (
-    Blueprint, render_template, request, redirect, url_for, jsonify
-    )
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import sqlalchemy
 from modules.manufacturer.models import Manufacturer
 
@@ -17,81 +15,86 @@ from project_api import get_setting
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
 
-with open(dirpath + '/info.json') as f:
+with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-manufacturer_blueprint = Blueprint('manufac', __name__,
-                              template_folder='templates',
-                              url_prefix=module_info['url_prefix']
-                              )
+manufacturer_blueprint = Blueprint(
+    "manufac",
+    __name__,
+    template_folder="templates",
+    url_prefix=module_info["url_prefix"],
+)
 
 
 @manufacturer_blueprint.route("/")
 @login_required
 def manufac():
     context = base_context()
-    context['manufacs'] = Manufacturer.query.all()
-    context['active_page'] = get_setting('SECTION_NAME')
-    return render_template('manufac/index.html', **context)
+    context["manufacs"] = Manufacturer.query.all()
+    context["active_page"] = get_setting("SECTION_NAME")
+    return render_template("manufac/index.html", **context)
 
 
-@manufacturer_blueprint.route('/add', methods=['GET', 'POST'])
+@manufacturer_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 def manufac_add():
     context = base_context()
 
     has_manufac = False
-    if request.method == 'POST':
-        name = request.form['name']
+    if request.method == "POST":
+        name = request.form["name"]
         has_manufac = Manufacturer.manufacturer_exists(name)
         if has_manufac == False:
             m = Manufacturer(name=name)
             m.insert()
-        return render_template('manufac/add.html', **context)
+        return render_template("manufac/add.html", **context)
 
-    context['has_manufac'] = str(has_manufac)
-    return render_template('manufac/add.html', **context)
+    context["has_manufac"] = str(has_manufac)
+    return render_template("manufac/add.html", **context)
 
 
-@manufacturer_blueprint.route('/delete/<name>', methods=['GET', 'POST'])
+@manufacturer_blueprint.route("/delete/<name>", methods=["GET", "POST"])
 @login_required
 def manufac_delete(name):
     manufac = Manufacturer.query.filter(Manufacturer.name == name).first()
     manufac.delete()
-    return redirect('/manufac')
+    return redirect("/manufac")
 
 
-@manufacturer_blueprint.route('/update', methods=['GET', 'POST'])
+@manufacturer_blueprint.route("/update", methods=["GET", "POST"])
 @login_required
 def manufac_update():
     context = base_context()
 
-    if request.method == 'POST': #this block is only entered when the form is submitted
-        name = request.form['manufac_name']
-        old_name = request.form['old_manufac_name']
+    if (
+        request.method == "POST"
+    ):  # this block is only entered when the form is submitted
+        name = request.form["manufac_name"]
+        old_name = request.form["old_manufac_name"]
         try:
             m = Manufacturer.query.get(old_name)
             m.name = name
             m.update()
         except sqlalchemy.exc.IntegrityError:
-            context['message'] = "you cannot modify to an already existing manufacturer"
-            context['redirect_url'] = "/manufac/"
-            render_template('manufac/message.html', **context)
-        return redirect('/manufac/')
+            context["message"] = "you cannot modify to an already existing manufacturer"
+            context["redirect_url"] = "/manufac/"
+            render_template("manufac/message.html", **context)
+        return redirect("/manufac/")
 
 
-@manufacturer_blueprint.route('/edit/<manufac_name>', methods=['GET', 'POST'])
+@manufacturer_blueprint.route("/edit/<manufac_name>", methods=["GET", "POST"])
 @login_required
 def manufac_edit(manufac_name):
     context = base_context()
 
     m = Manufacturer.query.get(manufac_name)
-    context['manufac_name'] = manufac_name
-    return render_template('manufac/edit.html', **context)
+    context["manufac_name"] = manufac_name
+    return render_template("manufac/edit.html", **context)
+
 
 # api
 @manufacturer_blueprint.route("/check/<manufac_name>", methods=["GET"])
 @login_required
 def check(manufac_name):
     has_manufac = Manufacturer.manufacturer_exists(manufac_name)
-    return jsonify({"exists":has_manufac})
+    return jsonify({"exists": has_manufac})

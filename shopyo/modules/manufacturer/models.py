@@ -3,11 +3,12 @@ from sqlalchemy import exists
 
 
 class Manufacturer(db.Model):
-    __tablename__ = 'manufacturer'
+    __tablename__ = "manufacturer"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     products = db.relationship(
-        'Product', backref='manufacturers', lazy=True, cascade="all, delete")
+        "Product", backref="manufacturers", lazy=True, cascade="all, delete"
+    )
 
     def insert(self):
         """Save manufacturer to the database"""

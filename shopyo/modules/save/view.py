@@ -1,9 +1,7 @@
 import os
 import json
 
-from flask import (
-    Blueprint, render_template, request, redirect
-)
+from flask import Blueprint, render_template, request, redirect
 from flask_login import login_required, current_user
 
 from addon import db, login_manager
@@ -15,13 +13,12 @@ import requests
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
 
-with open(dirpath + '/info.json') as f:
+with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-save_blueprint = Blueprint('save', __name__,
-                           template_folder='templates',
-                           url_prefix=module_info['url_prefix']
-                           )
+save_blueprint = Blueprint(
+    "save", __name__, template_folder="templates", url_prefix=module_info["url_prefix"]
+)
 
 
 @save_blueprint.route("/")
@@ -30,7 +27,7 @@ def save_main():
     context = base_context()
 
     def has_internet():
-        url = 'http://www.google.com/'
+        url = "http://www.google.com/"
         timeout = 5
         try:
             _ = requests.get(url, timeout=timeout)
@@ -39,8 +36,8 @@ def save_main():
             pass
         return False
 
-    context['has_internet'] = has_internet()
-    return render_template('save/index.html', **context)
+    context["has_internet"] = has_internet()
+    return render_template("save/index.html", **context)
 
 
 @save_blueprint.route("/upload")
@@ -49,7 +46,7 @@ def upload_db():
     context = base_context()
 
     def has_internet():
-        url = 'http://www.google.com/'
+        url = "http://www.google.com/"
         timeout = 5
         try:
             _ = requests.get(url, timeout=timeout)
@@ -58,5 +55,5 @@ def upload_db():
             pass
         return False
 
-    context['has_internet'] = has_internet()
-    return render_template('save/index.html', **context)
+    context["has_internet"] = has_internet()
+    return render_template("save/index.html", **context)

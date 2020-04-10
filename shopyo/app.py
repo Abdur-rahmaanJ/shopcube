@@ -21,23 +21,21 @@ def create_app(config_name):
     login_manager.init_app(app)
     csrf = CSRFProtect(app)
 
-
-    for module in os.listdir('modules'):
-        if module.startswith('__'):
+    for module in os.listdir("modules"):
+        if module.startswith("__"):
             continue
-        mod = importlib.import_module('modules.{}.view'.format(module))
-        app.register_blueprint(getattr(mod, '{}_blueprint'.format(module)))
+        mod = importlib.import_module("modules.{}.view".format(module))
+        app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
 
-
-    @app.route('/')
+    @app.route("/")
     def index():
         return redirect(app_config[config_name].HOMEPAGE_URL)
 
     return app
 
 
-app = create_app('development')
+app = create_app("development")
 
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")

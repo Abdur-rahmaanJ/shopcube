@@ -5,8 +5,8 @@ from functools import wraps
 from addon import login_manager
 from modules.admin.models import Users
 
-login_manager.login_view = 'login.login'
-login_manager.login_message = 'Please login for access'
+login_manager.login_view = "login.login"
+login_manager.login_message = "Please login for access"
 
 
 @login_manager.user_loader
@@ -21,6 +21,6 @@ def admin_required(f):
             return f(*args, **kwargs)
         else:
             flash("You need to be an admin to view this page.")
-            return redirect(url_for('manufac.manufac'))
+            return redirect(url_for("manufac.manufac"))
 
     return wrap
