@@ -15,11 +15,14 @@ manager = Manager(app)
 
 manager.add_command("db", MigrateCommand)
 
+
 def runserver():
     app.run()
 
+
 def rundebug():
     app.run(debug=True, host="0.0.0.0")
+
 
 def custom_commands(args):
     # non migration commands

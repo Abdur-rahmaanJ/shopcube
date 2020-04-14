@@ -1,4 +1,5 @@
 import shutil
+import os
 
 
 def trycopytree(source, dest):
@@ -19,7 +20,6 @@ def trycopy(source, dest):
 
 def trymkdir(path):
     try:
-        os.mkdir(base_path)
-        print("created dir {} in {}".format(newfoldername, path))
-    except:
-        pass
+        os.mkdir(path)
+    except Exception as e:
+        print(e)

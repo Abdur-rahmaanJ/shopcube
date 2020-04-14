@@ -1,6 +1,0 @@
-{
-	"name": "Save",
-	"type": "show",
-	"fa-icon": "fa fa-save",
-	"url_prefix": "/save"
-}

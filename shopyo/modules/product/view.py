@@ -1,14 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import jsonify
 from modules.product.models import Product
-from modules.settings.models import Settings
-from modules.manufacturer.models import Manufacturer
 
 from shopyoapi.init import db, ma
 
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from shopyoapi.enhance import base_context
-from shopyoapi.enhance import get_setting
 from sqlalchemy import exists
 
 product_blueprint = Blueprint(
@@ -39,9 +40,9 @@ product_schema = Productchema(many=True)
 @login_required
 def list_prods(manufac_name):
     context = base_context()
-
-    manufac = Manufacturer.query.filter(Manufacturer.name == manufac_name).first()
-    products = Product.query.filter(Product.manufacturer_name == manufac_name).all()
+    products = Product.query.filter(
+        Product.manufacturer_name == manufac_name
+    ).all()
     context["products"] = products
     context["manufac"] = manufac_name
 
@@ -99,7 +100,9 @@ def prods_add(manufac_name):
     return render_template("prods/add.html", **context)
 
 
-@product_blueprint.route("/delete/<manufac_name>/<barcode>", methods=["GET", "POST"])
+@product_blueprint.route(
+    "/delete/<manufac_name>/<barcode>", methods=["GET", "POST"]
+)
 @login_required
 def prods_delete(manufac_name, barcode):
     Product.query.filter(
@@ -109,7 +112,9 @@ def prods_delete(manufac_name, barcode):
     return redirect("/prods/list_prods/{}".format(manufac_name))
 
 
-@product_blueprint.route("/edit/<manufac_name>/<barcode>", methods=["GET", "POST"])
+@product_blueprint.route(
+    "/edit/<manufac_name>/<barcode>", methods=["GET", "POST"]
+)
 @login_required
 def prods_edit(manufac_name, barcode):
     context = base_context()
@@ -145,7 +150,8 @@ def prods_update():
             discontinued = False
 
         p = Product.query.filter(
-            Product.barcode == old_barcode and Product.manufacturer == manufacturer
+            Product.barcode == old_barcode
+            and Product.manufacturer == manufacturer
         ).first()
         p.barcode = barcode
         p.name = name
@@ -177,7 +183,9 @@ def lookup_prods(manufac_name):
 
 
 # api
-@product_blueprint.route("/search/<manufac_name>/barcode/<user_input>", methods=["GET"])
+@product_blueprint.route(
+    "/search/<manufac_name>/barcode/<user_input>", methods=["GET"]
+)
 @login_required
 def search(manufac_name, user_input):
     if request.method == "GET":
@@ -186,7 +194,7 @@ def search(manufac_name, user_input):
         global_search = request.args["global_search"]
         if global_search == "True":
             all_p = Product.query.filter(
-                (getattr(Product, field).like("%" + barcode + "%"))
+                (getattr(Product, field).like("%" + user_input + "%"))
                 & (Product.manufacturer_name == manufac_name)
             ).all()
             result = product_schema.dump(all_p)
@@ -202,5 +210,7 @@ def search(manufac_name, user_input):
 @product_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
-    has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()
+    has_product = db.session.query(
+        exists().where(Product.barcode == barcode)
+    ).scalar()
     return jsonify({"exists": has_product})

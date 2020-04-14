@@ -151,6 +151,7 @@ def people_update():
         s.phone = people_phone
         s.mobile = people_mobile
         s.email = people_email
+        s.facebook = people_facebook
         s.linkedin = people_linkedin
         s.twitter = people_twitter
         s.birthday = people_birthday

@@ -16,11 +16,7 @@ def new_project(path, newfoldername):
 
     base_path = path + "/" + newfoldername
     trymkdir(base_path)
-    """
-    if os.path.exists(base_path):
-        
-    else:
-        print('invalid path:', path); sys.exit()"""
+    print("created dir {} in {}".format(newfoldername, path))
 
     trycopytree("./static", base_path + "/static")
     trycopytree("./tests", base_path + "/tests")
@@ -53,13 +49,14 @@ def clean():
         print("migrations folder doesn't exist")
 
 
-# @manager.command
 def initialise():
     with open("config.json", "r") as config:
         config = json.load(config)
     print("Creating Db")
     print("#######################")
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
     print("Migrating")
     print("#######################")
     subprocess.run(

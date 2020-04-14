@@ -1,17 +1,18 @@
 import os
 import json
 
-from flask import Blueprint, render_template, request, redirect, jsonify
-from flask_login import login_required, current_user
-from flask_marshmallow import Marshmallow
+from flask import Blueprint
+from flask import render_template
+from flask_login import login_required
 
-from shopyoapi.init import db, ma
-from modules.appointment.models import Appointments
 from shopyoapi.enhance import base_context
 
 
 control_panel_blueprint = Blueprint(
-    "control_panel", __name__, template_folder="templates", url_prefix="/control_panel"
+    "control_panel",
+    __name__,
+    template_folder="templates",
+    url_prefix="/control_panel",
 )
 all_info = {}
 

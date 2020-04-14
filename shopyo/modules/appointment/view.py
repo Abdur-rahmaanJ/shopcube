@@ -1,9 +1,12 @@
 import os
 import json
 
-from flask import Blueprint, render_template, request, redirect, jsonify
-from flask_login import login_required, current_user
-from flask_marshmallow import Marshmallow
+from flask import Blueprint
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import jsonify
+from flask_login import login_required
 
 from shopyoapi.init import db
 from shopyoapi.init import ma

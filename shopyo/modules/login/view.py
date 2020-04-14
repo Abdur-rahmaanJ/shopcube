@@ -2,9 +2,9 @@ import os
 import json
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required, current_user, login_user, logout_user
-from shopyoapi.init import db
-from shopyoapi.init import login_manager
+from flask_login import login_required
+from flask_login import login_user
+from flask_login import logout_user
 from modules.admin.models import Users
 from shopyoapi.enhance import base_context
 
@@ -16,7 +16,10 @@ with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
 login_blueprint = Blueprint(
-    "login", __name__, url_prefix=module_info["url_prefix"], template_folder="templates"
+    "login",
+    __name__,
+    url_prefix=module_info["url_prefix"],
+    template_folder="templates",
 )
 
 

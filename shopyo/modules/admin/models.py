@@ -7,7 +7,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from shopyoapi.init import db
 from flask_login import UserMixin
-from sqlalchemy import exists
 
 
 class Users(UserMixin, db.Model):
