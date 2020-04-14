@@ -12,27 +12,28 @@ from shopyoapi.uploads import add_setting
 
 
 def new_project(path, newfoldername):
-    print('creating new project {}'.format(newfoldername))
-    
-    base_path = path+'/'+newfoldername
+    print("creating new project {}".format(newfoldername))
+
+    base_path = path + "/" + newfoldername
     trymkdir(base_path)
-    '''
+    """
     if os.path.exists(base_path):
         
     else:
-        print('invalid path:', path); sys.exit()'''
+        print('invalid path:', path); sys.exit()"""
 
-    trycopytree('./static', base_path+'/static')
-    trycopytree('./tests', base_path+'/tests')
-    trycopytree('./modules/base', base_path+'/modules/base')
+    trycopytree("./static", base_path + "/static")
+    trycopytree("./tests", base_path + "/tests")
+    trycopytree("./modules/base", base_path + "/modules/base")
 
-    trycopy('addon.py', base_path+'/addon.py')
-    trycopy('app.py', base_path+'/app.py')
-    trycopy('config.json', base_path+'/config.json')
-    trycopy('config.py', base_path+'/config.py')
-    trycopy('initialise.py', base_path+'/initialise.py')
-    trycopy('manage.py', base_path+'/manage.py')
-    trycopy('project_api.py', base_path+'/project_api.py')
+    trycopy("addon.py", base_path + "/addon.py")
+    trycopy("app.py", base_path + "/app.py")
+    trycopy("config.json", base_path + "/config.json")
+    trycopy("config.py", base_path + "/config.py")
+    trycopy("initialise.py", base_path + "/initialise.py")
+    trycopy("manage.py", base_path + "/manage.py")
+    trycopy("project_api.py", base_path + "/project_api.py")
+
 
 def clean():
     if os.path.exists("test.db"):
@@ -50,6 +51,7 @@ def clean():
         print("migrations successfully deleted")
     else:
         print("migrations folder doesn't exist")
+
 
 # @manager.command
 def initialise():

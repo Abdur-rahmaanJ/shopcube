@@ -14,33 +14,34 @@ manager = Manager(app)
 manager.add_command("db", MigrateCommand)
 
 
-#@manager.command
+# @manager.command
 def runserver():
     app.run()
 
 
-#@manager.command
+# @manager.command
 def rundebug():
     app.run(debug=True, host="0.0.0.0")
 
+
 def custom_commands(args):
     # non migration commands
-    if args[1] != 'db':
-        if args[1] == 'initialise':
+    if args[1] != "db":
+        if args[1] == "initialise":
             initialise()
-        elif args[1] == 'clean':
+        elif args[1] == "clean":
             clean()
-        elif args[1] == 'runserver':
+        elif args[1] == "runserver":
             runserver()
-        elif args[1] == 'rundebug':
+        elif args[1] == "rundebug":
             rundebug()
-        elif args[1] == 'test':
-            print('test ok')
-        elif args[1] == 'new' and args[2] and args[3]:
+        elif args[1] == "test":
+            print("test ok")
+        elif args[1] == "new" and args[2] and args[3]:
             new_project(args[2], args[3])
         sys.exit()
+
 
 if __name__ == "__main__":
     custom_commands(sys.argv)
     manager.run()
-
