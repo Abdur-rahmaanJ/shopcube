@@ -2,7 +2,7 @@ import os
 import json
 
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
-from addon import db
+from shopyoapi.init import db
 from modules.settings.models import Settings
 from flask_marshmallow import Marshmallow
 from flask_login import login_required, current_user

@@ -3,7 +3,7 @@ from modules.product.models import Product
 from modules.settings.models import Settings
 from modules.manufacturer.models import Manufacturer
 
-from addon import db, ma
+from shopyoapi.init import db, ma
 
 from flask_login import login_required, current_user
 

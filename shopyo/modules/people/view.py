@@ -4,7 +4,7 @@ import json
 from flask import Blueprint, render_template, request, redirect, jsonify
 from flask_login import login_required
 from datetime import date
-from addon import db, ma
+from shopyoapi.init import db, ma
 from modules.people.models import People
 
 from project_api import base_context

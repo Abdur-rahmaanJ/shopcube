@@ -3,7 +3,7 @@ import sys
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from addon import db
+from shopyoapi.init import db
 from app import app
 
 from shopyoapi.cmd import new_project

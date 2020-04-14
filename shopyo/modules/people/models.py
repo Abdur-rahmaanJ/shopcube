@@ -1,4 +1,4 @@
-from addon import db
+from shopyoapi.init import db
 
 
 class People(db.Model):

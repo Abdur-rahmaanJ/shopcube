@@ -4,7 +4,7 @@ import json
 from flask import Blueprint, render_template, request, redirect
 from flask_login import login_required, current_user
 
-from addon import db, login_manager
+from shopyoapi.init import db, login_manager
 from modules.appointment.models import Appointments
 from project_api import base_context
 

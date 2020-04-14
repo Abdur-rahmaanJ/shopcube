@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from addon import db
+from shopyoapi.init import db
 from app import app
 
 from modules.admin.models import Users

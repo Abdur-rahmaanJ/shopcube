@@ -5,7 +5,8 @@ from flask import Blueprint, render_template, request, redirect, jsonify
 from flask_login import login_required, current_user
 from flask_marshmallow import Marshmallow
 
-from addon import db, ma
+from shopyoapi.init import db
+from shopyoapi.init import ma
 from modules.appointment.models import Appointments
 from project_api import base_context
 

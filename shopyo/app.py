@@ -8,7 +8,7 @@ from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import import_string
 from werkzeug.utils import find_modules
 
-from addon import db, login_manager, ma
+from shopyoapi.init import db, login_manager, ma
 from config import app_config
 
 
