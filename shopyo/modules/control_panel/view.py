@@ -7,7 +7,7 @@ from flask_marshmallow import Marshmallow
 
 from shopyoapi.init import db, ma
 from modules.appointment.models import Appointments
-from project_api import base_context
+from shopyoapi.enhance import base_context
 
 
 control_panel_blueprint = Blueprint(

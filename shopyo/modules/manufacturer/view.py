@@ -8,8 +8,8 @@ from modules.manufacturer.models import Manufacturer
 
 from flask_login import login_required, current_user
 
-from project_api import base_context
-from project_api import get_setting
+from shopyoapi.enhance import base_context
+from shopyoapi.enhance import get_setting
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

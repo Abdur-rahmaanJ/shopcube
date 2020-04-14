@@ -8,7 +8,7 @@ from flask_marshmallow import Marshmallow
 from shopyoapi.init import db
 from shopyoapi.init import ma
 from modules.appointment.models import Appointments
-from project_api import base_context
+from shopyoapi.enhance import base_context
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

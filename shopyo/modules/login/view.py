@@ -3,9 +3,10 @@ import json
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
-from shopyoapi.init import db, login_manager
+from shopyoapi.init import db
+from shopyoapi.init import login_manager
 from modules.admin.models import Users
-from project_api import base_context
+from shopyoapi.enhance import base_context
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
