@@ -21,5 +21,6 @@ def trycopy(source, dest):
 def trymkdir(path):
     try:
         os.mkdir(path)
+        print('created dir at', path)
     except Exception as e:
         print(e)

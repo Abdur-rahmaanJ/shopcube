@@ -1,6 +1,7 @@
 import sys
 
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
+from flask_migrate import MigrateCommand
 from flask_script import Manager
 
 from shopyoapi.init import db
@@ -38,6 +39,7 @@ def custom_commands(args):
         elif args[1] == "test":
             print("test ok")
         elif args[1] == "new" and args[2] and args[3]:
+            # new <path> <folder name>
             new_project(args[2], args[3])
         sys.exit()
 

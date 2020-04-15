@@ -12,6 +12,7 @@ from shopyoapi.uploads import add_setting
 
 
 def new_project(path, newfoldername):
+    newfoldername = newfoldername.strip('/').strip('\\')
     print("creating new project {}".format(newfoldername))
 
     base_path = path + "/" + newfoldername
@@ -21,14 +22,13 @@ def new_project(path, newfoldername):
     trycopytree("./static", base_path + "/static")
     trycopytree("./tests", base_path + "/tests")
     trycopytree("./modules/base", base_path + "/modules/base")
+    trycopytree("./shopyoapi", base_path + "/shopyoapi")
 
-    trycopy("addon.py", base_path + "/addon.py")
     trycopy("app.py", base_path + "/app.py")
     trycopy("config.json", base_path + "/config.json")
     trycopy("config.py", base_path + "/config.py")
-    trycopy("initialise.py", base_path + "/initialise.py")
     trycopy("manage.py", base_path + "/manage.py")
-    trycopy("project_api.py", base_path + "/project_api.py")
+    trycopy("base_test.py", base_path + "/base_test.py")
 
 
 def clean():
