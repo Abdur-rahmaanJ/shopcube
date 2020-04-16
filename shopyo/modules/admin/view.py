@@ -8,10 +8,10 @@ import json
 
 from flask import Blueprint, render_template, request, redirect
 
-from flask_login import login_required, current_user
-from addon import db, login_manager
+from flask_login import login_required
+from shopyoapi.init import db
 
-from project_api import base_context
+from shopyoapi.enhance import base_context
 from sqlalchemy import exists
 from modules.admin.admin import admin_required
 from modules.admin.models import Users
@@ -23,7 +23,10 @@ with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
 admin_blueprint = Blueprint(
-    "admin", __name__, template_folder="templates", url_prefix=module_info["url_prefix"]
+    "admin",
+    __name__,
+    template_folder="templates",
+    url_prefix=module_info["url_prefix"],
 )
 
 

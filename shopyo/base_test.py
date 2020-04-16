@@ -1,7 +1,7 @@
 import unittest
 
 from app import create_app
-from addon import db
+from shopyoapi.init import db
 
 
 class BaseTest(unittest.TestCase):

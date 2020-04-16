@@ -10,8 +10,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
 # sys.path.insert(0, os.path.abspath('../shopyo/'))
 
 
@@ -19,7 +17,7 @@ import sys
 
 project = 'Shopyo'
 # copyright = '2020, Abdur-rahmaanJ'
-author = 'Abdur-rahmaanJ'
+author = 'Abdur-rahmaanJ & Shopyo Team'
 
 
 # -- General configuration ---------------------------------------------------
@@ -43,9 +41,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # -- Options for HTML output -------------------------------------------------
 html_context = {
     "project_links": [
-            "Source Code", "https://github.com/Abdur-rahmaanJ/shopyo",
-            "Issue Tracker", "https://github.com/Abdur-rahmaanJ/shopyo/issues",
-        ]
+        "Source Code", "https://github.com/Abdur-rahmaanJ/shopyo",
+        "Issue Tracker", "https://github.com/Abdur-rahmaanJ/shopyo/issues",
+    ]
 }
 html_logo = 'shopyo.ico'
 

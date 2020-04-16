@@ -4,10 +4,10 @@ import json
 from flask import Blueprint, render_template, request, redirect, jsonify
 from flask_login import login_required
 from datetime import date
-from addon import db, ma
+from shopyoapi.init import db, ma
 from modules.people.models import People
 
-from project_api import base_context
+from shopyoapi.enhance import base_context
 import datetime
 
 
@@ -151,6 +151,7 @@ def people_update():
         s.phone = people_phone
         s.mobile = people_mobile
         s.email = people_email
+        s.facebook = people_facebook
         s.linkedin = people_linkedin
         s.twitter = people_twitter
         s.birthday = people_birthday

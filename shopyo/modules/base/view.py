@@ -10,5 +10,8 @@ with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
 base_blueprint = Blueprint(
-    "base", __name__, url_prefix=module_info["url_prefix"], template_folder="templates"
+    "base",
+    __name__,
+    url_prefix=module_info["url_prefix"],
+    template_folder="templates",
 )

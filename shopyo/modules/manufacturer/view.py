@@ -1,15 +1,19 @@
 import os
 import json
 
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import jsonify
 from flask_sqlalchemy import sqlalchemy
 from modules.manufacturer.models import Manufacturer
 
 
-from flask_login import login_required, current_user
+from flask_login import login_required
 
-from project_api import base_context
-from project_api import get_setting
+from shopyoapi.enhance import base_context
+from shopyoapi.enhance import get_setting
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -44,7 +48,7 @@ def manufac_add():
     if request.method == "POST":
         name = request.form["name"]
         has_manufac = Manufacturer.manufacturer_exists(name)
-        if has_manufac == False:
+        if has_manufac is False:
             m = Manufacturer(name=name)
             m.insert()
         return render_template("manufac/add.html", **context)
@@ -76,7 +80,9 @@ def manufac_update():
             m.name = name
             m.update()
         except sqlalchemy.exc.IntegrityError:
-            context["message"] = "you cannot modify to an already existing manufacturer"
+            context[
+                "message"
+            ] = "you cannot modify to an already existing manufacturer"
             context["redirect_url"] = "/manufac/"
             render_template("manufac/message.html", **context)
         return redirect("/manufac/")
@@ -86,8 +92,6 @@ def manufac_update():
 @login_required
 def manufac_edit(manufac_name):
     context = base_context()
-
-    m = Manufacturer.query.get(manufac_name)
     context["manufac_name"] = manufac_name
     return render_template("manufac/edit.html", **context)
 
