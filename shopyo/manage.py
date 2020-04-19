@@ -10,6 +10,7 @@ from app import app
 from shopyoapi.cmd import new_project
 from shopyoapi.cmd import clean
 from shopyoapi.cmd import initialise
+from shopyoapi.cmd import create_module
 
 migrate = Migrate(app, db, compare_type=True)
 manager = Manager(app)
@@ -41,6 +42,8 @@ def custom_commands(args):
         elif args[1] == "new" and args[2] and args[3]:
             # new <path> <folder name>
             new_project(args[2], args[3])
+        elif args[1] == 'startapp' and args[2]:
+            create_module(args[2])
         sys.exit()
 
 

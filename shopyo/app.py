@@ -9,7 +9,8 @@ from config import app_config
 
 def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(app_config[config_name])
+    configuration = app_config[config_name]
+    app.config.from_object(configuration)
 
     db.init_app(app)
     ma.init_app(app)
@@ -23,7 +24,7 @@ def create_app(config_name):
 
     @app.route("/")
     def index():
-        return redirect(app_config[config_name].HOMEPAGE_URL)
+        return redirect(configuration.HOMEPAGE_URL)
 
     return app
 
