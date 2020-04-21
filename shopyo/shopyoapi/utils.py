@@ -24,3 +24,14 @@ def trymkdir(path):
         print('created dir at', path)
     except Exception as e:
         print(e)
+
+
+def trymkfile(path, content):
+    try:
+        with open(path, 'w+') as f:
+            f.write(content)
+        print('file created at {}'.format(path))
+        print('with content:')
+        print(content)
+    except Exception as e:
+        print(e)

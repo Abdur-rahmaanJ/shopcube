@@ -7,6 +7,7 @@ import json
 from shopyoapi.utils import trycopytree
 from shopyoapi.utils import trycopy
 from shopyoapi.utils import trymkdir
+from shopyoapi.utils import trymkfile
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
 
@@ -22,6 +23,9 @@ def new_project(path, newfoldername):
     trycopytree("./static", base_path + "/static")
     trycopytree("./tests", base_path + "/tests")
     trycopytree("./modules/base", base_path + "/modules/base")
+    trycopytree("./modules/admin", base_path + "/modules/admin")
+    trycopytree("./modules/login", base_path + "/modules/login")
+    trycopytree("./modules/settings", base_path + "/modules/settings")
     trycopytree("./shopyoapi", base_path + "/shopyoapi")
 
     trycopy("app.py", base_path + "/app.py")
@@ -80,3 +84,28 @@ def initialise():
     for name, value in config["settings"].items():
         add_setting(name, value)
     print("Done!")
+
+
+def create_module(modulename):
+    print('creating module: {}'.format(modulename))
+    base_path = 'modules/' + modulename
+    trymkdir(base_path)
+    trymkdir(base_path+'/templates')
+    trymkdir(base_path+'/templates/'+modulename)
+    view_content = '''
+from flask import Blueprint
+{0}_blueprint = Blueprint(
+    "{0}",
+    __name__,
+    url_prefix='/{0}',
+    template_folder="templates",
+)
+
+
+@{0}_blueprint.route("/")
+def index():
+    pass
+'''.format(modulename)
+    trymkfile(base_path+'/'+'view.py', view_content)
+    trymkfile(base_path+'/'+'forms.py', '')
+    trymkfile(base_path+'/'+'models.py', '')

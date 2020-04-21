@@ -2,19 +2,20 @@ import importlib
 import os
 
 from flask import Flask, redirect
-
+from flask_wtf.csrf import CSRFProtect
 from shopyoapi.init import db, login_manager, ma
 from config import app_config
 
 
 def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(app_config[config_name])
+    configuration = app_config[config_name]
+    app.config.from_object(configuration)
 
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)
-
+    csrf = CSRFProtect(app)
     for module in os.listdir("modules"):
         if module.startswith("__"):
             continue
@@ -23,7 +24,7 @@ def create_app(config_name):
 
     @app.route("/")
     def index():
-        return redirect(app_config[config_name].HOMEPAGE_URL)
+        return redirect(configuration.HOMEPAGE_URL)
 
     return app
 
