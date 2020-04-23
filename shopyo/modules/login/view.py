@@ -32,10 +32,10 @@ class LoginForm(FlaskForm):
 @login_blueprint.route("/", methods=["GET", "POST"])
 def login():
     context = base_context()
-
-    if request.method == "POST":
-        user_id = request.form["user_id"]
-        password = request.form["password"]
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user_id = login_form.user_id.data
+        password = login_form.password.data
         user = Users.query.filter_by(id=user_id).first()
         if user is None or not user.check_hash(password):
             flash("please check your user id and password")
