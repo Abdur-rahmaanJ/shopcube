@@ -1,7 +1,7 @@
 import os
 import json
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
