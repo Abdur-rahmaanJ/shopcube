@@ -24,6 +24,7 @@ login_blueprint = Blueprint(
     template_folder="templates",
 )
 
+
 class LoginForm(FlaskForm):
     user_id = StringField('user_id')
     password = PasswordField('password')
