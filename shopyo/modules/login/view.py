@@ -5,10 +5,9 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
 from modules.admin.models import Users
 from shopyoapi.enhance import base_context
+from modules.login.forms import LoginForm
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -23,11 +22,6 @@ login_blueprint = Blueprint(
     url_prefix=module_info["url_prefix"],
     template_folder="templates",
 )
-
-
-class LoginForm(FlaskForm):
-    user_id = StringField('user_id')
-    password = PasswordField('password')
 
 
 @login_blueprint.route("/", methods=["GET", "POST"])
