@@ -1,12 +1,13 @@
 import os
 import json
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 from modules.admin.models import Users
 from shopyoapi.enhance import base_context
+from modules.login.forms import LoginForm
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -26,10 +27,11 @@ login_blueprint = Blueprint(
 @login_blueprint.route("/", methods=["GET", "POST"])
 def login():
     context = base_context()
-
-    if request.method == "POST":
-        user_id = request.form["user_id"]
-        password = request.form["password"]
+    login_form = LoginForm()
+    context['form'] = login_form
+    if login_form.validate_on_submit():
+        user_id = login_form.user_id.data
+        password = login_form.password.data
         user = Users.query.filter_by(id=user_id).first()
         if user is None or not user.check_hash(password):
             flash("please check your user id and password")

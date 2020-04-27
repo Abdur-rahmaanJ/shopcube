@@ -15,7 +15,7 @@ def create_app(config_name):
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)
-    csrf = CSRFProtect(app)
+    csrf = CSRFProtect(app)  # noqa
     for module in os.listdir("modules"):
         if module.startswith("__"):
             continue
