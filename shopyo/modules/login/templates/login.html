@@ -46,8 +46,8 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-id-card"></i></span>
                 </div>
-                {{ form.user_id() }}
-                {% if form.user_id.errors %}
+                {{ form.username() }}
+                {% if form.username.errors %}
                     <ul class="errors">
         	            {% for error in form.user_id.errors %}
         		            <li>{{ error }}</li>

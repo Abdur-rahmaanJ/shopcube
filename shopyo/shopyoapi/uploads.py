@@ -7,14 +7,12 @@ from modules.admin.models import Users
 from modules.settings.models import Settings
 
 
-def add_admin(user_id, name, password, admin):
+def add_admin(username, password, admin):
     with app.app_context():
-        user = Users(
-            id=user_id,
-            name=name,
-            password=generate_password_hash(password, method="sha256"),
-            admin_user=admin,
-        )
+        user = Users()
+        user.username = username
+        user.password = generate_password_hash(password, method="sha256")
+        user.admin_user = admin
         db.session.add(user)
         db.session.commit()
 

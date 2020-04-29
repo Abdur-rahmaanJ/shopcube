@@ -30,9 +30,9 @@ def login():
     login_form = LoginForm()
     context['form'] = login_form
     if login_form.validate_on_submit():
-        user_id = login_form.user_id.data
+        username = login_form.username.data
         password = login_form.password.data
-        user = Users.query.filter_by(id=user_id).first()
+        user = Users.query.filter_by(username=username).first()
         if user is None or not user.check_hash(password):
             flash("please check your user id and password")
             return redirect(url_for("login.login"))

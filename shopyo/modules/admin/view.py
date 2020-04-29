@@ -57,8 +57,7 @@ def user_add():
     """
     context = base_context()
     if request.method == "POST":
-        id = request.form["id"]
-        name = request.form["name"]
+        username = request.form["name"]
         password = request.form["password"]
         admin_user = request.form.get("admin_user")
         if admin_user == "True":
@@ -66,18 +65,20 @@ def user_add():
         else:
             admin_user = False
 
-        has_user = db.session.query(exists().where(Users.id == id)).scalar()
+        has_user = db.session.query(
+            exists().where(Users.username == username)).scalar()
 
         if has_user is False:
-            new_user = Users(id=id, name=name, admin_user=admin_user)
+            new_user = Users()
+            new_user.username = username
+            new_user.admin_user = admin_user
             new_user.set_hash(password)
-            db.session.add(new_user)
-            db.session.commit()
+            new_user.save()
             return render_template("admin/add.html", **context)
     return render_template("admin/add.html", **context)
 
 
-@admin_blueprint.route("/delete/<id>", methods=["GET", "POST"])
+@admin_blueprint.route("/delete/<id>", methods=["GET"])
 @login_required
 @admin_required
 def admin_delete(id):
@@ -88,15 +89,15 @@ def admin_delete(id):
         :type id: int
 
     """
-    Users.query.filter(Users.id == id).delete()
-    db.session.commit()
+    user = Users.query.get(id)
+    user.delete()
     return redirect("/admin")
 
 
-@admin_blueprint.route("/edit/<id>", methods=["GET", "POST"])
+@admin_blueprint.route("/edit/<id>", methods=["GET"])
 @login_required
 @admin_required
-def appointment_edit(id):
+def admin_edit(id):
     """
                    **Update information for a User**
 
@@ -107,13 +108,13 @@ def appointment_edit(id):
     context = base_context()
     u = Users.query.get(id)
     context["id"] = u.id
-    context["name"] = u.name
+    context["username"] = u.username
     context["password"] = u.password
     context["admin_user"] = u.admin_user
     return render_template("admin/edit.html", **context)
 
 
-@admin_blueprint.route("/update", methods=["GET", "POST"])
+@admin_blueprint.route("/update", methods=["POST"])
 @login_required
 @admin_required
 def admin_update():
@@ -122,7 +123,6 @@ def admin_update():
 
     """
     id = request.form["id"]
-    name = request.form["name"]
     password = request.form["password"]
     admin_user = request.form.get("admin_user")
     if admin_user == "True":
@@ -130,9 +130,7 @@ def admin_update():
     else:
         admin_user = False
     u = Users.query.get(id)
-    u.name = name
     u.set_hash(password)
     u.admin_user = admin_user
-    db.session.add(u)
-    db.session.commit()
+    u.save()
     return redirect("/admin")
