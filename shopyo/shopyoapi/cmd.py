@@ -73,7 +73,6 @@ def initialise():
     print("Initialising User")
     print("#######################")
     add_admin(
-        config["user"]["id"],
         config["user"]["name"],
         config["user"]["password"],
         config["user"]["admin"],

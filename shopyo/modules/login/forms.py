@@ -4,9 +4,10 @@ from wtforms.validators import DataRequired
 
 
 class LoginForm(FlaskForm):
-    user_id = StringField('User name', [DataRequired()],
-                          render_kw={"class": "form-control",
-                                     "autocomplete": "off"})
+    username = StringField(
+        'name', [DataRequired()], render_kw={
+            "class": "form-control", "autocomplete": "off"
+            })
     password = PasswordField('Password', [DataRequired()],
                              render_kw={"class": "form-control",
                                         "autocomplete": "off"})
