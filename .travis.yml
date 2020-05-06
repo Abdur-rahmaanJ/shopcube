@@ -1,8 +1,0 @@
-language: python
-
-script:
-  - cd shopyo && coverage run -m pytest -v
-  - cd .. && flake8 shopyo
-
-after_success:
-  - coverage report

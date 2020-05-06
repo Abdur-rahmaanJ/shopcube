@@ -20,7 +20,8 @@ class TestingConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = "sqlite:///testing.db"
     DEBUG = True
-
+    LIVESERVER_PORT = 8943
+    LIVESERVER_TIMEOUT = 10
 
 app_config = {
     "development": DevelopmentConfig,

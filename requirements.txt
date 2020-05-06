@@ -6,8 +6,10 @@ flask_migrate
 flask_script
 flask_login
 Flask-WTF
+Flask-Testing
 flake8
 marshmallow_sqlalchemy
 requests
 Sphinx
 pytest
+selenium
