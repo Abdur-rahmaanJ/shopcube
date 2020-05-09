@@ -32,7 +32,6 @@ def new_project(path, newfoldername):
     trycopy("config.json", base_path + "/config.json")
     trycopy("config.py", base_path + "/config.py")
     trycopy("manage.py", base_path + "/manage.py")
-    trycopy("base_test.py", base_path + "/base_test.py")
 
 
 def clean():
@@ -73,9 +72,8 @@ def initialise():
     print("Initialising User")
     print("#######################")
     add_admin(
-        config["user"]["name"],
-        config["user"]["password"],
-        config["user"]["admin"],
+        config["admin_user"]["name"],
+        config["admin_user"]["password"]
     )
 
     print("Initialising Settings")

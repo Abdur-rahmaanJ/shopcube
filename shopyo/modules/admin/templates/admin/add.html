@@ -50,6 +50,16 @@
                 <label for="admin_user" class="custom-control-label">Admin User</label>
             </div>
         </div>
+        {%for role in roles%}
+            <table>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" name="role_{{role}}"></td>
+                        <td>{{role}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        {%endfor%}
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="submit" class="btn btn-info" value="add" required>
     </form>
