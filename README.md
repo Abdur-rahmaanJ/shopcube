@@ -238,6 +238,8 @@ Flask loads all templates in one namespace. If you specify `apple/index.html` fl
 - ✔️ Login
 - ✔️ Api namespacing / apps
 - ✔️ Django-like structure (where models, views and templates all in one  folder)
+- ✔️ Relative reference (.forms for example)
+- ✔️ Roles management
 
 In Progress
 
@@ -245,9 +247,9 @@ In Progress
 - 🔃 Integration tests
 - 🔃 Permission levels
 
-Crossed Out
+TODO
 
-- ✖️ Forms (We believe it should be to the front-end designer's taste)
+- _
 
 # 📞 Contact
 
