@@ -4,7 +4,7 @@ from flask_testing import LiveServerTestCase
 from selenium import webdriver
 
 from app import create_app
-from modules.admin.models import Users
+from modules.admin.models import User
 from modules.settings.models import Settings
 from shopyoapi.init import db
 
@@ -65,7 +65,7 @@ class LoginTest(TestBase):
         self.url = f'{self.get_server_url()}/login/'
 
     def test_successful_login(self):
-        user = Users()
+        user = User()
         user.username = test_user2['username']
         user.set_hash(test_user2['password'])
         user.admin_user = True
