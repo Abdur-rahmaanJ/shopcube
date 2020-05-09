@@ -14,7 +14,7 @@ from shopyoapi.init import db
 from shopyoapi.enhance import base_context
 from sqlalchemy import exists
 from modules.admin.admin import admin_required
-from modules.admin.models import Users
+from modules.admin.models import User
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -35,13 +35,13 @@ admin_blueprint = Blueprint(
 @admin_required
 def user_list():
     """
-           **Get The List of Users**
+           **Get The List of User**
 
             Lists all users in the database.
 
     """
     context = base_context()
-    context["users"] = Users.query.all()
+    context["users"] = User.query.all()
     return render_template("admin/index.html", **context)
 
 
@@ -66,10 +66,10 @@ def user_add():
             admin_user = False
 
         has_user = db.session.query(
-            exists().where(Users.username == username)).scalar()
+            exists().where(User.username == username)).scalar()
 
         if has_user is False:
-            new_user = Users()
+            new_user = User()
             new_user.username = username
             new_user.admin_user = admin_user
             new_user.set_hash(password)
@@ -89,7 +89,7 @@ def admin_delete(id):
         :type id: int
 
     """
-    user = Users.query.get(id)
+    user = User.query.get(id)
     user.delete()
     return redirect("/admin")
 
@@ -106,7 +106,7 @@ def admin_edit(id):
 
     """
     context = base_context()
-    u = Users.query.get(id)
+    u = User.query.get(id)
     context["id"] = u.id
     context["username"] = u.username
     context["password"] = u.password
@@ -129,7 +129,7 @@ def admin_update():
         admin_user = True
     else:
         admin_user = False
-    u = Users.query.get(id)
+    u = User.query.get(id)
     u.set_hash(password)
     u.admin_user = admin_user
     u.save()

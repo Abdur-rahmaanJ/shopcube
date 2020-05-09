@@ -3,13 +3,13 @@ from werkzeug.security import generate_password_hash
 from shopyoapi.init import db
 from app import app
 
-from modules.admin.models import Users
+from modules.admin.models import User
 from modules.settings.models import Settings
 
 
 def add_admin(username, password, admin):
     with app.app_context():
-        user = Users()
+        user = User()
         user.username = username
         user.password = generate_password_hash(password, method="sha256")
         user.admin_user = admin

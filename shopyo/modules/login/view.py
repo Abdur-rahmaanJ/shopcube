@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
-from modules.admin.models import Users
+from modules.admin.models import User
 from shopyoapi.enhance import base_context
 from modules.login.forms import LoginForm
 
@@ -32,7 +32,7 @@ def login():
     if login_form.validate_on_submit():
         username = login_form.username.data
         password = login_form.password.data
-        user = Users.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username).first()
         if user is None or not user.check_hash(password):
             flash("please check your user id and password")
             return redirect(url_for("login.login"))

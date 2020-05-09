@@ -10,8 +10,8 @@ from flask_login import UserMixin
 from uuid import uuid4
 
 
-class Users(UserMixin, db.Model):
-    """ Users model """
+class User(UserMixin, db.Model):
+    """ User model """
 
     __tablename__ = "users"
     id = db.Column(db.String(10), primary_key=True)
@@ -20,7 +20,7 @@ class Users(UserMixin, db.Model):
     admin_user = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
-        super(Users, self).__init__(**kwargs)
+        super(User, self).__init__(**kwargs)
         self.id = str(uuid4())
 
     def set_hash(self, password):

@@ -3,7 +3,7 @@ from flask_login import current_user
 from functools import wraps
 
 from shopyoapi.init import login_manager
-from modules.admin.models import Users
+from modules.admin.models import User
 
 login_manager.login_view = "login.login"
 login_manager.login_message = "Please login for access"
@@ -11,7 +11,7 @@ login_manager.login_message = "Please login for access"
 
 @login_manager.user_loader
 def load_user(id):
-    return Users.query.get(id)
+    return User.query.get(id)
 
 
 def admin_required(f):
