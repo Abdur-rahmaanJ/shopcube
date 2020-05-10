@@ -69,7 +69,7 @@ class LoginTest(TestBase):
         user.username = test_user2['username']
         user.set_hash(test_user2['password'])
         user.admin_user = True
-        user.save()
+        user.insert()
         self.driver.get(self.url)
         self.driver.find_element_by_id("username").send_keys(
             test_user2['username'])

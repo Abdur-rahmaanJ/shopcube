@@ -41,6 +41,7 @@
                 <th>Username</th>
                 <th>Password</th>
                 <th>Admin</th>
+                <th>Roles</th>
                 <th style="border: none;"></th>
               </tr>
             </thead>
@@ -51,6 +52,13 @@
                 <td>{{user.username}}</td>
                 <td>*******</td>
                 <td>{{user.admin_user}}</td>
+                <td>
+                  {%for role in user.roles%}
+                    <div class="badge badge-primary">
+                        {{role.name}}
+                    </div>
+                  {%endfor%}
+                </td>
                 <td style="border: none;">
                   <div style='display: inline-block; '>
                         <a style="text-decoration: none;">

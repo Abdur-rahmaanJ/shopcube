@@ -1,9 +1,8 @@
 {
     "environment": "development",
-    "user": {
+    "admin_user": {
       "name": "user",
-      "password": "pass",
-      "admin": true
+      "password": "pass"
     },
     "settings": {
       "APP_NAME": "Demo",

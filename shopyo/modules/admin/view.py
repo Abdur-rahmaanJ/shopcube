@@ -5,7 +5,7 @@
 """
 import os
 import json
-
+from config import Config
 from flask import Blueprint, render_template, request, redirect
 
 from flask_login import login_required
@@ -13,8 +13,10 @@ from shopyoapi.init import db
 
 from shopyoapi.enhance import base_context
 from sqlalchemy import exists
+
 from modules.admin.admin import admin_required
 from modules.admin.models import User
+from modules.admin.models import Role
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -73,8 +75,15 @@ def user_add():
             new_user.username = username
             new_user.admin_user = admin_user
             new_user.set_hash(password)
-            new_user.save()
+            
+            for key in request.form:
+                if key.startswith('role_'):
+                    rolename = key.split('_')[1]
+                    new_user.roles.append(Role(name=rolename))
+            new_user.insert()
             return render_template("admin/add.html", **context)
+
+    context['roles'] = Config.USER_ROLES
     return render_template("admin/add.html", **context)
 
 
@@ -106,11 +115,10 @@ def admin_edit(id):
 
     """
     context = base_context()
-    u = User.query.get(id)
-    context["id"] = u.id
-    context["username"] = u.username
-    context["password"] = u.password
-    context["admin_user"] = u.admin_user
+    user = User.query.get(id)
+    context['user'] = user
+    context['user_roles'] = [r.name for r in user.roles]
+    context['roles'] = Config.USER_ROLES
     return render_template("admin/edit.html", **context)
 
 
@@ -124,13 +132,22 @@ def admin_update():
     """
     id = request.form["id"]
     password = request.form["password"]
+    username = request.form["username"]
     admin_user = request.form.get("admin_user")
     if admin_user == "True":
         admin_user = True
     else:
         admin_user = False
-    u = User.query.get(id)
-    u.set_hash(password)
-    u.admin_user = admin_user
-    u.save()
+    user = User.query.get(id)
+    user.set_hash(password)
+    user.admin_user = admin_user
+    user.username = username
+    if password.strip():
+        user.set_hash(password)
+    user.roles[:] = []
+    for key in request.form:
+        if key.startswith('role_'):
+            rolename = key.split('_')[1]
+            user.roles.append(Role(name=rolename))
+    user.update()
     return redirect("/admin")
