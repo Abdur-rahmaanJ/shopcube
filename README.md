@@ -82,6 +82,7 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 ![](screenshots/scr_product_add.png)
 ![](screenshots/scr_product_lookup.png)
 ![](screenshots/scr_people_add.png)
+![](screenshots/scr_people_view.png)
 ![](screenshots/scr_people_lookup.png)
 ![](screenshots/scr_appointment_add.png)
 ![](screenshots/scr_appointment_menu.png)
