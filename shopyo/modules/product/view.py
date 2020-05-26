@@ -36,22 +36,22 @@ product_schema = Productchema()
 product_schema = Productchema(many=True)
 
 
-@product_blueprint.route("/list_prods/<manufac_name>")
+@product_blueprint.route("/list_prods/<category_name>")
 @login_required
-def list_prods(manufac_name):
+def list_prods(category_name):
     context = base_context()
     products = Product.query.filter(
-        Product.manufacturer_name == manufac_name
+        Product.category_name == category_name
     ).all()
     context["products"] = products
-    context["manufac"] = manufac_name
+    context["category"] = category_name
 
     return render_template("prods/list.html", **context)
 
 
-@product_blueprint.route("/add/<manufac_name>", methods=["GET", "POST"])
+@product_blueprint.route("/add/<category_name>", methods=["GET", "POST"])
 @login_required
-def prods_add(manufac_name):
+def prods_add(category_name):
     context = base_context()
 
     has_product = False
@@ -69,9 +69,9 @@ def prods_add(manufac_name):
         else:
             discontinued = False
 
-        # manufacturer = Manufacturer.query.filter(
-        #     Manufacturer.name == manufac_name).first()
-        # print(manufacturer, manufac_name, manufacturer.name)
+        # category = Category.query.filter(
+        #     Category.name == category_name).first()
+        # print(category, category_name, category.name)
         has_product = db.session.query(
             exists().where(Product.barcode == barcode)
         ).scalar()
@@ -87,44 +87,44 @@ def prods_add(manufac_name):
                 selling_price=selling_price,
                 in_stock=in_stock,
                 discontinued=discontinued,
-                manufacturer_name=manufac_name,
+                category_name=category_name,
             )
             db.session.add(p)
             db.session.commit()
-        context["manufac"] = manufac_name
+        context["category"] = category_name
         context["has_product"] = str(has_product)
         return render_template("prods/add.html", **context)
 
-    context["manufac"] = manufac_name
+    context["category"] = category_name
     context["has_product"] = str(has_product)
     return render_template("prods/add.html", **context)
 
 
 @product_blueprint.route(
-    "/delete/<manufac_name>/<barcode>", methods=["GET", "POST"]
+    "/delete/<category_name>/<barcode>", methods=["GET", "POST"]
 )
 @login_required
-def prods_delete(manufac_name, barcode):
+def prods_delete(category_name, barcode):
     Product.query.filter(
-        Product.barcode == barcode and Product.manufacturer == manufac_name
+        Product.barcode == barcode and Product.category == category_name
     ).delete()
     db.session.commit()
-    return redirect("/prods/list_prods/{}".format(manufac_name))
+    return redirect("/prods/list_prods/{}".format(category_name))
 
 
 @product_blueprint.route(
-    "/edit/<manufac_name>/<barcode>", methods=["GET", "POST"]
+    "/edit/<category_name>/<barcode>", methods=["GET", "POST"]
 )
 @login_required
-def prods_edit(manufac_name, barcode):
+def prods_edit(category_name, barcode):
     context = base_context()
 
     product = Product.query.filter(
-        Product.barcode == barcode and Product.manufacturer == manufac_name
+        Product.barcode == barcode and Product.category == category_name
     ).first()
 
     context["product"] = product
-    context["manufac"] = manufac_name
+    context["category"] = category_name
     return render_template("prods/edit.html", **context)
 
 
@@ -135,7 +135,7 @@ def prods_update():
     if request.method == "POST":
         barcode = request.form["barcode"]
         old_barcode = request.form["old_barcode"]
-        manufacturer = request.form["manufac"]
+        category = request.form["category"]
 
         name = request.form["name"]
         description = request.form["description"]
@@ -151,7 +151,7 @@ def prods_update():
 
         p = Product.query.filter(
             Product.barcode == old_barcode
-            and Product.manufacturer == manufacturer
+            and Product.category == category
         ).first()
         p.barcode = barcode
         p.name = name
@@ -162,21 +162,21 @@ def prods_update():
         p.selling_price = selling_price
         p.in_stock = in_stock
         p.discontinued = discontinued
-        p.manufacturer = manufacturer
+        p.category = category
         db.session.commit()
-        return redirect("/prods/list_prods/{}".format(manufacturer))
+        return redirect("/prods/list_prods/{}".format(category))
 
 
-@product_blueprint.route("/lookup/<manufac_name>")
+@product_blueprint.route("/lookup/<category_name>")
 @login_required
-def lookup_prods(manufac_name):
+def lookup_prods(category_name):
     context = base_context()
 
-    context["manufac"] = manufac_name
+    context["category"] = category_name
     context["fields"] = [
         key.replace("_", " ")
         for key in Product.__table__.columns.keys()
-        if key not in ["manufacturer_name"]
+        if key not in ["category_name"]
     ]
 
     return render_template("prods/lookup.html", **context)
@@ -184,10 +184,10 @@ def lookup_prods(manufac_name):
 
 # api
 @product_blueprint.route(
-    "/search/<manufac_name>/barcode/<user_input>", methods=["GET"]
+    "/search/<category_name>/barcode/<user_input>", methods=["GET"]
 )
 @login_required
-def search(manufac_name, user_input):
+def search(category_name, user_input):
     if request.method == "GET":
         print(request.args["field"], request.args["global_search"])
         field = request.args["field"]
@@ -195,7 +195,7 @@ def search(manufac_name, user_input):
         if global_search == "True":
             all_p = Product.query.filter(
                 (getattr(Product, field).like("%" + user_input + "%"))
-                & (Product.manufacturer_name == manufac_name)
+                & (Product.category_name == category_name)
             ).all()
             result = product_schema.dump(all_p)
         else:

@@ -43,7 +43,7 @@ class TestBase(LiveServerTestCase):
             # create all tables
             db.create_all()
         setting1 = Settings(setting="APP_NAME", value="Testing")
-        setting2 = Settings(setting="SECTION_NAME", value="Manufacturer")
+        setting2 = Settings(setting="SECTION_NAME", value="Category")
         setting3 = Settings(setting="SECTION_ITEMS", value="Products")
         db.session.add_all([setting1, setting2, setting3])
         db.session.commit()

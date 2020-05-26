@@ -33,11 +33,11 @@ $(function() {
 
   <h2>Add product for 
       <span class="badge badge-primary">{{SECTION_NAME}}</span>
-      <span class="badge badge-secondary">{{manufac}}</span>
+      <span class="badge badge-secondary">{{category}}</span>
   </h2>
   <br>
 
-<form action="/prods/add/{{manufac}}" method="post">
+<form action="/prods/add/{{category}}" method="post">
 
   <label>barcode</label>
   <div class="input-group mb-3">
@@ -139,8 +139,8 @@ $(function() {
   <br>
 
   <input 
-    type="hidden" autocomplete="off" id="manufac" class="form-control" 
-    name="manufac" placeholder="manufac" value="{{manufac}}">
+    type="hidden" autocomplete="off" id="category" class="form-control" 
+    name="category" placeholder="category" value="{{category}}">
 
   <input required  type="submit" class="btn btn-info" value="add">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

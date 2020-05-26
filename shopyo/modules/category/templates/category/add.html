@@ -1,20 +1,20 @@
 {% extends "base/main_base.html" %}
 
-{% set active_page ='manufacturer' %}
+{% set active_page ='category' %}
 
 {% block pagehead %}
-<title>add manufacturer</title>
+<title>add category</title>
 {% endblock %}
 
 {% block content %}
-  {% include 'manufac/nav.html' %}
+  {% include 'category/nav.html' %}
   <br>
 <script type="text/javascript">
 $(function() {
     // pos
     //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
     $('#name').on('input', function() {
-        $.getJSON( "/manufac/check/"+$("#name").val(), function( data ) {
+        $.getJSON( "/category/check/"+$("#name").val(), function( data ) {
             $("#check").html("<i class='fa fa-list-alt'></i>");
             if (data['exists'] === true){
               $("#check").html("<i style='color:red;' class='fas fa-exclamation-triangle'></i>");
@@ -23,16 +23,16 @@ $(function() {
     });
   });
 </script>
-{% if has_manufac == 'True' %}
+{% if has_category == 'True' %}
   
   <div class="alert alert-danger" role="alert">
-    Manufacturer alreadly Listed
+    Category alreadly Listed
   </div>
 {% endif %}
 
-<h2>Add Manufacturer</h2>
+<h2>Add Category</h2>
 
-<form action="/manufac/add" method="post">
+<form action="/category/add" method="post">
 
   <label>name</label>
   <div class="input-group mb-3">

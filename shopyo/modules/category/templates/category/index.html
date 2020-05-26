@@ -1,6 +1,6 @@
 {% extends "base/main_base.html" %}
 
-{% set active_page ='manufacturer' %}
+{% set active_page ='category' %}
 
 {% block pagehead %}
 <title>SpareParts</title>
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block content %}
-  {% include 'manufac/nav.html' %}
+  {% include 'category/nav.html' %}
   <br>
 
 <script type="text/javascript">
@@ -27,7 +27,7 @@
       console.log(name);
       var ask = confirm("Do you want to delete ?");
       if( ask == true ) {
-        window.open("/manufac/delete/"+name,"_self")
+        window.open("/category/delete/"+name,"_self")
       } else {
 
       }
@@ -35,7 +35,7 @@
   });
 </script>
 
-  {%for m in manufacs%}
+  {%for m in categorys%}
   <a href="" >
     <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
       
@@ -49,7 +49,7 @@
               id="{{m.name}}" 
               type="text" 
               class="form-control"
-              name="manufac_name" 
+              name="category_name" 
               placeholder="Barcode" 
               value="{{m.name}}">
       </div>
@@ -57,7 +57,7 @@
         <button id='del-{{m.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
       </a>
       &nbsp;
-      <a href="/manufac/edit/{{m.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
+      <a href="/category/edit/{{m.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
         <button data-name="{{m.name}}" class="btn btn-warning" type=""><i id='ico-{{m.name}}' class="fas fa-pencil-alt"></i></button>
       </a>
     </div>

@@ -1,24 +1,24 @@
 {% extends "base/main_base.html" %}
 
-{% set active_page ='manufacturer' %}
+{% set active_page ='category' %}
 
 {% block pagehead %}
 <title>edit</title>
 {% endblock %}
 
 {% block content %}
-  {% include 'manufac/nav.html' %}
+  {% include 'category/nav.html' %}
   <br>
-<form action='/manufac/update' method="post">
+<form action='/category/update' method="post">
   <label>Name</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-tag"></i></span>
     </div>
-    <input required  id="manufac" type="text" class="form-control" 
-      name="manufac_name" placeholder="{{ manufac_name}}">
-    <input required  id="manufac2" type="hidden" class="form-control" 
-      name="old_manufac_name" value="{{ manufac_name }}">
+    <input required  id="category" type="text" class="form-control" 
+      name="category_name" placeholder="{{ category_name}}">
+    <input required  id="category2" type="hidden" class="form-control" 
+      name="old_category_name" value="{{ category_name }}">
   </div>
 
   <br>

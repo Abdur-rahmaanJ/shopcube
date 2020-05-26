@@ -12,6 +12,6 @@ class Product(db.Model):
     in_stock = db.Column(db.Integer)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Float)
-    manufacturer_name = db.Column(
-        db.String(100), db.ForeignKey("manufacturer.name"), nullable=False
+    category_name = db.Column(
+        db.String(100), db.ForeignKey("category.name"), nullable=False
     )
