@@ -16,6 +16,7 @@ product_blueprint = Blueprint(
     "prods", __name__, template_folder="templates", url_prefix="/prods"
 )
 
+import uuid
 
 class Productchema(ma.Schema):
     class Meta:
@@ -59,7 +60,6 @@ def prods_add(category_name):
         barcode = request.form["barcode"]
         name = request.form["name"]
         description = request.form["description"]
-        category = request.form["category"]
         date = request.form["date"]
         price = request.form["price"]
         selling_price = request.form["selling_price"]
@@ -80,15 +80,19 @@ def prods_add(category_name):
             p = Product(
                 barcode=barcode,
                 name=name,
-                description=description,
-                category=category,
-                date=date,
-                price=price,
-                selling_price=selling_price,
                 in_stock=in_stock,
-                discontinued=discontinued,
                 category_name=category_name,
+                discontinued=discontinued
             )
+            if description.strip():
+                p.description = description
+            if date.strip():
+                p.date = date
+            if price.strip():
+                p.price
+            if selling_price.strip():
+                p.selling_price
+            
             db.session.add(p)
             db.session.commit()
         context["category"] = category_name
@@ -97,6 +101,7 @@ def prods_add(category_name):
 
     context["category"] = category_name
     context["has_product"] = str(has_product)
+    context['barcodestr'] = uuid.uuid1()
     return render_template("prods/add.html", **context)
 
 

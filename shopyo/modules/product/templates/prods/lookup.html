@@ -24,7 +24,7 @@ $(function() {
       }
       field = $("#choose_field input[type='radio']:checked").attr("value");
 
-       $("#results_table tbody").html("<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+       $("#results_table tbody").html("<tr></tr>");
         $.getJSON( "/prods/search/{{category}}/barcode/"+$("#searchinput").val()+"?"+
           "global_search="+global_search+"&"+
           "field="+field, 

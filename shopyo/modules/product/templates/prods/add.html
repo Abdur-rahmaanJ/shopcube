@@ -39,17 +39,17 @@ $(function() {
 
 <form action="/prods/add/{{category}}" method="post">
 
-  <label>barcode</label>
+  <label>barcode (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required 
       name="barcode" autocomplete="off" id="barcode" type="text" class="form-control" 
-      placeholder="Barcode">
+      placeholder="Barcode" value="{{barcodestr}}">
   </div>
 
-  <label>name</label>
+  <label>name (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
@@ -64,19 +64,9 @@ $(function() {
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
+    <input 
         name="description" autocomplete="off" id="description" type="text" class="form-control" 
         placeholder="Product Description">
-  </div>
-
-  <label>category</label>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
-    </div>
-    <input required
-        name="category" autocomplete="off" id="category" type="text" class="form-control" 
-        placeholder="Product Category">
   </div>
 
   <label>date</label>
@@ -84,19 +74,19 @@ $(function() {
       <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
       </div>
-      <input required
+      <input 
           name="date" id="noHistoricDates"autocomplete="off" id="date" type="date" 
           class="form-control" min="" placeholder="">
   </div>
 
-  <label>price</label>
+  <label>price (required - default 0)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
+    <input 
         name="price" autocomplete="off" id="price" type="number" step="0.01" class="form-control" 
-        placeholder="Price">
+        placeholder="Price" value="0">
   </div>
 
   <label>selling price</label>
@@ -104,12 +94,12 @@ $(function() {
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
+    <input
         name="selling_price" autocomplete="off" id="selling_price" type="number" step="0.01"
         class="form-control" placeholder="Selling Price">
   </div>
 
-  <label>in stock</label>
+  <label>in stock (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
