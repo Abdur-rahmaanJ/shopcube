@@ -7,11 +7,10 @@ class Product(db.Model):
     price = db.Column(db.Float)
     name = db.Column(db.String(100))
     description = db.Column(db.String(300))
-    category = db.Column(db.String(50))
     date = db.Column(db.String(100))
     in_stock = db.Column(db.Integer)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Float)
-    manufacturer_name = db.Column(
-        db.String(100), db.ForeignKey("manufacturer.name"), nullable=False
+    category_name = db.Column(
+        db.String(100), db.ForeignKey("category.name"), nullable=False
     )

@@ -141,7 +141,7 @@ Inside the template folder create a file named <code class="docutils literal not
  8
  9
 10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="nb">set</span> <span class="n">nav_bar_log</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">(</span><span class="s1">&#39;manufacturer&#39;</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">),</span>
   <span class="p">(</span><span class="s1">&#39;appointments&#39;</span><span class="p">),</span>
   <span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">),</span>
   <span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">),</span>
@@ -181,7 +181,7 @@ to the <code class="docutils literal notranslate"><span class="pre">nav_base.htm
 25
 26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">active_page</span> <span class="o">==</span> <span class="n">nav_bar_log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
 
-      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;manufac/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+      <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;category/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
       <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;settings/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
       <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;appointment/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>
       <span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;people/nav.html&quot;</span> <span class="o">%</span><span class="p">}</span>

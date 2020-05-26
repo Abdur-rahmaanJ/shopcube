@@ -21,6 +21,6 @@ def admin_required(f):
             return f(*args, **kwargs)
         else:
             flash("You need to be an admin to view this page.")
-            return redirect(url_for("manufac.manufac"))
+            return redirect(url_for("category.category"))
 
     return wrap

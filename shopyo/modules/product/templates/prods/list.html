@@ -14,7 +14,7 @@
 
   <h2>products for 
       <span class="badge badge-primary">{{SECTION_NAME}}</span>
-      <span class="badge badge-secondary">{{manufac}}</span>
+      <span class="badge badge-secondary">{{category}}</span>
   </h2>
   <br>
     <table class="table">
@@ -47,10 +47,10 @@
                 
                 <td style="">
                   <a 
-                      href="/prods/edit/{{manufac}}/{{p.barcode}}" class="btn btn-warning" role="button">
+                      href="/prods/edit/{{category}}/{{p.barcode}}" class="btn btn-warning" role="button">
                     <i class="fas fa-pencil-alt"></i>
                   </a>
-                  <a href="/prods/delete/{{manufac}}/{{p.barcode}}" class="btn btn-danger" role="button">
+                  <a href="/prods/delete/{{category}}/{{p.barcode}}" class="btn btn-danger" role="button">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </td>

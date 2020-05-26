@@ -1,0 +1,70 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='category' %}
+
+{% block pagehead %}
+<title>SpareParts</title>
+<style>
+  .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  {% include 'category/nav.html' %}
+  <br>
+
+<script type="text/javascript">
+  $(function() {
+    $('.delete_me').click(function(){
+      var id = $(this).attr('id');
+      console.log(id);
+      var name = id.split('-')[1];
+      console.log(name);
+      var ask = confirm("Do you want to delete ?");
+      if( ask == true ) {
+        window.open("/category/delete/"+name,"_self")
+      } else {
+
+      }
+    });
+  });
+</script>
+
+  {%for m in categorys%}
+  <a href="" >
+    <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
+      
+      <a href="/prods/list_prods/{{m.name}}" style="text-decoration: none;">
+        <button style="width:75px;" class="btn btn-info" type=""><img width="30px"  src="/static/box.svg"></button>
+      </a>
+      
+      &nbsp;&nbsp;
+      <div style='display: inline-block;'>
+        <input disabled  
+              id="{{m.name}}" 
+              type="text" 
+              class="form-control"
+              name="category_name" 
+              placeholder="Barcode" 
+              value="{{m.name}}">
+      </div>
+      <a href="#" style="text-decoration: none; float:right;">
+        <button id='del-{{m.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+      </a>
+      &nbsp;
+      <a href="/category/edit/{{m.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
+        <button data-name="{{m.name}}" class="btn btn-warning" type=""><i id='ico-{{m.name}}' class="fas fa-pencil-alt"></i></button>
+      </a>
+    </div>
+
+  </a><br><br>
+
+  {%endfor%}
+{% endblock %}
+
+

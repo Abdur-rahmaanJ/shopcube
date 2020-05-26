@@ -6,7 +6,7 @@
     },
     "settings": {
       "APP_NAME": "Demo",
-      "SECTION_NAME": "Manufacturer",
+      "SECTION_NAME": "Category",
       "SECTION_ITEMS": "Products"
     }
 }
