@@ -7,6 +7,8 @@
 {% endblock %}
 
 {% block content %}
+{%include 'admin/nav.html'%}
+<br>
 <h2>Edit User</h2>
 
 <form action='/admin/update' method="post">
@@ -38,12 +40,12 @@
                 <tbody>
                     {%for role in roles%}
                       <tr>
-                      <td><input type="checkbox" name="role_{{role}}" 
-                        {%if role in user_roles%}
+                      <td><input type="checkbox" name="role_{{role.id}}" 
+                        {%if role.name in user_roles%}
                           checked
                         {%endif%}
                         ></td>
-                      <td>{{role}}</td>
+                      <td>{{role.name}}</td>
                       </tr>
                     {%endfor%}
                 </tbody>

@@ -7,6 +7,7 @@ import os
 import json
 from config import Config
 from flask import Blueprint, render_template, request, redirect
+from flask import url_for
 
 from flask_login import login_required
 from shopyoapi.init import db
@@ -78,12 +79,13 @@ def user_add():
             
             for key in request.form:
                 if key.startswith('role_'):
-                    rolename = key.split('_')[1]
-                    new_user.roles.append(Role(name=rolename))
+                    roleid = key.split('_')[1]
+                    role = Role.query.get(roleid)
+                    new_user.roles.append(role)
             new_user.insert()
-            return render_template("admin/add.html", **context)
+            return redirect(url_for('admin.user_add'))
 
-    context['roles'] = Config.USER_ROLES
+    context['roles'] = Role.query.all()
     return render_template("admin/add.html", **context)
 
 
@@ -118,7 +120,7 @@ def admin_edit(id):
     user = User.query.get(id)
     context['user'] = user
     context['user_roles'] = [r.name for r in user.roles]
-    context['roles'] = Config.USER_ROLES
+    context['roles'] = Role.query.all()
     return render_template("admin/edit.html", **context)
 
 
@@ -147,7 +149,49 @@ def admin_update():
     user.roles[:] = []
     for key in request.form:
         if key.startswith('role_'):
-            rolename = key.split('_')[1]
-            user.roles.append(Role(name=rolename))
+            roleid = key.split('_')[1]
+            role = Role.query.get(roleid) 
+            user.roles.append(role)
+
     user.update()
     return redirect("/admin")
+
+@admin_blueprint.route("/roles")
+@login_required
+@admin_required
+def roles():
+    context = base_context()
+    context['roles'] = Role.query.all()
+    return render_template('admin/roles.html', **context)
+
+@admin_blueprint.route("/roles/add", methods=['POST'])
+@login_required
+@admin_required
+def roles_add():
+    if request.method == 'POST':
+        if not Role.query.filter(
+                  Role.name == request.form['name']
+              ).first():
+            role = Role(name=request.form['name'])
+            role.insert()
+    return redirect(url_for('admin.roles'))
+
+
+@admin_blueprint.route("/roles/<role_id>/delete", methods=['GET'])
+@login_required
+@admin_required
+def roles_delete(role_id):
+    role = Role.query.get(role_id)
+    role.delete()
+    return redirect(url_for('admin.roles'))
+
+
+@admin_blueprint.route("/roles/update", methods=['POST'])
+@login_required
+@admin_required
+def roles_update():
+    if request.method == 'POST':
+        role = Role.query.get(request.form['role_id'])
+        role.name = request.form['role_name']
+        role.update()
+    return redirect(url_for('admin.roles'))

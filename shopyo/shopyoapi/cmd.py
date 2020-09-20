@@ -101,8 +101,15 @@ from flask import Blueprint
 
 @{0}_blueprint.route("/")
 def index():
-    pass
+    return ''
 '''.format(modulename)
     trymkfile(base_path+'/'+'view.py', view_content)
     trymkfile(base_path+'/'+'forms.py', '')
     trymkfile(base_path+'/'+'models.py', '')
+    info_json_content = '''{{
+        "name": "{}",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/{}"
+}}'''.format(modulename.capitalize(), modulename)
+    trymkfile(base_path+'/'+'info.json', info_json_content)

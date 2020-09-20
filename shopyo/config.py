@@ -2,7 +2,7 @@ class Config:
     """Parent configuration class."""
 
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = "qow32ijjdkc756osk5dmck"  # Need a generator
     HOMEPAGE_URL = "/control_panel"

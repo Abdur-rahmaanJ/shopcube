@@ -11,6 +11,9 @@ from modules.settings.models import Settings
 # run in shopyo/shopyo
 # python -m pytest tests/
 
+import os
+if os.path.exists("testing.db"):
+    os.remove("testing.db")
 
 @pytest.fixture(scope='module')
 def new_user():
@@ -42,7 +45,7 @@ def init_database():
     db.create_all()
  
     # Insert user data
-    user1 = User(username='road')
+    user1 = User(username='car')
     user1.set_hash('pass')
     user2 = User(username='field')
     user2.set_hash('pass')
