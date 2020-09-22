@@ -76,7 +76,7 @@ def category_update():
         name = request.form["category_name"]
         old_name = request.form["old_category_name"]
         try:
-            m = Category.query.get(old_name)
+            m = Category.query.filter_by(name=old_name).first()
             m.name = name
             m.update()
         except sqlalchemy.exc.IntegrityError:
