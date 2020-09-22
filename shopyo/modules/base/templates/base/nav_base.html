@@ -42,9 +42,7 @@
 
 
     <ul class="navbar-nav ml-auto">
-    {% if current_user.admin_user == True and active_page != 'admin' %}
-      {% include "admin/nav.html" %}
-    {% endif %}
+    
     {% if not active_page == 'login' %}
     <li class="nav-item">
       <a class="nav-link" href="{{url_for('login.logout')}}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>

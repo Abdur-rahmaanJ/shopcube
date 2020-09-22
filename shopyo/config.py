@@ -6,7 +6,6 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = "qow32ijjdkc756osk5dmck"  # Need a generator
     HOMEPAGE_URL = "/control_panel"
-    USER_ROLES = ['teacher', 'mailman', 'lawyer', 'doctor']
 
 
 class DevelopmentConfig(Config):
