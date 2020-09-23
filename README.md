@@ -88,6 +88,11 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 |:---:|:---:|
 |Maurilearn.com|Elearning platform|
 
+# TODO modules
+
+- Point of Sales
+- Accounting
+
 # 🔧 Install instructions
 
 - download python3.8
@@ -267,9 +272,6 @@ In Progress
 - 🔃 Integration tests
 - 🔃 Permission levels
 
-TODO
-
-- _
 
 # 📞 Contact
 
