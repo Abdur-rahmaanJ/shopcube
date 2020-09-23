@@ -12,6 +12,10 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 - :sparkler: Instant lookup
 - :pencil2: Towards customisation
 
+It also makes a great Flask base and supports commands such as:
+
+`python manage.py startapp loans` 
+
 # ⚗️ Stability
 
 **beta** - now in beta!
@@ -22,16 +26,25 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬
 
-# 🔥 Just Added Features
+# 🔥 Default Modules:
 
-- Confirmation before deleting section
-- Settings fully operationable
-- Apply settings works for existing and non-existing db
-- Instantly checks duplicate
+Basics:
 
-![](screenshots/shopyoduplicatecheck.png)
+- Control Panel
+- Admin
+- Base
+- Login
 
-- Appointment section
+Shop:
+
+- Appointment
+- Products
+- People
+- Internals
+- Settings
+
+If you want to use the project as a Flask base, just remove 
+the shop modules in modules/
 
 # 📜 Testimonial
 
@@ -40,10 +53,6 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 > Also, if I'm around and you're stuck give us a shout. I'll help if I can. ``@blips5``
 
 
-# 🔎 Understand Shopyo
-
-Shopyo internals explained here: [Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://dev.to/abdurrahmaanj/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app-40j3)
-  
 
 # 📖 History
 
@@ -73,58 +82,18 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 - Shopyo becomes a trending OpenSource project
 ![](screenshots/shopyo_trending.png)
 
-## 🍳 In Action
+# Who uses Shopyo?
 
-![](screenshots/scr_control_panel.png)
-![](screenshots/scr_user_add.png)
-![](screenshots/scr_user_view.png)
-![](screenshots/scr_inventory.png)
-![](screenshots/scr_product_add.png)
-![](screenshots/scr_product_lookup.png)
-![](screenshots/scr_people_add.png)
-![](screenshots/scr_people_view.png)
-![](screenshots/scr_people_lookup.png)
-![](screenshots/scr_appointment_add.png)
-![](screenshots/scr_appointment_menu.png)
-
-
-# ♨️ Contributing
-
-If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
-- Fork repo.
-- Create a new branch. For example: `bg-fix-migration-file`.
-- Once you have add your changes ensure tests are still passing.
-- Add tests for any new functionality added.
-- Ensure you commits follow the standard specified [here](https://udacity.github.io/git-styleguide/).
-- Follow the Pull request [template](.PULL_REQUEST_TEMPLATE.md).
-- Add your country flag in readme after accepted PR
-
-- Update fork as below then
-- Push
-```
-git push origin <branch-name>
-```
-- If it closes an issue, add `Fixes #94` for example, as seen [here](https://github.com/Abdur-rahmaanJ/shopyo/pull/95)
--  PR against `dev` branch, not master
-
-# Update Fork
-
-```
-cd <your/local/cloned/repo/path/here>
-git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
-git fetch upstream
-git pull upstream master
-```
-
-
-# 💬 Community: Discord
-[https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
+| site name | description
+|:---:|:---:|
+|Maurilearn.com|Elearning platform|
 
 # 🔧 Install instructions
 
-- download python3.7
+- download python3.8
 - clone and cd into project
 - run ```python -m pip install -r requirements.txt```
+- run ```python -m pip install -r dev_requirements.txt``` if you want to contribute
 
 # 👟 Run instructions
 
@@ -175,13 +144,27 @@ python manage.py db migrate
 python manage.py db upgrade
 ```
 
-clean project
+**clean project**
 
 ```
 python manage.py clean
 ```
 
 removes `__pycache__/`, `test.db` and ``migrations``.
+
+**create new module**
+
+`python manage.py startapp modulename`
+
+**run server**
+
+```
+python manage.py rundebug
+python manage.py runserver
+```
+
+
+**create new module**
 
 # :scroll: Docs
 Sphinx docs generater
@@ -223,21 +206,45 @@ And ... the app will load all the modules, just make sure in info.json you keep 
 
 For the time being it's best to look into existing modules and do the same.
 
+# ♨️ Contributing
+
+Shopyo internals explained here: [Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://dev.to/abdurrahmaanj/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app-40j3)
+
+If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
+- Fork repo.
+- Create a new branch. For example: `bg-fix-migration-file`.
+- Once you have add your changes ensure tests are still passing.
+- Add tests for any new functionality added.
+- Ensure you commits follow the standard specified [here](https://udacity.github.io/git-styleguide/).
+- Follow the Pull request [template](.PULL_REQUEST_TEMPLATE.md).
+- Add your country flag in readme after accepted PR
+
+- Update fork as below then
+- Push
+```
+git push origin <branch-name>
+```
+- If it closes an issue, add `Fixes #94` for example, as seen [here](https://github.com/Abdur-rahmaanJ/shopyo/pull/95)
+-  PR against `dev` branch, not master
+
+# Update Fork
+
+```
+cd <your/local/cloned/repo/path/here>
+git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+git fetch upstream
+git pull upstream master
+```
+
+
+# 💬 Community: Discord
+[https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
+
 # FaQ
 
 **Why do we need another folder in templates?**
 
 Flask loads all templates in one namespace. If you specify `apple/index.html` flask will load the index.html in the apple folder in templates
-
-
-# Windows Deployment
-
-<details><summary><b>Show me how</b></summary>
-
-[youtube demo](https://youtu.be/fOUEyuMgZ0U)
-
-</details>
-
 
 
 # Roadmap
@@ -272,3 +279,17 @@ Support team if you are stuck
 - [Nathan](https://github.com/blips5) - 
 - [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
 
+
+## 🍳 In Action
+
+![](screenshots/scr_control_panel.png)
+![](screenshots/scr_user_add.png)
+![](screenshots/scr_user_view.png)
+![](screenshots/scr_inventory.png)
+![](screenshots/scr_product_add.png)
+![](screenshots/scr_product_lookup.png)
+![](screenshots/scr_people_add.png)
+![](screenshots/scr_people_view.png)
+![](screenshots/scr_people_lookup.png)
+![](screenshots/scr_appointment_add.png)
+![](screenshots/scr_appointment_menu.png)
