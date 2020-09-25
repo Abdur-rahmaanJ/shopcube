@@ -16,17 +16,19 @@ control_panel_blueprint = Blueprint(
 )
 all_info = {}
 
+base_path = os.path.dirname(os.path.abspath(__file__))
 
 @control_panel_blueprint.route("/")
 @login_required
 def index():
     context = base_context()
 
-    for module in os.listdir("modules"):
+    for module in os.listdir(os.path.join(base_path, "modules")):
         if module.startswith("__"):
             continue
         if module not in ["control_panel"]:
-            with open("modules/{}/info.json".format(module)) as f:
+            file_path = "modules/{}/info.json".format(module)
+            with open(os.path.join(base_path, file_path)) as f:
                 module_info = json.load(f)
                 all_info[module] = module_info
 

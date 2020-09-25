@@ -6,7 +6,7 @@ from flask_wtf.csrf import CSRFProtect
 from shopyoapi.init import db, login_manager, ma
 from config import app_config
 
-
+base_path = os.path.dirname(os.path.abspath(__file__))
 def create_app(config_name):
     app = Flask(__name__)
     configuration = app_config[config_name]
@@ -17,7 +17,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
     
-    for module in os.listdir("modules"):
+    for module in os.listdir(os.path.join(base_path, "modules")):
         if module.startswith("__"):
             continue
         mod = importlib.import_module("modules.{}.view".format(module))
