@@ -1,3 +1,8 @@
+import os
+
+
+base_path = os.path.dirname(os.path.abspath(__file__))
+
 class Config:
     """Parent configuration class."""
 
@@ -6,6 +11,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = "qow32ijjdkc756osk5dmck"  # Need a generator
     HOMEPAGE_URL = "/control_panel"
+    BASE_DIR = base_path
 
 
 class DevelopmentConfig(Config):

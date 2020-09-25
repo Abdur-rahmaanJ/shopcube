@@ -35,11 +35,11 @@ def new_project(path, newfoldername):
 
 
 def clean():
-    if os.path.exists("test.db"):
-        os.remove("test.db")
-        print("test.db successfully deleted")
+    if os.path.exists("shopyo.db"):
+        os.remove("shopyo.db")
+        print("shopyo.db successfully deleted")
     else:
-        print("test.db doesn't exist")
+        print("shopyo.db doesn't exist")
     if os.path.exists("__pycache__"):
         shutil.rmtree("__pycache__")
         print("__pycache__ successfully deleted")
