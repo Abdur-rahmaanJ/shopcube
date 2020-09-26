@@ -82,16 +82,14 @@ def prods_add(category_name):
                 name=name,
                 in_stock=in_stock,
                 category_name=category_name,
+                price=price,
+                selling_price=selling_price,
                 discontinued=discontinued
             )
             if description.strip():
                 p.description = description
             if date.strip():
                 p.date = date
-            if price.strip():
-                p.price
-            if selling_price.strip():
-                p.selling_price
             
             db.session.add(p)
             db.session.commit()
