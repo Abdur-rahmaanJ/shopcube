@@ -1,3 +1,5 @@
+
+
 <h1 align="center">
   <br>
   <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/screenshots/shoyo_social.png" alt="shopyo" width="" height=""></a>
@@ -281,6 +283,9 @@ Support team if you are stuck
 - [Nathan](https://github.com/blips5) - 
 - [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
 
+## Views
+
+![](https://counter.digits.net/?counter={1d6692af-adcd-0af4-6d16-2085464a0deb}&template=simple)
 
 ## 🍳 In Action
 
@@ -295,3 +300,7 @@ Support team if you are stuck
 ![](screenshots/scr_people_lookup.png)
 ![](screenshots/scr_appointment_add.png)
 ![](screenshots/scr_appointment_menu.png)
+
+## credits
+
+digits.net
