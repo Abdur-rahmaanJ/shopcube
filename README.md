@@ -285,7 +285,7 @@ Support team if you are stuck
 
 ## Views
 
-![](https://counter.digits.net/?counter={1d6692af-adcd-0af4-6d16-2085464a0deb}&template=simple)
+![](https://counter.digits.net/?counter={823614f9-cd12-91c4-c140-a0fe3383a7c7}&template=simple)
 
 ## 🍳 In Action
 
