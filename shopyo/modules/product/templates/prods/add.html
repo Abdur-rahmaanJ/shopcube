@@ -84,19 +84,19 @@ $(function() {
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
+    <input 
         name="price" autocomplete="off" id="price" type="number" step="0.01" class="form-control" 
         placeholder="Price" value="0">
   </div>
 
-  <label>selling price (default 0)</label>
+  <label>selling price</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
     <input
         name="selling_price" autocomplete="off" id="selling_price" type="number" step="0.01"
-        class="form-control" placeholder="Selling Price" value="0">
+        class="form-control" placeholder="Selling Price">
   </div>
 
   <label>in stock (required)</label>
@@ -117,9 +117,10 @@ $(function() {
     <label class="form-check-label" for="defaultCheck1">
       Yes
     </label>
-    <br>
+  </div>
+  <div class="form-check">
     <input required
-      name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="False"
+      name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="True"
       id="defaultCheck1" checked="checked">
     <label class="form-check-label" for="defaultCheck2">
       No
