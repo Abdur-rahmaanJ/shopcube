@@ -5,6 +5,7 @@
   <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/screenshots/shoyo_social.png" alt="shopyo" width="" height=""></a>
 </h1>
 
+
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
 🎁 Open inventory management  and Point of sales (powered by python) for small shops. 
@@ -23,6 +24,10 @@ It also makes a great Flask base and supports commands such as:
 **beta** - now in beta!
 
 ~**alpha** - highly volatile, core features not yet finished~
+
+<hr>
+
+[![HitCount](http://hits.dwyl.com/Abdur-RahmaanJ/shopyo.svg)](http://hits.dwyl.com/Abdur-RahmaanJ/shopyo)
 
 # 💌 Contributing Countries
 
@@ -283,9 +288,7 @@ Support team if you are stuck
 - [Nathan](https://github.com/blips5) - 
 - [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
 
-## Views
 
-![](https://counter.digits.net/?counter={823614f9-cd12-91c4-c140-a0fe3383a7c7}&template=simple)
 
 ## 🍳 In Action
 
