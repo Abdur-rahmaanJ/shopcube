@@ -24,7 +24,7 @@ It also makes a great Flask base and supports commands such as:
 
 # 💌 Contributing Countries
 
-🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬 🇲x
+🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬
 
 # 🔥 Default Modules:
 
