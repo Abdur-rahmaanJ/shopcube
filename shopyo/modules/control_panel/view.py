@@ -4,10 +4,11 @@ import json
 from flask import Blueprint
 from flask import render_template
 from flask_login import login_required
+from flask import flash
 from flask import current_app
 
 from shopyoapi.enhance import base_context
-
+from shopyoapi.html import notify_success
 
 control_panel_blueprint = Blueprint(
     "control_panel",
@@ -31,4 +32,5 @@ def index():
                 all_info[module] = module_info
 
     context["all_info"] = all_info
+    flash(notify_success('Notif test'))
     return render_template("control_panel/index.html", **context)
