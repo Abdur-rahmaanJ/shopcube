@@ -7,3 +7,4 @@ flask_login
 Flask-WTF
 marshmallow_sqlalchemy
 requests
+email_validator

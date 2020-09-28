@@ -1,7 +1,10 @@
+
+
 <h1 align="center">
   <br>
   <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/screenshots/shoyo_social.png" alt="shopyo" width="" height=""></a>
 </h1>
+
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
@@ -22,9 +25,13 @@ It also makes a great Flask base and supports commands such as:
 
 ~**alpha** - highly volatile, core features not yet finished~
 
+<hr>
+
+[![HitCount](http://hits.dwyl.com/Abdur-RahmaanJ/shopyo.svg)](http://hits.dwyl.com/Abdur-RahmaanJ/shopyo)
+
 # 💌 Contributing Countries
 
-🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬
+🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬 🇲x
 
 # 🔥 Default Modules:
 
@@ -282,6 +289,7 @@ Support team if you are stuck
 - [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
 
 
+
 ## 🍳 In Action
 
 ![](screenshots/scr_control_panel.png)
@@ -295,3 +303,7 @@ Support team if you are stuck
 ![](screenshots/scr_people_lookup.png)
 ![](screenshots/scr_appointment_add.png)
 ![](screenshots/scr_appointment_menu.png)
+
+## credits
+
+digits.net
