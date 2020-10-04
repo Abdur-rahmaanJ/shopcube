@@ -16,7 +16,11 @@
 
     {% for info in all_info %}
         {% if all_info[info]['type'] == 'show'%}
-        <a href="{{all_info[info]['url_prefix']}}">
+          {%if 'panel_redirect' in all_info[info]%}
+            <a href="{{all_info[info]['panel_redirect']}}">
+          {%else%}
+            <a href="{{all_info[info]['url_prefix']}}">
+          {%endif%}
           <div class="card card-menu">
             <div class="card-body text-center">
               <i class="card-menu-icon {{all_info[info]['fa-icon']}}"></i>
