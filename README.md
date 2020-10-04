@@ -33,7 +33,7 @@ example:
 
 then cd into the folder
 
-`/home/profiles/arj/desktop`
+`/home/profiles/arj/desktop/shopyotest`
 
 then install requirements (install in venv if you like)
 
