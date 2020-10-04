@@ -1,14 +1,12 @@
 {
     "environment": "development",
-    "user": {
-      "id": "user",
-      "name": "Super User",
-      "password": "pass",
-      "admin": true
+    "admin_user": {
+      "name": "user",
+      "password": "pass"
     },
     "settings": {
       "APP_NAME": "Demo",
-      "SECTION_NAME": "Manufacturer",
+      "SECTION_NAME": "Category",
       "SECTION_ITEMS": "Products"
     }
 }

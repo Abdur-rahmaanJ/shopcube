@@ -56,10 +56,38 @@
         .card-menu-icon{
             font-size: 40px;
         }
+
+        #flashed-messages{
+            padding: 5px;
+            position: fixed;
+            right: 5px;
+            top: 5px;
+            z-index: 10;
+            height: 300px;
+            overflow-y: scroll;
+
+          }
+          #flashed-messages::-webkit-scrollbar {
+            display: none;
+          }
+          /* Hide scrollbar for IE and Edge */
+          #flashed-messages{
+            -ms-overflow-style: none;
+          }
     </style>
     {% block pagehead %}{% endblock %}
 </head>
 <body>
+    
+<div id="flashed-messages">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        {{ message | safe}}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
 
 <div class="container">
     {% include "base/nav_base.html" %}

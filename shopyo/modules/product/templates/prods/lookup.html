@@ -24,8 +24,8 @@ $(function() {
       }
       field = $("#choose_field input[type='radio']:checked").attr("value");
 
-       $("#results_table tbody").html("<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-        $.getJSON( "/prods/search/{{manufac}}/barcode/"+$("#searchinput").val()+"?"+
+       $("#results_table tbody").html("<tr></tr>");
+        $.getJSON( "/prods/search/{{category}}/barcode/"+$("#searchinput").val()+"?"+
           "global_search="+global_search+"&"+
           "field="+field, 
               function( data ) {
@@ -49,8 +49,8 @@ $(function() {
                 "<td>"+result['selling_price']+"</td>"+
                 "<td>"+result['in_stock']+"</td>"+
                 "<td>"+result['discontinued']+"</td>"+
-                '<td><a href="/prods/delete/'+result['manufacturer']+'/'+result['barcode']+'" class="btn btn-danger" role="button">delete</a></td>'+
-                '<td><a href="/prods/edit/'+result['manufacturer']+'/'+result['barcode']+'" class="btn btn-info" role="button">edit</a></td>'+"</tr>");
+                '<td><a href="/prods/delete/'+result['category']+'/'+result['barcode']+'" class="btn btn-danger" role="button">delete</a></td>'+
+                '<td><a href="/prods/edit/'+result['category']+'/'+result['barcode']+'" class="btn btn-info" role="button">edit</a></td>'+"</tr>");
                 //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
             }
         })

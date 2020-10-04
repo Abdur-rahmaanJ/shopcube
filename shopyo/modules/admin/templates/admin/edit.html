@@ -7,30 +7,50 @@
 {% endblock %}
 
 {% block content %}
+{%include 'admin/nav.html'%}
+<br>
 <h2>Edit User</h2>
 
 <form action='/admin/update' method="post">
-        <label>Edit User:<span> {{ id }} </span></label>
+        <label>Edit User:<span> {{ user.username }} </span></label>
             <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fa fa-user"></i></span>
-              </div>
-              <input required type="text" class="form-control"
-                     name="name" id="user_name" value="{{ name }}" autocomplete="off">
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-key"></i></span>
               </div>
-              <input type="password" name="password" class="form-control" id="user_password" value="{{ password }}" required autocomplete="off">
-        </div>
+              <input type="text" name="username" class="form-control" id="" value="{{ user.username }}" required autocomplete="off">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-key"></i></span>
+              </div>
+              <input type="password" name="password" class="form-control" id="user_password" value="" autocomplete="off">
+            </div>
             <div class="input-group mb-3">
               <div class="custom-control custom-checkbox">
                   <input type="checkbox" name="admin_user" id="admin_user" class="custom-control-input" value="True" autocomplete="off" checked>
                   <label for="admin_user" class="custom-control-label">Admin User</label>
               </div>
             </div>
-            <input required name="id"  id="user_id" type="hidden" class="form-control"  value="{{ id }}">  
+            <input required name="id"  id="user_id" type="hidden" class="form-control"  value="{{ user.id }}">  
+            <div>
+              Roles<br>
+              <table class="table">
+                <tbody>
+                    {%for role in roles%}
+                      <tr>
+                      <td><input type="checkbox" name="role_{{role.id}}" 
+                        {%if role.name in user_roles%}
+                          checked
+                        {%endif%}
+                        ></td>
+                      <td>{{role.name}}</td>
+                      </tr>
+                    {%endfor%}
+                </tbody>
+              </table>
+            </div>
         <div class="input-group mb-3">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input required type="submit" class="btn btn-info" value="edit">

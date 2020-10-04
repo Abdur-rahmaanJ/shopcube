@@ -1,0 +1,48 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='category' %}
+
+{% block pagehead %}
+<title>add category</title>
+{% endblock %}
+
+{% block content %}
+  {% include 'category/nav.html' %}
+  <br>
+<script type="text/javascript">
+$(function() {
+    // pos
+    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    $('#name').on('input', function() {
+        $.getJSON( "/category/check/"+$("#name").val(), function( data ) {
+            $("#check").html("<i class='fa fa-list-alt'></i>");
+            if (data['exists'] === true){
+              $("#check").html("<i style='color:red;' class='fas fa-exclamation-triangle'></i>");
+            }
+        })
+    });
+  });
+</script>
+{% if has_category == 'True' %}
+  
+  <div class="alert alert-danger" role="alert">
+    Category alreadly Listed
+  </div>
+{% endif %}
+
+<h2>Add Category</h2>
+
+<form action="/category/add" method="post">
+
+  <label>name</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required  autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  </div>
+  
+  <input required  type="submit" class="btn btn-info" value="add">
+</form>
+{% endblock %}

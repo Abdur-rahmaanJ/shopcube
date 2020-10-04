@@ -105,6 +105,8 @@ venv.bak/
 
 # shopyo
 test.db
+testing.db
+shopyo.db
 
 # pycharm
 .idea/

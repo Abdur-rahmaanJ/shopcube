@@ -38,7 +38,7 @@
          <form action="/login/" method="post">
             {% with error = get_flashed_messages() %}
                 {% if error %}
-                    <span>{{ error[0] }}</span>
+                    <span id="error">{{ error[0] }}</span>
                 {% endif %}
             {% endwith %}
             <p class="h2">Login</p>
@@ -46,16 +46,30 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-id-card"></i></span>
                 </div>
-                <input type="text" name="user_id" class="form-control" id="user_id" required autocomplete="off">
+                {{ form.username() }}
+                {% if form.username.errors %}
+                    <ul class="errors">
+        	            {% for error in form.user_id.errors %}
+        		            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-key"></i></span>
                 </div>
-                <input type="password" name="password" class="form-control" id="password" required autocomplete="off">
+                {{ form.password() }}
+                {% if form.password.errors %}
+                    <ul class="errors">
+        	            {% for error in form.password.errors %}
+        		            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input type="submit" class="btn btn-info" value="Login" required>
+            {{ form.submit() }}
         </form>
              
 {% endblock %}

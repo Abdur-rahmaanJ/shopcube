@@ -2,5 +2,5 @@
 	"name": "Products",
 	"type": "hidden",
 	"fa-icon": "",
-	"url_prefix": "/manufac"
+	"url_prefix": "/category"
 }

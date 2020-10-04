@@ -30,14 +30,10 @@
     </style>
 {% endblock %}
 {% block content %}
+{%include 'admin/nav.html'%}
+<br>
 <div class="container col-md-6 off-set-3">
     <form action="/admin/add" method="post">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-              </div>
-            <input type="text" name="id" class="form-control" id="user_id" placeholder="ID" required autocomplete="off">
-        </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -56,6 +52,18 @@
                 <label for="admin_user" class="custom-control-label">Admin User</label>
             </div>
         </div>
+        <table class="table">
+                <tbody>
+                    {%for role in roles%}
+
+                    <tr>
+                        <td><input type="checkbox" name="role_{{role.id}}"></td>
+                        <td>{{role.name}}</td>
+                    </tr>
+                
+                    {%endfor%}
+                </tbody>
+        </table>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="submit" class="btn btn-info" value="add" required>
     </form>
