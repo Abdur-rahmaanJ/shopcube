@@ -19,6 +19,36 @@ It also makes a great Flask base and supports commands such as:
 
 `python manage.py startapp loans` 
 
+# Test it out!
+
+`pip install shopyo`
+
+close and reopen your cmd
+
+`shopyo new <path> <project folder>`
+
+example:
+
+`shopyo new /home/profiles/arj/desktop shopyotest`
+
+then cd into the folder
+
+`/home/profiles/arj/desktop`
+
+then install requirements (install in venv if you like)
+
+`pip install -r requirements.txt`
+
+then
+
+```
+python manage.py initialise
+python manage.py runserver
+```
+
+go to url ^^
+
+
 # ⚗️ Stability
 
 **beta** - now in beta!
@@ -222,6 +252,8 @@ For the time being it's best to look into existing modules and do the same.
 
 Shopyo internals explained here: [Shopyo: Enhance Your Flask by Exploring An Advanced Flask App](https://dev.to/abdurrahmaanj/shopyo-enhance-your-flask-by-exploring-an-advanced-flask-app-40j3)
 
+
+
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
 - Fork repo.
 - Create a new branch. For example: `bg-fix-migration-file`.
@@ -278,6 +310,15 @@ In Progress
 - 🔃 Unit tests
 - 🔃 Integration tests
 - 🔃 Permission levels
+
+# Contributing main options via __main__
+
+- clone project
+- create and activate venv
+- cd into project folder
+- run `pip install -e .`
+- after changes run `pip install -e . --upgrade`
+- test `shopyo <your options>`
 
 
 # 📞 Contact

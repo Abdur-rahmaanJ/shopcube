@@ -4,34 +4,10 @@ import sys
 import subprocess
 import json
 
-from shopyoapi.utils import trycopytree
-from shopyoapi.utils import trycopy
-from shopyoapi.utils import trymkdir
-from shopyoapi.utils import trymkfile
+
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
 
-
-def new_project(path, newfoldername):
-    newfoldername = newfoldername.strip('/').strip('\\')
-    print("creating new project {}".format(newfoldername))
-
-    base_path = path + "/" + newfoldername
-    trymkdir(base_path)
-    print("created dir {} in {}".format(newfoldername, path))
-
-    trycopytree("./static", base_path + "/static")
-    trycopytree("./tests", base_path + "/tests")
-    trycopytree("./modules/base", base_path + "/modules/base")
-    trycopytree("./modules/admin", base_path + "/modules/admin")
-    trycopytree("./modules/login", base_path + "/modules/login")
-    trycopytree("./modules/settings", base_path + "/modules/settings")
-    trycopytree("./shopyoapi", base_path + "/shopyoapi")
-
-    trycopy("app.py", base_path + "/app.py")
-    trycopy("config.json", base_path + "/config.json")
-    trycopy("config.py", base_path + "/config.py")
-    trycopy("manage.py", base_path + "/manage.py")
 
 
 def clean():

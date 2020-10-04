@@ -1,4 +1,4 @@
-from userapi.html import notify_warning
+from shopyoapi.html import notify_warning
 from flask import flash
 
 def flash_errors(form):

@@ -7,7 +7,6 @@ from flask_script import Manager
 from shopyoapi.init import db
 from app import app
 
-from shopyoapi.cmd import new_project
 from shopyoapi.cmd import clean
 from shopyoapi.cmd import initialise
 from shopyoapi.cmd import create_module
@@ -41,9 +40,6 @@ def custom_commands(args):
             rundebug()
         elif args[1] == "test":
             print("test ok")
-        elif args[1] == "new" and args[2] and args[3]:
-            # new <path> <folder name>
-            new_project(args[2], args[3])
         elif args[1] == 'startapp' and args[2]:
             create_module(args[2])
         sys.exit()
