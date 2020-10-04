@@ -1,0 +1,6 @@
+{
+        "name": "Contact",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/contact"
+}
