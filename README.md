@@ -73,6 +73,7 @@ Basics:
 - Admin
 - Base
 - Login
+- Settings
 
 Shop:
 
@@ -80,7 +81,6 @@ Shop:
 - Products
 - People
 - Internals
-- Settings
 
 If you want to use the project as a Flask base, just remove 
 the shop modules in modules/
