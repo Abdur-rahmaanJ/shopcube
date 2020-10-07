@@ -1,5 +1,5 @@
 {
-	"name": "Inventory",
+	"display_string": "Inventory",
 	"type": "show",
 	"fa-icon": "fa fa-store",
 	"url_prefix": "/category"

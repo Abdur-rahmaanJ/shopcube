@@ -7,6 +7,7 @@ from flask_login import login_user
 from flask_login import logout_user
 from modules.admin.models import User
 from shopyoapi.enhance import base_context
+from shopyoapi.html import notify_danger
 from modules.login.forms import LoginForm
 
 
@@ -34,7 +35,7 @@ def login():
         password = login_form.password.data
         user = User.query.filter_by(username=username).first()
         if user is None or not user.check_hash(password):
-            flash("please check your user id and password")
+            flash(notify_danger("please check your user id and password"))
             return redirect(url_for("login.login"))
         login_user(user)
         return redirect(url_for("control_panel.index"))

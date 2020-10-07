@@ -48,6 +48,8 @@ python manage.py runserver
 
 go to url ^^
 
+**You can also use `shopyo initialise` and `shopyo runserver`**
+
 
 # ⚗️ Stability
 

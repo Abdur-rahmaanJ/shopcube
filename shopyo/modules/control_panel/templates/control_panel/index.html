@@ -17,7 +17,7 @@
     {% for info in all_info %}
         {% if all_info[info]['type'] == 'show'%}
           {%if 'panel_redirect' in all_info[info]%}
-            <a href="{{all_info[info]['panel_redirect']}}">
+            <a href="{{all_info[info]['url_prefix'] + all_info[info]['panel_redirect']}}">
           {%else%}
             <a href="{{all_info[info]['url_prefix']}}">
           {%endif%}
@@ -26,7 +26,7 @@
               <i class="card-menu-icon {{all_info[info]['fa-icon']}}"></i>
             </div>
             <div class="card-footer">
-              {{all_info[info]['name']}}
+              {{all_info[info]['display_string']}}
             </div>
           </div>
         </a>

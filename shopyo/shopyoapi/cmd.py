@@ -8,10 +8,11 @@ import json
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
 
-from .utils import trymkdir
-from .utils import trycopytree
-from .utils import trycopy
-from .utils import trymkfile
+from .file import trymkdir
+from .file import trycopytree
+from .file import trycopy
+from .file import trymkfile
+
 
 def clean():
     if os.path.exists("shopyo.db"):
@@ -69,26 +70,53 @@ def create_module(modulename):
     trymkdir(base_path+'/templates')
     trymkdir(base_path+'/templates/'+modulename)
     view_content = '''
+import os
+import json
+
 from flask import Blueprint
-{0}_blueprint = Blueprint(
-    "{0}",
+# from flask import render_template
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
+# from flask import request
+
+# from shopyoapi.enhance import base_context
+# from shopyoapi.html import notify_success
+# from shopyoapi.forms import flash_errors
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + "/info.json") as f:
+    module_info = json.load(f)
+
+globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
+    "{}".format(module_info["module_name"]),
     __name__,
-    url_prefix='/{0}',
     template_folder="templates",
+    url_prefix=module_info["url_prefix"],
 )
 
 
-@{0}_blueprint.route("/")
+module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
+
+@module_blueprint.route("/")
 def index():
-    return ''
-'''.format(modulename)
+    return module_info['display_string']
+'''
     trymkfile(base_path+'/'+'view.py', view_content)
     trymkfile(base_path+'/'+'forms.py', '')
     trymkfile(base_path+'/'+'models.py', '')
     info_json_content = '''{{
-        "name": "{}",
+        "display_string": "{0}",
+        "module_name":"{1}",
         "type": "show",
         "fa-icon": "fa fa-store",
-        "url_prefix": "/{}"
+        "url_prefix": "/{1}",
+        "author": {{
+            "name":"",
+            "website":"",
+            "mail":""
+        }}
 }}'''.format(modulename.capitalize(), modulename)
     trymkfile(base_path+'/'+'info.json', info_json_content)

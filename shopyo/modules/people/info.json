@@ -1,5 +1,5 @@
 {
-	"name": "People",
+	"display_string": "People",
 	"type": "show",
 	"fa-icon": "fa fa-users",
 	"url_prefix": "/people"

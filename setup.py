@@ -2,6 +2,10 @@
 See:
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
+
+
+python setup.py publish to publish
+
 """
 
 # Always prefer setuptools over distutils

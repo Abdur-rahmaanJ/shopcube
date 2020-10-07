@@ -1,3 +1,3 @@
 
-version_info = (1, 1, 8)
+version_info = (1, 2, 0)
 __version__ = ".".join([str(v) for v in version_info])

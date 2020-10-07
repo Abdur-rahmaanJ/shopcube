@@ -1,0 +1,8 @@
+{
+        "display_string": "Page",
+        "module_name":"page",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/page",
+        "panel_redirect": "/dashboard"
+}

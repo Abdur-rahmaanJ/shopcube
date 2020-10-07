@@ -36,11 +36,7 @@
         <img src="/static/shopyo.svg" width="175" height="150">
         
          <form action="/login/" method="post">
-            {% with error = get_flashed_messages() %}
-                {% if error %}
-                    <span id="error">{{ error[0] }}</span>
-                {% endif %}
-            {% endwith %}
+
             <p class="h2">Login</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">

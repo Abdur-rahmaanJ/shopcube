@@ -35,3 +35,6 @@ def trymkfile(path, content):
         print(content)
     except Exception as e:
         print(e)
+
+def absdiroffile(filepath):
+    return os.path.dirname(os.path.abspath(filepath))

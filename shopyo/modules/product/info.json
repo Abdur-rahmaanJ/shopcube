@@ -1,5 +1,5 @@
 {
-	"name": "Products",
+	"display_string": "Products",
 	"type": "hidden",
 	"fa-icon": "",
 	"url_prefix": "/category"

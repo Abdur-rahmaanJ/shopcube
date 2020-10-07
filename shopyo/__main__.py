@@ -1,11 +1,15 @@
 import sys
 import os
 
-from .shopyoapi.utils import trymkdir
-from .shopyoapi.utils import trycopytree
-from .shopyoapi.utils import trycopy
+from .shopyoapi.file import trymkdir
+from .shopyoapi.file import trycopytree
+from .shopyoapi.file import trycopy
+from .shopyoapi.info import printinfo
 
 from pathlib import Path
+import os
+import sys
+import subprocess
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
@@ -41,7 +45,13 @@ def new_project(path, newfoldername):
 def main():
     args = sys.argv
     if args[1] == "new" and len(args) == 4:
+        printinfo()
         new_project(args[2], args[3])
+    else:
+        torun = [sys.executable, 'manage.py'] + args[1:]
+        subprocess.run(
+            torun, stdout=subprocess.PIPE
+        )
 
 
 if __name__ == "__main__":

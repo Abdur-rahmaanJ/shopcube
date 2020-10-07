@@ -12,7 +12,7 @@
 
     {% for info in all_info %}
     <div>
-      name: {{all_info[info]['name']}}<br>
+      name: {{all_info[info]['display_string']}}<br>
       type: {{all_info[info]['type']}}<br>
       url: <a style="color: rgb(100, 100, 100); font-style: underline;" href="{{all_info[info]['url_prefix']}}">{{all_info[info]['url_prefix']}}</a>
     </div>
