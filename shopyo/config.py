@@ -3,6 +3,7 @@ import os
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class Config:
     """Parent configuration class."""
 
@@ -28,10 +29,11 @@ class TestingConfig(Config):
     DEBUG = True
     LIVESERVER_PORT = 8943
     LIVESERVER_TIMEOUT = 10
-    
+
     BCRYPT_LOG_ROUNDS = 4
     TESTING = True
     WTF_CSRF_ENABLED = False
+
 
 app_config = {
     "development": DevelopmentConfig,

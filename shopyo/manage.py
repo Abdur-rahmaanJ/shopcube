@@ -13,7 +13,6 @@ from shopyoapi.cmd import create_module
 from shopyoapi.database import autoload_models
 
 
-
 migrate = Migrate(app, db, compare_type=True)
 manager = Manager(app)
 
@@ -42,9 +41,9 @@ def custom_commands(args):
             rundebug()
         elif args[1] == "test":
             print("test ok")
-        elif args[1] == 'startapp' and args[2]:
+        elif args[1] == "startapp" and args[2]:
             create_module(args[2])
-            
+
     elif args[1] == "db":
         autoload_models()
 

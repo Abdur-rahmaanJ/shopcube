@@ -15,7 +15,7 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Unittests" href="unittests.html" />
+    <link rel="next" title="Testing" href="testing.html" />
     <link rel="prev" title="Commandline Args" href="commandline.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -45,7 +45,7 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="commandline.html" title="previous chapter">Commandline Args</a></li>
-      <li>Next: <a href="unittests.html" title="next chapter">Unittests</a></li>
+      <li>Next: <a href="testing.html" title="next chapter">Testing</a></li>
   </ul></li>
 </ul>
 </div><h3>Navigation</h3>
@@ -63,8 +63,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.database">shopyoapi.database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.enhance">shopyoapi.enhance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.file">shopyoapi.file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">shopyoapi.enhance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">shopyoapi.file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.forms">shopyoapi.forms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.html">shopyoapi.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.info">shopyoapi.info</a></li>
@@ -72,7 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-shopyoapi.uploads">shopyoapi.uploads</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="unittests.html">Unittests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 </ul>
 
 
@@ -296,138 +294,6 @@ param</p>
 </dd></dl>
 
 </div>
-<div class="section" id="id1">
-<h2>shopyoapi.enhance<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-0"></span><dl class="py function">
-<dt id="id0">
-<code class="sig-prename descclassname">shopyoapi.enhance.</code><code class="sig-name descname">base_context</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/enhance.html#base_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Used to define global template values</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>copy of dictionary</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="id2">
-<code class="sig-prename descclassname">shopyoapi.enhance.</code><code class="sig-name descname">get_setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/enhance.html#get_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Used as key-value lookup from Settings table</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of key</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>value of key</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
-<div class="section" id="id3">
-<h2>shopyoapi.file<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-1"></span><dl class="py function">
-<dt id="id4">
-<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">absdiroffile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#absdiroffile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives absolute directory of file, normally expects __file__ as
-param</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – path of file</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Absolute dir path of file</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="id5">
-<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">trycopy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">dest</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#trycopy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
-<dd><p>Non-ecursive copy of folder</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<em>str</em>) – source folder path</p></li>
-<li><p><strong>dest</strong> (<em>str</em>) – destination folder path</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="id6">
-<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">trycopytree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">dest</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#trycopytree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recursive copy of folder</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<em>str</em>) – source folder path</p></li>
-<li><p><strong>dest</strong> (<em>str</em>) – destination folder path</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="id7">
-<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">trymkdir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#trymkdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates dir at destination</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path with folder already in</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="id8">
-<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">trymkfile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">content</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#trymkfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – path to create file with filename included</p></li>
-<li><p><strong>content</strong> (<em>str</em>) – file content</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
 <div class="section" id="module-shopyoapi.forms">
 <span id="shopyoapi-forms"></span><h2>shopyoapi.forms<a class="headerlink" href="#module-shopyoapi.forms" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
@@ -509,6 +375,7 @@ flash(notify_success(‘mail sent!’))</p>
 </div>
 <div class="section" id="module-shopyoapi.init">
 <span id="shopyoapi-init"></span><h2>shopyoapi.init<a class="headerlink" href="#module-shopyoapi.init" title="Permalink to this headline">¶</a></h2>
+<p>All initialisations like db = SQLAlchemy in this file</p>
 </div>
 <div class="section" id="module-shopyoapi.uploads">
 <span id="shopyoapi-uploads"></span><h2>shopyoapi.uploads<a class="headerlink" href="#module-shopyoapi.uploads" title="Permalink to this headline">¶</a></h2>

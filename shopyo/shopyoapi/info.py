@@ -1,6 +1,6 @@
 import datetime
 
-info = '''
+info = """
    _____ _                             
   / ____| |                            
  | (___ | |__   ___  _ __  _   _  ___  
@@ -10,10 +10,13 @@ info = '''
                     | |     __/ |      
                     |_|    |___/       
 Copyright {year}
-'''.format(year=datetime.datetime.now().year)
+""".format(
+    year=datetime.datetime.now().year
+)
+
 
 def printinfo():
-    '''
+    """
     prints Shopyo copyright in ASCII art font
-    '''
+    """
     print(info)

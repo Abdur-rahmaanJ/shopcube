@@ -4,7 +4,7 @@ from datetime import datetime
 
 class ContactMessage(db.Model):
 
-    __tablename__ = 'contact'
+    __tablename__ = "contact"
     id = db.Column(db.Integer, primary_key=True)
     created_date = db.Column(db.DateTime, default=datetime.now())
     name = db.Column(db.String(100))

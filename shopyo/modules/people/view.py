@@ -79,7 +79,7 @@ def people_add():
         manufacturer_address = request.form.get("manufacturer_address", "")
 
         # check if is_manufacturer is true
-        if is_manufacturer == 'on':
+        if is_manufacturer == "on":
             is_manufacturer = True
 
         # calculate age
@@ -168,7 +168,7 @@ def people_update():
         ("manufacturer_address", "")
 
         # check if is_manufacturer is true
-        if people_is_manufacturer == 'on':
+        if people_is_manufacturer == "on":
             people_is_manufacturer = True
 
         # calculate age

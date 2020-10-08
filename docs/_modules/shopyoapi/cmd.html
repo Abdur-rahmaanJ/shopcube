@@ -57,7 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Commandline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../unittests.html">Unittests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
 </ul>
 
 
@@ -80,13 +80,12 @@
           <div class="body" role="main">
             
   <h1>Source code for shopyoapi.cmd</h1><div class="highlight"><pre>
-<span></span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">json</span>
-
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">from</span> <span class="nn">shopyoapi.uploads</span> <span class="kn">import</span> <span class="n">add_admin</span>
 <span class="kn">from</span> <span class="nn">shopyoapi.uploads</span> <span class="kn">import</span> <span class="n">add_setting</span>
@@ -95,6 +94,7 @@
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trycopytree</span>
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trycopy</span>
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trymkfile</span>
+
 
 <div class="viewcode-block" id="clean"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.cmd.clean">[docs]</a><span class="k">def</span> <span class="nf">clean</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -145,9 +145,7 @@
         <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating Db&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
-    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;manage.py&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
-    <span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;manage.py&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Migrating&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
     <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
@@ -159,10 +157,7 @@
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialising User&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
-    <span class="n">add_admin</span><span class="p">(</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
-    <span class="p">)</span>
+    <span class="n">add_admin</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">])</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialising Settings&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
@@ -186,62 +181,70 @@
 
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;creating module: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modulename</span><span class="p">))</span>
-    <span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;modules/&#39;</span> <span class="o">+</span> <span class="n">modulename</span>
+
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Za-z0-9_]+$&quot;</span><span class="p">,</span> <span class="n">modulename</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Error: modulename is not valid, please use alphanumeric and underscore only&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;creating module: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modulename</span><span class="p">))</span>
+    <span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;modules/&quot;</span> <span class="o">+</span> <span class="n">modulename</span>
     <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
-    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/templates&#39;</span><span class="p">)</span>
-    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/templates/&#39;</span><span class="o">+</span><span class="n">modulename</span><span class="p">)</span>
-    <span class="n">view_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">import os</span>
-<span class="s1">import json</span>
+    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/templates&quot;</span><span class="p">)</span>
+    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/templates/&quot;</span> <span class="o">+</span> <span class="n">modulename</span><span class="p">)</span>
+    <span class="n">view_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import os</span>
+<span class="s2">import json</span>
 
-<span class="s1">from flask import Blueprint</span>
-<span class="s1"># from flask import render_template</span>
-<span class="s1"># from flask import url_for</span>
-<span class="s1"># from flask import redirect</span>
-<span class="s1"># from flask import flash</span>
-<span class="s1"># from flask import request</span>
+<span class="s2">from flask import Blueprint</span>
+<span class="s2"># from flask import render_template</span>
+<span class="s2"># from flask import url_for</span>
+<span class="s2"># from flask import redirect</span>
+<span class="s2"># from flask import flash</span>
+<span class="s2"># from flask import request</span>
 
-<span class="s1"># from shopyoapi.enhance import base_context</span>
-<span class="s1"># from shopyoapi.html import notify_success</span>
-<span class="s1"># from shopyoapi.forms import flash_errors</span>
+<span class="s2"># from shopyoapi.enhance import base_context</span>
+<span class="s2"># from shopyoapi.html import notify_success</span>
+<span class="s2"># from shopyoapi.forms import flash_errors</span>
 
-<span class="s1">dirpath = os.path.dirname(os.path.abspath(__file__))</span>
-<span class="s1">module_info = </span><span class="si">{}</span><span class="s1"></span>
+<span class="s2">dirpath = os.path.dirname(os.path.abspath(__file__))</span>
+<span class="s2">module_info = </span><span class="si">{}</span><span class="s2"></span>
 
-<span class="s1">with open(dirpath + &quot;/info.json&quot;) as f:</span>
-<span class="s1">    module_info = json.load(f)</span>
+<span class="s2">with open(dirpath + &quot;/info.json&quot;) as f:</span>
+<span class="s2">    module_info = json.load(f)</span>
 
-<span class="s1">globals()[&#39;</span><span class="si">{}</span><span class="s1">_blueprint&#39;.format(module_info[&quot;module_name&quot;])] = Blueprint(</span>
-<span class="s1">    &quot;</span><span class="si">{}</span><span class="s1">&quot;.format(module_info[&quot;module_name&quot;]),</span>
-<span class="s1">    __name__,</span>
-<span class="s1">    template_folder=&quot;templates&quot;,</span>
-<span class="s1">    url_prefix=module_info[&quot;url_prefix&quot;],</span>
-<span class="s1">)</span>
+<span class="s2">globals()[&#39;</span><span class="si">{}</span><span class="s2">_blueprint&#39;.format(module_info[&quot;module_name&quot;])] = Blueprint(</span>
+<span class="s2">    &quot;</span><span class="si">{}</span><span class="s2">&quot;.format(module_info[&quot;module_name&quot;]),</span>
+<span class="s2">    __name__,</span>
+<span class="s2">    template_folder=&quot;templates&quot;,</span>
+<span class="s2">    url_prefix=module_info[&quot;url_prefix&quot;],</span>
+<span class="s2">)</span>
 
 
-<span class="s1">module_blueprint = globals()[&#39;</span><span class="si">{}</span><span class="s1">_blueprint&#39;.format(module_info[&quot;module_name&quot;])]</span>
+<span class="s2">module_blueprint = globals()[&#39;</span><span class="si">{}</span><span class="s2">_blueprint&#39;.format(module_info[&quot;module_name&quot;])]</span>
 
-<span class="s1">@module_blueprint.route(&quot;/&quot;)</span>
-<span class="s1">def index():</span>
-<span class="s1">    return module_info[&#39;display_string&#39;]</span>
-<span class="s1">&#39;&#39;&#39;</span>
-    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;view.py&#39;</span><span class="p">,</span> <span class="n">view_content</span><span class="p">)</span>
-    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;forms.py&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;models.py&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="n">info_json_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;{{</span>
-<span class="s1">        &quot;display_string&quot;: &quot;</span><span class="si">{0}</span><span class="s1">&quot;,</span>
-<span class="s1">        &quot;module_name&quot;:&quot;</span><span class="si">{1}</span><span class="s1">&quot;,</span>
-<span class="s1">        &quot;type&quot;: &quot;show&quot;,</span>
-<span class="s1">        &quot;fa-icon&quot;: &quot;fa fa-store&quot;,</span>
-<span class="s1">        &quot;url_prefix&quot;: &quot;/</span><span class="si">{1}</span><span class="s1">&quot;,</span>
-<span class="s1">        &quot;author&quot;: {{</span>
-<span class="s1">            &quot;name&quot;:&quot;&quot;,</span>
-<span class="s1">            &quot;website&quot;:&quot;&quot;,</span>
-<span class="s1">            &quot;mail&quot;:&quot;&quot;</span>
-<span class="s1">        }}</span>
-<span class="s1">}}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modulename</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span> <span class="n">modulename</span><span class="p">)</span>
-    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;info.json&#39;</span><span class="p">,</span> <span class="n">info_json_content</span><span class="p">)</span></div>
+<span class="s2">@module_blueprint.route(&quot;/&quot;)</span>
+<span class="s2">def index():</span>
+<span class="s2">    return module_info[&#39;display_string&#39;]</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="s2">&quot;view.py&quot;</span><span class="p">,</span> <span class="n">view_content</span><span class="p">)</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="s2">&quot;forms.py&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="s2">&quot;models.py&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">info_json_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{{</span>
+<span class="s2">        &quot;display_string&quot;: &quot;</span><span class="si">{0}</span><span class="s2">&quot;,</span>
+<span class="s2">        &quot;module_name&quot;:&quot;</span><span class="si">{1}</span><span class="s2">&quot;,</span>
+<span class="s2">        &quot;type&quot;: &quot;show&quot;,</span>
+<span class="s2">        &quot;fa-icon&quot;: &quot;fa fa-store&quot;,</span>
+<span class="s2">        &quot;url_prefix&quot;: &quot;/</span><span class="si">{1}</span><span class="s2">&quot;,</span>
+<span class="s2">        &quot;author&quot;: {{</span>
+<span class="s2">            &quot;name&quot;:&quot;&quot;,</span>
+<span class="s2">            &quot;website&quot;:&quot;&quot;,</span>
+<span class="s2">            &quot;mail&quot;:&quot;&quot;</span>
+<span class="s2">        }}</span>
+<span class="s2">}}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">modulename</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span> <span class="n">modulename</span>
+    <span class="p">)</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="s2">&quot;info.json&quot;</span><span class="p">,</span> <span class="n">info_json_content</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

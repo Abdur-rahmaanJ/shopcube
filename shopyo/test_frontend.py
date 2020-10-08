@@ -9,26 +9,20 @@ from modules.settings.models import Settings
 from shopyoapi.init import db
 
 options = webdriver.ChromeOptions()
-options.add_argument('--headless')
-options.add_argument('--disable-gpu')
+options.add_argument("--headless")
+options.add_argument("--disable-gpu")
 
-test_user = {
-    'username': 'admin',
-    'password': 'admin'
-}
+test_user = {"username": "admin", "password": "admin"}
 
 
-test_user2 = {
-    'username': 'test_user',
-    'password': 'test_user'
-}
+test_user2 = {"username": "test_user", "password": "test_user"}
 
 
 class TestBase(LiveServerTestCase):
     """Base for frontend testing"""
 
     def create_app(self):
-        config_name = 'testing'
+        config_name = "testing"
         app = create_app(config_name)
         return app
 
@@ -36,7 +30,7 @@ class TestBase(LiveServerTestCase):
         """Define test variables and initialize app."""
         self.app = create_app(config_name="testing")
         self.client = self.app.test_client
-        self.driver = webdriver.Chrome('chromedriver')
+        self.driver = webdriver.Chrome("chromedriver")
         # self.driver.get(self.get_server_url())driver.current_url
 
         with self.app.app_context():
@@ -60,34 +54,32 @@ class TestBase(LiveServerTestCase):
 
 class LoginTest(TestBase):
     """Test login"""
+
     def setUp(self):
         super(LoginTest, self).setUp()
-        self.url = f'{self.get_server_url()}/login/'
+        self.url = f"{self.get_server_url()}/login/"
 
     def test_successful_login(self):
         user = User()
-        user.username = test_user2['username']
-        user.set_hash(test_user2['password'])
+        user.username = test_user2["username"]
+        user.set_hash(test_user2["password"])
         user.admin_user = True
         user.insert()
         self.driver.get(self.url)
-        self.driver.find_element_by_id("username").send_keys(
-            test_user2['username'])
-        self.driver.find_element_by_id("password").send_keys(
-            test_user2['password'])
+        self.driver.find_element_by_id("username").send_keys(test_user2["username"])
+        self.driver.find_element_by_id("password").send_keys(test_user2["password"])
         self.driver.find_element_by_id("submit").click()
         time.sleep(3)
         self.assertEqual(
-            self.driver.current_url, 'http://localhost:8943/control_panel/')
+            self.driver.current_url, "http://localhost:8943/control_panel/"
+        )
 
     def test_failed_login(self):
         self.driver.get(self.url)
-        self.driver.find_element_by_id("username").send_keys(
-            test_user2['username'])
+        self.driver.find_element_by_id("username").send_keys(test_user2["username"])
         self.driver.find_element_by_id("password").send_keys("wrong_password")
         self.driver.find_element_by_id("submit").click()
         time.sleep(3)
-        error_message = self.driver.find_element_by_id('error').text
+        error_message = self.driver.find_element_by_id("error").text
         self.assertEqual(self.driver.current_url, self.url)
-        self.assertEqual(
-            error_message, 'please check your user id and password')
+        self.assertEqual(error_message, "please check your user id and password")

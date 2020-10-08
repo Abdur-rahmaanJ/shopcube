@@ -57,7 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Commandline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../unittests.html">Unittests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
 </ul>
 
 
@@ -83,6 +83,7 @@
 <span></span><span class="kn">from</span> <span class="nn">shopyoapi.html</span> <span class="kn">import</span> <span class="n">notify_warning</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">flash</span>
 
+
 <div class="viewcode-block" id="flash_errors"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.forms.flash_errors">[docs]</a><span class="k">def</span> <span class="nf">flash_errors</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Auto flash errors from WKHtml forms</span>
@@ -101,7 +102,7 @@
         <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;Error in the </span><span class="si">%s</span><span class="s2"> field - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="nb">getattr</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
-                <span class="n">error</span>
+                <span class="n">error</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">flash</span><span class="p">(</span><span class="n">notify_warning</span><span class="p">(</span><span class="n">error_msg</span><span class="p">))</span></div>
 </pre></div>

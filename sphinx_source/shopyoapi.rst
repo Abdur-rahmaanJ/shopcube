@@ -39,24 +39,6 @@ shopyoapi.file
     :inherited-members:
     :show-inheritance:
 
-shopyoapi.enhance
------------------
-
-.. automodule:: shopyoapi.enhance
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
-
-
-shopyoapi.file
---------------
-
-.. automodule:: shopyoapi.file
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
 
 
 shopyoapi.forms

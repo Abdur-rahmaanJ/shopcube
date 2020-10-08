@@ -10,9 +10,10 @@ from flask_login import UserMixin
 from uuid import uuid4
 
 
-role_helpers = db.Table('role_helpers',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
+role_helpers = db.Table(
+    "role_helpers",
+    db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
+    db.Column("role_id", db.Integer, db.ForeignKey("roles.id")),
 )
 
 
@@ -23,11 +24,9 @@ class User(UserMixin, db.Model):
     id = db.Column(db.String(10), primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(128))
-    
+
     admin_user = db.Column(db.Boolean, default=False)
-    roles = db.relationship("Role",
-        secondary=role_helpers, 
-        cascade = "all, delete")
+    roles = db.relationship("Role", secondary=role_helpers, cascade="all, delete")
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -51,7 +50,7 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return f'User({self.username!r})'
+        return f"User({self.username!r})"
 
 
 class Role(db.Model):
@@ -70,5 +69,3 @@ class Role(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-

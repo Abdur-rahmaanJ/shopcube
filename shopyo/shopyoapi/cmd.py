@@ -1,4 +1,3 @@
-
 import os
 import shutil
 import sys
@@ -13,6 +12,7 @@ from .file import trymkdir
 from .file import trycopytree
 from .file import trycopy
 from .file import trymkfile
+
 
 def clean():
     """
@@ -63,9 +63,7 @@ def initialise():
         config = json.load(config)
     print("Creating Db")
     print("#######################")
-    subprocess.run(
-        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
-    )
+    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
     print("Migrating")
     print("#######################")
     subprocess.run(
@@ -77,10 +75,7 @@ def initialise():
 
     print("Initialising User")
     print("#######################")
-    add_admin(
-        config["admin_user"]["name"],
-        config["admin_user"]["password"]
-    )
+    add_admin(config["admin_user"]["name"], config["admin_user"]["password"])
 
     print("Initialising Settings")
     print("#######################")
@@ -105,15 +100,17 @@ def create_module(modulename):
 
     """
 
-    if bool(re.match(r'^[A-Za-z0-9_]+$', modulename)) is False:
-        print("Error: modulename is not valid, please use alphanumeric and underscore only")
+    if bool(re.match(r"^[A-Za-z0-9_]+$", modulename)) is False:
+        print(
+            "Error: modulename is not valid, please use alphanumeric and underscore only"
+        )
         sys.exit()
-    print('creating module: {}'.format(modulename))
-    base_path = 'modules/' + modulename
+    print("creating module: {}".format(modulename))
+    base_path = "modules/" + modulename
     trymkdir(base_path)
-    trymkdir(base_path+'/templates')
-    trymkdir(base_path+'/templates/'+modulename)
-    view_content = '''
+    trymkdir(base_path + "/templates")
+    trymkdir(base_path + "/templates/" + modulename)
+    view_content = """
 import os
 import json
 
@@ -147,11 +144,11 @@ module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
 @module_blueprint.route("/")
 def index():
     return module_info['display_string']
-'''
-    trymkfile(base_path+'/'+'view.py', view_content)
-    trymkfile(base_path+'/'+'forms.py', '')
-    trymkfile(base_path+'/'+'models.py', '')
-    info_json_content = '''{{
+"""
+    trymkfile(base_path + "/" + "view.py", view_content)
+    trymkfile(base_path + "/" + "forms.py", "")
+    trymkfile(base_path + "/" + "models.py", "")
+    info_json_content = """{{
         "display_string": "{0}",
         "module_name":"{1}",
         "type": "show",
@@ -162,5 +159,7 @@ def index():
             "website":"",
             "mail":""
         }}
-}}'''.format(modulename.capitalize(), modulename)
-    trymkfile(base_path+'/'+'info.json', info_json_content)
+}}""".format(
+        modulename.capitalize(), modulename
+    )
+    trymkfile(base_path + "/" + "info.json", info_json_content)

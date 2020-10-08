@@ -29,7 +29,7 @@ login_blueprint = Blueprint(
 def login():
     context = base_context()
     login_form = LoginForm()
-    context['form'] = login_form
+    context["form"] = login_form
     if login_form.validate_on_submit():
         username = login_form.username.data
         password = login_form.password.data
