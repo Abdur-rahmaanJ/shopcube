@@ -4,7 +4,7 @@ import shutil
 import sys
 import subprocess
 import json
-
+import re
 
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
@@ -104,6 +104,10 @@ def create_module(modulename):
 
 
     """
+
+    if bool(re.match(r'^[A-Za-z0-9_]+$', modulename)) is False:
+        print("Error: modulename is not valid, please use alphanumeric and underscore only")
+        sys.exit()
     print('creating module: {}'.format(modulename))
     base_path = 'modules/' + modulename
     trymkdir(base_path)
