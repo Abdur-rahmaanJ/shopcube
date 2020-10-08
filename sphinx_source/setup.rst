@@ -1,48 +1,101 @@
 Setting up Shopyo
 =================
-🔧 Install instructions
------------------------
 
-- download python3.7
-- clone and cd into project
-- run
+Shopyo requires Python. Be sure to have it before!
 
-.. code-block:: python
-   :caption: Install requirements.
-   :name:  install_requirements
+👟 The easy way
+---------------
+
+* create and activate venv if you want
+* install shopyo
+
+.. code-block:: bash
+
+    pip install shopyo
+
+* create new project
+
+.. warning ::
+
+    close your commandline prompt and repopen
+
+
+* create new shopyo project
+
+.. code-block:: bash
+
+    shopyo new /path/to/location project-name
+
+example
+
+.. code-block:: bash
+
+    shopyo new /home/profiles/arj/desktop shopyotest
+
+* cd into path. if you added path as ``.`` just cd into ``project-name``
+
+* initialise
+
+.. code-block:: bash
+
+    shopyo initialise
+
+* run
+
+.. code-block:: bash
+
+    shopyo runserver
+
+
+
+
+🔧 Install from Github
+----------------------
+
+* clone and cd into shopyo/shopyo
+
+
+.. code-block:: bash
+
+    git clone https://github.com/Abdur-rahmaanJ/shopyo
+    cd shopyo/shopyo
+
+* install requirements
+
+.. code-block:: bash
 
     python -m pip install -r requirements.txt
 
-👟 Run instructions
--------------------
 
-``cd`` into shopyo/shopyo if not already.
+or if you want to contribute
+
+.. code-block:: bash
+
+    python -m pip install -r dev_requirements.txt
+
+
+``cd`` into shopyo/shopyo if not done already.
 
 initialise and setup app.
 
-.. code-block:: python
-   :caption: initialise Shopyo.
-   :name: initialise
+.. code-block:: bash
 
     python manage.py initialise
 
 run the app.
 
-.. code-block:: python
-   :caption: runserver.
-   :name: runserver
+.. code-block:: bash
 
     python manage.py runserver
 
 go to the indicated url
 
-**Super User password**
+
+**Default password**
 -----------------------
 
-.. code-block:: python
-   :caption: super user password.
-   :name: user_pass
+.. code-block:: none
 
-    User ID: user
+    username: user
     password: pass
 

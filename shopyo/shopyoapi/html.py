@@ -3,10 +3,22 @@ Used on flash
 flash(notify_success('mail sent!'))
 '''
 def notify(message, alert_type="primary"):
-    '''
-    secondary, success, danger, warning, info, light
-    dark
-    '''
+    """
+    Used with flash
+        flash(notify('blabla'))
+
+    Parameters
+    ----------
+    message: str
+        message to be displayed
+
+    alert_type: str
+        bootstrap class
+
+    Returns
+    -------
+    None
+    """
     alert = """
     <div class="alert alert-{alert_type} alert-dismissible fade show" role="alert"
         style="opacity: 0.98;">

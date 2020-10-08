@@ -5,72 +5,67 @@ Templating
     :titlesonly:
 
 
-Developing a template.
--------------------------------------
+Developing a template
+---------------------
 
 
-Each landing page and subsection should contain the following headers.
+Please see the `Modules section <modules.html>`_ on how to structure a module.
 
-.. literalinclude:: ../shopyo/modules/admin/templates/admin/index.html
+Having said that, this is the base file we are extending from. 
+
+
+.. literalinclude:: ../shopyo/modules/base/templates/base/main_base.html
+   :language: html
+   :linenos:
+   :lines: 1-99
+
+
+It includes:
+
+* space for user-supplied head (block pagehead)
+* space for user-supplied body (block body)
+* notification mechanism on the top right
+
+Here is the contact form using the base:
+
+.. literalinclude:: ../shopyo/modules/contact/templates/contact/contact_form.html
    :language: python
    :linenos:
-   :lines: 1-3
-
-This extends the base.html file and
-sets the active section (change section name).
+   :lines: 1-51
 
 
-Create the main landing page of a new section in the template folder.
-
-Inside the modules template folder create a folder named as you want::
-
-    modules
-    /section_name
-        /templates
-            /section_name
-                index.html
-
-**Create a subsection template**.
+If you extend the base template, you will be able to use the 
+notification mechanism used for shopyo api
 
 
-Inside the module section template folder create a new file under the folder named same as the section::
 
-    modules
-        /section_name
-            /templates
-                /section_name
-                    index.html``
+Global values for templates
+---------------------------
 
-**Create navigation elements for a new section.**
-Inside the template folder create a file named ``nav.html``::
+Global values for templates can be found in shopyoapi/enhance.py in this function
 
-    /modules
-        /section_name
-            /templates
-                /section_name
-                    index.html
-                    nav.html
-
-In the  ``nav.html``  file elements for the navigation can be created.
-
-**To display the navagation elements.**
-
-Open the modules ``/base`` folder and locate the ``nav_base.html``.
-
-In the ``nav_bar_log([])`` array. Enter the section name last in the list
-
-.. literalinclude:: ../shopyo/modules/base/templates/base/nav_base.html
+.. literalinclude:: ../shopyo/shopyoapi/enhance.py
    :language: python
    :linenos:
-   :lines: 1-10
+   :lines: 9-15
 
+Passing parameters to templates
+-------------------------------
 
-Now enter a new ``elif`` statement containing a reference
-to the ``nav_base.html``
+here is a demo on returning template vars:
 
-.. literalinclude:: ../shopyo/modules/base/templates/base/nav_base.html
-   :language: python
-   :linenos:
-   :lines: 25-50
+.. code:: python
 
-Then the navagation elements will be displayed in the new section.
+  from shopyoapi.enhance import base_context
+  # ...
+  @module_blueprint.route('/abc')
+  def somefunc():
+      context = base_context()
+      form = PageForm()
+
+      context.update({
+          'form':form,
+          'module_name': module_name
+      })
+      return render_template('page/dashboard.html', **context)
+

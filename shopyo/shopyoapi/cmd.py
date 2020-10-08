@@ -1,3 +1,4 @@
+
 import os
 import shutil
 import sys
@@ -13,8 +14,20 @@ from .file import trycopytree
 from .file import trycopy
 from .file import trymkfile
 
-
 def clean():
+    """
+    cleans shopyo.db __pycache__ and migrations/
+
+    Parameters
+    ----------
+    
+
+    Returns
+    -------
+    None
+        ...
+
+    """
     if os.path.exists("shopyo.db"):
         os.remove("shopyo.db")
         print("shopyo.db successfully deleted")
@@ -33,6 +46,19 @@ def clean():
 
 
 def initialise():
+    """
+    Create db, migrate, adds default users, add settings
+
+    Parameters
+    ----------
+    
+
+    Returns
+    -------
+    None
+
+
+    """
     with open("config.json", "r") as config:
         config = json.load(config)
     print("Creating Db")
@@ -64,6 +90,20 @@ def initialise():
 
 
 def create_module(modulename):
+    """
+    creates module with the structure defined in the modules section in docs
+
+    Parameters
+    ----------
+    modulename: str
+        name of module, in alphanumeric-underscore
+
+    Returns
+    -------
+    None
+
+
+    """
     print('creating module: {}'.format(modulename))
     base_path = 'modules/' + modulename
     trymkdir(base_path)

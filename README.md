@@ -48,7 +48,7 @@ python manage.py runserver
 
 go to url ^^
 
-**You can also use `shopyo initialise` and `shopyo runserver`**
+You can also use `shopyo initialise` and `shopyo runserver`
 
 
 # ⚗️ Stability
@@ -57,9 +57,6 @@ go to url ^^
 
 ~**alpha** - highly volatile, core features not yet finished~
 
-<hr>
-
-[![HitCount](http://hits.dwyl.com/Abdur-RahmaanJ/shopyo.svg)](http://hits.dwyl.com/Abdur-RahmaanJ/shopyo)
 
 # 💌 Contributing Countries
 
@@ -95,17 +92,6 @@ the shop modules in modules/
 
 # 📖 History
 
-<details><summary><b>I want to learn!</b></summary>
-
-Months ago, I was searching github for a point of sales solution that used Python. What bothered me was that many of the applications I found were not ideal. Some required Posgres with the expectation that a user would already have this installed, others had codebases that were a mess of spaghetti code, yet others were django-based accounting monsters ...
-
-I decided to try making my own solution, modeled after a client request, I had once recived. I Made it flask-based with SQLalchemy and SQLite. You can instantly get started with no hassle, switching to something more powerful when you want to (since it uses an ORM)
-
-For the UI, we used the latest, bootstrap4, fa5 and jq3. Interestingly enough, I had two shop owners try it and they were very impressed with the ease of use.
-
-It is still in devolopment and supports instant lookup. Long story short, with some programming skills, you can solve some everyday problems. And yes, no cdn, all libs are bundled so that you can use it completely offline
-
-</details>
 
 See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328) linked-in article!
 
@@ -131,6 +117,47 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 
 - Point of Sales
 - Accounting
+
+
+# 📞 Contact
+
+Support team if you are stuck
+
+- [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) - arj.python@gmail.com
+- [Nathan](https://github.com/blips5) - 
+- [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
+
+
+
+## 🍳 In Action
+
+![](screenshots/scr_control_panel.png)
+![](screenshots/scr_user_add.png)
+![](screenshots/scr_user_view.png)
+![](screenshots/scr_inventory.png)
+![](screenshots/scr_product_add.png)
+![](screenshots/scr_product_lookup.png)
+![](screenshots/scr_people_add.png)
+![](screenshots/scr_people_view.png)
+![](screenshots/scr_people_lookup.png)
+![](screenshots/scr_appointment_add.png)
+![](screenshots/scr_appointment_menu.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 🔧 Install instructions
 
@@ -322,31 +349,154 @@ In Progress
 - after changes run `pip install -e . --upgrade`
 - test `shopyo <your options>`
 
+# 🔧 Install instructions
 
-# 📞 Contact
+- download python3.8
+- clone and cd into project
+- run ```python -m pip install -r requirements.txt```
+- run ```python -m pip install -r dev_requirements.txt``` if you want to contribute
 
-Support team if you are stuck
+# 👟 Run instructions
 
-- [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) - arj.python@gmail.com
-- [Nathan](https://github.com/blips5) - 
-- [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
+``cd`` into shopyo/shopyo if not already.
+
+initialise and setup app.
+
+```python
+python manage.py initialise
+```
+
+run the app.
+
+```python
+python manage.py runserver
+```
+
+go to the indicated url
+
+**Super User password**
+
+```python
+User ID: user 
+password: pass
+```
+
+# 🔩 Migrations
+
+In case of change to models, do
+
+```
+python manage.py db migrate
+pyhton manage.py db upgrade
+```
+# Testing
+The application makes use of `end to end` tests.  To get these up and running you will need [selenium](https://www.selenium.dev/) and a [chrome web driver](https://tecadmin.net/setup-selenium-chromedriver-on-ubuntu/).
+- The chromedriver is already part of the applciation folder.
+- To run tests cd into the `shopyo folder` and run the command. `pytest`.
+- To ensure your code meets PEP8 standard, run the command. `flake8 shopyo`.
+
+# Complete commands
+
+initialise database.
+
+```
+python manage.py db init # create db from new
+python manage.py db migrate
+python manage.py db upgrade
+```
+
+**clean project**
+
+```
+python manage.py clean
+```
+
+removes `__pycache__/`, `test.db` and ``migrations``.
+
+**create new module**
+
+`python manage.py startapp modulename`
+
+**run server**
+
+```
+python manage.py rundebug
+python manage.py runserver
+```
+
+
+**create new module**
+
+# :scroll: Docs
+Sphinx docs generater
+       
+Run
+
+```
+sphinx-build -b html sphinx_source docs
+```
+
+
+in `shopyo/` to generate docs
+
+[Read the docs for Sphinx Alablaster](
+https://alabaster.readthedocs.io/en/latest/ "Sphinx Alablaster") 
+     
+# :construction: Developing Modules
+
+Modules are found in the modules folder.
+
+A typical structure is as follows:
+
+```
+apple/
+    templates/
+        apple/
+    view.py
+    models.py
+    info.json
+```
+
+You must ensure that
+- The view is named `view.py`
+- The info is named `info.json`
+- The module folder and the folder inside templates both have the same name
+- Blueprints must be named `<nameofmodulefolder>_blueprint`, in this demo `apple_blueprint`
+
+And ... the app will load all the modules, just make sure in info.json you keep url_prefix, type, name, and fa-icon
+
+For the time being it's best to look into existing modules and do the same.
 
 
 
-## 🍳 In Action
 
-![](screenshots/scr_control_panel.png)
-![](screenshots/scr_user_add.png)
-![](screenshots/scr_user_view.png)
-![](screenshots/scr_inventory.png)
-![](screenshots/scr_product_add.png)
-![](screenshots/scr_product_lookup.png)
-![](screenshots/scr_people_add.png)
-![](screenshots/scr_people_view.png)
-![](screenshots/scr_people_lookup.png)
-![](screenshots/scr_appointment_add.png)
-![](screenshots/scr_appointment_menu.png)
+# 💬 Community: Discord
+[https://discord.gg/k37Ef6w](https://discord.gg/k37Ef6w)
 
-## credits
+# FaQ
 
-digits.net
+**Why do we need another folder in templates?**
+
+Flask loads all templates in one namespace. If you specify `apple/index.html` flask will load the index.html in the apple folder in templates
+
+
+# Roadmap
+
+- ✔️ Models
+- ✔️ Migrations
+- ✔️ Restful Api
+- ✔️ Manage.py
+- ✔️ CSRF protection
+- ✔️ Easy dev/production mode switch
+- ✔️ Login
+- ✔️ Api namespacing / apps
+- ✔️ Django-like structure (where models, views and templates all in one  folder)
+- ✔️ Relative reference (.forms for example)
+- ✔️ Roles management
+
+In Progress
+
+- 🔃 Unit tests
+- 🔃 Integration tests
+- 🔃 Permission levels
+

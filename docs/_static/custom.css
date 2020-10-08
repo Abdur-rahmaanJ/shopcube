@@ -1,1 +1,4 @@
-/* This file intentionally left blank. */
+div.sphinxsidebar {
+    max-height: 400px;
+    overflow-y: auto;
+}

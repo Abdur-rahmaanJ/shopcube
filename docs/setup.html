@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Setting up Shopyo &#8212; Shopyo  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +15,7 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Contributing to Shopyo" href="contrib.html" />
+    <link rel="next" title="Education" href="education.html" />
     <link rel="prev" title="Welcome to Shopyo’s docs!" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -44,18 +45,26 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">Welcome to Shopyo’s docs!</a></li>
-      <li>Next: <a href="contrib.html" title="next chapter">Contributing to Shopyo</a></li>
+      <li>Next: <a href="education.html" title="next chapter">Education</a></li>
   </ul></li>
 </ul>
 </div><h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Setting up Shopyo</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#install-instructions">🔧 Install instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-instructions">👟 Run instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#super-user-password"><strong>Super User password</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-easy-way">👟 The easy way</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-from-github">🔧 Install from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-password"><strong>Default password</strong></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unittests.html">Unittests</a></li>
 </ul>
 
 
@@ -79,47 +88,82 @@
             
   <div class="section" id="setting-up-shopyo">
 <h1>Setting up Shopyo<a class="headerlink" href="#setting-up-shopyo" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="install-instructions">
-<h2>🔧 Install instructions<a class="headerlink" href="#install-instructions" title="Permalink to this headline">¶</a></h2>
+<p>Shopyo requires Python. Be sure to have it before!</p>
+<div class="section" id="the-easy-way">
+<h2>👟 The easy way<a class="headerlink" href="#the-easy-way" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>download python3.7</p></li>
-<li><p>clone and cd into project</p></li>
+<li><p>create and activate venv if you want</p></li>
+<li><p>install shopyo</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install shopyo
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>create new project</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>close your commandline prompt and repopen</p>
+</div>
+<ul class="simple">
+<li><p>create new shopyo project</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new /path/to/location project-name
+</pre></div>
+</div>
+<p>example</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new /home/profiles/arj/desktop shopyotest
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>cd into path. if you added path as <code class="docutils literal notranslate"><span class="pre">.</span></code> just cd into <code class="docutils literal notranslate"><span class="pre">project-name</span></code></p></li>
+<li><p>initialise</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo initialise
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>run</p></li>
 </ul>
-<div class="literal-block-wrapper docutils container" id="install-requirements">
-<div class="code-block-caption"><span class="caption-text">Install requirements.</span><a class="headerlink" href="#install-requirements" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo runserver
 </pre></div>
 </div>
 </div>
+<div class="section" id="install-from-github">
+<h2>🔧 Install from Github<a class="headerlink" href="#install-from-github" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>clone and cd into shopyo/shopyo</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Abdur-rahmaanJ/shopyo
+<span class="nb">cd</span> shopyo/shopyo
+</pre></div>
 </div>
-<div class="section" id="run-instructions">
-<h2>👟 Run instructions<a class="headerlink" href="#run-instructions" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into shopyo/shopyo if not already.</p>
+<ul class="simple">
+<li><p>install requirements</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -r requirements.txt
+</pre></div>
+</div>
+<p>or if you want to contribute</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -r dev_requirements.txt
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into shopyo/shopyo if not done already.</p>
 <p>initialise and setup app.</p>
-<div class="literal-block-wrapper docutils container" id="initialise">
-<div class="code-block-caption"><span class="caption-text">initialise Shopyo.</span><a class="headerlink" href="#initialise" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">initialise</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py initialise
 </pre></div>
-</div>
 </div>
 <p>run the app.</p>
-<div class="literal-block-wrapper docutils container" id="runserver">
-<div class="code-block-caption"><span class="caption-text">runserver.</span><a class="headerlink" href="#runserver" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">runserver</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
 </pre></div>
-</div>
 </div>
 <p>go to the indicated url</p>
 </div>
-<div class="section" id="super-user-password">
-<h2><strong>Super User password</strong><a class="headerlink" href="#super-user-password" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="user-pass">
-<div class="code-block-caption"><span class="caption-text">super user password.</span><a class="headerlink" href="#user-pass" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">User</span> <span class="n">ID</span><span class="p">:</span> <span class="n">user</span>
- <span class="n">password</span><span class="p">:</span> <span class="k">pass</span>
+<div class="section" id="default-password">
+<h2><strong>Default password</strong><a class="headerlink" href="#default-password" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>username: user
+password: pass
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -135,7 +179,7 @@
       &copy;.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

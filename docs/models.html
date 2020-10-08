@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Models &#8212; Shopyo  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -43,25 +44,26 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="contrib.html">Contributing to Shopyo</a><ul>
       <li>Previous: <a href="templates.html" title="previous chapter">Templating</a></li>
       <li>Next: <a href="views.html" title="next chapter">Views</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div><h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setting up Shopyo</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="contrib.html#community-discord">💬 Community: Discord</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="templates.html">Building a template</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Creating a model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="views.html">Creating a view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unittests.html">Creating unittests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-model">Creating a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#migrations">🔩 Migrations</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unittests.html">Unittests</a></li>
 </ul>
 
 
@@ -89,6 +91,7 @@
 </div>
 <div class="section" id="creating-a-model">
 <h2>Creating a model<a class="headerlink" href="#creating-a-model" title="Permalink to this headline">¶</a></h2>
+<p>Here is a sample model which uses sqlalchemy</p>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -101,24 +104,47 @@
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Users</span><span class="p">(</span><span class="n">UserMixin</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Users model &quot;&quot;&quot;</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;users&#39;</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ContactMessage</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;contact&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">created_date</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
-    <span class="n">admin_user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">set_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">check_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="migrations">
 <h2>🔩 Migrations<a class="headerlink" href="#migrations" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo &lt;command&gt;
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py &lt;command&gt;
+</pre></div>
+</div>
+</div>
 <p>In case of change to models, do</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Updating the database.</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
@@ -127,22 +153,6 @@
 </pre></div>
 </div>
 </div>
-<p>Complete commands</p>
-<div class="literal-block-wrapper docutils container" id="migrations-2">
-<div class="code-block-caption"><span class="caption-text">Initialise database from scratch.</span><a class="headerlink" href="#migrations-2" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">db</span> <span class="n">init</span> <span class="c1"># create db from new</span>
-<span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">db</span> <span class="n">migrate</span>
-<span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">db</span> <span class="n">upgrade</span>
-</pre></div>
-</div>
-</div>
-<div class="literal-block-wrapper docutils container" id="migrations-3">
-<div class="code-block-caption"><span class="caption-text">Clean project</span><a class="headerlink" href="#migrations-3" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">clean</span>
-</pre></div>
-</div>
-</div>
-<p>removes <code class="docutils literal notranslate"><span class="pre">__pycache__/</span></code>, <code class="docutils literal notranslate"><span class="pre">test.db</span></code> and <code class="docutils literal notranslate"><span class="pre">migrations</span></code>.</p>
 </div>
 </div>
 
@@ -157,7 +167,7 @@
       &copy;.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

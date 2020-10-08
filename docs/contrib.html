@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contributing to Shopyo &#8212; Shopyo  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,8 +15,8 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Templating" href="templates.html" />
-    <link rel="prev" title="Setting up Shopyo" href="setup.html" />
+    <link rel="next" title="Modules/Apps" href="modules.html" />
+    <link rel="prev" title="Education" href="education.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -43,23 +44,30 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="setup.html" title="previous chapter">Setting up Shopyo</a></li>
-      <li>Next: <a href="templates.html" title="next chapter">Templating</a></li>
+      <li>Previous: <a href="education.html" title="previous chapter">Education</a></li>
+      <li>Next: <a href="modules.html" title="next chapter">Modules/Apps</a></li>
   </ul></li>
 </ul>
 </div><h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to Shopyo</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#community-discord">💬 Community: Discord</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="templates.html">Building a template</a></li>
-<li class="toctree-l3"><a class="reference internal" href="models.html">Creating a model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="views.html">Creating a view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unittests.html">Creating unittests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#github-instructions">Github instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-fork">Update Fork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-to-package">Contributing to package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maintainers-notes">Maintainers notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#community-discord">💬 Community: Discord</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unittests.html">Unittests</a></li>
 </ul>
 
 
@@ -83,38 +91,71 @@
             
   <div class="section" id="contributing-to-shopyo">
 <h1>Contributing to Shopyo<a class="headerlink" href="#contributing-to-shopyo" title="Permalink to this headline">¶</a></h1>
-<p>If would like to contribute to Shopyo feel free todo so
-learners are also welcome and and we wil try and help when we can.</p>
-<p>There a various ways to contribute to shopyo</p>
+<p>Shopyo is built using Flask but mimicks Django so that you get to use plug and play modules,
+to contribute, it’s nice to know Flask well. Here are some resources which might help you:</p>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<p>Please see the <a class="reference external" href="education.html">Education</a> section to see what you need to learn before contributing.</p>
+</div>
+<div class="section" id="github-instructions">
+<h2>Github instructions<a class="headerlink" href="#github-instructions" title="Permalink to this headline">¶</a></h2>
+<p>If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.</p>
 <ul class="simple">
-<li><p>fixing or applying new features</p></li>
-<li><p>bug hunting</p></li>
-<li><p>documentation</p></li>
+<li><p>Fork repo.</p></li>
+<li><p>Create a new branch. For example: <code class="docutils literal notranslate"><span class="pre">bg-fix-migration-file</span></code>.</p></li>
+<li><p>Once you have add your changes ensure tests are still passing.</p></li>
+<li><p>Add tests for any new functionality added.</p></li>
+<li><p>Ensure you commits follow the standard specified <a class="reference external" href="https://udacity.github.io/git-styleguide/">here</a>.</p></li>
+<li><p>Follow the Pull request template.</p></li>
+<li><p>Add your country flag in readme after accepted PR</p></li>
+<li><p>Follow <a class="reference internal" href="#update-fork"><span class="std std-ref">Update Fork</span></a> then</p></li>
+<li><p>Push <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">&lt;branch-name&gt;</span></code></p></li>
+<li><p>If it closes an issue, add <code class="docutils literal notranslate"><span class="pre">Fixes</span> <span class="pre">#94</span></code> for example, as seen <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo/pull/95">here</a></p></li>
+<li><p>PR against <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch, not master</p></li>
 </ul>
+</div>
+<div class="section" id="update-fork">
+<h2>Update Fork<a class="headerlink" href="#update-fork" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt;
+git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+git fetch upstream
+git pull upstream master
+</pre></div>
+</div>
+</div>
+<div class="section" id="contributing-to-package">
+<h2>Contributing to package<a class="headerlink" href="#contributing-to-package" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>clone project</p></li>
+<li><p>cd into project folder</p></li>
+<li><p>create and activate venv</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p></li>
+<li><p>after changes run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">--upgrade</span></code></p></li>
+<li><p>test <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">&lt;your</span> <span class="pre">options&gt;</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="maintainers-notes">
+<h2>Maintainers notes<a class="headerlink" href="#maintainers-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Version is found in shopyo/__init__.py</p></li>
+</ul>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">version_info</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version_info</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li><p>to publish to pypi, run</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup.py publish
+</pre></div>
+</div>
+</div>
 <div class="section" id="community-discord">
 <h2>💬 Community: Discord<a class="headerlink" href="#community-discord" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>Join the Discord community <a class="reference external" href="https://discord.gg/k37Ef6w/">Discord Group</a></p>
 </div></blockquote>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="templates.html">Building a template</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="templates.html#developing-a-template">Developing a template.</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="models.html">Creating a model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="models.html#creating-a-model">Creating a model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="models.html#migrations">🔩 Migrations</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="views.html">Creating a view</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="unittests.html">Creating unittests</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</div>
 </div>
 </div>
 
@@ -129,7 +170,7 @@ learners are also welcome and and we wil try and help when we can.</p>
       &copy;.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

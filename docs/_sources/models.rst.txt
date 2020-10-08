@@ -5,15 +5,34 @@ Models
 .. toctree::
     :titlesonly:
 
+
 Creating a model
 ----------------
-.. literalinclude:: ../shopyo/modules/admin/models.py
+
+Here is a sample model which uses sqlalchemy
+
+
+.. literalinclude:: ../shopyo/modules/contact/models.py
    :language: python
    :linenos:
-   :lines: 13-25
+   :lines: 5-26
 
 🔩 Migrations
 -------------
+
+.. note::
+
+   You can run
+
+   .. code:: bash
+
+       shopyo <command>
+
+   or
+
+   .. code:: bash
+
+       python manage.py <command>
 
 In case of change to models, do
 
@@ -24,20 +43,3 @@ In case of change to models, do
    python manage.py db migrate
    python manage.py db upgrade
 
-Complete commands
-
-.. code-block:: python
-   :caption: Initialise database from scratch.
-   :name: migrations_2
-
-   python manage.py db init # create db from new
-   python manage.py db migrate
-   python manage.py db upgrade
-
-.. code-block:: python
-   :caption: Clean project
-   :name: migrations_3
-
-   python manage.py clean
-
-removes ``__pycache__/``, ``test.db`` and ``migrations``.

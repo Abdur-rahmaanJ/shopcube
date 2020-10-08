@@ -13,4 +13,7 @@ Copyright {year}
 '''.format(year=datetime.datetime.now().year)
 
 def printinfo():
+    '''
+    prints Shopyo copyright in ASCII art font
+    '''
     print(info)

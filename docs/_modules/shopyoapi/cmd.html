@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shopyoapi.cmd &#8212; Shopyo  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/shopyo.ico" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Shopyo</a></h1>
+
+
+
+
+
+
+
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../education.html">Education section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing to Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unittests.html">Unittests</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for shopyoapi.cmd</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<span class="kn">from</span> <span class="nn">shopyoapi.uploads</span> <span class="kn">import</span> <span class="n">add_admin</span>
+<span class="kn">from</span> <span class="nn">shopyoapi.uploads</span> <span class="kn">import</span> <span class="n">add_setting</span>
+
+<span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trymkdir</span>
+<span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trycopytree</span>
+<span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trycopy</span>
+<span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">trymkfile</span>
+
+<div class="viewcode-block" id="clean"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.cmd.clean">[docs]</a><span class="k">def</span> <span class="nf">clean</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    cleans shopyo.db __pycache__ and migrations/</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        ...</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;shopyo.db&quot;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;shopyo.db&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shopyo.db successfully deleted&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shopyo.db doesn&#39;t exist&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;__pycache__&quot;</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;__pycache__&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;__pycache__ successfully deleted&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;__pycache__ doesn&#39;t exist&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;migrations&quot;</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;migrations&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;migrations successfully deleted&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;migrations folder doesn&#39;t exist&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="initialise"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.cmd.initialise">[docs]</a><span class="k">def</span> <span class="nf">initialise</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create db, migrate, adds default users, add settings</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;config.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating Db&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;manage.py&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Migrating&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;manage.py&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;migrate&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+    <span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;manage.py&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;upgrade&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialising User&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
+    <span class="n">add_admin</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialising Settings&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#######################&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;settings&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">add_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_module"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.cmd.create_module">[docs]</a><span class="k">def</span> <span class="nf">create_module</span><span class="p">(</span><span class="n">modulename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    creates module with the structure defined in the modules section in docs</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    modulename: str</span>
+<span class="sd">        name of module, in alphanumeric-underscore</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;creating module: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modulename</span><span class="p">))</span>
+    <span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;modules/&#39;</span> <span class="o">+</span> <span class="n">modulename</span>
+    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
+    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/templates&#39;</span><span class="p">)</span>
+    <span class="n">trymkdir</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/templates/&#39;</span><span class="o">+</span><span class="n">modulename</span><span class="p">)</span>
+    <span class="n">view_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">import os</span>
+<span class="s1">import json</span>
+
+<span class="s1">from flask import Blueprint</span>
+<span class="s1"># from flask import render_template</span>
+<span class="s1"># from flask import url_for</span>
+<span class="s1"># from flask import redirect</span>
+<span class="s1"># from flask import flash</span>
+<span class="s1"># from flask import request</span>
+
+<span class="s1"># from shopyoapi.enhance import base_context</span>
+<span class="s1"># from shopyoapi.html import notify_success</span>
+<span class="s1"># from shopyoapi.forms import flash_errors</span>
+
+<span class="s1">dirpath = os.path.dirname(os.path.abspath(__file__))</span>
+<span class="s1">module_info = </span><span class="si">{}</span><span class="s1"></span>
+
+<span class="s1">with open(dirpath + &quot;/info.json&quot;) as f:</span>
+<span class="s1">    module_info = json.load(f)</span>
+
+<span class="s1">globals()[&#39;</span><span class="si">{}</span><span class="s1">_blueprint&#39;.format(module_info[&quot;module_name&quot;])] = Blueprint(</span>
+<span class="s1">    &quot;</span><span class="si">{}</span><span class="s1">&quot;.format(module_info[&quot;module_name&quot;]),</span>
+<span class="s1">    __name__,</span>
+<span class="s1">    template_folder=&quot;templates&quot;,</span>
+<span class="s1">    url_prefix=module_info[&quot;url_prefix&quot;],</span>
+<span class="s1">)</span>
+
+
+<span class="s1">module_blueprint = globals()[&#39;</span><span class="si">{}</span><span class="s1">_blueprint&#39;.format(module_info[&quot;module_name&quot;])]</span>
+
+<span class="s1">@module_blueprint.route(&quot;/&quot;)</span>
+<span class="s1">def index():</span>
+<span class="s1">    return module_info[&#39;display_string&#39;]</span>
+<span class="s1">&#39;&#39;&#39;</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;view.py&#39;</span><span class="p">,</span> <span class="n">view_content</span><span class="p">)</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;forms.py&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;models.py&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">info_json_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;{{</span>
+<span class="s1">        &quot;display_string&quot;: &quot;</span><span class="si">{0}</span><span class="s1">&quot;,</span>
+<span class="s1">        &quot;module_name&quot;:&quot;</span><span class="si">{1}</span><span class="s1">&quot;,</span>
+<span class="s1">        &quot;type&quot;: &quot;show&quot;,</span>
+<span class="s1">        &quot;fa-icon&quot;: &quot;fa fa-store&quot;,</span>
+<span class="s1">        &quot;url_prefix&quot;: &quot;/</span><span class="si">{1}</span><span class="s1">&quot;,</span>
+<span class="s1">        &quot;author&quot;: {{</span>
+<span class="s1">            &quot;name&quot;:&quot;&quot;,</span>
+<span class="s1">            &quot;website&quot;:&quot;&quot;,</span>
+<span class="s1">            &quot;mail&quot;:&quot;&quot;</span>
+<span class="s1">        }}</span>
+<span class="s1">}}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modulename</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span> <span class="n">modulename</span><span class="p">)</span>
+    <span class="n">trymkfile</span><span class="p">(</span><span class="n">base_path</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;info.json&#39;</span><span class="p">,</span> <span class="n">info_json_content</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

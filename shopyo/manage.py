@@ -10,7 +10,6 @@ from app import app
 from shopyoapi.cmd import clean
 from shopyoapi.cmd import initialise
 from shopyoapi.cmd import create_module
-from shopyoapi.cmd import new_project
 from shopyoapi.database import autoload_models
 
 

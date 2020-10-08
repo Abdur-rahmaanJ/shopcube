@@ -10,12 +10,22 @@ Welcome to Shopyo's docs!
 Shopyo a fast, easy to use Point Of Sale system with
 Open inventory management and Point of sales (powered by python) for small shops.
 
+It also makes a great, Django-like flask base
+
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 9
 
    Setting up Shopyo <setup>
+   Education section <education>
    Contributing to Shopyo <contrib>
+   Modules/Apps <modules>
+   Templates <templates>
+   Models <models>
+   Views <views>
+   Commandline <commandline>
+   Shopyoapi <shopyoapi>
+   Unittests <unittests>
 
 Indices and tables
 ==================
