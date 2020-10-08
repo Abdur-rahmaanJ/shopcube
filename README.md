@@ -73,6 +73,10 @@ Shop:
 If you want to use the project as a Flask base, just remove 
 the shop modules in modules/
 
+## 💬 Community: Discord¶
+
+Join the Discord community [Discord Group](https://discord.gg/k37Ef6w/)
+
 # Docs
 
 Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
