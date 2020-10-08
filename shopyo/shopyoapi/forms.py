@@ -1,6 +1,7 @@
 from shopyoapi.html import notify_warning
 from flask import flash
 
+
 def flash_errors(form):
     """
     Auto flash errors from WKHtml forms
@@ -19,6 +20,6 @@ def flash_errors(form):
         for error in errors:
             error_msg = u"Error in the %s field - %s" % (
                 getattr(form, field).label.text,
-                error
+                error,
             )
             flash(notify_warning(error_msg))

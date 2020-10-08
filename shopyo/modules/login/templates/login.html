@@ -65,7 +65,7 @@
                 {% endif %}
             </div>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            {{ form.submit() }}
+            <input type="submit" name="" value="submit" class="btn btn-info">
         </form>
              
 {% endblock %}

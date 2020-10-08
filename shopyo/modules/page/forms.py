@@ -9,20 +9,17 @@ from wtforms.validators import DataRequired
 from wtforms.validators import Length
 from wtforms import TextAreaField
 
+
 class PageForm(FlaskForm):
 
-    content =TextAreaField('Content', [],
-        render_kw={
-            'class':'form-control',
-            'rows':'20',
-            'autocomplete':'off'
-            }
-        )
+    content = TextAreaField(
+        "Content",
+        [],
+        render_kw={"class": "form-control", "rows": "20", "autocomplete": "off"},
+    )
 
-    title = StringField('title', [
-        DataRequired()],
-        render_kw={
-            'class':'form-control',
-            'autocomplete':'off'
-            }
-        )
+    title = StringField(
+        "title",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )

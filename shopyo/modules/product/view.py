@@ -18,6 +18,7 @@ product_blueprint = Blueprint(
 
 import uuid
 
+
 class Productchema(ma.Schema):
     class Meta:
         # Fields to expose
@@ -41,9 +42,7 @@ product_schema = Productchema(many=True)
 @login_required
 def list_prods(category_name):
     context = base_context()
-    products = Product.query.filter(
-        Product.category_name == category_name
-    ).all()
+    products = Product.query.filter(Product.category_name == category_name).all()
     context["products"] = products
     context["category"] = category_name
 
@@ -82,7 +81,7 @@ def prods_add(category_name):
                 name=name,
                 in_stock=in_stock,
                 category_name=category_name,
-                discontinued=discontinued
+                discontinued=discontinued,
             )
             if description:
                 p.description = description.strip()
@@ -92,7 +91,7 @@ def prods_add(category_name):
                 p.price = price.strip()
             if selling_price:
                 p.selling_price = selling_price.strip()
-            
+
             db.session.add(p)
             db.session.commit()
         context["category"] = category_name
@@ -101,13 +100,11 @@ def prods_add(category_name):
 
     context["category"] = category_name
     context["has_product"] = str(has_product)
-    context['barcodestr'] = uuid.uuid1()
+    context["barcodestr"] = uuid.uuid1()
     return render_template("prods/add.html", **context)
 
 
-@product_blueprint.route(
-    "/delete/<category_name>/<barcode>", methods=["GET", "POST"]
-)
+@product_blueprint.route("/delete/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
 def prods_delete(category_name, barcode):
     Product.query.filter(
@@ -117,9 +114,7 @@ def prods_delete(category_name, barcode):
     return redirect("/prods/list_prods/{}".format(category_name))
 
 
-@product_blueprint.route(
-    "/edit/<category_name>/<barcode>", methods=["GET", "POST"]
-)
+@product_blueprint.route("/edit/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
 def prods_edit(category_name, barcode):
     context = base_context()
@@ -155,8 +150,7 @@ def prods_update():
             discontinued = False
 
         p = Product.query.filter(
-            Product.barcode == old_barcode
-            and Product.category == category
+            Product.barcode == old_barcode and Product.category == category
         ).first()
         p.barcode = barcode
         p.name = name
@@ -215,7 +209,5 @@ def search(category_name, user_input):
 @product_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
-    has_product = db.session.query(
-        exists().where(Product.barcode == barcode)
-    ).scalar()
+    has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()
     return jsonify({"exists": has_product})

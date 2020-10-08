@@ -1,4 +1,3 @@
-
 import os
 import json
 
@@ -17,7 +16,7 @@ module_info = {}
 with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
+globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
     "{}".format(module_info["module_name"]),
     __name__,
     template_folder="templates",
@@ -25,33 +24,31 @@ globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
 )
 
 
-module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
+module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 module_name = module_info["module_name"]
 
 
-@module_blueprint.route('/')
+@module_blueprint.route("/")
 def index():
-    return ''
+    return ""
+
 
 @module_blueprint.route(module_info["panel_redirect"])
 def panel_redirect():
     context = base_context()
     form = PageForm()
 
-    context.update({
-        'form':form,
-        'module_name': module_name
-    })
-    return render_template('page/dashboard.html', **context)
+    context.update({"form": form, "module_name": module_name})
+    return render_template("page/dashboard.html", **context)
 
 
-@module_blueprint.route("/check_pagecontent", methods=['GET', 'POST'])
+@module_blueprint.route("/check_pagecontent", methods=["GET", "POST"])
 def check_pagecontent():
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PageForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return redirect(url_for('{}.panel_redirect'.format(module_name)))
+            return redirect(url_for("{}.panel_redirect".format(module_name)))
 
         return form.content.data

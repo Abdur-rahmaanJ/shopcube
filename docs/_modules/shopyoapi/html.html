@@ -57,7 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Commandline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../unittests.html">Unittests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
 </ul>
 
 
@@ -80,10 +80,12 @@
           <div class="body" role="main">
             
   <h1>Source code for shopyoapi.html</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Used on flash</span>
 <span class="sd">flash(notify_success(&#39;mail sent!&#39;))</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="notify"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify">[docs]</a><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Used with flash</span>
@@ -110,20 +112,26 @@
 <span class="s2">        &lt;span aria-hidden=&quot;true&quot;&gt;&amp;times;&lt;/span&gt;</span>
 <span class="s2">      &lt;/button&gt;</span>
 <span class="s2">    &lt;/div&gt;</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="n">alert_type</span><span class="p">)</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="n">alert_type</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">alert</span></div>
 
+
 <div class="viewcode-block" id="notify_success"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_success">[docs]</a><span class="k">def</span> <span class="nf">notify_success</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s1">&#39;success&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="notify_danger"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_danger">[docs]</a><span class="k">def</span> <span class="nf">notify_danger</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s1">&#39;danger&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;danger&quot;</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="notify_warning"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_warning">[docs]</a><span class="k">def</span> <span class="nf">notify_warning</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="notify_info"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_info">[docs]</a><span class="k">def</span> <span class="nf">notify_info</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s1">&#39;info&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

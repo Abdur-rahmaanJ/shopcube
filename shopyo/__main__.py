@@ -14,8 +14,9 @@ import subprocess
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
 
+
 def new_project(path, newfoldername):
-    newfoldername = newfoldername.strip('/').strip('\\')
+    newfoldername = newfoldername.strip("/").strip("\\")
     print("creating new project {}".format(newfoldername))
 
     base_path = path + "/" + newfoldername
@@ -27,20 +28,37 @@ def new_project(path, newfoldername):
     trycopytree(os.path.join(dirpath, "modules", "base"), base_path + "/modules/base")
     trycopytree(os.path.join(dirpath, "modules", "admin"), base_path + "/modules/admin")
     trycopytree(os.path.join(dirpath, "modules", "login"), base_path + "/modules/login")
-    trycopytree(os.path.join(dirpath, "modules", "appointment"), base_path + "/modules/appointment")
-    trycopytree(os.path.join(dirpath, "modules", "category"), base_path + "/modules/category")
-    trycopytree(os.path.join(dirpath, "modules", "people"), base_path + "/modules/people")
-    trycopytree(os.path.join(dirpath, "modules", "product"), base_path + "/modules/product")
-    trycopytree(os.path.join(dirpath, "modules", "control_panel"), base_path + "/modules/control_panel")
-    trycopytree(os.path.join(dirpath, "modules", "settings"), base_path + "/modules/settings")
+    trycopytree(
+        os.path.join(dirpath, "modules", "appointment"),
+        base_path + "/modules/appointment",
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "category"), base_path + "/modules/category"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "people"), base_path + "/modules/people"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "product"), base_path + "/modules/product"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "control_panel"),
+        base_path + "/modules/control_panel",
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "settings"), base_path + "/modules/settings"
+    )
     trycopytree(os.path.join(dirpath, "shopyoapi"), base_path + "/shopyoapi")
 
     trycopy(os.path.join(dirpath, "app.py"), base_path + "/app.py")
     trycopy(os.path.join(dirpath, "config.json"), base_path + "/config.json")
     trycopy(os.path.join(dirpath, "config.py"), base_path + "/config.py")
     trycopy(os.path.join(dirpath, "manage.py"), base_path + "/manage.py")
-    trycopy(os.path.join(dirpathparent, "requirements.txt"), base_path + "/requirements.txt")
+    trycopy(
+        os.path.join(dirpathparent, "requirements.txt"), base_path + "/requirements.txt"
+    )
     trycopy(os.path.join(dirpathparent, "README.md"), base_path + "/README.md")
+
 
 def main():
     args = sys.argv
@@ -48,10 +66,8 @@ def main():
         printinfo()
         new_project(args[2], args[3])
     else:
-        torun = [sys.executable, 'manage.py'] + args[1:]
-        subprocess.run(
-            torun, stdout=subprocess.PIPE
-        )
+        torun = [sys.executable, "manage.py"] + args[1:]
+        subprocess.run(torun, stdout=subprocess.PIPE)
 
 
 if __name__ == "__main__":

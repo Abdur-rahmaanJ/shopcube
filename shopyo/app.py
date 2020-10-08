@@ -7,6 +7,8 @@ from shopyoapi.init import db, login_manager, ma
 from config import app_config
 
 base_path = os.path.dirname(os.path.abspath(__file__))
+
+
 def create_app(config_name):
     app = Flask(__name__)
     configuration = app_config[config_name]
@@ -16,7 +18,7 @@ def create_app(config_name):
     ma.init_app(app)
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
-    
+
     for module in os.listdir(os.path.join(base_path, "modules")):
         if module.startswith("__"):
             continue
@@ -29,9 +31,10 @@ def create_app(config_name):
 
     return app
 
+
 app = create_app("development")
 
 
 if __name__ == "__main__":
-    
+
     app.run(debug=True, host="0.0.0.0")

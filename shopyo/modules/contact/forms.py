@@ -11,25 +11,18 @@ from wtforms import TextAreaField
 
 
 class ContactForm(FlaskForm):
-    name = StringField('Name', [
-        DataRequired()],
-        render_kw={
-            'class':'form-control',
-            'autocomplete':'off'
-            }
-        )
-    email = StringField('Email', [
-        DataRequired()],
-        render_kw={
-            'class':'form-control',
-            'autocomplete':'off'
-            }
-        )
-    message =TextAreaField('Message', [
-        DataRequired()],
-        render_kw={
-            'class':'form-control',
-            'rows':'20',
-            'autocomplete':'off'
-            }
-        )
+    name = StringField(
+        "Name",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    email = StringField(
+        "Email",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    message = TextAreaField(
+        "Message",
+        [DataRequired()],
+        render_kw={"class": "form-control", "rows": "20", "autocomplete": "off"},
+    )

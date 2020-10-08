@@ -14,7 +14,6 @@ from shopyoapi.cmd import create_module
 from shopyoapi.database import autoload_models
 
 
-
 migrate = Migrate(app, db, compare_type=True)
 manager = Manager(app)
 
@@ -31,9 +30,8 @@ def rundebug():
 
 def custom_commands(args):
     parser = argparse.ArgumentParser(description='Process some argument.')
-    parser.add_argument('action', nargs='+', help='db or initialise | clean | runserver | rundebug | test | startapp <name>')
+    parser.add_argument('action', nargs='+', help='db or other actions')
     args = parser.parse_args()
- 
     # non migration commands
     if args.action[0] != "db":
         if args.action[0] == "initialise":
@@ -47,9 +45,8 @@ def custom_commands(args):
             rundebug()
         elif args.action[0] == "test":
             print("test ok")
-        elif args.action[0] == 'startapp' and args.action[1]:
-            create_module(args[2])
-            
+        elif args.action[0] == "startapp" and args.action[1]:
+            create_module(args.action[1])
     elif args.action[0] == "db":
         autoload_models()
 

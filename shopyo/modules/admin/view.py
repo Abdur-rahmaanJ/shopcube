@@ -68,24 +68,23 @@ def user_add():
         else:
             admin_user = False
 
-        has_user = db.session.query(
-            exists().where(User.username == username)).scalar()
+        has_user = db.session.query(exists().where(User.username == username)).scalar()
 
         if has_user is False:
             new_user = User()
             new_user.username = username
             new_user.admin_user = admin_user
             new_user.set_hash(password)
-            
+
             for key in request.form:
-                if key.startswith('role_'):
-                    roleid = key.split('_')[1]
+                if key.startswith("role_"):
+                    roleid = key.split("_")[1]
                     role = Role.query.get(roleid)
                     new_user.roles.append(role)
             new_user.insert()
-            return redirect(url_for('admin.user_add'))
+            return redirect(url_for("admin.user_add"))
 
-    context['roles'] = Role.query.all()
+    context["roles"] = Role.query.all()
     return render_template("admin/add.html", **context)
 
 
@@ -118,9 +117,9 @@ def admin_edit(id):
     """
     context = base_context()
     user = User.query.get(id)
-    context['user'] = user
-    context['user_roles'] = [r.name for r in user.roles]
-    context['roles'] = Role.query.all()
+    context["user"] = user
+    context["user_roles"] = [r.name for r in user.roles]
+    context["roles"] = Role.query.all()
     return render_template("admin/edit.html", **context)
 
 
@@ -148,50 +147,50 @@ def admin_update():
         user.set_hash(password)
     user.roles[:] = []
     for key in request.form:
-        if key.startswith('role_'):
-            roleid = key.split('_')[1]
-            role = Role.query.get(roleid) 
+        if key.startswith("role_"):
+            roleid = key.split("_")[1]
+            role = Role.query.get(roleid)
             user.roles.append(role)
 
     user.update()
     return redirect("/admin")
+
 
 @admin_blueprint.route("/roles")
 @login_required
 @admin_required
 def roles():
     context = base_context()
-    context['roles'] = Role.query.all()
-    return render_template('admin/roles.html', **context)
+    context["roles"] = Role.query.all()
+    return render_template("admin/roles.html", **context)
 
-@admin_blueprint.route("/roles/add", methods=['POST'])
+
+@admin_blueprint.route("/roles/add", methods=["POST"])
 @login_required
 @admin_required
 def roles_add():
-    if request.method == 'POST':
-        if not Role.query.filter(
-                  Role.name == request.form['name']
-              ).first():
-            role = Role(name=request.form['name'])
+    if request.method == "POST":
+        if not Role.query.filter(Role.name == request.form["name"]).first():
+            role = Role(name=request.form["name"])
             role.insert()
-    return redirect(url_for('admin.roles'))
+    return redirect(url_for("admin.roles"))
 
 
-@admin_blueprint.route("/roles/<role_id>/delete", methods=['GET'])
+@admin_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
 @login_required
 @admin_required
 def roles_delete(role_id):
     role = Role.query.get(role_id)
     role.delete()
-    return redirect(url_for('admin.roles'))
+    return redirect(url_for("admin.roles"))
 
 
-@admin_blueprint.route("/roles/update", methods=['POST'])
+@admin_blueprint.route("/roles/update", methods=["POST"])
 @login_required
 @admin_required
 def roles_update():
-    if request.method == 'POST':
-        role = Role.query.get(request.form['role_id'])
-        role.name = request.form['role_name']
+    if request.method == "POST":
+        role = Role.query.get(request.form["role_id"])
+        role.name = request.form["role_name"]
         role.update()
-    return redirect(url_for('admin.roles'))
+    return redirect(url_for("admin.roles"))

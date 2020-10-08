@@ -1,7 +1,9 @@
-'''
+"""
 Used on flash
 flash(notify_success('mail sent!'))
-'''
+"""
+
+
 def notify(message, alert_type="primary"):
     """
     Used with flash
@@ -28,17 +30,23 @@ def notify(message, alert_type="primary"):
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    """.format(message=message, alert_type=alert_type)
+    """.format(
+        message=message, alert_type=alert_type
+    )
     return alert
 
+
 def notify_success(message):
-    return notify(message, alert_type='success')
+    return notify(message, alert_type="success")
+
 
 def notify_danger(message):
-    return notify(message, alert_type='danger')
+    return notify(message, alert_type="danger")
+
 
 def notify_warning(message):
-    return notify(message, alert_type='warning')
+    return notify(message, alert_type="warning")
+
 
 def notify_info(message):
-    return notify(message, alert_type='info')
+    return notify(message, alert_type="info")

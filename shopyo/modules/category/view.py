@@ -80,9 +80,7 @@ def category_update():
             m.name = name
             m.update()
         except sqlalchemy.exc.IntegrityError:
-            context[
-                "message"
-            ] = "you cannot modify to an already existing category"
+            context["message"] = "you cannot modify to an already existing category"
             context["redirect_url"] = "/category/"
             render_template("category/message.html", **context)
         return redirect("/category/")

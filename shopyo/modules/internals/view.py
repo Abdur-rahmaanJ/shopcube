@@ -8,12 +8,10 @@ from flask_login import login_required
 from shopyoapi.enhance import base_context
 
 internals_blueprint = Blueprint(
-    "internals",
-    __name__,
-    url_prefix='/internals',
-    template_folder="templates",
+    "internals", __name__, url_prefix="/internals", template_folder="templates",
 )
 all_info = {}
+
 
 @internals_blueprint.route("/")
 @login_required
