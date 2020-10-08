@@ -40,6 +40,10 @@ class PeopleSchema(ma.Schema):
             "age",
             "birthday",
             "notes",
+            "is_manufacturer",
+            "manufacturer_name",
+            "manufacturer_phone",
+            "manufacturer_address",
         )
 
 
@@ -69,6 +73,15 @@ def people_add():
         twitter = request.form["twitter"]
         birthday = request.form["birthday"]
         notes = request.form["notes"]
+        is_manufacturer = request.form.get("is_manufacturer", False)
+        manufacturer_name = request.form.get("manufacturer_name", "")
+        manufacturer_phone = request.form.get("manufacturer_phone", None)
+        manufacturer_address = request.form.get("manufacturer_address", "")
+
+        # check if is_manufacturer is true
+        if is_manufacturer == 'on':
+            is_manufacturer = True
+
         # calculate age
         today_date = date.today()
         date_format = "%Y-%m-%d"
@@ -91,6 +104,10 @@ def people_add():
             age=age,
             birthday=birthday,
             notes=notes,
+            is_manufacturer=is_manufacturer,
+            manufacturer_name=manufacturer_name,
+            manufacturer_phone=manufacturer_phone,
+            manufacturer_address=manufacturer_address,
         )
         db.session.add(person)
         db.session.commit()
@@ -123,6 +140,10 @@ def people_edit(id):
     context["age"] = a.age
     context["birthday"] = a.birthday
     context["notes"] = a.notes
+    context["is_manufacturer"] = a.is_manufacturer
+    context["manufacturer_name"] = a.manufacturer_name
+    context["manufacturer_phone"] = a.manufacturer_phone
+    context["manufacturer_address"] = a.manufacturer_address
     return render_template("people/edit.html", **context)
 
 
@@ -139,6 +160,16 @@ def people_update():
         people_twitter = request.form["twitter"]
         people_birthday = request.form["birthday"]
         people_notes = request.form["notes"]
+        people_is_manufacturer = request.form.get("is_manufacturer", False)
+        people_manufacturer_name = request.form.get("manufacturer_name", "")
+        people_manufacturer_phone = request.form.get
+        ("manufacturer_phone", None)
+        people_manufacturer_address = request.form.get
+        ("manufacturer_address", "")
+
+        # check if is_manufacturer is true
+        if people_is_manufacturer == 'on':
+            people_is_manufacturer = True
 
         # calculate age
         today_date = datetime.datetime.now()
@@ -157,7 +188,10 @@ def people_update():
         s.birthday = people_birthday
         s.notes = people_notes
         s.age = people_age
-
+        s.is_manufacturer = people_is_manufacturer
+        s.manufacturer_name = people_manufacturer_name
+        s.manufacturer_phone = people_manufacturer_phone
+        s.manufacturer_address = people_manufacturer_address
         db.session.commit()
 
         return redirect("/people")

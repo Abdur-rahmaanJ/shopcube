@@ -26,6 +26,18 @@
 
     });
   });
+
+  function toggleDisable(checkbox) {
+    var toggle = document.getElementById("manufacturer_details");
+    if(checkbox.checked == true){
+      toggle.disabled = false;
+      toggle.hidden = false;}
+    else{
+     toggle.disabled = true;
+     toggle.hidden = true;
+   }
+}
+
 </script>
 
 <div class="container">
@@ -102,7 +114,43 @@
     </div>
     <input autocomplete="off" id="notes" type="text" class="form-control" name="notes" placeholder="Notes: ...">
   </div>
+  <!-- <div class="input-group mb-3"> -->
+
+
+<div class="input-group mb-3">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="is_manufacturer"  name="is_manufacturer" onchange="toggleDisable(this);">
+      <label class="custom-control-label" for="is_manufacturer">Are you a manufacturer?</label>
+    </div>
+  </div>
+
+<fieldset id="manufacturer_details" disabled hidden>
   <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+      </div>
+      <input required autocomplete="off" id="manufacturer_name" type="text" class="form-control" name="manufacturer_name" placeholder="Manufacturer Name">
+      {{message}}
+  </div>
+
+  <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+      </div>
+      <input required autocomplete="off" id="manufacturer_phone" type="number" class="form-control" name="manufacturer_phone" placeholder="0111 111 222">
+      <span id="error" type="text" vissiblity='hidden'></span>
+    </div>
+
+
+   <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+      </div>
+      <input required autocomplete="off" id="manufacturer_address" type="text" class="form-control" name="manufacturer_address" placeholder="Address">
+      <span id="error" type="text" vissiblity='hidden'></span>
+  </div>
+ </fieldset>
+
     <input required type="submit" class="submit btn btn-info" value="add">
   </div>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

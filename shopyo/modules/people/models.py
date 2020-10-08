@@ -14,3 +14,7 @@ class People(db.Model):
     age = db.Column(db.Integer)
     birthday = db.Column(db.String(100))
     notes = db.Column(db.String(100))
+    is_manufacturer = db.Column(db.Boolean)
+    manufacturer_name = db.Column(db.String(100))
+    manufacturer_phone = db.Column(db.Integer)
+    manufacturer_address = db.Column(db.String(200))
