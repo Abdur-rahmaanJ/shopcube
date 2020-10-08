@@ -55,8 +55,6 @@ You can also use `shopyo initialise` and `shopyo runserver`
 
 **beta** - now in beta!
 
-~**alpha** - highly volatile, core features not yet finished~
-
 
 # 💌 Contributing Countries
 
@@ -82,6 +80,21 @@ Shop:
 If you want to use the project as a Flask base, just remove 
 the shop modules in modules/
 
+# Docs
+
+Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
+
+* Setting up Shopyo
+* Education section
+* Contributing to Shopyo
+* Modules/Apps
+* Templates
+* Models
+* Views
+* Commandline
+* Shopyoapi
+* Unittests
+
 # 📜 Testimonial
 
  >  This is my first time contributing to a public repo and I have quite enjoyed it. If you're a ``first-time-contributor`` the community is very helpful and can help you progress. Since I have been helping in this repo, I have also learnt a few things myself. The owner of the repo is active and is always willing to help.
@@ -106,6 +119,8 @@ See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979
 ![](screenshots/shopyo_duckduckgo.png)
 - Shopyo becomes a trending OpenSource project
 ![](screenshots/shopyo_trending.png)
+
+
 
 # Who uses Shopyo?
 
