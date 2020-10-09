@@ -9,13 +9,14 @@ python setup.py publish to publish
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
-from os import path
+from setuptools import setup
+# from setuptools import find_packages
+
 import os
 import sys
 from shopyo import __version__  # thanks gunicorn
 
-here = path.abspath(path.dirname(__file__))
+here = os.path.abspath(os.path.dirname(__file__))
 
 if sys.argv[-1] == "publish":  # requests
     os.system("python setup.py sdist")  # bdist_wheel
@@ -23,7 +24,7 @@ if sys.argv[-1] == "publish":  # requests
     sys.exit()
 
 # Get the long description from the README file
-with open(path.join(here, "README.md"), encoding="utf-8") as f:
+with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
     name="shopyo",  # Required
@@ -73,7 +74,7 @@ setup(
     packages=["shopyo"],
     include_package_data=True,
     python_requires=">=3.4",
-    install_requires=open(path.join(here, "requirements.txt"), encoding="utf-8")
+    install_requires=open(os.path.join(here, "requirements.txt"), encoding="utf-8")
     .read()
     .split("\n"),  # Optional
     project_urls={  # Optional

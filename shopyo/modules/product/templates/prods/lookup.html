@@ -30,7 +30,7 @@ $(function() {
           "field="+field, 
               function( data ) {
             for (var i = data.length - 1; i >= 0; i--) {
-                result = data[i];
+                var result = data[i];
                 if ((result['discontinued'] === 'True') || (result['discontinued'] == 1))
                   {
                     result['discontinued'] = 'Yes'
@@ -58,7 +58,7 @@ $(function() {
     $('#searchbtn').click(function(){
         $.getJSON( "http://localhost:5000/search/name"+$(this).val(), function( data ) {
             for (var i = data.length - 1; i >= 0; i--) {
-                result = data[i];
+                var result = data[i];
                 $('#search_results').append("<p>"+result['barcode']+"</p>");
             }
 

@@ -7,7 +7,6 @@ from .shopyoapi.file import trycopy
 from .shopyoapi.info import printinfo
 
 from pathlib import Path
-import os
 import sys
 import subprocess
 

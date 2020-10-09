@@ -6,7 +6,7 @@ from wtforms.fields.html5 import EmailField
 from wtforms import SubmitField
 from wtforms import PasswordField
 from wtforms.validators import DataRequired
-from wtforms.validators import Length
+# from wtforms.validators import Length
 from wtforms import TextAreaField
 
 
@@ -16,7 +16,7 @@ class ContactForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    email = StringField(
+    email = EmailField(
         "Email",
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},

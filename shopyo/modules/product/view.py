@@ -139,7 +139,7 @@ def prods_update():
 
         name = request.form["name"]
         description = request.form["description"]
-        category = request.form["category"]
+
         date = request.form["date"]
         price = request.form["price"]
         selling_price = request.form["selling_price"]

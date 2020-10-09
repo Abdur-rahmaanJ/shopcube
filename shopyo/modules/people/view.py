@@ -3,7 +3,7 @@ import json
 
 from flask import Blueprint, render_template, request, redirect, jsonify
 from flask_login import login_required
-from datetime import date
+
 from shopyoapi.init import db, ma
 from modules.people.models import People
 
@@ -83,7 +83,7 @@ def people_add():
             is_manufacturer = True
 
         # calculate age
-        today_date = date.today()
+        today_date = datetime.date.today()
         date_format = "%Y-%m-%d"
         b_day = datetime.datetime.strptime(birthday, date_format)
         age = (
