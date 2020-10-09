@@ -20,6 +20,8 @@ It also makes a great Flask base and supports commands such as:
 
 # Test it out!
 
+[Important] Create a virtual environment and activate it (not needed when installing [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)).
+
 `pip install shopyo`
 
 close and reopen your cmd then
@@ -30,7 +32,7 @@ then cd into the folder
 
 `cd /home/profiles/arj/desktop/shopyotest`
 
-then install requirements (install in venv if you like)
+then install requirements
 
 `pip install -r requirements.txt`
 
