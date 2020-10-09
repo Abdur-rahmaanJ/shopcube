@@ -25,6 +25,7 @@ It also makes a great, Django-like flask base
    Views <views>
    Commandline <commandline>
    Shopyoapi <shopyoapi>
+   Docs <docs>
    Testing <testing>
 
 Indices and tables

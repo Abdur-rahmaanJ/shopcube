@@ -6,7 +6,7 @@ Shopyo requires Python. Be sure to have it before!
 👟 The easy way
 ---------------
 
-* create and activate venv if you want
+* [Important] create a virtual environment and activate it.
 * install shopyo
 
 .. code-block:: bash
