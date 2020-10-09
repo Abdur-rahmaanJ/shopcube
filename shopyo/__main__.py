@@ -11,6 +11,7 @@ import os
 import sys
 import subprocess
 
+
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
 
@@ -68,6 +69,9 @@ def main():
         print('Please use Shopyo in a virtual environment')
         sys.exit()
     args = sys.argv
+    if len(args) == 1:
+        printinfo()
+        print('No arguments supplied')
     if args[1] == "new" and len(args) == 4:
         printinfo()
         new_project(args[2], args[3])

@@ -15,11 +15,6 @@ Shopyo requires Python. Be sure to have it before!
 
 * create new project
 
-.. warning ::
-
-    close your commandline prompt and repopen
-
-
 * create new shopyo project
 
 .. code-block:: bash
@@ -46,7 +41,9 @@ example
 
     shopyo runserver
 
+.. note ::
 
+    If the shopyo command is not recohnised. close your commandline prompt and repopen
 
 
 🔧 Install from Github

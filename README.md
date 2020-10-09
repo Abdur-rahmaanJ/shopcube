@@ -24,7 +24,7 @@ It also makes a great Flask base and supports commands such as:
 
 `pip install shopyo`
 
-close and reopen your cmd then
+then
 
 `shopyo new /home/profiles/arj/desktop shopyotest`
 
@@ -45,6 +45,7 @@ python manage.py runserver  # or `shopyo runserver`
 
 go to url ^^
 
+_Note: If the command does not get recognised, close and reopen your cmd_
 
 # ⚗️ Stability
 
@@ -92,6 +93,7 @@ Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo
 * Views
 * Commandline
 * Shopyoapi
+* Docs
 * Unittests
 
 # 📜 Testimonial
