@@ -1,0 +1,3 @@
+language: python
+script:
+    - sphinx-build -b html sphinx_source docs
