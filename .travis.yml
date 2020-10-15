@@ -1,5 +1,5 @@
 language :
-    - javascript
+    - javascript , HTML , Python
 before_install:
     - pip install Sphinx
     - pip install Flask
