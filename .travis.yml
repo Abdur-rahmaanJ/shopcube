@@ -3,9 +3,6 @@ language :
     - HTML
     - python
 
-python:
-    - 2.7
-
 before_install:
     - pip install Sphinx
     - pip install Flask
@@ -23,6 +20,6 @@ before_install:
     - pip install requests
     - pip install pytest
     - pip install selenium
-    
+
 script:
     - sphinx-build -b html sphinx_source docs
