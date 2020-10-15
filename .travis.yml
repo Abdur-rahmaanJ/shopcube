@@ -1,4 +1,2 @@
-language:   Sphinx
-Sphinx:
-    - "stable"
-script: sphinx-build -b html sphinx_source docs
+script:
+    - sphinx-build -b html sphinx_source docs
