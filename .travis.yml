@@ -1,5 +1,7 @@
-language:   sphinx
-sphinx:
+language:   javascript
+javascript:
     - "stable"
+install:
+    - bundle install dev_requirements.txt
 script:
     - sphinx-build -b html sphinx_source docs
