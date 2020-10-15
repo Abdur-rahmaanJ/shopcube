@@ -1,19 +1,28 @@
-before_install:
-    - pip install Sphinx
-    - pip install Flask
-    - pip install Flask-SQLAlchemy
-    - pip install Werkzeug
-    - pip install flask-marshmallow
-    - pip install coverage
-    - pip install Flask-Migrate
-    - pip install Flask-Script
-    - pip install Flask-Login
-    - pip install Flask-WTF
-    - pip install Flask-Testing
-    - pip install flake8
-    - pip install marshmallow-sqlalchemy
-    - pip install requests
-    - pip install pytest
-    - pip install selenium
-script:
-    - sphinx-build -b html sphinx_source docs
+{
+  "language": "ruby",
+  "os": [
+    "linux"
+  ],
+  "dist": "xenial",
+  "before_install": [
+    "pip install Sphinx",
+    "pip install Flask",
+    "pip install Flask-SQLAlchemy",
+    "pip install Werkzeug",
+    "pip install flask-marshmallow",
+    "pip install coverage",
+    "pip install Flask-Migrate",
+    "pip install Flask-Script",
+    "pip install Flask-Login",
+    "pip install Flask-WTF",
+    "pip install Flask-Testing",
+    "pip install flake8",
+    "pip install marshmallow-sqlalchemy",
+    "pip install requests",
+    "pip install pytest",
+    "pip install selenium"
+  ],
+  "script": [
+    "sphinx-build -b html sphinx_source docs"
+  ]
+}
