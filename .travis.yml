@@ -1,4 +1,7 @@
 before_install:
     - pip install Sphinx
+    - pip install Flask
+    - pip install Flask-SQLAlchemy
+    - pip install Werkzeug
 script:
     - sphinx-build -b html sphinx_source docs
