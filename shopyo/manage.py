@@ -1,5 +1,4 @@
 import sys
-import argparse
 
 from flask_migrate import Migrate
 from flask_migrate import MigrateCommand
@@ -12,6 +11,7 @@ from shopyoapi.cmd import clean
 from shopyoapi.cmd import initialise
 from shopyoapi.cmd import create_module
 from shopyoapi.database import autoload_models
+
 
 
 migrate = Migrate(app, db, compare_type=True)
@@ -29,25 +29,23 @@ def rundebug():
 
 
 def custom_commands(args):
-    parser = argparse.ArgumentParser(description='Process some argument.')
-    parser.add_argument('action', nargs='+', help='db or other actions')
-    args = parser.parse_args()
     # non migration commands
-    if args.action[0] != "db":
-        if args.action[0] == "initialise":
+    if args[1] != "db":
+        if args[1] == "initialise":
             autoload_models()
             initialise()
-        elif args.action[0] == "clean":
+        elif args[1] == "clean":
             clean()
-        elif args.action[0] == "runserver":
+        elif args[1] == "runserver":
             runserver()
-        elif args.action[0] == "rundebug":
+        elif args[1] == "rundebug":
             rundebug()
-        elif args.action[0] == "test":
+        elif args[1] == "test":
             print("test ok")
-        elif args.action[0] == "startapp" and args.action[1]:
-            create_module(args.action[1])
-    elif args.action[0] == "db":
+        elif args[1] == 'startapp' and args[2]:
+            create_module(args[2])
+        sys.exit()
+    elif args[1] == "db":
         autoload_models()
 
 
