@@ -8,7 +8,7 @@ from wtforms import PasswordField
 from wtforms.validators import DataRequired
 # from wtforms.validators import Length
 from wtforms import TextAreaField
-
+from shopyoapi.validators import verify_slug
 
 class PageForm(FlaskForm):
 
@@ -17,9 +17,13 @@ class PageForm(FlaskForm):
         [],
         render_kw={"class": "form-control", "rows": "20", "autocomplete": "off"},
     )
-
+    slug = StringField(
+        "Slug",
+        [DataRequired(), verify_slug],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
     title = StringField(
-        "title",
+        "Title",
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )

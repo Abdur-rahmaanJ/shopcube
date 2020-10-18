@@ -4,11 +4,15 @@ import json
 from flask import Blueprint
 from flask import render_template
 from flask import request
+from flask import redirect
+from flask import url_for
 
 from shopyoapi.enhance import base_context
 from shopyoapi.forms import flash_errors
 
 from .forms import PageForm
+
+from .models import Page
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -31,8 +35,23 @@ module_name = module_info["module_name"]
 
 @module_blueprint.route("/")
 def index():
-    return ""
+    context = base_context()
+    pages = Page.query.all()
 
+    context.update({
+        'pages': pages
+        })
+    return render_template('page/all_pages.html', **context)
+
+@module_blueprint.route("/<page_id>/<slug>")
+def view_page(page_id, slug):
+    context = base_context()
+    page = Page.query.get(page_id)
+
+    context.update({
+        'page': page
+        })
+    return render_template('page/view_page.html', **context)
 
 @module_blueprint.route(module_info["panel_redirect"])
 def panel_redirect():
@@ -50,5 +69,10 @@ def check_pagecontent():
         if not form.validate_on_submit():
             flash_errors(form)
             return redirect(url_for("{}.panel_redirect".format(module_name)))
-
-        return form.content.data
+        toaddpage = Page(
+            slug=form.slug.data,
+            content=form.content.data,
+            title=form.title.data
+            )
+        toaddpage.insert()
+        return redirect(url_for("{}.panel_redirect".format(module_name)))
