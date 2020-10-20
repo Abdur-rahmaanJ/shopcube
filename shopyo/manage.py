@@ -49,9 +49,10 @@ def custom_commands(args):
             create_module(args.action[1])
         sys.exit()
     elif args.action[0] == "db":
-        autoload_models()
+        pass
 
 
 if __name__ == "__main__":
     custom_commands(sys.argv)
+    autoload_models()
     manager.run()

@@ -15,6 +15,10 @@ from shopyoapi.html import notify_success
 from shopyoapi.forms import flash_errors
 
 from modules.category.models import Category
+from modules.product.models import Product
+from modules.pos.models import Transaction
+
+from flask_login import current_user
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -52,6 +56,7 @@ def transaction():
             product.in_stock -= number_items
             product.update() # wrong practise
         transaction = Transaction()
+        transaction.cashier_id = current_user.id
         transaction.products = [Product.query.get(key) for key in json]
         transaction.insert()
 

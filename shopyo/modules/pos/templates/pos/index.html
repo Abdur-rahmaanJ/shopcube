@@ -72,7 +72,7 @@
             <article class="tab-pane container 
             {{'active' if loop.index==1}}" id="tab-panel-{{category.id}}">
               {%for product in category.products%}
-                <p class="product-item" id="product_{{product.barcode}}">{{product.name}} - {{product.price}}</p><span class="badge badge-secondary">{{product.in_stock}}</span>
+                <p class="product-item" id="product_{{product.barcode}}">{{product.name}} - {{product.selling_price}}</p><span class="badge badge-secondary">{{product.in_stock}}</span>
               {%endfor%}
             </article>
             {%endfor%}
