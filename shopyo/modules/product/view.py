@@ -89,6 +89,8 @@ def prods_add(category_name):
                 p.date = date.strip()
             if price:
                 p.price = price.strip()
+            elif not price.strip():
+                p.price = 0
             if selling_price:
                 p.selling_price = selling_price.strip()
 
@@ -142,6 +144,8 @@ def prods_update():
 
         date = request.form["date"]
         price = request.form["price"]
+        if not price.strip():
+            price = 0
         selling_price = request.form["selling_price"]
         in_stock = request.form["in_stock"]
         if request.form["discontinued"] == "True":

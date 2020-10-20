@@ -14,3 +14,6 @@ class Product(db.Model):
     category_name = db.Column(
         db.String(100), db.ForeignKey("category.name"), nullable=False
     )
+    transaction_id = db.Column(
+        db.String(100), db.ForeignKey("transactions.id"), nullable=False
+    )

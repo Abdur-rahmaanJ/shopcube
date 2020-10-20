@@ -76,19 +76,9 @@ Shop:
 If you want to use the project as a Flask base, just remove 
 the shop modules in modules/
 
-## Shopyo as a Flask Base
+## The engine
 
-If you want your own sites, just remove all modules, using shopyo as a Flask base helps you with:
-
-- [x] Errorless architecture: No crazy circular imports and the like
-- [x] No crazy definition errors. A single init point for your variables
-- [x] Plug and Play modules
-- [x] Notification mechanism
-- [x] Easy bulk form errors notification
-- [x] Context support
-- [x] manage.py included
-- [x] Easily manage config with multiple configuration profiles
-- [x] Same architecture as Django (MVT)
+Shopyo's engine which provides a Django-like structure and awesome mechanisms has been abstracted into [hadbox](https://www.github.com/hadbox/hadbox)
 
 ## 💬 Community: Discord¶
 

@@ -3,15 +3,18 @@ import os
 import json
 
 from flask import Blueprint
-# from flask import render_template
-# from flask import url_for
-# from flask import redirect
-# from flask import flash
-# from flask import request
+from flask import render_template
+from flask import url_for
+from flask import redirect
+from flask import flash
+from flask import request
+from flask import jsonify
 
-# from shopyoapi.enhance import base_context
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
+from shopyoapi.enhance import base_context
+from shopyoapi.html import notify_success
+from shopyoapi.forms import flash_errors
+
+from modules.category.models import Category
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -31,4 +34,25 @@ module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
 
 @module_blueprint.route("/")
 def index():
-    return module_info['display_string']
+    context = base_context()
+    categories = Category.query.all()
+    context.update({
+        'categories': categories
+        })
+    return render_template('pos/index.html', **context)
+
+@module_blueprint.route("/transaction", methods=['GET', 'POST'])
+def transaction():
+    if request.method == 'POST':
+        json = request.get_json()
+        for key in json:
+            prod_id = key
+            number_items = json[key]['count']
+            product = Product.query.get(prod_id)
+            product.in_stock -= number_items
+            product.update() # wrong practise
+        transaction = Transaction()
+        transaction.products = [Product.query.get(key) for key in json]
+        transaction.insert()
+
+    return jsonify({'message': 'ok'})
