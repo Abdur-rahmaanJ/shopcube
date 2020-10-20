@@ -1,7 +1,7 @@
 {
-        "display_string": "Contact",
-        "type": "show",
-        "fa-icon": "fa fa-store",
-        "url_prefix": "/contact",
-        "panel_redirect":"/contact/dashboard"
+  "display_string": "Contact",
+  "type": "show",
+  "fa-icon": "fa fa-store",
+  "url_prefix": "/contact",
+  "panel_redirect": "/dashboard"
 }

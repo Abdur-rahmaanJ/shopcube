@@ -1,7 +1,5 @@
 language :
-    - javascript
-    - HTML
-    - python
+    - python3
 
 before_install:
     - pip install Sphinx
