@@ -2,10 +2,14 @@ import sys
 import subprocess
 import argparse
 
-parser = argparse.ArgumentParser(description='Publish commands')
+parser = argparse.ArgumentParser(description="Publish commands")
 parser.add_argument("commit_message", help="commit message")
-parser.add_argument("--pypi", help="publish to Pypi also", action="store_true")  # flag only
-parser.add_argument("--pypionly", help="publish to Pypi only", action="store_true")  # flag only
+parser.add_argument(
+    "--pypi", help="publish to Pypi also", action="store_true"
+)  # flag only
+parser.add_argument(
+    "--pypionly", help="publish to Pypi only", action="store_true"
+)  # flag only
 args = parser.parse_args()
 
 build_docs = ["sphinx-build", "-b", "html", "sphinx_source", "docs"]
@@ -22,4 +26,3 @@ if args.pypionly:
 
 for command in commands:
     subprocess.run(command, stdout=subprocess.PIPE)
-

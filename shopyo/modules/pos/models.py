@@ -1,7 +1,6 @@
 from shopyoapi.init import db
 
 
-
 class Transaction(db.Model):
     __tablename__ = "transactions"
 

@@ -38,20 +38,18 @@ def index():
     context = base_context()
     pages = Page.query.all()
 
-    context.update({
-        'pages': pages
-        })
-    return render_template('page/all_pages.html', **context)
+    context.update({"pages": pages})
+    return render_template("page/all_pages.html", **context)
+
 
 @module_blueprint.route("/<page_id>/<slug>")
 def view_page(page_id, slug):
     context = base_context()
     page = Page.query.get(page_id)
 
-    context.update({
-        'page': page
-        })
-    return render_template('page/view_page.html', **context)
+    context.update({"page": page})
+    return render_template("page/view_page.html", **context)
+
 
 @module_blueprint.route(module_info["panel_redirect"])
 def panel_redirect():
@@ -70,9 +68,7 @@ def check_pagecontent():
             flash_errors(form)
             return redirect(url_for("{}.panel_redirect".format(module_name)))
         toaddpage = Page(
-            slug=form.slug.data,
-            content=form.content.data,
-            title=form.title.data
-            )
+            slug=form.slug.data, content=form.content.data, title=form.title.data
+        )
         toaddpage.insert()
         return redirect(url_for("{}.panel_redirect".format(module_name)))

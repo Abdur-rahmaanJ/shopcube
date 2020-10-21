@@ -52,7 +52,7 @@ def validate_message():
 @contact_blueprint.route("/dashboard/<int:page>", methods=["GET"])
 def dashboard(page):
     context = base_context()
-    
+
     per_page = 10
     messages = ContactMessage.query.paginate(page, per_page, error_out=False)
     context.update({"messages": messages})

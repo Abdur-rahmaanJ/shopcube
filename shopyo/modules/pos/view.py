@@ -1,4 +1,3 @@
-
 import os
 import json
 
@@ -23,6 +22,7 @@ from modules.product.models import Product
 from modules.pos.models import Transaction
 
 from flask_login import current_user
+from flask_login import login_required
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -30,7 +30,7 @@ module_info = {}
 with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
+globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
     "{}".format(module_info["module_name"]),
     __name__,
     template_folder="templates",
@@ -38,24 +38,26 @@ globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
 )
 
 
-module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
+module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
+
+@login_required
 @module_blueprint.route("/")
 def index():
     context = base_context()
     categories = Category.query.all()
-    context.update({
-        'categories': categories
-        })
-    return render_template('pos/index.html', **context)
+    context.update({"categories": categories})
+    return render_template("pos/index.html", **context)
 
-@module_blueprint.route("/transaction", methods=['GET', 'POST'])
+
+@login_required
+@module_blueprint.route("/transaction", methods=["GET", "POST"])
 def transaction():
-    if request.method == 'POST':
+    if request.method == "POST":
         json = request.get_json()
         for key in json:
             prod_id = key
-            number_items = json[key]['count']
+            number_items = json[key]["count"]
             product = Product.query.get(prod_id)
             product.in_stock -= number_items
 
@@ -66,4 +68,4 @@ def transaction():
         transaction.products = [Product.query.get(key) for key in json]
         transaction.insert()
 
-    return jsonify({'message': 'ok'})
+    return jsonify({"message": "ok"})

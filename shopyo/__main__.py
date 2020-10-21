@@ -14,9 +14,12 @@ import subprocess
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
 
+
 def is_venv():
-    return (hasattr(sys, 'real_prefix') or
-            (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
+    return hasattr(sys, "real_prefix") or (
+        hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
+    )
+
 
 def new_project(path, newfoldername):
     newfoldername = newfoldername.strip("/").strip("\\")
@@ -65,12 +68,12 @@ def new_project(path, newfoldername):
 
 def main():
     if not is_venv():
-        print('Please use Shopyo in a virtual environment')
+        print("Please use Shopyo in a virtual environment")
         sys.exit()
     args = sys.argv
     if len(args) == 1:
         printinfo()
-        print('No arguments supplied')
+        print("No arguments supplied")
     if args[1] == "new" and len(args) == 4:
         printinfo()
         new_project(args[2], args[3])
