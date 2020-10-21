@@ -4,15 +4,15 @@ import json
 
 from flask import Blueprint
 from flask import render_template
-from flask import url_for
-from flask import redirect
-from flask import flash
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
 from flask import request
 from flask import jsonify
 
 from shopyoapi.enhance import base_context
-from shopyoapi.html import notify_success
-from shopyoapi.forms import flash_errors
+# from shopyoapi.html import notify_success
+# from shopyoapi.forms import flash_errors
 
 from modules.category.models import Category
 from modules.product.models import Product
@@ -54,7 +54,7 @@ def transaction():
             number_items = json[key]['count']
             product = Product.query.get(prod_id)
             product.in_stock -= number_items
-            product.update() # wrong practise
+            product.update()
         transaction = Transaction()
         transaction.cashier_id = current_user.id
         transaction.products = [Product.query.get(key) for key in json]

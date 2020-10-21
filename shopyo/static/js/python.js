@@ -5,7 +5,7 @@ function print() {
     var sep = ' ';
     var toprint = '';
     for (var i = arguments.length - 1; i >= 0; i--) {
-        arg = arguments[arguments.length - i - 1];
+         var arg = arguments[arguments.length - i - 1];
         if (typeof arg === 'string' || arg instanceof String) {
 
         } else if (isObject(arg)){

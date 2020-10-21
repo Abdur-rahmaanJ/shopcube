@@ -22,20 +22,16 @@ class Product(db.Model):
     transactions = db.relationship("Transaction", secondary=transaction_helpers, backref="products", cascade="all, delete")
 
     def add(self):
-        """Save category to the database"""
         db.session.add(self)
 
     def insert(self):
-        """Save category to the database"""
         db.session.add(self)
         db.session.commit()
 
     def update(self):
-        """Update category"""
         db.session.commit()
 
     def delete(self):
-        """delete category"""
         db.session.delete(self)
         db.session.commit()
 
