@@ -11,7 +11,10 @@ from shopyoapi.enhance import base_context
 from shopyoapi.html import notify_success
 
 control_panel_blueprint = Blueprint(
-    "control_panel", __name__, template_folder="templates", url_prefix="/control_panel",
+    "control_panel",
+    __name__,
+    template_folder="templates",
+    url_prefix="/control_panel",
 )
 all_info = {}
 

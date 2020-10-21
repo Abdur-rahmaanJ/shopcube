@@ -21,7 +21,7 @@ def clean():
 
     Parameters
     ----------
-    
+
 
     Returns
     -------
@@ -52,7 +52,7 @@ def initialise():
 
     Parameters
     ----------
-    
+
 
     Returns
     -------
