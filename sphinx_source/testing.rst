@@ -9,4 +9,4 @@ run in shopyo/shopyo
 
 .. code:: bash
 
-    python -m pytest tests/
+    python -m pytest .
