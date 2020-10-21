@@ -11,7 +11,7 @@ from modules.settings.models import Settings
 # from shopyoapi.cmd import initialise
 
 # run in shopyo/shopyo
-# python -m pytest tests/
+# python -m pytest .
 
 import os
 
@@ -19,14 +19,14 @@ if os.path.exists("testing.db"):
     os.remove("testing.db")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def new_user():
     user = User(username="abcd")
     user.set_hash("pass")
     return user
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def test_client():
     flask_app = create_app("testing")
 
@@ -43,7 +43,7 @@ def test_client():
     ctx.pop()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def init_database():
 
     # Create the database and the database table

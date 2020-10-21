@@ -1,0 +1,518 @@
+============================= test session starts =============================
+platform win32 -- Python 3.8.1, pytest-6.1.1, py-1.9.0, pluggy-0.13.1
+rootdir: C:\Users\j\Desktop\entry\git\shopyo
+plugins: timeout-1.4.2
+collected 9 items
+
+modules\admin\test_user.py ....                                          [ 44%]
+modules\control_panel\test_controlpanel.py E                             [ 55%]
+rats\test_user.py ..EE                                                   [100%]
+
+=================================== ERRORS ====================================
+____________________ ERROR at setup of test_control_panel _____________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x037C6F28>
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x037E1430>
+constructor = <bound method DefaultExecutionContext._init_compiled of <class 'sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext'>>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+args = (<sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x037C6DC0>, [{'setting': 'APP_NAME', 'value': 'Demo'}, {'setting': 'SECTION_NAME', 'value': 'Category'}, {'setting': 'SECTION_ITEMS', 'value': 'Products'}])
+conn = <sqlalchemy.pool.base._ConnectionFairy object at 0x037C68C8>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x037C6F10>
+
+    def _execute_context(
+        self, dialect, constructor, statement, parameters, *args
+    ):
+        """Create an :class:`.ExecutionContext` and execute, returning
+        a :class:`_engine.ResultProxy`.
+    
+        """
+    
+        try:
+            try:
+                conn = self.__connection
+            except AttributeError:
+                # escape "except AttributeError" before revalidating
+                # to prevent misleading stacktraces in Py3K
+                conn = None
+            if conn is None:
+                conn = self._revalidate_connection()
+    
+            context = constructor(dialect, self, conn, *args)
+        except BaseException as e:
+            self._handle_dbapi_exception(
+                e, util.text_type(statement), parameters, None, None
+            )
+    
+        if context.compiled:
+            context.pre_exec()
+    
+        cursor, statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        if not context.executemany:
+            parameters = parameters[0]
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                statement, parameters = fn(
+                    self,
+                    cursor,
+                    statement,
+                    parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self.engine.logger.info(statement)
+            if not self.engine.hide_parameters:
+                self.engine.logger.info(
+                    "%r",
+                    sql_util._repr_params(
+                        parameters, batches=10, ismulti=context.executemany
+                    ),
+                )
+            else:
+                self.engine.logger.info(
+                    "[SQL parameters hidden due to hide_parameters=True]"
+                )
+    
+        evt_handled = False
+        try:
+            if context.executemany:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(cursor, statement, parameters, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor, statement, parameters, context
+
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1256: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x037E1430>
+cursor = <sqlite3.Cursor object at 0x037D8E60>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x037C6F10>
+
+    def do_executemany(self, cursor, statement, parameters, context=None):
+>       cursor.executemany(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: settings.setting
+
+..\venv\lib\site-packages\sqlalchemy\engine\default.py:590: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+    @pytest.fixture(scope="module")
+    def init_database():
+    
+        # Create the database and the database table
+        db.create_all()
+    
+        # Insert user data
+        user1 = User(username="car")
+        user1.set_hash("pass")
+        user2 = User(username="field")
+        user2.set_hash("pass")
+        db.session.add(user1)
+        db.session.add(user2)
+    
+        with open("config.json", "r") as config:
+            config = json.load(config)
+        for name, value in config["settings"].items():
+            s = Settings(setting=name, value=value)
+            db.session.add(s)
+>       db.session.commit()
+
+conftest.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\sqlalchemy\orm\scoping.py:163: in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:1042: in commit
+    self.transaction.commit()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:504: in commit
+    self._prepare_impl()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:483: in _prepare_impl
+    self.session.flush()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2523: in flush
+    self._flush(objects)
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2664: in _flush
+    transaction.rollback(_capture_exception=True)
+..\venv\lib\site-packages\sqlalchemy\util\langhelpers.py:68: in __exit__
+    compat.raise_(
+..\venv\lib\site-packages\sqlalchemy\util\compat.py:182: in raise_
+    raise exception
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2624: in _flush
+    flush_context.execute()
+..\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:422: in execute
+    rec.execute(self)
+..\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:586: in execute
+    persistence.save_obj(
+..\venv\lib\site-packages\sqlalchemy\orm\persistence.py:239: in save_obj
+    _emit_insert_statements(
+..\venv\lib\site-packages\sqlalchemy\orm\persistence.py:1083: in _emit_insert_statements
+    c = cached_connections[connection].execute(statement, multiparams)
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1011: in execute
+    return meth(self, multiparams, params)
+..\venv\lib\site-packages\sqlalchemy\sql\elements.py:298: in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1124: in _execute_clauseelement
+    ret = self._execute_context(
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1316: in _execute_context
+    self._handle_dbapi_exception(
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1510: in _handle_dbapi_exception
+    util.raise_(
+..\venv\lib\site-packages\sqlalchemy\util\compat.py:182: in raise_
+    raise exception
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1256: in _execute_context
+    self.dialect.do_executemany(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x037E1430>
+cursor = <sqlite3.Cursor object at 0x037D8E60>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x037C6F10>
+
+    def do_executemany(self, cursor, statement, parameters, context=None):
+>       cursor.executemany(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: settings.setting
+E       [SQL: INSERT INTO settings (setting, value) VALUES (?, ?)]
+E       [parameters: (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))]
+E       (Background on this error at: http://sqlalche.me/e/13/gkpj)
+
+..\venv\lib\site-packages\sqlalchemy\engine\default.py:590: IntegrityError
+__________________ ERROR at setup of test_valid_login_logout __________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x03C7AE68>
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x03CCD868>
+constructor = <bound method DefaultExecutionContext._init_compiled of <class 'sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext'>>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+args = (<sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x03C7A310>, [{'setting': 'APP_NAME', 'value': 'Demo'}, {'setting': 'SECTION_NAME', 'value': 'Category'}, {'setting': 'SECTION_ITEMS', 'value': 'Products'}])
+conn = <sqlalchemy.pool.base._ConnectionFairy object at 0x03C7A430>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x03C7A2B0>
+
+    def _execute_context(
+        self, dialect, constructor, statement, parameters, *args
+    ):
+        """Create an :class:`.ExecutionContext` and execute, returning
+        a :class:`_engine.ResultProxy`.
+    
+        """
+    
+        try:
+            try:
+                conn = self.__connection
+            except AttributeError:
+                # escape "except AttributeError" before revalidating
+                # to prevent misleading stacktraces in Py3K
+                conn = None
+            if conn is None:
+                conn = self._revalidate_connection()
+    
+            context = constructor(dialect, self, conn, *args)
+        except BaseException as e:
+            self._handle_dbapi_exception(
+                e, util.text_type(statement), parameters, None, None
+            )
+    
+        if context.compiled:
+            context.pre_exec()
+    
+        cursor, statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        if not context.executemany:
+            parameters = parameters[0]
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                statement, parameters = fn(
+                    self,
+                    cursor,
+                    statement,
+                    parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self.engine.logger.info(statement)
+            if not self.engine.hide_parameters:
+                self.engine.logger.info(
+                    "%r",
+                    sql_util._repr_params(
+                        parameters, batches=10, ismulti=context.executemany
+                    ),
+                )
+            else:
+                self.engine.logger.info(
+                    "[SQL parameters hidden due to hide_parameters=True]"
+                )
+    
+        evt_handled = False
+        try:
+            if context.executemany:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(cursor, statement, parameters, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor, statement, parameters, context
+
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1256: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x03CCD868>
+cursor = <sqlite3.Cursor object at 0x03D46F60>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x03C7A2B0>
+
+    def do_executemany(self, cursor, statement, parameters, context=None):
+>       cursor.executemany(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: settings.setting
+
+..\venv\lib\site-packages\sqlalchemy\engine\default.py:590: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+>   ???
+
+C:\Users\j\Desktop\entry\git\shopyo\shopyo\tests\conftest.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\sqlalchemy\orm\scoping.py:163: in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:1042: in commit
+    self.transaction.commit()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:504: in commit
+    self._prepare_impl()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:483: in _prepare_impl
+    self.session.flush()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2523: in flush
+    self._flush(objects)
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2664: in _flush
+    transaction.rollback(_capture_exception=True)
+..\venv\lib\site-packages\sqlalchemy\util\langhelpers.py:68: in __exit__
+    compat.raise_(
+..\venv\lib\site-packages\sqlalchemy\util\compat.py:182: in raise_
+    raise exception
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2624: in _flush
+    flush_context.execute()
+..\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:422: in execute
+    rec.execute(self)
+..\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:586: in execute
+    persistence.save_obj(
+..\venv\lib\site-packages\sqlalchemy\orm\persistence.py:239: in save_obj
+    _emit_insert_statements(
+..\venv\lib\site-packages\sqlalchemy\orm\persistence.py:1083: in _emit_insert_statements
+    c = cached_connections[connection].execute(statement, multiparams)
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1011: in execute
+    return meth(self, multiparams, params)
+..\venv\lib\site-packages\sqlalchemy\sql\elements.py:298: in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1124: in _execute_clauseelement
+    ret = self._execute_context(
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1316: in _execute_context
+    self._handle_dbapi_exception(
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1510: in _handle_dbapi_exception
+    util.raise_(
+..\venv\lib\site-packages\sqlalchemy\util\compat.py:182: in raise_
+    raise exception
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1256: in _execute_context
+    self.dialect.do_executemany(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x03CCD868>
+cursor = <sqlite3.Cursor object at 0x03D46F60>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x03C7A2B0>
+
+    def do_executemany(self, cursor, statement, parameters, context=None):
+>       cursor.executemany(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: settings.setting
+E       [SQL: INSERT INTO settings (setting, value) VALUES (?, ?)]
+E       [parameters: (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))]
+E       (Background on this error at: http://sqlalche.me/e/13/gkpj)
+
+..\venv\lib\site-packages\sqlalchemy\engine\default.py:590: IntegrityError
+_____________________ ERROR at setup of test_contact_page _____________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x03C7AE68>
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x03CCD868>
+constructor = <bound method DefaultExecutionContext._init_compiled of <class 'sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext'>>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+args = (<sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x03C7A310>, [{'setting': 'APP_NAME', 'value': 'Demo'}, {'setting': 'SECTION_NAME', 'value': 'Category'}, {'setting': 'SECTION_ITEMS', 'value': 'Products'}])
+conn = <sqlalchemy.pool.base._ConnectionFairy object at 0x03C7A430>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x03C7A2B0>
+
+    def _execute_context(
+        self, dialect, constructor, statement, parameters, *args
+    ):
+        """Create an :class:`.ExecutionContext` and execute, returning
+        a :class:`_engine.ResultProxy`.
+    
+        """
+    
+        try:
+            try:
+                conn = self.__connection
+            except AttributeError:
+                # escape "except AttributeError" before revalidating
+                # to prevent misleading stacktraces in Py3K
+                conn = None
+            if conn is None:
+                conn = self._revalidate_connection()
+    
+            context = constructor(dialect, self, conn, *args)
+        except BaseException as e:
+            self._handle_dbapi_exception(
+                e, util.text_type(statement), parameters, None, None
+            )
+    
+        if context.compiled:
+            context.pre_exec()
+    
+        cursor, statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        if not context.executemany:
+            parameters = parameters[0]
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                statement, parameters = fn(
+                    self,
+                    cursor,
+                    statement,
+                    parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self.engine.logger.info(statement)
+            if not self.engine.hide_parameters:
+                self.engine.logger.info(
+                    "%r",
+                    sql_util._repr_params(
+                        parameters, batches=10, ismulti=context.executemany
+                    ),
+                )
+            else:
+                self.engine.logger.info(
+                    "[SQL parameters hidden due to hide_parameters=True]"
+                )
+    
+        evt_handled = False
+        try:
+            if context.executemany:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(cursor, statement, parameters, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor, statement, parameters, context
+
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1256: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x03CCD868>
+cursor = <sqlite3.Cursor object at 0x03D46F60>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x03C7A2B0>
+
+    def do_executemany(self, cursor, statement, parameters, context=None):
+>       cursor.executemany(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: settings.setting
+
+..\venv\lib\site-packages\sqlalchemy\engine\default.py:590: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+>   ???
+
+C:\Users\j\Desktop\entry\git\shopyo\shopyo\tests\conftest.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\sqlalchemy\orm\scoping.py:163: in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:1042: in commit
+    self.transaction.commit()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:504: in commit
+    self._prepare_impl()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:483: in _prepare_impl
+    self.session.flush()
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2523: in flush
+    self._flush(objects)
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2664: in _flush
+    transaction.rollback(_capture_exception=True)
+..\venv\lib\site-packages\sqlalchemy\util\langhelpers.py:68: in __exit__
+    compat.raise_(
+..\venv\lib\site-packages\sqlalchemy\util\compat.py:182: in raise_
+    raise exception
+..\venv\lib\site-packages\sqlalchemy\orm\session.py:2624: in _flush
+    flush_context.execute()
+..\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:422: in execute
+    rec.execute(self)
+..\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:586: in execute
+    persistence.save_obj(
+..\venv\lib\site-packages\sqlalchemy\orm\persistence.py:239: in save_obj
+    _emit_insert_statements(
+..\venv\lib\site-packages\sqlalchemy\orm\persistence.py:1083: in _emit_insert_statements
+    c = cached_connections[connection].execute(statement, multiparams)
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1011: in execute
+    return meth(self, multiparams, params)
+..\venv\lib\site-packages\sqlalchemy\sql\elements.py:298: in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1124: in _execute_clauseelement
+    ret = self._execute_context(
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1316: in _execute_context
+    self._handle_dbapi_exception(
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1510: in _handle_dbapi_exception
+    util.raise_(
+..\venv\lib\site-packages\sqlalchemy\util\compat.py:182: in raise_
+    raise exception
+..\venv\lib\site-packages\sqlalchemy\engine\base.py:1256: in _execute_context
+    self.dialect.do_executemany(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x03CCD868>
+cursor = <sqlite3.Cursor object at 0x03D46F60>
+statement = 'INSERT INTO settings (setting, value) VALUES (?, ?)'
+parameters = (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x03C7A2B0>
+
+    def do_executemany(self, cursor, statement, parameters, context=None):
+>       cursor.executemany(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: settings.setting
+E       [SQL: INSERT INTO settings (setting, value) VALUES (?, ?)]
+E       [parameters: (('APP_NAME', 'Demo'), ('SECTION_NAME', 'Category'), ('SECTION_ITEMS', 'Products'))]
+E       (Background on this error at: http://sqlalche.me/e/13/gkpj)
+
+..\venv\lib\site-packages\sqlalchemy\engine\default.py:590: IntegrityError
+=========================== short test summary info ===========================
+ERROR modules\control_panel\test_controlpanel.py::test_control_panel - sqlalc...
+ERROR rats\test_user.py::test_valid_login_logout - sqlalchemy.exc.IntegrityEr...
+ERROR rats\test_user.py::test_contact_page - sqlalchemy.exc.IntegrityError: (...
+========================= 6 passed, 3 errors in 8.11s =========================
