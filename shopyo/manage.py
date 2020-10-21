@@ -29,8 +29,8 @@ def rundebug():
 
 
 def custom_commands(args):
-    parser = argparse.ArgumentParser(description='Process some argument.')
-    parser.add_argument('action', nargs='+', help='db or other actions')
+    parser = argparse.ArgumentParser(description="Process some argument.")
+    parser.add_argument("action", nargs="+", help="db or other actions")
     args = parser.parse_args()
     # non migration commands
     if args.action[0] != "db":
