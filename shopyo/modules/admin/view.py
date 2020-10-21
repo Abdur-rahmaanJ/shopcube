@@ -39,9 +39,9 @@ admin_blueprint = Blueprint(
 @admin_required
 def user_list():
     """
-           **Get The List of User**
+    **Get The List of User**
 
-            Lists all users in the database.
+     Lists all users in the database.
 
     """
     context = base_context()
@@ -54,9 +54,9 @@ def user_list():
 @admin_required
 def user_add():
     """
-               **Adds a User**
+       **Adds a User**
 
-            adds a user to database.
+    adds a user to database.
 
     """
     context = base_context()
@@ -94,10 +94,10 @@ def user_add():
 @admin_required
 def admin_delete(id):
     """
-                   **Delete a User**
+               **Delete a User**
 
-        :param id: id of the user
-        :type id: int
+    :param id: id of the user
+    :type id: int
 
     """
     user = User.query.get(id)
@@ -110,10 +110,10 @@ def admin_delete(id):
 @admin_required
 def admin_edit(id):
     """
-                   **Update information for a User**
+               **Update information for a User**
 
-        :param id: id of the user
-        :type id: int
+    :param id: id of the user
+    :type id: int
 
     """
     context = base_context()
@@ -129,7 +129,7 @@ def admin_edit(id):
 @admin_required
 def admin_update():
     """
-                   **Update a User record**
+    **Update a User record**
 
     """
     id = request.form["id"]
