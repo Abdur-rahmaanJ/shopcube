@@ -47,10 +47,12 @@ def custom_commands(args):
             print("test ok")
         elif args.action[0] == "startapp" and args.action[1]:
             create_module(args.action[1])
+        sys.exit()
     elif args.action[0] == "db":
-        autoload_models()
+        pass
 
 
 if __name__ == "__main__":
     custom_commands(sys.argv)
+    autoload_models()
     manager.run()
