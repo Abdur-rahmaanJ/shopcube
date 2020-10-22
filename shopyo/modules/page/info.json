@@ -4,5 +4,5 @@
         "type": "show",
         "fa-icon": "fa fa-store",
         "url_prefix": "/page",
-        "panel_redirect": "/dashboard"
+        "panel_redirect": ""
 }

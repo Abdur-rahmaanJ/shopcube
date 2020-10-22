@@ -10,9 +10,7 @@
 
 
 {% block content %}
-
-<a href="{{url_for('contact.dashboard')}}"><button class="btn btn-info">view contact dashboard</button></a>
-<br><br>
+{%include 'contact/nav.html'%}
 
 <form action="{{url_for('contact.validate_message')}}" method="POST">
 
