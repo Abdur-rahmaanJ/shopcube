@@ -57,7 +57,7 @@
     </div>
     <input required
         name="category" autocomplete="off" id="category" type="text" class="form-control" 
-        placeholder="Product Category" value="{{product.category}}">
+        placeholder="Product Category" value="{{product.category_name}}">
   </div>
 
   <label>date</label>
@@ -65,7 +65,7 @@
       <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
       </div>
-      <input required
+      <input
           name="date" id="noHistoricDates"autocomplete="off" id="date" type="date" 
           class="form-control" min="" placeholder="" value="{{product.date}}">
   </div>
@@ -108,10 +108,9 @@
     <label class="form-check-label" for="defaultCheck1">
       Yes
     </label>
-  </div>
-  <div class="form-check">
+    <br>
     <input required
-      name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="True"
+      name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="False"
       id="defaultCheck1" checked="checked">
     <label class="form-check-label" for="defaultCheck2">
       No

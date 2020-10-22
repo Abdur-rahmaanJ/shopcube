@@ -52,6 +52,7 @@ people_schema = PeopleSchema(many=True)
 
 
 @people_blueprint.route("/")
+@login_required
 def people_main():
     context = base_context()
 
@@ -60,6 +61,7 @@ def people_main():
 
 
 @people_blueprint.route("/add", methods=["GET", "POST"])
+@login_required
 def people_add():
     context = base_context()
 
@@ -117,6 +119,7 @@ def people_add():
 
 
 @people_blueprint.route("/delete/<id>", methods=["GET", "POST"])
+@login_required
 def people_delete(id):
     People.query.filter(People.id == id).delete()
     db.session.commit()
@@ -124,6 +127,7 @@ def people_delete(id):
 
 
 @people_blueprint.route("/edit/<id>", methods=["GET", "POST"])
+@login_required
 def people_edit(id):
     context = base_context()
 
@@ -148,6 +152,7 @@ def people_edit(id):
 
 
 @people_blueprint.route("/update", methods=["GET", "POST"])
+@login_required
 def people_update():
     if request.method == "POST":
         people_id = request.form["id"]
