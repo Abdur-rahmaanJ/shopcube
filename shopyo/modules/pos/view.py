@@ -41,8 +41,8 @@ globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
 module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 
-@login_required
 @module_blueprint.route("/")
+@login_required
 def index():
     context = base_context()
     categories = Category.query.all()
@@ -50,8 +50,8 @@ def index():
     return render_template("pos/index.html", **context)
 
 
-@login_required
 @module_blueprint.route("/transaction", methods=["GET", "POST"])
+@login_required
 def transaction():
     if request.method == "POST":
         json = request.get_json()
@@ -64,7 +64,7 @@ def transaction():
             product.update()
 
         transaction = Transaction()
-        transaction.cashier_id = current_user.id
+        transaction.chashier_id = current_user.id
         transaction.products = [Product.query.get(key) for key in json]
         transaction.insert()
 

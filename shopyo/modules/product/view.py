@@ -98,6 +98,7 @@ def prods_add(category_name):
             db.session.commit()
         context["category"] = category_name
         context["has_product"] = str(has_product)
+        context["barcodestr"] = uuid.uuid1()
         return render_template("prods/add.html", **context)
 
     context["category"] = category_name
