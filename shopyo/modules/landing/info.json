@@ -1,0 +1,12 @@
+{
+        "display_string": "Landing",
+        "module_name":"landing",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/landing",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

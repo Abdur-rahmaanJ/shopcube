@@ -1,0 +1,9 @@
+{% if current_user.admin_user %}
+	{{
+	sidebar_item('Dashboard', 
+	icon='fa fa-table', 
+	url=url_for('page.panel_redirect')
+	)}}
+{% endif %}
+
+{{sidebar_item('All Pages', icon='fa fa-table', url=url_for('page.index'))}}
