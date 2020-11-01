@@ -15,7 +15,10 @@ from shopyoapi.html import notify_success
 from flask_login import login_required
 
 contact_blueprint = Blueprint(
-    "contact", __name__, url_prefix="/contact", template_folder="templates",
+    "contact",
+    __name__,
+    url_prefix="/contact",
+    template_folder="templates",
 )
 
 
