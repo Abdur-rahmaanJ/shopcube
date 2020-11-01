@@ -2,7 +2,7 @@
         "display_string": "Page",
         "module_name":"page",
         "type": "show",
-        "fa-icon": "fa fa-store",
+        "fa-icon": "fa fa-pen",
         "url_prefix": "/page",
-        "panel_redirect": ""
+        "panel_redirect": "/dashboard"
 }

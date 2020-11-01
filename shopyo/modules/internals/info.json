@@ -1,6 +1,6 @@
 {
         "display_string": "Internals",
         "type": "show",
-        "fa-icon": "fa fa-store",
+        "fa-icon": "fa fa-info-circle",
         "url_prefix": "/internals"
 }
