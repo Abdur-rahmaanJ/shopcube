@@ -20,6 +20,16 @@ It also makes a great Flask base and supports commands such as:
 
 # Test it out!
 
+Link: 
+Credentials: 
+
+| Info | Value |
+|---|---|
+| Link | [shopyo.pythonanywhere.com](http://shopyo.pythonanywhere.com/) |
+| Credentials | User: testuser - password: pass |
+
+**By code**
+
 [Important] Create a virtual environment and activate it (not needed when installing [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)).
 
 `pip install shopyo`
