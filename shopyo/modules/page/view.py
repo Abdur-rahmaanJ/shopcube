@@ -32,13 +32,10 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 module_name = module_info["module_name"]
 
-sidebar = [
-    {'text': 'sample', 'icon':'fa fa-table', 'url':''}
-]
+sidebar = [{"text": "sample", "icon": "fa fa-table", "url": ""}]
 
-module_settings = {
-    'sidebar': sidebar
-}
+module_settings = {"sidebar": sidebar}
+
 
 @module_blueprint.route("/")
 def index():
