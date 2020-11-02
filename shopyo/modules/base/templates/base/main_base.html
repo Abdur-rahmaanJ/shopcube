@@ -6,14 +6,14 @@
     {% block pagehead %}{% endblock %}
 </head>
 <body>
-    
+    {% include "base/nav_base.html" %}
     {% include 'base/blocks/flashed_messages.html'%}
 
-<div class="container">
-    {% include "base/nav_base.html" %}
-    <br>
-    {% block content %}{% endblock %}
-</div>
+	<div class="container">
+	    
+	    <br>
+	    {% block content %}{% endblock %}
+	</div>
 </body>
 </html>
 

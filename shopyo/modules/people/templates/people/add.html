@@ -1,10 +1,18 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='people' %}
 
 {% block pagehead %}
 <title>add people</title>
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'people/blocks/sidebar.html'%}
+{%endblock%}
+
+
 
 {% block content %}
 

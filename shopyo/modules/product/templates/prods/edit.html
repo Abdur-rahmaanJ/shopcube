@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='products' %}
 
@@ -6,8 +6,17 @@
 <title>edit</title>
 {% endblock %}
 
+
+
+
+{% block sidebar %}
+  {%include 'prods/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
+
 {% block content %}
-  {% include 'prods/nav.html' %}
   <br>
 
   <h2>Edit product for 

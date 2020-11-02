@@ -32,7 +32,7 @@ category_blueprint = Blueprint(
 
 @category_blueprint.route("/")
 @login_required
-def category():
+def index():
     context = base_context()
     context["categorys"] = Category.query.all()
     context["active_page"] = get_setting("SECTION_NAME")
@@ -41,7 +41,7 @@ def category():
 
 @category_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
-def category_add():
+def add():
     context = base_context()
 
     has_category = False

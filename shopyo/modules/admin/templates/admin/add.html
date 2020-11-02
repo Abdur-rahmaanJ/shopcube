@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page = "admin" %}
 {% block pagehead %}
@@ -29,8 +29,16 @@
         }
     </style>
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'admin/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
 {% block content %}
-{%include 'admin/nav.html'%}
 <br>
 <div class="container col-md-6 off-set-3">
     <form action="/admin/add" method="post">

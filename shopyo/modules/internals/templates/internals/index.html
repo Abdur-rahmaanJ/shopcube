@@ -1,10 +1,18 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='' %}
 
 {% block pagehead %}
 
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'internals/blocks/sidebar.html'%}
+{%endblock%}
+
+
 
 {% block content %}
 

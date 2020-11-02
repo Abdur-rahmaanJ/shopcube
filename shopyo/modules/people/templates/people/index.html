@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='people' %}
 
@@ -15,6 +15,14 @@
 </style>
 
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'people/blocks/sidebar.html'%}
+{%endblock%}
+
+
 
 {% block content %}
 <script type="text/javascript">

@@ -22,7 +22,7 @@ def notify(message, alert_type="primary"):
     None
     """
     alert = """
-    <div class="alert alert-{alert_type} alert-dismissible fade show" role="alert"
+    <div class="shopyo-alert alert alert-{alert_type} alert-dismissible fade show" role="alert"
         style="opacity: 0.98;">
       {message}
 

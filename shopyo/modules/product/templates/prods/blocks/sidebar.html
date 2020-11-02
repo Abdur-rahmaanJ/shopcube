@@ -1,0 +1,33 @@
+{{
+sidebar_item(
+'Category Home', 
+icon='fa fa-store', 
+url=url_for('category.index')
+)
+}}
+
+{{
+sidebar_item(
+'Home', 
+icon='fa fa-shopping-bag', 
+url=url_for('prods.list_prods', category_name=category)
+)
+}}
+
+
+{{
+sidebar_item(
+'Add', 
+icon='fas fa-plus-circle', 
+url=url_for('prods.prods_add', category_name=category)
+)
+}}
+
+
+{{
+sidebar_item(
+'Search', 
+icon='fas fa-search', 
+url=url_for('prods.lookup_prods', category_name=category)
+)
+}}
