@@ -5,11 +5,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-    {% include 'base/blocks/resources.html'%}
+    
     {% include 'base/blocks/default_styles.html'%}
     {% block pagehead %}{% endblock %}
 
-    <link href="{{ url_for('static', filename ='css/simple_sidebar.css') }}" rel="stylesheet">
+    
+    {% include 'base/blocks/resources.html'%}
 </head>
 <body>
     {% include 'base/nav_base.html'%}
@@ -19,6 +20,7 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
+      <!--TODO: module info['display string']-->
       <div class="sidebar-heading"><a href="">MODULE_NAME</a></div>
       <div class="list-group list-group-flush" >
         {% block sidebar %}{% endblock %}
@@ -38,12 +40,11 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item ">
-              <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
-            </li>
+            <!--
             <li class="nav-item">
               <a class="nav-link" href="">Logout</a>
             </li>
+            
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Dropdown
@@ -55,10 +56,11 @@
                 <a class="dropdown-item" href="#">Something else here</a>
               </div>
             </li>
+          -->
           </ul>
         </div>
       </nav>
-      <div class="container-fluid">
+      <div class="container-fluid shopyo-module-area">
         
         {% block content %}{% endblock %}
 

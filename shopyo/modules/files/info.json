@@ -1,0 +1,12 @@
+{
+        "display_string": "Files",
+        "module_name":"files",
+        "type": "hide",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/files",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}
