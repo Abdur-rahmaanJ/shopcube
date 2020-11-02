@@ -165,5 +165,5 @@ def index():
     )
     trymkfile(base_path + "/" + "info.json", info_json_content)
 
-    trymkdir(base_path + "/templates/" + modulename + '/blocks')
-    trymkfile(base_path + "/templates/" + modulename + '/blocks/' + "sidebar.html", '')
+    trymkdir(base_path + "/templates/" + modulename + "/blocks")
+    trymkfile(base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html", "")

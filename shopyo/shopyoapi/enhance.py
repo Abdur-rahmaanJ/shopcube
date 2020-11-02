@@ -1,6 +1,7 @@
 from modules.settings.models import Settings
 import random
 
+
 def get_setting(name):
     """
     Used as key-value lookup from Settings table
@@ -37,11 +38,10 @@ def base_context():
         copy of dictionary
     """
 
-    
     base_context = {
         "APP_NAME": get_setting("APP_NAME"),
         "SECTION_NAME": get_setting("SECTION_NAME"),
         "SECTION_ITEMS": get_setting("SECTION_ITEMS"),
-        'r_int': random.randint(1, 100)
+        "r_int": random.randint(1, 100),
     }
     return base_context.copy()
