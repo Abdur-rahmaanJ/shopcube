@@ -1,10 +1,18 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page = "appointments" %}
 
 {% block pagehead %}
     <title>edit</title>
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'appointment/blocks/sidebar.html'%}
+{%endblock%}
+
+
 
 {% block content %}
 <h2>Edit Appointment</h2>

@@ -39,7 +39,7 @@ appointment_schema = AppointmentSchema(many=True)
 
 @appointment_blueprint.route("/")
 @login_required
-def appointment_main():
+def index():
     context = base_context()
 
     context["appointments"] = Appointments.query.all()
@@ -48,7 +48,7 @@ def appointment_main():
 
 @appointment_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
-def appointment_add():
+def add():
     context = base_context()
 
     if request.method == "POST":

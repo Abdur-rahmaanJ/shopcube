@@ -1,101 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-    <link rel="icon" href="/static/shopyo.png">
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
-    <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-    <link rel="stylesheet" href="/static/fontawesome/css/all.css">
-    <!--<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">-->
-    
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <script src="/static/jquery_3.2.1.min.js"></script>
-    <script src="{{ url_for('static', filename ='bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename ='js/python.js') }}"></script>
-    <!--<script type="text/javascript" src="{{ url_for('static', filename = 'logic.js') }}"></script>-->
-
-    <style type="text/css">
-            html {
-         scroll-behavior: smooth;
-            }
-        .suggest {
-
-        }
-
-        .suggest span {
-            padding-left: 5px;
-            padding-right: 5px;
-            margin: 5px;
-            min-width: 50px;
-        }
-
-        li i {
-            font-size: 30px;
-        }
-
-        li {
-            margin-right: 10px;
-        }
-
-        a{
-            text-decoration: inherit;
-            color: inherit;
-        }
-        a:hover{
-            text-decoration: inherit;
-            color: inherit;
-        }
-
-        .card-menu{
-            display: inline-block; 
-            min-width: 200px;
-            margin-top: 10px;
-        }
-        .card-menu-icon{
-            font-size: 40px;
-            color: #e88734;
-        }
-
-        #flashed-messages{
-            padding: 5px;
-            position: fixed;
-            right: 5px;
-            top: 5px;
-            z-index: 10;
-            height: 300px;
-            overflow-y: scroll;
-
-          }
-          #flashed-messages::-webkit-scrollbar {
-            display: none;
-          }
-          /* Hide scrollbar for IE and Edge */
-          #flashed-messages{
-            -ms-overflow-style: none;
-          }
-    </style>
+    {% include 'base/blocks/resources.html'%}
+    {% include 'base/blocks/default_styles.html'%}
     {% block pagehead %}{% endblock %}
 </head>
-<body>
-    
-<div id="flashed-messages">
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        {{ message | safe}}
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-</div>
-
-<div class="container">
+<body class=" shopyo-main-area">
     {% include "base/nav_base.html" %}
-    <br>
-    {% block content %}{% endblock %}
-</div>
+    {% include 'base/blocks/flashed_messages.html'%}
+
+	<div class="container">
+	    
+	    <br>
+	    {% block content %}{% endblock %}
+	</div>
 </body>
 </html>
 

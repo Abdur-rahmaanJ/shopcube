@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='contact dashboard' %}
 
@@ -9,9 +9,17 @@
 </style>
 {% endblock %}
 
-{% block content %}
 
-{%include 'contact/nav.html'%}
+
+
+{% block sidebar %}
+  {%include 'contact/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
+
+{% block content %}
 
 <table class="table">
   <thead>

@@ -1,0 +1,77 @@
+
+html {
+ scroll-behavior: smooth;
+    }
+.suggest {
+
+}
+
+.suggest span {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+    min-width: 50px;
+}
+
+li i {
+    font-size: 30px;
+}
+
+li {
+    margin-right: 10px;
+}
+
+a{
+    text-decoration: inherit;
+    color: inherit;
+}
+a:hover{
+    text-decoration: inherit;
+    color: inherit;
+}
+
+.card-menu{
+    display: inline-block; 
+    min-width: 200px;
+    margin-top: 10px;
+}
+.card-menu-icon{
+    font-size: 40px;
+    color: orange;
+}
+
+.shopyo-alert{
+
+}
+#flashed-messages{
+    padding: 5px;
+    position: fixed;
+    right: 5px;
+    top: 5px;
+    z-index: 10;
+    height: 300px;
+    overflow-y: scroll;
+
+  }
+  #flashed-messages::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE and Edge */
+  #flashed-messages{
+    -ms-overflow-style: none;
+  }
+
+.sidebar-heading a{
+    color: orange;
+}
+
+.shopyo-main-area{
+    background: rgb(131,58,180);
+background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 30%, rgba(252,176,69,1) 100%);
+}
+
+#page-content-wrapper{
+background: rgb(131,58,180);
+background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,75,29,1) 0%, rgba(252,176,69,1) 100%);
+color: white;
+}

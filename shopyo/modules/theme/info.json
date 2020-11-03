@@ -1,0 +1,12 @@
+{
+        "display_string": "Theme",
+        "module_name":"theme",
+        "type": "show",
+        "fa-icon": "fa fa-paint-brush",
+        "url_prefix": "/theme",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

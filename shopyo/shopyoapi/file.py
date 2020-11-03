@@ -107,3 +107,8 @@ def absdiroffile(filepath):
         Absolute dir path of file
     """
     return os.path.dirname(os.path.abspath(filepath))
+
+
+def get_folders(path):
+    dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+    return dirs

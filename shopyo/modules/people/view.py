@@ -53,7 +53,7 @@ people_schema = PeopleSchema(many=True)
 
 @people_blueprint.route("/")
 @login_required
-def people_main():
+def index():
     context = base_context()
 
     context["people"] = People.query.all()

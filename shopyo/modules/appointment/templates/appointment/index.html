@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page = "appointments" %}
 
@@ -30,6 +30,14 @@
         }
     </style>
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'appointment/blocks/sidebar.html'%}
+{%endblock%}
+
+
 
 {% block content %}
     <script type="text/javascript">

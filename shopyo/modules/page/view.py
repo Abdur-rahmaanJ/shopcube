@@ -32,6 +32,10 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 module_name = module_info["module_name"]
 
+sidebar = [{"text": "sample", "icon": "fa fa-table", "url": ""}]
+
+module_settings = {"sidebar": sidebar}
+
 
 @module_blueprint.route("/")
 def index():
@@ -57,6 +61,7 @@ def panel_redirect():
     form = PageForm()
 
     context.update({"form": form, "module_name": module_name})
+    context.update(module_settings)
     return render_template("page/dashboard.html", **context)
 
 

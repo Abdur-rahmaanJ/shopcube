@@ -1,10 +1,19 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='people' %}
 
 {% block pagehead %}
 <title>edit</title>
 {% endblock %}
+
+
+
+{% block sidebar %}
+  {%include 'people/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
 
 {% block content %}
 
@@ -41,6 +50,7 @@
 
 </script>
 <div class="container">
+  <a href="{{url_for('people.index')}}">back</a>
   <form action="/people/update" method="post">
     <div class="input-group mb-3">
         <input required id="id" type="hidden" class="form-control" name="id" value="{{id}}">

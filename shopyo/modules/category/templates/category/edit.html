@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='category' %}
 
@@ -6,8 +6,15 @@
 <title>edit</title>
 {% endblock %}
 
+
+
+{% block sidebar %}
+  {%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
 {% block content %}
-  {% include 'category/nav.html' %}
   <br>
 <form action='/category/update' method="post">
   <label>Name</label>
