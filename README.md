@@ -10,9 +10,8 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 🎁 Open inventory management  and Point of sales (powered by python) for small shops. 
 
-- :ok_hand: Modules with Flask
-- :heartpulse: Django-like experience
-- :sparkler: Plug and Play
+- :sparkler: Plug and Play modules
+- :sparkler: Themes!
 
 It also makes a great Flask base and supports commands such as:
 
@@ -72,6 +71,7 @@ Basics:
 - Base
 - Login
 - Settings
+- Theme
 
 Shop:
 
@@ -79,6 +79,8 @@ Shop:
 - Products
 - People
 - Internals
+- Page
+- Contact
 
 If you want to use the project as a Flask base, just remove 
 the shop modules in modules/
@@ -170,6 +172,7 @@ Support team if you are stuck
 - ✔️ Django-like structure (where models, views and templates all in one  folder)
 - ✔️ Relative reference (.forms for example)
 - ✔️ Roles management
+- ✔️ Themes
 
 In Progress
 
@@ -179,17 +182,9 @@ In Progress
 
 ## 🍳 In Action
 
-![](screenshots/scr_control_panel.png)
-![](screenshots/scr_user_add.png)
-![](screenshots/scr_user_view.png)
-![](screenshots/scr_inventory.png)
-![](screenshots/scr_product_add.png)
-![](screenshots/scr_product_lookup.png)
-![](screenshots/scr_people_add.png)
-![](screenshots/scr_people_view.png)
-![](screenshots/scr_people_lookup.png)
-![](screenshots/scr_appointment_add.png)
-![](screenshots/scr_appointment_menu.png)
+![](screenshots/theme_boogle.png)
+![](screenshots/theme_mistrello.png)
+![](screenshots/module_v2.png)
 
 
 
