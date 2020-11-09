@@ -186,5 +186,10 @@ In Progress
 ![](screenshots/theme_mistrello.png)
 ![](screenshots/module_v2.png)
 
+## Supporters
+
+[![Stargazers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/stars/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/stargazers)
+
+[![Forkers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/forks/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/network/members)
 
 
