@@ -6,6 +6,7 @@ from flask import render_template
 from flask import request
 from flask import redirect
 from flask import url_for
+from flask_login import login_required
 
 from shopyoapi.enhance import base_context
 from shopyoapi.forms import flash_errors
@@ -38,6 +39,7 @@ module_settings = {"sidebar": sidebar}
 
 
 @module_blueprint.route("/")
+@login_required
 def index():
     context = base_context()
     pages = Page.query.all()
@@ -47,6 +49,7 @@ def index():
 
 
 @module_blueprint.route("/<page_id>/<slug>")
+@login_required
 def view_page(page_id, slug):
     context = base_context()
     page = Page.query.get(page_id)
@@ -56,6 +59,7 @@ def view_page(page_id, slug):
 
 
 @module_blueprint.route(module_info["panel_redirect"])
+@login_required
 def panel_redirect():
     context = base_context()
     form = PageForm()
@@ -66,6 +70,7 @@ def panel_redirect():
 
 
 @module_blueprint.route("/check_pagecontent", methods=["GET", "POST"])
+@login_required
 def check_pagecontent():
     if request.method == "POST":
         form = PageForm()

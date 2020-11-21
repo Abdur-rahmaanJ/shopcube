@@ -7,6 +7,7 @@ from flask import render_template
 from flask import current_app
 from flask import url_for
 from flask import redirect
+from flask_login import login_required
 
 # from flask import flash
 # from flask import request
@@ -41,6 +42,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 
 @module_blueprint.route("/")
+@login_required
 def index():
 
     context = base_context()
@@ -62,6 +64,7 @@ def index():
 
 
 @module_blueprint.route("/activate/<theme_name>")
+@login_required
 def activate(theme_name):
     set_setting("ACTIVE_THEME", theme_name)
     return redirect(url_for("{}.index".format(module_info["module_name"])))
