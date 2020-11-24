@@ -31,8 +31,8 @@ def index():
     return render_template("contact/contact_form.html", **context)
 
 
-@login_required
 @contact_blueprint.route("/validate_message", methods=["GET", "POST"])
+@login_required
 def validate_message():
     if request.method == "POST":
         form = ContactForm()
@@ -50,9 +50,9 @@ def validate_message():
         return redirect(url_for("contact.index"))
 
 
-@login_required
 @contact_blueprint.route("/dashboard", methods=["GET"], defaults={"page": 1})
 @contact_blueprint.route("/dashboard/<int:page>", methods=["GET"])
+@login_required
 def dashboard(page):
     context = base_context()
 
