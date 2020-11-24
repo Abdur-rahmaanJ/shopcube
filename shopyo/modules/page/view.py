@@ -39,7 +39,6 @@ module_settings = {"sidebar": sidebar}
 
 
 @module_blueprint.route("/")
-@login_required
 def index():
     context = base_context()
     pages = Page.query.all()
@@ -49,7 +48,6 @@ def index():
 
 
 @module_blueprint.route("/<page_id>/<slug>")
-@login_required
 def view_page(page_id, slug):
     context = base_context()
     page = Page.query.get(page_id)

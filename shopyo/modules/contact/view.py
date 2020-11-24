@@ -23,7 +23,6 @@ contact_blueprint = Blueprint(
 
 
 @contact_blueprint.route("/")
-@login_required
 def index():
     context = base_context()
     form = ContactForm()
