@@ -7,6 +7,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from shopyoapi.init import db
 from flask_login import UserMixin
+from flask_login import AnonymousUserMixin
+from flask_login import login_manager
 from uuid import uuid4
 
 
@@ -15,6 +17,21 @@ role_helpers = db.Table(
     db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
     db.Column("role_id", db.Integer, db.ForeignKey("roles.id")),
 )
+
+
+class AnonymousUser(AnonymousUserMixin):
+    def set_password(self, password):
+        return False
+    def check_password(self, password):
+        return False
+    def avatar(self, size):
+        return False
+    def is_admin(self):
+        return False
+    # def get_reset_password_token(self, expires_in=current_app.config['FORGOT_PASSWORD_TOKEN_EXPIRE']):
+    #     return False
+
+login_manager.anonymous_user = AnonymousUser
 
 
 class User(UserMixin, db.Model):

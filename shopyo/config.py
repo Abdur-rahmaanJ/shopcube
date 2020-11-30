@@ -13,6 +13,9 @@ class Config:
     SECRET_KEY = "qow32ijjdkc756osk5dmck"  # Need a generator
     HOMEPAGE_URL = "/control_panel"
     BASE_DIR = base_path
+    STATIC = os.path.join(BASE_DIR, 'static')
+    UPLOADED_PATH_IMAGE = os.path.join(STATIC, 'uploads', 'images')
+    UPLOADED_PATH_THUM = os.path.join(STATIC, 'uploads', 'thumbs')
 
 
 class DevelopmentConfig(Config):
