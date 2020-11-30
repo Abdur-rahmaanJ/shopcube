@@ -22,14 +22,19 @@ role_helpers = db.Table(
 class AnonymousUser(AnonymousUserMixin):
     def set_password(self, password):
         return False
+
     def check_password(self, password):
         return False
+
     def avatar(self, size):
         return False
+
     def is_admin(self):
         return False
+
     # def get_reset_password_token(self, expires_in=current_app.config['FORGOT_PASSWORD_TOKEN_EXPIRE']):
     #     return False
+
 
 login_manager.anonymous_user = AnonymousUser
 

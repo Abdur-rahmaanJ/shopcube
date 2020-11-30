@@ -45,32 +45,31 @@ def index():
     return module_info["display_string"]
 
 
-@module_blueprint.route("/theme/<active_theme>/styles.css", methods=['GET'])
+@module_blueprint.route("/theme/<active_theme>/styles.css", methods=["GET"])
 def active_theme_css(active_theme):
-    theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "themes", active_theme
-    )
-    #return theme_dir
+    theme_dir = os.path.join(current_app.config["BASE_DIR"], "themes", active_theme)
+    # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
 
 
-
 # Handles javascript image uploads from tinyMCE
-@module_blueprint.route('/upload/tinymce/image', methods=['POST'])
+@module_blueprint.route("/upload/tinymce/image", methods=["POST"])
 @login_required
 def upload_tinymce_image():
     # Kevin Foong
-    file = request.files.get('file')
+    file = request.files.get("file")
     if file:
         filename = file.filename.lower()
-        fn, ext = filename.split('.')
+        fn, ext = filename.split(".")
         # truncate filename (excluding extension) to 30 characters
         fn = fn[:30]
-        filename = fn + '.' + ext
-        if ext in ['jpg', 'gif', 'png', 'jpeg']:
+        filename = fn + "." + ext
+        if ext in ["jpg", "gif", "png", "jpeg"]:
             try:
                 # everything looks good, save file
-                img_fullpath = os.path.join(current_app.config['UPLOADED_PATH_IMAGE'], filename)
+                img_fullpath = os.path.join(
+                    current_app.config["UPLOADED_PATH_IMAGE"], filename
+                )
                 file.save(img_fullpath)
                 # get the file size to save to db
                 file_size = os.stat(img_fullpath).st_size
@@ -81,26 +80,33 @@ def upload_tinymce_image():
                 file_width, file_height = im.size
                 # convert to thumbnail
                 im.thumbnail(size)
-                thumbnail = fn + '-thumb.jpg'
-                tmb_fullpath = os.path.join(current_app.config['UPLOADED_PATH_THUMB'], thumbnail)
+                thumbnail = fn + "-thumb.jpg"
+                tmb_fullpath = os.path.join(
+                    current_app.config["UPLOADED_PATH_THUMB"], thumbnail
+                )
                 # PNG is index while JPG needs RGB
-                if not im.mode == 'RGB':
-                    im = im.convert('RGB')
+                if not im.mode == "RGB":
+                    im = im.convert("RGB")
                 # save thumbnail
                 im.save(tmb_fullpath, "JPEG")
 
                 # save to db
-                img = Image(filename=filename, thumbnail=thumbnail, file_size=file_size, \
-                            file_width=file_width, file_height=file_height)
+                img = Image(
+                    filename=filename,
+                    thumbnail=thumbnail,
+                    file_size=file_size,
+                    file_width=file_width,
+                    file_height=file_height,
+                )
                 db.session.add(img)
                 db.session.commit()
             except IOError:
                 output = make_response(404)
-                output.headers['Error'] = 'Cannot create thumbnail for ' + filename
+                output.headers["Error"] = "Cannot create thumbnail for " + filename
                 return output
-            return jsonify({'location' : filename})
+            return jsonify({"location": filename})
 
     # fail, image did not upload
     output = make_response(404)
-    output.headers['Error'] = 'Filename needs to be JPG, JPEG, GIF or PNG'
+    output.headers["Error"] = "Filename needs to be JPG, JPEG, GIF or PNG"
     return output
