@@ -8,3 +8,4 @@ Flask-WTF
 marshmallow_sqlalchemy
 requests
 email_validator
+pillow
