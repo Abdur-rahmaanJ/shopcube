@@ -17,4 +17,4 @@
 <link href="{{ url_for('static', filename ='css/simple_sidebar.css') }}" rel="stylesheet">
 
 
-<link rel="stylesheet" href="{{url_for('files.active_theme_css', version=r_int)}}">
+<link rel="stylesheet" href="{{url_for('files.active_theme_css', active_theme=ACTIVE_THEME, v=ACTIVE_THEME_VERSION)}}">

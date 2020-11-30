@@ -1,5 +1,8 @@
 from modules.settings.models import Settings
 import random
+from flask import current_app
+import json
+import os
 
 
 def get_setting(name):
@@ -38,10 +41,18 @@ def base_context():
         copy of dictionary
     """
 
+    theme_dir = os.path.join(
+        current_app.config["BASE_DIR"], "themes", get_setting("ACTIVE_THEME")
+    )
+    info_path = os.path.join(theme_dir, "info.json")
+    with open(info_path) as f:
+        info_data = json.load(f)
+    active_theme_version = info_data["version"]
     base_context = {
         "APP_NAME": get_setting("APP_NAME"),
         "SECTION_NAME": get_setting("SECTION_NAME"),
         "SECTION_ITEMS": get_setting("SECTION_ITEMS"),
-        "r_int": random.randint(1, 100),
+        "ACTIVE_THEME": get_setting("ACTIVE_THEME"),
+        "ACTIVE_THEME_VERSION": active_theme_version,
     }
     return base_context.copy()
