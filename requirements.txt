@@ -2,10 +2,10 @@ flask
 flask_sqlalchemy
 flask_marshmallow
 flask_migrate
-flask_script
 flask_login
 Flask-WTF
 marshmallow_sqlalchemy
 requests
 email_validator
 pillow
+Flask-Reuploaded
