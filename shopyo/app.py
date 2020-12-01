@@ -3,7 +3,15 @@ import os
 
 from flask import Flask, redirect
 from flask_wtf.csrf import CSRFProtect
-from shopyoapi.init import db, login_manager, ma
+
+import sys
+sys.path.append(".")
+
+from shopyoapi.init import db
+from shopyoapi.init import login_manager
+from shopyoapi.init import ma
+from shopyoapi.init import migrate
+
 from config import app_config
 
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -13,7 +21,7 @@ def create_app(config_name):
     app = Flask(__name__)
     configuration = app_config[config_name]
     app.config.from_object(configuration)
-
+    migrate.init_app(app, db)
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)

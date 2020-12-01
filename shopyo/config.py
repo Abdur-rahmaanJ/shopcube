@@ -10,7 +10,7 @@ class Config:
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = "qow32ijjdkc756osk5dmck"  # Need a generator
+    SECRET_KEY = os.urandom(24)
     HOMEPAGE_URL = "/control_panel"
     BASE_DIR = base_path
     STATIC = os.path.join(BASE_DIR, "static")
