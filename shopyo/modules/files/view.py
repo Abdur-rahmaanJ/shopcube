@@ -110,3 +110,5 @@ def upload_tinymce_image():
     output = make_response(404)
     output.headers["Error"] = "Filename needs to be JPG, JPEG, GIF or PNG"
     return output
+
+

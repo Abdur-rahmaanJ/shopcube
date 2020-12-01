@@ -16,6 +16,9 @@ class Config:
     STATIC = os.path.join(BASE_DIR, "static")
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
     UPLOADED_PATH_THUM = os.path.join(STATIC, "uploads", "thumbs")
+    UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
+
+    
 
 
 class DevelopmentConfig(Config):

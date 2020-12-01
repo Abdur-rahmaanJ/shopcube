@@ -3,13 +3,14 @@ flask
 flask_sqlalchemy
 flask_marshmallow
 flask_migrate
-flask_script
 flask_login
 Flask-WTF
 Flask-Testing
 flake8
 marshmallow_sqlalchemy
 requests
+flask-reuploaded
 Sphinx
 pytest
 selenium
+isort

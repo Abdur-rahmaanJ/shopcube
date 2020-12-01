@@ -3,13 +3,19 @@ from flask import render_template
 from flask import request
 from flask import redirect
 from flask import jsonify
+
+from werkzeug.utils import secure_filename
+
 from modules.product.models import Product
+
+from modules.files.models import Resource
 
 from shopyoapi.init import db, ma
 
 from flask_login import login_required
 
 from shopyoapi.enhance import base_context
+from shopyoapi.file import unique_filename
 from sqlalchemy import exists
 
 product_blueprint = Blueprint(
@@ -93,6 +99,14 @@ def prods_add(category_name):
                 p.price = 0
             if selling_price:
                 p.selling_price = selling_price.strip()
+
+            files = request.files.getlist('photos[]')
+
+            for file in files:
+                filename = unique_filename(secure_filename(file.filename))
+                productphotos.save(current_app.config['UPLOADED_PRODUCTPHOTOS_DEST'], 
+                    name=filename)
+                p.resources.append(Resource(type='image', filename=filename))
 
             db.session.add(p)
             db.session.commit()
