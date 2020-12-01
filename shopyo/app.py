@@ -5,6 +5,7 @@ from flask import Flask, redirect
 from flask_wtf.csrf import CSRFProtect
 
 import sys
+
 sys.path.append(".")
 
 from shopyoapi.init import db

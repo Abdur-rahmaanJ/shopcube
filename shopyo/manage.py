@@ -9,12 +9,13 @@ from shopyoapi.cmd import initialise
 from shopyoapi.cmd import create_module
 from shopyoapi.database import autoload_models
 
+
 def runserver():
     app.run(host="0.0.0.0")
 
 
 @click.command()
-@click.argument('args', nargs=-1)
+@click.argument("args", nargs=-1)
 def process(args):
     if args[0] == "initialise":
         autoload_models()
@@ -34,16 +35,17 @@ def process(args):
         print("test ok")
     elif args[0] == "startapp" and args.action[1]:
         create_module(args.action[1])
-    elif args[0] == 'db':
+    elif args[0] == "db":
         try:
             autoload_models()
-            if args[1] == 'migrate':
-                subprocess.run(['flask', 'db', 'migrate'])
-            elif args[1] == 'upgrade':
-                subprocess.run(['flask', 'db', 'upgrade'])
+            if args[1] == "migrate":
+                subprocess.run(["flask", "db", "migrate"])
+            elif args[1] == "upgrade":
+                subprocess.run(["flask", "db", "upgrade"])
         except IndexError as e:
-            print('db requires more options: migrate or upgrade')
+            print("db requires more options: migrate or upgrade")
             raise e
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     process()
