@@ -1,5 +1,6 @@
-from shopyoapi.html import notify_warning
 from flask import flash
+
+from shopyoapi.html import notify_warning
 
 
 def flash_errors(form):

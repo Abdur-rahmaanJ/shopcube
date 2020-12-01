@@ -1,8 +1,10 @@
-from modules.settings.models import Settings
-import random
-from flask import current_app
 import json
 import os
+import random
+
+from flask import current_app
+
+from modules.settings.models import Settings
 
 
 def get_setting(name):

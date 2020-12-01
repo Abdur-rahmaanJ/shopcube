@@ -1,5 +1,6 @@
-from shopyoapi.init import db
 import datetime
+
+from shopyoapi.init import db
 
 
 class Image(db.Model):

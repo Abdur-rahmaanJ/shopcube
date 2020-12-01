@@ -1,22 +1,20 @@
 from flask import Blueprint
+from flask import jsonify
+from flask import redirect
 from flask import render_template
 from flask import request
-from flask import redirect
-from flask import jsonify
-
-from werkzeug.utils import secure_filename
-
-from modules.product.models import Product
-
-from modules.files.models import Resource
-
-from shopyoapi.init import db, ma
 
 from flask_login import login_required
+from sqlalchemy import exists
+from werkzeug.utils import secure_filename
 
 from shopyoapi.enhance import base_context
 from shopyoapi.file import unique_filename
-from sqlalchemy import exists
+from shopyoapi.init import db
+from shopyoapi.init import ma
+
+from modules.files.models import Resource
+from modules.product.models import Product
 
 product_blueprint = Blueprint(
     "prods", __name__, template_folder="templates", url_prefix="/prods"

@@ -1,5 +1,6 @@
-from shopyoapi.init import db
 from sqlalchemy import exists
+
+from shopyoapi.init import db
 
 
 class Category(db.Model):

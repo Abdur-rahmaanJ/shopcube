@@ -1,18 +1,18 @@
-import os
 import json
+import os
 
 from flask import Blueprint
+from flask import redirect
 from flask import render_template
 from flask import request
-from flask import redirect
 from flask import url_for
+
 from flask_login import login_required
 
 from shopyoapi.enhance import base_context
 from shopyoapi.forms import flash_errors
 
 from .forms import PageForm
-
 from .models import Page
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

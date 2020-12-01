@@ -1,11 +1,16 @@
-import os
 import json
+import os
 
+from flask import Blueprint
 from flask import current_app
 from flask import send_from_directory
-from flask import Blueprint
 
+from flask_login import login_required
 from PIL import Image as PILimage
+
+from shopyoapi.enhance import get_setting
+
+from modules.files.models import Image
 
 # from flask import render_template
 # from flask import url_for
@@ -17,11 +22,8 @@ from PIL import Image as PILimage
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
-from shopyoapi.enhance import get_setting
 
-from flask_login import login_required
 
-from modules.files.models import Image
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

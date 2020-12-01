@@ -1,10 +1,11 @@
 from werkzeug.security import generate_password_hash
 
-from shopyoapi.init import db
 from app import app
 
-from modules.admin.models import User
+from shopyoapi.init import db
+
 from modules.admin.models import Role
+from modules.admin.models import User
 from modules.settings.models import Settings
 
 

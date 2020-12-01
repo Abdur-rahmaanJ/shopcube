@@ -1,15 +1,20 @@
-import os
+import datetime
 import json
+import os
 
-from flask import Blueprint, render_template, request, redirect, jsonify
+from flask import Blueprint
+from flask import jsonify
+from flask import redirect
+from flask import render_template
+from flask import request
+
 from flask_login import login_required
 
-from shopyoapi.init import db, ma
-from modules.people.models import People
-
 from shopyoapi.enhance import base_context
-import datetime
+from shopyoapi.init import db
+from shopyoapi.init import ma
 
+from modules.people.models import People
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

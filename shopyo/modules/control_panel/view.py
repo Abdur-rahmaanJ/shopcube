@@ -1,11 +1,12 @@
-import os
 import json
+import os
 
 from flask import Blueprint
-from flask import render_template
-from flask_login import login_required
-from flask import flash
 from flask import current_app
+from flask import flash
+from flask import render_template
+
+from flask_login import login_required
 
 from shopyoapi.enhance import base_context
 from shopyoapi.html import notify_success

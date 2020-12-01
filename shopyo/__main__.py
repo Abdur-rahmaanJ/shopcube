@@ -1,15 +1,12 @@
-import sys
 import os
-
-from .shopyoapi.file import trymkdir
-from .shopyoapi.file import trycopytree
-from .shopyoapi.file import trycopy
-from .shopyoapi.info import printinfo
-
-from pathlib import Path
-import sys
 import subprocess
+import sys
+from pathlib import Path
 
+from .shopyoapi.file import trycopy
+from .shopyoapi.file import trycopytree
+from .shopyoapi.file import trymkdir
+from .shopyoapi.info import printinfo
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()

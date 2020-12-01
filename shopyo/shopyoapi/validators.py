@@ -1,5 +1,6 @@
-from wtforms.validators import ValidationError
 import re
+
+from wtforms.validators import ValidationError
 
 # https://wtforms.readthedocs.io/en/2.3.x/validators/
 
