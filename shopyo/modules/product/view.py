@@ -49,9 +49,7 @@ product_schema = Productchema(many=True)
 @login_required
 def list_prods(category_name):
     context = base_context()
-    products = Product.query.filter(
-        Product.category_name == category_name
-    ).all()
+    products = Product.query.filter(Product.category_name == category_name).all()
     context["products"] = products
     context["category"] = category_name
 
@@ -103,9 +101,9 @@ def prods_add(category_name):
             if selling_price:
                 p.selling_price = selling_price.strip()
 
-            if 'photos[]' not in request.files:
-                flash(notify_warning('no file part'))
-            
+            if "photos[]" not in request.files:
+                flash(notify_warning("no file part"))
+
             files = request.files.getlist("photos[]")
 
             for file in files:
@@ -127,9 +125,7 @@ def prods_add(category_name):
     return render_template("prods/add.html", **context)
 
 
-@product_blueprint.route(
-    "/delete/<category_name>/<barcode>", methods=["GET", "POST"]
-)
+@product_blueprint.route("/delete/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
 def prods_delete(category_name, barcode):
     Product.query.filter(
@@ -139,9 +135,7 @@ def prods_delete(category_name, barcode):
     return redirect("/prods/list_prods/{}".format(category_name))
 
 
-@product_blueprint.route(
-    "/edit/<category_name>/<barcode>", methods=["GET", "POST"]
-)
+@product_blueprint.route("/edit/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
 def prods_edit(category_name, barcode):
     context = base_context()
@@ -238,7 +232,5 @@ def search(category_name, user_input):
 @product_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
-    has_product = db.session.query(
-        exists().where(Product.barcode == barcode)
-    ).scalar()
+    has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()
     return jsonify({"exists": has_product})
