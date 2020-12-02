@@ -28,28 +28,38 @@ def new_project(path, newfoldername):
 
     trycopytree(os.path.join(dirpath, "static"), base_path + "/static")
     trycopytree(os.path.join(dirpath, "tests"), base_path + "/tests")
-    trycopytree(os.path.join(dirpath, "modules", "base"), base_path + "/modules/base")
-    trycopytree(os.path.join(dirpath, "modules", "admin"), base_path + "/modules/admin")
-    trycopytree(os.path.join(dirpath, "modules", "login"), base_path + "/modules/login")
+    trycopytree(
+        os.path.join(dirpath, "modules", "base"), base_path + "/modules/base"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "admin"), base_path + "/modules/admin"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "login"), base_path + "/modules/login"
+    )
     trycopytree(
         os.path.join(dirpath, "modules", "appointment"),
         base_path + "/modules/appointment",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "category"), base_path + "/modules/category"
+        os.path.join(dirpath, "modules", "category"),
+        base_path + "/modules/category",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "people"), base_path + "/modules/people"
+        os.path.join(dirpath, "modules", "people"),
+        base_path + "/modules/people",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "product"), base_path + "/modules/product"
+        os.path.join(dirpath, "modules", "product"),
+        base_path + "/modules/product",
     )
     trycopytree(
         os.path.join(dirpath, "modules", "control_panel"),
         base_path + "/modules/control_panel",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "settings"), base_path + "/modules/settings"
+        os.path.join(dirpath, "modules", "settings"),
+        base_path + "/modules/settings",
     )
     trycopytree(os.path.join(dirpath, "shopyoapi"), base_path + "/shopyoapi")
 
@@ -58,7 +68,8 @@ def new_project(path, newfoldername):
     trycopy(os.path.join(dirpath, "config.py"), base_path + "/config.py")
     trycopy(os.path.join(dirpath, "manage.py"), base_path + "/manage.py")
     trycopy(
-        os.path.join(dirpathparent, "requirements.txt"), base_path + "/requirements.txt"
+        os.path.join(dirpathparent, "requirements.txt"),
+        base_path + "/requirements.txt",
     )
     trycopy(os.path.join(dirpathparent, "README.md"), base_path + "/README.md")
 

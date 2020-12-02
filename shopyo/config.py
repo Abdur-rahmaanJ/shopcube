@@ -17,8 +17,6 @@ class Config:
     UPLOADED_PATH_THUM = os.path.join(STATIC, "uploads", "thumbs")
     UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
 
-    
-
 
 class DevelopmentConfig(Config):
     """Configurations for development"""

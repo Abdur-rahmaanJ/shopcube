@@ -1,8 +1,11 @@
+import uuid
+
 from flask import Blueprint
 from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
+from flask import current_app
 
 from flask_login import login_required
 from sqlalchemy import exists
@@ -12,6 +15,8 @@ from shopyoapi.enhance import base_context
 from shopyoapi.file import unique_filename
 from shopyoapi.init import db
 from shopyoapi.init import ma
+from shopyoapi.init import productphotos
+from shopyoapi.html import notify_warning
 
 from modules.files.models import Resource
 from modules.product.models import Product
@@ -19,8 +24,6 @@ from modules.product.models import Product
 product_blueprint = Blueprint(
     "prods", __name__, template_folder="templates", url_prefix="/prods"
 )
-
-import uuid
 
 
 class Productchema(ma.Schema):
@@ -46,7 +49,9 @@ product_schema = Productchema(many=True)
 @login_required
 def list_prods(category_name):
     context = base_context()
-    products = Product.query.filter(Product.category_name == category_name).all()
+    products = Product.query.filter(
+        Product.category_name == category_name
+    ).all()
     context["products"] = products
     context["category"] = category_name
 
@@ -98,13 +103,16 @@ def prods_add(category_name):
             if selling_price:
                 p.selling_price = selling_price.strip()
 
-            files = request.files.getlist('photos[]')
+            if 'photos[]' not in request.files:
+                flash(notify_warning('no file part'))
+            
+            files = request.files.getlist("photos[]")
 
             for file in files:
                 filename = unique_filename(secure_filename(file.filename))
-                productphotos.save(current_app.config['UPLOADED_PRODUCTPHOTOS_DEST'], 
-                    name=filename)
-                p.resources.append(Resource(type='image', filename=filename))
+                file.filename = filename
+                productphotos.save(file)
+                p.resources.append(Resource(type="image", filename=filename))
 
             db.session.add(p)
             db.session.commit()
@@ -119,7 +127,9 @@ def prods_add(category_name):
     return render_template("prods/add.html", **context)
 
 
-@product_blueprint.route("/delete/<category_name>/<barcode>", methods=["GET", "POST"])
+@product_blueprint.route(
+    "/delete/<category_name>/<barcode>", methods=["GET", "POST"]
+)
 @login_required
 def prods_delete(category_name, barcode):
     Product.query.filter(
@@ -129,7 +139,9 @@ def prods_delete(category_name, barcode):
     return redirect("/prods/list_prods/{}".format(category_name))
 
 
-@product_blueprint.route("/edit/<category_name>/<barcode>", methods=["GET", "POST"])
+@product_blueprint.route(
+    "/edit/<category_name>/<barcode>", methods=["GET", "POST"]
+)
 @login_required
 def prods_edit(category_name, barcode):
     context = base_context()
@@ -226,5 +238,7 @@ def search(category_name, user_input):
 @product_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
-    has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()
+    has_product = db.session.query(
+        exists().where(Product.barcode == barcode)
+    ).scalar()
     return jsonify({"exists": has_product})

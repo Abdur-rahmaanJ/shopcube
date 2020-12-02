@@ -50,7 +50,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(128))
 
     admin_user = db.Column(db.Boolean, default=False)
-    roles = db.relationship("Role", secondary=role_helpers, cascade="all, delete")
+    roles = db.relationship(
+        "Role", secondary=role_helpers, cascade="all, delete"
+    )
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)

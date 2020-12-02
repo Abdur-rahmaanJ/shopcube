@@ -1,5 +1,6 @@
 import os
 import shutil
+import uuid
 
 
 def trycopytree(source, dest):
@@ -110,10 +111,12 @@ def absdiroffile(filepath):
 
 
 def get_folders(path):
-    dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+    dirs = [
+        d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))
+    ]
     return dirs
 
 
 def unique_filename(fname):
-     prepended = str(uuid.uuid4()).replace('-', '_')[:10]
-     return '{}_{}'.format(prepended, fname)
+    prepended = str(uuid.uuid4()).replace("-", "_")[:10]
+    return "{}_{}".format(prepended, fname)

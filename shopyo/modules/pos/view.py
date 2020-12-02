@@ -20,11 +20,8 @@ from modules.product.models import Product
 # from flask import flash
 
 
-
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
-
-
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

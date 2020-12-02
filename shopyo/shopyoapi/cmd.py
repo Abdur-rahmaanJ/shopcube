@@ -63,7 +63,9 @@ def initialise():
         config = json.load(config)
     print("Creating Db")
     print("#######################")
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
     print("Migrating")
     print("#######################")
     subprocess.run(
@@ -165,4 +167,7 @@ def index():
     trymkfile(base_path + "/" + "info.json", info_json_content)
 
     trymkdir(base_path + "/templates/" + modulename + "/blocks")
-    trymkfile(base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html", "")
+    trymkfile(
+        base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html",
+        "",
+    )

@@ -11,7 +11,9 @@ def test_home_page(test_client):
 
 def test_valid_login_logout(test_client, init_database):
     response = test_client.post(
-        "/login/", data=dict(username="car", password="pass"), follow_redirects=True
+        "/login/",
+        data=dict(username="car", password="pass"),
+        follow_redirects=True,
     )
     # print(response.data)
     assert response.status_code == 200
