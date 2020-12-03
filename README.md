@@ -46,12 +46,18 @@ then
 
 ```
 python manage.py initialise  # or `shopyo initialise`
-python manage.py runserver  # or `shopyo runserver`
+python manage.py runserver  # or `shopyo runserver` or rundebug
 ```
 
 go to url ^^
 
 _Note: If the command does not get recognised, close and reopen your cmd_
+
+```
+default login
+  username: user
+  password: pass
+```
 
 # ⚗️ Stability
 
