@@ -2,7 +2,7 @@ import datetime
 
 from shopyoapi.init import db
 
-from modules.files.models import Resource
+from modules.resource.models import Resource
 from modules.pos.models import Transaction
 
 transaction_helpers = db.Table(

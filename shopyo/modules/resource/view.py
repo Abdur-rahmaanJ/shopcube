@@ -10,17 +10,22 @@ from PIL import Image as PILimage
 
 from shopyoapi.enhance import get_setting
 
-from modules.files.models import Image
+from modules.resource.models import Image
+from modules.resource.models import Resource
+from modules.product.models import Product
 
 # from flask import render_template
-# from flask import url_for
-# from flask import redirect
+from flask import url_for
+from flask import redirect
+
 # from flask import flash
 # from flask import request
 
 # from shopyoapi.enhance import base_context
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
+
+from shopyoapi.file import delete_file
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -50,6 +55,32 @@ def active_theme_css(active_theme):
     theme_dir = os.path.join(current_app.config["BASE_DIR"], "themes", active_theme)
     # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
+
+
+@module_blueprint.route("/product/<filename>", methods=["GET"])
+def product_image(filename):
+
+    # return theme_dir
+    return send_from_directory(
+        current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
+    )
+
+
+@module_blueprint.route("/<filename>/product/<barcode>/delete", methods=["GET"])
+def product_image_delete(filename, barcode):
+    resource = Resource.query.filter(Resource.filename == filename).first()
+    product = Product.query.filter(Product.barcode == barcode).first()
+    product.resources.remove(resource)
+    product.update()
+    delete_file(
+        os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
+    )
+
+    return redirect(
+        url_for(
+            "product.prods_edit", category_name=product.category_name, barcode=barcode
+        )
+    )
 
 
 # Handles javascript image uploads from tinyMCE

@@ -41,13 +41,12 @@ class Resource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(50), nullable=False)
     type = db.Column(db.String(50), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
 
     created_date = db.Column(
         db.DateTime, default=datetime.datetime.now(), nullable=False
     )
-    product_barcode = db.Column(
-        db.String(100), db.ForeignKey("product.barcode"), nullable=False
-    )
+    product_barcode = db.Column(db.String(100), db.ForeignKey("product.barcode"))
 
     def set_hash(self, password):
         self.password = generate_password_hash(password, method="sha256")

@@ -1,4 +1,5 @@
 import uuid
+import os
 
 from flask import Blueprint
 from flask import jsonify
@@ -13,12 +14,13 @@ from werkzeug.utils import secure_filename
 
 from shopyoapi.enhance import base_context
 from shopyoapi.file import unique_filename
+from shopyoapi.file import delete_file
 from shopyoapi.init import db
 from shopyoapi.init import ma
 from shopyoapi.init import productphotos
 from shopyoapi.html import notify_warning
 
-from modules.files.models import Resource
+from modules.resource.models import Resource
 from modules.product.models import Product
 
 product_blueprint = Blueprint(
@@ -101,16 +103,20 @@ def prods_add(category_name):
             if selling_price:
                 p.selling_price = selling_price.strip()
 
-            if "photos[]" not in request.files:
-                flash(notify_warning("no file part"))
+            # if 'photos[]' not in request.files:
+            #     flash(notify_warning('no file part'))
 
-            files = request.files.getlist("photos[]")
-
-            for file in files:
-                filename = unique_filename(secure_filename(file.filename))
-                file.filename = filename
-                productphotos.save(file)
-                p.resources.append(Resource(type="image", filename=filename))
+            if "photos[]" in request.form:
+                files = request.files.getlist("photos[]")
+                for file in files:
+                    filename = unique_filename(secure_filename(file.filename))
+                    file.filename = filename
+                    productphotos.save(file)
+                    p.resources.append(
+                        Resource(
+                            type="image", filename=filename, category="product_image"
+                        )
+                    )
 
             db.session.add(p)
             db.session.commit()
@@ -128,9 +134,15 @@ def prods_add(category_name):
 @product_blueprint.route("/delete/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
 def prods_delete(category_name, barcode):
-    Product.query.filter(
+    product = Product.query.filter(
         Product.barcode == barcode and Product.category == category_name
-    ).delete()
+    ).first()
+    for resource in product.resources:
+        filename = resource.filename
+        delete_file(
+            os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
+        )
+    product.delete()
     db.session.commit()
     return redirect("/prods/list_prods/{}".format(category_name))
 
@@ -185,6 +197,17 @@ def prods_update():
         p.in_stock = in_stock
         p.discontinued = discontinued
         p.category = category
+
+        if "photos[]" in request.form:
+            files = request.files.getlist("photos[]")
+            for file in files:
+                filename = unique_filename(secure_filename(file.filename))
+                file.filename = filename
+                productphotos.save(file)
+                p.resources.append(
+                    Resource(type="image", filename=filename, category="product_image")
+                )
+
         db.session.commit()
         return redirect("/prods/list_prods/{}".format(category))
 
