@@ -63,9 +63,7 @@ def initialise():
         config = json.load(config)
     print("Creating Db")
     print("#######################")
-    subprocess.run(
-        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
-    )
+    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
     print("Migrating")
     print("#######################")
     subprocess.run(
