@@ -120,3 +120,6 @@ def get_folders(path):
 def unique_filename(fname):
     prepended = str(uuid.uuid4()).replace("-", "_")[:10]
     return "{}_{}".format(prepended, fname)
+
+def delete_file(path):
+    os.remove(path)
