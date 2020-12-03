@@ -103,10 +103,8 @@ def prods_add(category_name):
             if selling_price:
                 p.selling_price = selling_price.strip()
 
-
             # if 'photos[]' not in request.files:
             #     flash(notify_warning('no file part'))
-            
 
             if "photos[]" in request.form:
                 files = request.files.getlist("photos[]")
@@ -114,8 +112,11 @@ def prods_add(category_name):
                     filename = unique_filename(secure_filename(file.filename))
                     file.filename = filename
                     productphotos.save(file)
-                    p.resources.append(Resource(type="image", filename=filename,
-                        category='product_image'))
+                    p.resources.append(
+                        Resource(
+                            type="image", filename=filename, category="product_image"
+                        )
+                    )
 
             db.session.add(p)
             db.session.commit()
@@ -138,8 +139,9 @@ def prods_delete(category_name, barcode):
     ).first()
     for resource in product.resources:
         filename = resource.filename
-        delete_file(os.path.join(
-        current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename))
+        delete_file(
+            os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
+        )
     product.delete()
     db.session.commit()
     return redirect("/prods/list_prods/{}".format(category_name))
@@ -196,15 +198,15 @@ def prods_update():
         p.discontinued = discontinued
         p.category = category
 
-        
         if "photos[]" in request.form:
             files = request.files.getlist("photos[]")
             for file in files:
                 filename = unique_filename(secure_filename(file.filename))
                 file.filename = filename
                 productphotos.save(file)
-                p.resources.append(Resource(type="image", filename=filename,
-                    category='product_image'))
+                p.resources.append(
+                    Resource(type="image", filename=filename, category="product_image")
+                )
 
         db.session.commit()
         return redirect("/prods/list_prods/{}".format(category))

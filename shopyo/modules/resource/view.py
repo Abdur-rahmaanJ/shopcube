@@ -17,6 +17,7 @@ from modules.product.models import Product
 # from flask import render_template
 from flask import url_for
 from flask import redirect
+
 # from flask import flash
 # from flask import request
 
@@ -58,21 +59,28 @@ def active_theme_css(active_theme):
 
 @module_blueprint.route("/product/<filename>", methods=["GET"])
 def product_image(filename):
-    
+
     # return theme_dir
-    return send_from_directory(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
+    return send_from_directory(
+        current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
+    )
 
 
 @module_blueprint.route("/<filename>/product/<barcode>/delete", methods=["GET"])
 def product_image_delete(filename, barcode):
-    resource = Resource.query.filter(Resource.filename==filename).first()
+    resource = Resource.query.filter(Resource.filename == filename).first()
     product = Product.query.filter(Product.barcode == barcode).first()
     product.resources.remove(resource)
     product.update()
-    delete_file(os.path.join(
-        current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename))
+    delete_file(
+        os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
+    )
 
-    return redirect(url_for('product.prods_edit', category_name=product.category_name, barcode=barcode))
+    return redirect(
+        url_for(
+            "product.prods_edit", category_name=product.category_name, barcode=barcode
+        )
+    )
 
 
 # Handles javascript image uploads from tinyMCE

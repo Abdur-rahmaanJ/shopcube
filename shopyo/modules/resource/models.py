@@ -46,9 +46,7 @@ class Resource(db.Model):
     created_date = db.Column(
         db.DateTime, default=datetime.datetime.now(), nullable=False
     )
-    product_barcode = db.Column(
-        db.String(100), db.ForeignKey("product.barcode") 
-    )
+    product_barcode = db.Column(db.String(100), db.ForeignKey("product.barcode"))
 
     def set_hash(self, password):
         self.password = generate_password_hash(password, method="sha256")
