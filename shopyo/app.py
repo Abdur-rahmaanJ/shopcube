@@ -9,6 +9,7 @@ from flask_wtf.csrf import CSRFProtect
 
 
 import sys
+
 sys.path.append(".")
 
 from flask_uploads import configure_uploads
