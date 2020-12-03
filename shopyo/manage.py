@@ -1,13 +1,14 @@
 import subprocess
+
 import click
 
-from shopyoapi.init import db
 from app import app
 
 from shopyoapi.cmd import clean
-from shopyoapi.cmd import initialise
 from shopyoapi.cmd import create_module
+from shopyoapi.cmd import initialise
 from shopyoapi.database import autoload_models
+from shopyoapi.init import db
 
 
 def runserver():
@@ -42,8 +43,10 @@ def process(args):
                 subprocess.run(["flask", "db", "migrate"])
             elif args[1] == "upgrade":
                 subprocess.run(["flask", "db", "upgrade"])
+            elif args[1] == "init":
+                subprocess.run(["flask", "db", "init"])
         except IndexError as e:
-            print("db requires more options: migrate or upgrade")
+            print("db requires more options")
             raise e
 
 

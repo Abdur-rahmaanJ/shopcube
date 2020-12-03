@@ -1,4 +1,8 @@
+import datetime
+
 from shopyoapi.init import db
+
+from modules.files.models import Resource
 from modules.pos.models import Transaction
 
 transaction_helpers = db.Table(
@@ -26,6 +30,9 @@ class Product(db.Model):
         secondary=transaction_helpers,
         backref="products",
         cascade="all, delete",
+    )
+    resources = db.relationship(
+        "Resource", backref="resources", lazy=True, cascade="all, delete"
     )
 
     def add(self):

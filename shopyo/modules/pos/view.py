@@ -1,28 +1,28 @@
-import os
 import json
+import os
 
 from flask import Blueprint
+from flask import jsonify
 from flask import render_template
+from flask import request
+
+from flask_login import current_user
+from flask_login import login_required
+
+from shopyoapi.enhance import base_context
+
+from modules.category.models import Category
+from modules.pos.models import Transaction
+from modules.product.models import Product
 
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
 
-from flask import request
-from flask import jsonify
-
-from shopyoapi.enhance import base_context
 
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
-
-from modules.category.models import Category
-from modules.product.models import Product
-from modules.pos.models import Transaction
-
-from flask_login import current_user
-from flask_login import login_required
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

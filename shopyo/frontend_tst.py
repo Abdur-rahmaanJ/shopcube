@@ -4,9 +4,11 @@ from flask_testing import LiveServerTestCase
 from selenium import webdriver
 
 from app import create_app
+
+from shopyoapi.init import db
+
 from modules.admin.models import User
 from modules.settings.models import Settings
-from shopyoapi.init import db
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")

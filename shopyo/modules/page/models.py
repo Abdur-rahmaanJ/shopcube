@@ -1,5 +1,6 @@
-from shopyoapi.init import db
 from datetime import datetime
+
+from shopyoapi.init import db
 
 
 class Page(db.Model):

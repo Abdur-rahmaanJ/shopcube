@@ -1,15 +1,21 @@
-import os
 import json
+import os
 
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint
+from flask import flash
+from flask import redirect
+from flask import render_template
+from flask import url_for
+
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
-from modules.admin.models import User
+
 from shopyoapi.enhance import base_context
 from shopyoapi.html import notify_danger
-from modules.login.forms import LoginForm
 
+from modules.admin.models import User
+from modules.login.forms import LoginForm
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

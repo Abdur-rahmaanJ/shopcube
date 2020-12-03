@@ -1,22 +1,29 @@
+import uuid
+
 from flask import Blueprint
+from flask import jsonify
+from flask import redirect
 from flask import render_template
 from flask import request
-from flask import redirect
-from flask import jsonify
-from modules.product.models import Product
-
-from shopyoapi.init import db, ma
+from flask import current_app
 
 from flask_login import login_required
+from sqlalchemy import exists
+from werkzeug.utils import secure_filename
 
 from shopyoapi.enhance import base_context
-from sqlalchemy import exists
+from shopyoapi.file import unique_filename
+from shopyoapi.init import db
+from shopyoapi.init import ma
+from shopyoapi.init import productphotos
+from shopyoapi.html import notify_warning
+
+from modules.files.models import Resource
+from modules.product.models import Product
 
 product_blueprint = Blueprint(
     "prods", __name__, template_folder="templates", url_prefix="/prods"
 )
-
-import uuid
 
 
 class Productchema(ma.Schema):
@@ -93,6 +100,17 @@ def prods_add(category_name):
                 p.price = 0
             if selling_price:
                 p.selling_price = selling_price.strip()
+
+            if "photos[]" not in request.files:
+                flash(notify_warning("no file part"))
+
+            files = request.files.getlist("photos[]")
+
+            for file in files:
+                filename = unique_filename(secure_filename(file.filename))
+                file.filename = filename
+                productphotos.save(file)
+                p.resources.append(Resource(type="image", filename=filename))
 
             db.session.add(p)
             db.session.commit()

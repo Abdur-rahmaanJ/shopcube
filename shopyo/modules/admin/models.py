@@ -4,13 +4,15 @@
 
 """
 
-from werkzeug.security import generate_password_hash, check_password_hash
-from shopyoapi.init import db
-from flask_login import UserMixin
-from flask_login import AnonymousUserMixin
-from flask_login import login_manager
 from uuid import uuid4
 
+from flask_login import AnonymousUserMixin
+from flask_login import UserMixin
+from flask_login import login_manager
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
+
+from shopyoapi.init import db
 
 role_helpers = db.Table(
     "role_helpers",

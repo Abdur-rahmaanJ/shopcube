@@ -1,11 +1,12 @@
-import os
 import json
+import os
 
 from flask import Blueprint
-from flask import render_template
-from flask_login import login_required
-from flask import flash
 from flask import current_app
+from flask import flash
+from flask import render_template
+
+from flask_login import login_required
 
 from shopyoapi.enhance import base_context
 from shopyoapi.html import notify_success
@@ -30,7 +31,10 @@ def index():
         if module not in ["control_panel"]:
             with open(
                 os.path.join(
-                    current_app.config["BASE_DIR"], "modules", module, "info.json"
+                    current_app.config["BASE_DIR"],
+                    "modules",
+                    module,
+                    "info.json",
                 )
             ) as f:
                 module_info = json.load(f)

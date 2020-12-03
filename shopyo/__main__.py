@@ -1,15 +1,12 @@
-import sys
 import os
-
-from .shopyoapi.file import trymkdir
-from .shopyoapi.file import trycopytree
-from .shopyoapi.file import trycopy
-from .shopyoapi.info import printinfo
-
-from pathlib import Path
-import sys
 import subprocess
+import sys
+from pathlib import Path
 
+from .shopyoapi.file import trycopy
+from .shopyoapi.file import trycopytree
+from .shopyoapi.file import trymkdir
+from .shopyoapi.info import printinfo
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
@@ -39,20 +36,24 @@ def new_project(path, newfoldername):
         base_path + "/modules/appointment",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "category"), base_path + "/modules/category"
+        os.path.join(dirpath, "modules", "category"),
+        base_path + "/modules/category",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "people"), base_path + "/modules/people"
+        os.path.join(dirpath, "modules", "people"),
+        base_path + "/modules/people",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "product"), base_path + "/modules/product"
+        os.path.join(dirpath, "modules", "product"),
+        base_path + "/modules/product",
     )
     trycopytree(
         os.path.join(dirpath, "modules", "control_panel"),
         base_path + "/modules/control_panel",
     )
     trycopytree(
-        os.path.join(dirpath, "modules", "settings"), base_path + "/modules/settings"
+        os.path.join(dirpath, "modules", "settings"),
+        base_path + "/modules/settings",
     )
     trycopytree(os.path.join(dirpath, "shopyoapi"), base_path + "/shopyoapi")
 
@@ -61,7 +62,8 @@ def new_project(path, newfoldername):
     trycopy(os.path.join(dirpath, "config.py"), base_path + "/config.py")
     trycopy(os.path.join(dirpath, "manage.py"), base_path + "/manage.py")
     trycopy(
-        os.path.join(dirpathparent, "requirements.txt"), base_path + "/requirements.txt"
+        os.path.join(dirpathparent, "requirements.txt"),
+        base_path + "/requirements.txt",
     )
     trycopy(os.path.join(dirpathparent, "README.md"), base_path + "/README.md")
 

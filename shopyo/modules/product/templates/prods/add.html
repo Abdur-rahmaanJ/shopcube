@@ -45,8 +45,8 @@ $(function() {
   </h2>
   <br>
 
-<form action="/prods/add/{{category}}" method="post">
-
+<form action="/prods/add/{{category}}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <label>barcode (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
@@ -134,13 +134,21 @@ $(function() {
     </label>
   </div>
   <br>
+  <label>images</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input class="form-control" type="file" name="photos[]" multiple="true" autocomplete="off" >
+  </div>
+  <br>
 
   <input 
     type="hidden" autocomplete="off" id="category" class="form-control" 
     name="category" placeholder="category" value="{{category}}">
 
   <input required  type="submit" class="btn btn-info" value="add">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  
 
   <script>
   // Limit appointment date selections to current date and the future.

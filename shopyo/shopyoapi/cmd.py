@@ -1,17 +1,16 @@
-import os
-import shutil
-import sys
-import subprocess
 import json
+import os
 import re
+import shutil
+import subprocess
+import sys
 
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
 
-from .file import trymkdir
-
 # from .file import trycopytree
 # from .file import trycopy
+from .file import trymkdir
 from .file import trymkfile
 
 
@@ -166,4 +165,7 @@ def index():
     trymkfile(base_path + "/" + "info.json", info_json_content)
 
     trymkdir(base_path + "/templates/" + modulename + "/blocks")
-    trymkfile(base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html", "")
+    trymkfile(
+        base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html",
+        "",
+    )

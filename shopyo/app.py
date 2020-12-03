@@ -1,19 +1,26 @@
 import importlib
 import os
+import sys
 
-from flask import Flask, redirect
+from flask import Flask
+from flask import redirect
+
 from flask_wtf.csrf import CSRFProtect
+
 
 import sys
 
 sys.path.append(".")
 
+from flask_uploads import configure_uploads
+
+from config import app_config
+
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
-
-from config import app_config
+from shopyoapi.init import productphotos
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,6 +34,8 @@ def create_app(config_name):
     ma.init_app(app)
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
+
+    configure_uploads(app, productphotos)
 
     for module in os.listdir(os.path.join(base_path, "modules")):
         if module.startswith("__"):

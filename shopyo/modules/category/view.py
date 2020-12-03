@@ -1,20 +1,19 @@
-import os
 import json
+import os
 
 from flask import Blueprint
+from flask import jsonify
+from flask import redirect
 from flask import render_template
 from flask import request
-from flask import redirect
-from flask import jsonify
-from flask_sqlalchemy import sqlalchemy
-from modules.category.models import Category
-
 
 from flask_login import login_required
+from flask_sqlalchemy import sqlalchemy
 
 from shopyoapi.enhance import base_context
 from shopyoapi.enhance import get_setting
 
+from modules.category.models import Category
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

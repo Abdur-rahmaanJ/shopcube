@@ -1,19 +1,21 @@
-import pytest
-from modules.admin.models import User
-from app import create_app
-from shopyoapi.init import db
 import json
+import os
 
+import pytest
+
+from app import create_app
+
+from shopyoapi.init import db
 from shopyoapi.uploads import add_setting
-from modules.settings.models import Settings
 
+from modules.admin.models import User
+from modules.settings.models import Settings
 
 # from shopyoapi.cmd import initialise
 
 # run in shopyo/shopyo
 # python -m pytest .
 
-import os
 
 if os.path.exists("testing.db"):
     os.remove("testing.db")
