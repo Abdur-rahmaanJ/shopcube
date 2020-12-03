@@ -106,15 +106,16 @@ def prods_add(category_name):
 
             # if 'photos[]' not in request.files:
             #     flash(notify_warning('no file part'))
+            
 
-            files = request.files.getlist("photos[]")
-
-            for file in files:
-                filename = unique_filename(secure_filename(file.filename))
-                file.filename = filename
-                productphotos.save(file)
-                p.resources.append(Resource(type="image", filename=filename,
-                    category='product_image'))
+            if "photos[]" in request.form:
+                files = request.files.getlist("photos[]")
+                for file in files:
+                    filename = unique_filename(secure_filename(file.filename))
+                    file.filename = filename
+                    productphotos.save(file)
+                    p.resources.append(Resource(type="image", filename=filename,
+                        category='product_image'))
 
             db.session.add(p)
             db.session.commit()
@@ -195,14 +196,15 @@ def prods_update():
         p.discontinued = discontinued
         p.category = category
 
-        files = request.files.getlist("photos[]")
-
-        for file in files:
-            filename = unique_filename(secure_filename(file.filename))
-            file.filename = filename
-            productphotos.save(file)
-            p.resources.append(Resource(type="image", filename=filename,
-                category='product_image'))
+        
+        if "photos[]" in request.form:
+            files = request.files.getlist("photos[]")
+            for file in files:
+                filename = unique_filename(secure_filename(file.filename))
+                file.filename = filename
+                productphotos.save(file)
+                p.resources.append(Resource(type="image", filename=filename,
+                    category='product_image'))
 
         db.session.commit()
         return redirect("/prods/list_prods/{}".format(category))
