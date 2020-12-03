@@ -11,6 +11,7 @@ from shopyoapi.database import autoload_models
 from shopyoapi.init import db
 
 
+
 def runserver():
     app.run(host="0.0.0.0")
 
