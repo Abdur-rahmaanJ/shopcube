@@ -1,53 +1,54 @@
 
-{% extends "base/main_base.html" %}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'sections/resources.html'%}
+    </head>
+<body class="">
+    {% include 'sections/nav.html'%}
 
-{% set active_page = "contact" %}
-{% block pagehead %}
-    <title>{{active_page.capitalize()}}</title>
+<div class="container">
+    <form action="{{url_for('contact.validate_message')}}" method="POST">
 
-{% endblock %}
+        <div class="form-field">
+        {{ form.name.label }} <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-info"></i></span>
+            </div>
+            {{ form.name }}
+        </div>
+        </div>
 
+        <div class="form-field">
+        {{ form.email.label }} <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+            </div>
+            {{ form.email }}
+        </div>
+        </div>
 
-
-{% block content %}
-
-<form action="{{url_for('contact.validate_message')}}" method="POST">
-
-<div class="form-field">
-{{ form.name.label }} <br>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-info"></i></span>
-    </div>
-    {{ form.name }}
+        <div class="form-field">
+        {{ form.message.label }} <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-pencil-alt"></i></span>
+            </div>
+            {{ form.message }}
+        </div>
+        </div>
+        <br>
+        <input type="submit" value="Submit" class="btn btn-info">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    </form>
 </div>
-</div>
 
-<div class="form-field">
-{{ form.email.label }} <br>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-    </div>
-    {{ form.email }}
-</div>
-</div>
 
-<div class="form-field">
-{{ form.message.label }} <br>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-pencil-alt"></i></span>
-    </div>
-    {{ form.message }}
-</div>
-</div>
-<br>
-<input type="submit" value="Submit" class="btn btn-info">
-<input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-</form>
-<br>
-{% endblock %}
+    {% include 'sections/footer.html'%}
+</body>
+</html>
 
 
 

@@ -46,9 +46,7 @@ def create_app(config_name):
         mod = importlib.import_module("modules.{}.view".format(module))
         app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
 
-    @app.route("/")
-    def index():
-        return redirect(configuration.HOMEPAGE_URL)
+    
 
     @app.context_processor
     def inject_global_vars():
@@ -66,6 +64,7 @@ def create_app(config_name):
         ACTIVE_THEME = get_setting("ACTIVE_THEME")
         ACTIVE_THEME_VERSION = info_data["version"]
         ACTIVE_THEME_STYLES_URL = url_for('resource.active_theme_css', active_theme=ACTIVE_THEME, v=ACTIVE_THEME_VERSION)
+        CONTACT_URL = url_for('contact.index')
 
         base_context = {
             "APP_NAME": APP_NAME,
@@ -73,7 +72,8 @@ def create_app(config_name):
             "SECTION_ITEMS": SECTION_ITEMS,
             "ACTIVE_THEME": ACTIVE_THEME,
             "ACTIVE_THEME_VERSION": ACTIVE_THEME_VERSION,
-            "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL
+            "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL,
+            "CONTACT_URL": CONTACT_URL
         }
 
         return base_context

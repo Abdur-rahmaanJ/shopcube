@@ -3,7 +3,7 @@
         "module_name":"www",
         "type": "show",
         "fa-icon": "fa fa-store",
-        "url_prefix": "/www",
+        "url_prefix": "/",
         "author": {
             "name":"",
             "website":"",

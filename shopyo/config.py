@@ -10,7 +10,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.urandom(24)
-    HOMEPAGE_URL = "/control_panel"
     BASE_DIR = base_path
     STATIC = os.path.join(BASE_DIR, "static")
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
@@ -23,6 +22,7 @@ class DevelopmentConfig(Config):
 
     ENV = "development"
     DEBUG = True
+    EXPLAIN_TEMPLATE_LOADING = True
 
 
 class TestingConfig(Config):
