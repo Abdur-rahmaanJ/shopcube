@@ -122,3 +122,9 @@ migrations/
 
 #vscode
 .vscode
+
+#uploads
+shopyo/static/uploads/products/
+shopyo/static/uploads/images/
+shopyo/static/uploads/thumbs/
+
