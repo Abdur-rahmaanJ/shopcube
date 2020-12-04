@@ -9,7 +9,7 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.enhance import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.file import get_folders
@@ -47,7 +47,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 @login_required
 def index():
 
-    context = base_context()
+    context = {}
     themes_path = os.path.join(current_app.config["BASE_DIR"], "themes")
     all_info = {}
     theme_folders = get_folders(themes_path)

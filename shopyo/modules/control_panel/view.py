@@ -8,7 +8,7 @@ from flask import render_template
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.html import notify_success
 
 control_panel_blueprint = Blueprint(
@@ -23,7 +23,7 @@ all_info = {}
 @control_panel_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
 
     for module in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
         if module.startswith("__"):

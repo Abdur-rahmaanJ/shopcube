@@ -9,7 +9,7 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.init import db
 from shopyoapi.init import ma
 
@@ -42,7 +42,7 @@ appointment_schema = AppointmentSchema(many=True)
 @appointment_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
 
     context["appointments"] = Appointments.query.all()
     return render_template("appointment/index.html", **context)
@@ -51,7 +51,7 @@ def index():
 @appointment_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
-    context = base_context()
+    context = {}
 
     if request.method == "POST":
         name = request.form["name"]
@@ -76,7 +76,7 @@ def appointment_delete(ids):
 @appointment_blueprint.route("/edit/<ids>", methods=["GET", "POST"])
 @login_required
 def appointment_edit(ids):
-    context = base_context()
+    context = {}
 
     a = Appointments.query.get(ids)
     context["id"] = a.id
@@ -125,7 +125,7 @@ def deactive(ids):
 @appointment_blueprint.route("/lookup", methods=["GET", "POST"])
 @login_required
 def lookup():
-    context = base_context()
+    context = {}
     context["appointments"] = Appointments.query.all()
     return render_template("appointment/lookup.html", **context)
 

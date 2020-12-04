@@ -1,9 +1,11 @@
 import importlib
 import os
 import sys
+import json
 
 from flask import Flask
 from flask import redirect
+from flask import url_for
 
 from flask_wtf.csrf import CSRFProtect
 
@@ -21,6 +23,7 @@ from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
 from shopyoapi.init import productphotos
+from shopyoapi.enhance import get_setting
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,6 +50,35 @@ def create_app(config_name):
     def index():
         return redirect(configuration.HOMEPAGE_URL)
 
+    @app.context_processor
+    def inject_global_vars():
+        theme_dir = os.path.join(
+            app.config["BASE_DIR"], "themes", get_setting("ACTIVE_THEME")
+        )
+        info_path = os.path.join(theme_dir, "info.json")
+        with open(info_path) as f:
+            info_data = json.load(f)
+
+
+        APP_NAME = get_setting("APP_NAME")
+        SECTION_NAME = get_setting("SECTION_NAME")
+        SECTION_ITEMS = get_setting("SECTION_ITEMS")
+        ACTIVE_THEME = get_setting("ACTIVE_THEME")
+        ACTIVE_THEME_VERSION = info_data["version"]
+        ACTIVE_THEME_STYLES_URL = url_for('resource.active_theme_css', active_theme=ACTIVE_THEME, v=ACTIVE_THEME_VERSION)
+
+        base_context = {
+            "APP_NAME": APP_NAME,
+            "SECTION_NAME": SECTION_NAME,
+            "SECTION_ITEMS": SECTION_ITEMS,
+            "ACTIVE_THEME": ACTIVE_THEME,
+            "ACTIVE_THEME_VERSION": ACTIVE_THEME_VERSION,
+            "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL
+        }
+
+        return base_context
+
+    # end of func
     return app
 
 

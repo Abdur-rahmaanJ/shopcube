@@ -6,7 +6,7 @@ from flask import render_template
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 
 internals_blueprint = Blueprint(
     "internals",
@@ -20,7 +20,7 @@ all_info = {}
 @internals_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
 
     for module in os.listdir("modules"):
         if module.startswith("__"):

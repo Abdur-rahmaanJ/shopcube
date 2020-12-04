@@ -1,0 +1,12 @@
+{
+        "display_string": "Www",
+        "module_name":"www",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/www",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

@@ -10,7 +10,7 @@ from flask import request
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.enhance import get_setting
 
 from modules.category.models import Category
@@ -32,7 +32,7 @@ category_blueprint = Blueprint(
 @category_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
     context["categorys"] = Category.query.all()
     context["active_page"] = get_setting("SECTION_NAME")
     return render_template("category/index.html", **context)
@@ -41,7 +41,7 @@ def index():
 @category_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
-    context = base_context()
+    context = {}
 
     has_category = False
     if request.method == "POST":
@@ -67,7 +67,7 @@ def category_delete(name):
 @category_blueprint.route("/update", methods=["GET", "POST"])
 @login_required
 def category_update():
-    context = base_context()
+    context = {}
 
     if (
         request.method == "POST"
@@ -88,7 +88,7 @@ def category_update():
 @category_blueprint.route("/edit/<category_name>", methods=["GET", "POST"])
 @login_required
 def category_edit(category_name):
-    context = base_context()
+    context = {}
     context["category_name"] = category_name
     return render_template("category/edit.html", **context)
 

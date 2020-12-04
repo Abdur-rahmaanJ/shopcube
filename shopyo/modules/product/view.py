@@ -12,7 +12,7 @@ from flask_login import login_required
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.file import unique_filename
 from shopyoapi.file import delete_file
 from shopyoapi.init import db
@@ -50,7 +50,7 @@ product_schema = Productchema(many=True)
 @product_blueprint.route("/list_prods/<category_name>")
 @login_required
 def list_prods(category_name):
-    context = base_context()
+    context = {}
     products = Product.query.filter(Product.category_name == category_name).all()
     context["products"] = products
     context["category"] = category_name
@@ -61,7 +61,7 @@ def list_prods(category_name):
 @product_blueprint.route("/add/<category_name>", methods=["GET", "POST"])
 @login_required
 def prods_add(category_name):
-    context = base_context()
+    context = {}
 
     has_product = False
     if request.method == "POST":
@@ -150,7 +150,7 @@ def prods_delete(category_name, barcode):
 @product_blueprint.route("/edit/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
 def prods_edit(category_name, barcode):
-    context = base_context()
+    context = {}
 
     product = Product.query.filter(
         Product.barcode == barcode and Product.category == category_name
@@ -215,7 +215,7 @@ def prods_update():
 @product_blueprint.route("/lookup/<category_name>")
 @login_required
 def lookup_prods(category_name):
-    context = base_context()
+    context = {}
 
     context["category"] = category_name
     context["fields"] = [

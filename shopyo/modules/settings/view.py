@@ -7,7 +7,7 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.init import db
 
 from modules.settings.models import Settings
@@ -29,7 +29,7 @@ settings_blueprint = Blueprint(
 @settings_blueprint.route("/")
 @login_required
 def settings_main():
-    context = base_context()
+    context = {}
 
     settings = Settings.query.all()
 
@@ -40,7 +40,7 @@ def settings_main():
 @settings_blueprint.route("/edit/<settings_name>", methods=["GET", "POST"])
 @login_required
 def settings_edit(settings_name):
-    context = base_context()
+    context = {}
 
     s = Settings.query.get(settings_name)
 
@@ -53,7 +53,7 @@ def settings_edit(settings_name):
 @settings_blueprint.route("/update", methods=["GET", "POST"])
 @login_required
 def settings_update():
-    context = base_context()
+    context = {}
 
     settings_name = request.form["settings_name"]
     settings_value = request.form["settings_value"]

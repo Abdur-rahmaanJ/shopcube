@@ -9,7 +9,7 @@ from flask import request
 from flask_login import current_user
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 
 from modules.category.models import Category
 from modules.pos.models import Transaction
@@ -44,7 +44,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 @module_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
     categories = Category.query.all()
     context.update({"categories": categories})
     return render_template("pos/index.html", **context)

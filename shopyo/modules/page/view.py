@@ -9,7 +9,7 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.forms import flash_errors
 
 from .forms import PageForm
@@ -40,7 +40,7 @@ module_settings = {"sidebar": sidebar}
 
 @module_blueprint.route("/")
 def index():
-    context = base_context()
+    context = {}
     pages = Page.query.all()
 
     context.update({"pages": pages})
@@ -49,7 +49,7 @@ def index():
 
 @module_blueprint.route("/<page_id>/<slug>")
 def view_page(page_id, slug):
-    context = base_context()
+    context = {}
     page = Page.query.get(page_id)
 
     context.update({"page": page})
@@ -59,7 +59,7 @@ def view_page(page_id, slug):
 @module_blueprint.route(module_info["panel_redirect"])
 @login_required
 def panel_redirect():
-    context = base_context()
+    context = {}
     form = PageForm()
 
     context.update({"form": form, "module_name": module_name})

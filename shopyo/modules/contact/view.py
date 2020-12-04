@@ -7,7 +7,7 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# 
 from shopyoapi.html import notify_success
 
 from .forms import ContactForm
@@ -23,7 +23,7 @@ contact_blueprint = Blueprint(
 
 @contact_blueprint.route("/")
 def index():
-    context = base_context()
+    context = {}
     form = ContactForm()
 
     context.update({"form": form})
@@ -53,7 +53,7 @@ def validate_message():
 @contact_blueprint.route("/dashboard/<int:page>", methods=["GET"])
 @login_required
 def dashboard(page):
-    context = base_context()
+    context = {}
 
     per_page = 10
     messages = ContactMessage.query.paginate(page, per_page, error_out=False)
