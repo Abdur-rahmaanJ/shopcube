@@ -35,7 +35,7 @@ def process(args):
     elif args[0] == "test":
         print("test ok")
     elif args[0] == "startapp" and args[1]:
-        create_module(args.action[1])
+        create_module(args[1])
     elif args[0] == "db":
         try:
             autoload_models()
