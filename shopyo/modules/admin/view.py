@@ -5,8 +5,7 @@
 """
 import json
 import os
-
-# from config import Config
+from config import Config
 from flask import Blueprint
 from flask import redirect
 from flask import render_template
@@ -15,8 +14,6 @@ from flask import url_for
 
 from flask_login import login_required
 from sqlalchemy import exists
-
-# 
 from shopyoapi.init import db
 
 from modules.admin.admin import admin_required

@@ -8,20 +8,15 @@ from flask import render_template
 from flask import url_for
 
 from flask_login import login_required
-
-# 
 from shopyoapi.enhance import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.file import get_folders
 from shopyoapi.init import db
 
 from modules.settings.models import Settings
-
 # from flask import flash
 # from flask import request
-
-
-# from shopyoapi.html import notify_success
+from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
 

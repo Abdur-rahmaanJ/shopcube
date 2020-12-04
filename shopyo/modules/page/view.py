@@ -8,8 +8,6 @@ from flask import request
 from flask import url_for
 
 from flask_login import login_required
-
-# 
 from shopyoapi.forms import flash_errors
 
 from .forms import PageForm

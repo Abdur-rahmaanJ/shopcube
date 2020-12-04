@@ -6,8 +6,6 @@ from flask import render_template
 from flask import request
 
 from flask_login import login_required
-
-# 
 from shopyoapi.init import db
 
 from modules.settings.models import Settings

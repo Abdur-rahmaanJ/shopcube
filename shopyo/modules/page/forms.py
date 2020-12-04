@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-
 # from wtforms.validators import Length
 # from wtforms.fields.html5 import EmailField
 from wtforms import PasswordField

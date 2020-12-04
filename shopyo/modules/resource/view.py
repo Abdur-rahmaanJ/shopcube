@@ -13,15 +13,11 @@ from shopyoapi.enhance import get_setting
 from modules.resource.models import Image
 from modules.resource.models import Resource
 from modules.product.models import Product
-
 # from flask import render_template
 from flask import url_for
 from flask import redirect
-
 # from flask import flash
-# from flask import request
-
-# # 
+# from flask import request# 
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 

@@ -9,8 +9,6 @@ from flask import request
 
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
-
-# 
 from shopyoapi.enhance import get_setting
 
 from modules.category.models import Category
@@ -91,7 +89,6 @@ def category_edit(category_name):
     context = {}
     context["category_name"] = category_name
     return render_template("category/edit.html", **context)
-
 
 # api
 @category_blueprint.route("/check/<category_name>", methods=["GET"])

@@ -11,8 +11,6 @@ from flask import current_app
 from flask_login import login_required
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
-
-# 
 from shopyoapi.file import unique_filename
 from shopyoapi.file import delete_file
 from shopyoapi.init import db
@@ -249,7 +247,6 @@ def search(category_name, user_input):
             ).all()
             result = product_schema.dump(all_p)
     return jsonify(result)
-
 
 # api
 @product_blueprint.route("/check/<barcode>", methods=["GET"])

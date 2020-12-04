@@ -9,9 +9,7 @@ from flask import render_template
 # from flask import flash
 # from flask import request
 from flask import current_app
-
-
-# # 
+# 
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 from shopyoapi.enhance import get_active_theme_dir

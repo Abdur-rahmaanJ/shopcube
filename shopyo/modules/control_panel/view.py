@@ -7,8 +7,6 @@ from flask import flash
 from flask import render_template
 
 from flask_login import login_required
-
-# 
 from shopyoapi.html import notify_success
 
 control_panel_blueprint = Blueprint(

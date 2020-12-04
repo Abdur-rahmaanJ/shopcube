@@ -8,8 +8,6 @@ from flask import render_template
 from flask import request
 
 from flask_login import login_required
-
-# 
 from shopyoapi.init import db
 from shopyoapi.init import ma
 
@@ -128,7 +126,6 @@ def lookup():
     context = {}
     context["appointments"] = Appointments.query.all()
     return render_template("appointment/lookup.html", **context)
-
 
 # api
 @appointment_blueprint.route("/search/name/<name>", methods=["GET", "POST"])
