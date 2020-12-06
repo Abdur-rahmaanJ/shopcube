@@ -53,12 +53,13 @@
     <form class="form">
       <input class="" type="text" name="name" value="{{subcategory.name}}">
       <input class="btn btn-info" type="submit" value="save">
-      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{subcategory.name}}">view image</button>
-      <a href="" class="btn btn-warning">edit image</a>
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{subcategory.id}}">view image</button>
+      <a href="{{url_for('category.edit_sub_img', subcategory_id=subcategory.id)}}" class="btn btn-warning">edit image</a>
       <a href="" class="btn btn-danger">delete</a>
     </form>
+
     <!-- Image Modal -->
-        <div class="modal fade" id="modal-{{subcategory.name}}" tabindex="-1" role="dialog" aria-labelledby="peopleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal-{{subcategory.id}}" tabindex="-1" role="dialog" aria-labelledby="peopleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header ">

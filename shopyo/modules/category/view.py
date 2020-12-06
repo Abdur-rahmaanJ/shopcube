@@ -168,8 +168,12 @@ def subcategory_image(filename):
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
     )
 
-@module_blueprint.route("{}/sub/<subcategory_name>/img/edit".format(module_info["panel_redirect"]), methods=["GET", "POST"])
+@module_blueprint.route("{}/sub/<subcategory_id>/img/edit".format(module_info["panel_redirect"]), methods=["GET", "POST"])
 @login_required
-def edit_sub_img(subcategory_name):
-
-    return ''
+def edit_sub_img(subcategory_id):
+    context = {}
+    subcategory = SubCategory.query.get(subcategory_id)
+    context.update({
+        'subcategory': subcategory
+        })
+    return render_template('category/edit_img_sub.html', **context)

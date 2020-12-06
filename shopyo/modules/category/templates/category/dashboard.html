@@ -66,7 +66,7 @@
         <button id='del-{{category.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
       </a>
       &nbsp;
-      <a href="/category/edit/{{category.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
+      <a href="{{url_for('category.edit', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
         <button data-name="{{category.name}}" class="btn btn-warning" type=""><i id='ico-{{category.name}}' class="fas fa-pencil-alt"></i></button>
       </a>
       &nbsp;
