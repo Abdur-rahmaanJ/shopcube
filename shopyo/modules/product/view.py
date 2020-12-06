@@ -1,5 +1,6 @@
 import uuid
 import os
+import json
 
 from flask import Blueprint
 from flask import jsonify
@@ -21,8 +22,17 @@ from shopyoapi.html import notify_warning
 from modules.resource.models import Resource
 from modules.product.models import Product
 
-product_blueprint = Blueprint(
-    "prods", __name__, template_folder="templates", url_prefix="/prods"
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + "/info.json") as f:
+    module_info = json.load(f)
+
+globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
+    "{}".format(module_info["module_name"]),
+    __name__,
+    template_folder="templates",
+    url_prefix=module_info["url_prefix"],
 )
 
 
@@ -44,21 +54,24 @@ class Productchema(ma.Schema):
 product_schema = Productchema()
 product_schema = Productchema(many=True)
 
+module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
-@product_blueprint.route("/list_prods/<category_name>")
+module_name = module_info["module_name"]
+
+@module_blueprint.route("/<category_name>")
 @login_required
-def list_prods(category_name):
+def list(category_name):
     context = {}
     products = Product.query.filter(Product.category_name == category_name).all()
     context["products"] = products
     context["category"] = category_name
 
-    return render_template("prods/list.html", **context)
+    return render_template("product/list.html", **context)
 
 
-@product_blueprint.route("/add/<category_name>", methods=["GET", "POST"])
+@module_blueprint.route("/add/<category_name>", methods=["GET", "POST"])
 @login_required
-def prods_add(category_name):
+def add(category_name):
     context = {}
 
     has_product = False
@@ -121,17 +134,17 @@ def prods_add(category_name):
         context["category"] = category_name
         context["has_product"] = str(has_product)
         context["barcodestr"] = uuid.uuid1()
-        return render_template("prods/add.html", **context)
+        return render_template("product/add.html", **context)
 
     context["category"] = category_name
     context["has_product"] = str(has_product)
     context["barcodestr"] = uuid.uuid1()
-    return render_template("prods/add.html", **context)
+    return render_template("product/add.html", **context)
 
 
-@product_blueprint.route("/delete/<category_name>/<barcode>", methods=["GET", "POST"])
+@module_blueprint.route("/delete/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
-def prods_delete(category_name, barcode):
+def delete(category_name, barcode):
     product = Product.query.filter(
         Product.barcode == barcode and Product.category == category_name
     ).first()
@@ -142,12 +155,12 @@ def prods_delete(category_name, barcode):
         )
     product.delete()
     db.session.commit()
-    return redirect("/prods/list_prods/{}".format(category_name))
+    return redirect(url_for('product.list', category_name=category_name))
 
 
-@product_blueprint.route("/edit/<category_name>/<barcode>", methods=["GET", "POST"])
+@module_blueprint.route("/edit/<category_name>/<barcode>", methods=["GET", "POST"])
 @login_required
-def prods_edit(category_name, barcode):
+def edit(category_name, barcode):
     context = {}
 
     product = Product.query.filter(
@@ -156,12 +169,12 @@ def prods_edit(category_name, barcode):
 
     context["product"] = product
     context["category"] = category_name
-    return render_template("prods/edit.html", **context)
+    return render_template("product/edit.html", **context)
 
 
-@product_blueprint.route("/update", methods=["GET", "POST"])
+@module_blueprint.route("/update", methods=["GET", "POST"])
 @login_required
-def prods_update():
+def update():
     # this block is only entered when the form is submitted
     if request.method == "POST":
         barcode = request.form["barcode"]
@@ -207,12 +220,12 @@ def prods_update():
                 )
 
         db.session.commit()
-        return redirect("/prods/list_prods/{}".format(category))
+        return redirect("/product/list_product/{}".format(category))
 
 
-@product_blueprint.route("/lookup/<category_name>")
+@module_blueprint.route("/lookup/<category_name>")
 @login_required
-def lookup_prods(category_name):
+def lookup(category_name):
     context = {}
 
     context["category"] = category_name
@@ -222,11 +235,11 @@ def lookup_prods(category_name):
         if key not in ["category_name"]
     ]
 
-    return render_template("prods/lookup.html", **context)
+    return render_template("product/lookup.html", **context)
 
 
 # api
-@product_blueprint.route(
+@module_blueprint.route(
     "/search/<category_name>/barcode/<user_input>", methods=["GET"]
 )
 @login_required
@@ -249,7 +262,7 @@ def search(category_name, user_input):
     return jsonify(result)
 
 # api
-@product_blueprint.route("/check/<barcode>", methods=["GET"])
+@module_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
     has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()

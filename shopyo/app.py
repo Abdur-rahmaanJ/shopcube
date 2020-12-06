@@ -23,6 +23,8 @@ from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
 from shopyoapi.init import productphotos
+from shopyoapi.init import categoryphotos
+from shopyoapi.init import subcategoryphotos
 from shopyoapi.enhance import get_setting
 
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -38,6 +40,8 @@ def create_app(config_name):
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
 
+    configure_uploads(app, categoryphotos)
+    configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
 
     for module in os.listdir(os.path.join(base_path, "modules")):

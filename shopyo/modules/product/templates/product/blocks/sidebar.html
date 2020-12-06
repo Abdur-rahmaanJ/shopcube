@@ -10,7 +10,7 @@ url=url_for('category.index')
 sidebar_item(
 'Home', 
 icon='fa fa-shopping-bag', 
-url=url_for('prods.list_prods', category_name=category)
+url=url_for('product.list', category_name=category)
 )
 }}
 
@@ -19,7 +19,7 @@ url=url_for('prods.list_prods', category_name=category)
 sidebar_item(
 'Add', 
 icon='fas fa-plus-circle', 
-url=url_for('prods.prods_add', category_name=category)
+url=url_for('product.add', category_name=category)
 )
 }}
 
@@ -28,6 +28,6 @@ url=url_for('prods.prods_add', category_name=category)
 sidebar_item(
 'Search', 
 icon='fas fa-search', 
-url=url_for('prods.lookup_prods', category_name=category)
+url=url_for('product.lookup', category_name=category)
 )
 }}

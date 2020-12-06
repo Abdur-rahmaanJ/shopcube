@@ -1,6 +1,8 @@
 {
-	"display_string": "Inventory",
-	"type": "show",
-	"fa-icon": "fa fa-store",
-	"url_prefix": "/category"
+        "display_string": "Category",
+        "module_name":"category",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/category",
+        "panel_redirect": "/dashboard"
 }

@@ -15,3 +15,5 @@ login_manager = LoginManager()
 migrate = Migrate()
 
 productphotos = UploadSet("productphotos", IMAGES)
+categoryphotos = UploadSet("categoryphotos", IMAGES)
+subcategoryphotos = UploadSet("subcategoryphotos", IMAGES)

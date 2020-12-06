@@ -3,79 +3,68 @@
 {% set active_page ='products' %}
 
 {% block pagehead %}
-<title>edit</title>
-<style type="text/css">
-  .carousel-control-prev, .carousel-control-next{
-    height: 100px;
-  }
-  .carousel-control-prev-icon,
-.carousel-control-next-icon {
-  /*height: 50px;*/
-  /*width: 100px;*/
-  /*border-radius: 50%;*/
-  /*border: 1px solid black;*/
-  background-image: none !important;
-  background: none !important;
-  /*font-size: 55px;*/
-  /*color: red;*/
-}
-
-.carousel-control-next-icon:after
-{
-  content: '>';
-  font-size: 55px;
-  color: red;
-}
-
-.carousel-control-prev-icon:after {
-  content: '<';
-  font-size: 55px;
-  color: red;
-}
-</style>
+<title>add product</title>
 {% endblock %}
 
 
 
 
 {% block sidebar %}
-  {%include 'prods/blocks/sidebar.html'%}
+  {%include 'product/blocks/sidebar.html'%}
 {%endblock%}
-
 
 
 
 {% block content %}
   <br>
 
-  <h2>Edit product for 
+<script type="text/javascript">
+$(function() {
+    // pos
+    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    $('#barcode').on('input', function() {
+        $.getJSON( "/prods/check/"+$("#barcode").val(), function( data ) {
+            $("#check").html("<i class='fa fa-list-alt'></i>");
+            if (data['exists'] === true){
+              $("#check").html("<i style='color:red;' class='fas fa-exclamation-triangle'></i>");
+            }
+        })
+    });
+  });
+</script>
+{% if has_product == 'True' %}
+  
+  <div class="alert alert-danger" role="alert">
+    Product alreadly Listed
+  </div>
+{% endif %}
+
+  <h2>Add product for 
       <span class="badge badge-primary">{{SECTION_NAME}}</span>
       <span class="badge badge-secondary">{{category}}</span>
   </h2>
   <br>
 
-<form action='/prods/update' method="post" enctype="multipart/form-data">
-  <label>barcode</label>
+<form action="/prods/add/{{category}}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <label>barcode (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required 
       name="barcode" autocomplete="off" id="barcode" type="text" class="form-control" 
-      placeholder="Barcode" value="{{product.barcode}}">
-    <input
-      name="old_barcode" autocomplete="off" id="barcode" type="hidden" class="form-control" 
-      placeholder="Barcode" value="{{product.barcode}}">
+      placeholder="Barcode" value="{{barcodestr}}">
   </div>
 
-  <label>name</label>
+  <label>name (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required 
         name="name" autocomplete="off" id="name" type="text" class="form-control" 
-        placeholder="Product Name" value="{{product.name}}">
+        placeholder="Product Name">
   </div>
 
   <label>description</label>
@@ -83,19 +72,9 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
+    <input 
         name="description" autocomplete="off" id="description" type="text" class="form-control" 
-        placeholder="Product Description" value="{{product.description}}">
-  </div>
-
-  <label>category</label>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
-    </div>
-    <input required
-        name="category" autocomplete="off" id="category" type="text" class="form-control" 
-        placeholder="Product Category" value="{{product.category_name}}">
+        placeholder="Product Description">
   </div>
 
   <label>date</label>
@@ -103,9 +82,9 @@
       <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
       </div>
-      <input
+      <input 
           name="date" id="noHistoricDates"autocomplete="off" id="date" type="date" 
-          class="form-control" min="" placeholder="" value="{{product.date}}">
+          class="form-control" min="" placeholder="">
   </div>
 
   <label>price</label>
@@ -113,9 +92,9 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
-        name="price" autocomplete="off" id="price" type="number" step="0.01" class="form-control" 
-        placeholder="Price" value="{{product.price}}">
+    <input 
+        name="price" required autocomplete="off" id="price" type="number" step="0.01" class="form-control" 
+        placeholder="Price" value=0>
   </div>
 
   <label>selling price</label>
@@ -123,19 +102,19 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
-    <input required
+    <input
         name="selling_price" autocomplete="off" id="selling_price" type="number" step="0.01"
-        class="form-control" placeholder="Selling Price" value="{{product.selling_price}}">
+        class="form-control" placeholder="Selling Price" value=0>
   </div>
 
-  <label>in stock</label>
+  <label>in stock (required)</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
     </div>
     <input required
         name="in_stock" autocomplete="off" id="stock" type="number" step="1" class="form-control" 
-        placeholder="Stock" value="{{product.in_stock}}">
+        placeholder="Stock">
   </div>
 
   <label>discontinued</label>
@@ -155,33 +134,7 @@
     </label>
   </div>
   <br>
-
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
-
-    {%for resource in product.resources%}
-      {%if resource.type == 'image'%}
-      <div class="carousel-item {{'active' if loop.index == 1 else ''}}">
-        <img class="d-block" width=300 src="{{url_for('resource.product_image', filename=resource.filename)}}" alt="---">
-        <a style="margin-top: 10px" class="btn btn-danger" 
-        href="{{url_for('resource.product_image_delete', filename=resource.filename, barcode=product.barcode)}}">delete</a>
-      </div>
-      {%endif%}
-    {%endfor%}
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-  <br>
-</div>
-
-  <br>
-  <label>add images</label>
+  <label>images</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
@@ -189,12 +142,13 @@
     <input class="form-control" type="file" name="photos[]" multiple="true" autocomplete="off" >
   </div>
   <br>
+
   <input 
     type="hidden" autocomplete="off" id="category" class="form-control" 
     name="category" placeholder="category" value="{{category}}">
+
+  <input required  type="submit" class="btn btn-info" value="add">
   
-  <input required  type="submit" class="btn btn-info" value="edit">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
   <script>
   // Limit appointment date selections to current date and the future.
@@ -204,5 +158,6 @@
       document.getElementById("noHistoricDates").setAttribute("min", new Date().toISOString().split("T")[0]);
   })();*/
   </script>
+
 </form>
 {% endblock %}

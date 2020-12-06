@@ -74,7 +74,7 @@ def product_image_delete(filename, barcode):
 
     return redirect(
         url_for(
-            "product.prods_edit", category_name=product.category_name, barcode=barcode
+            "product.edit", category_name=product.category_name, barcode=barcode
         )
     )
 

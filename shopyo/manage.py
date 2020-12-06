@@ -48,6 +48,8 @@ def process(args):
         except IndexError as e:
             print("db requires more options")
             raise e
+    else:
+        print('Command not recognised')
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 {% set active_page ='category' %}
 
 {% block pagehead %}
-<title>SpareParts</title>
+<title></title>
 <style>
   .hidden{
     display: none;
@@ -44,30 +44,35 @@
   });
 </script>
 
-  {%for m in categorys%}
+  {%for category in categorys%}
   <a href="" >
     <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
       
-      <a href="/prods/list_prods/{{m.name}}" style="text-decoration: none;">
+      <a href="{{url_for('product.list', category_name=category.name)}}" style="text-decoration: none;">
         <button style="width:75px;" class="btn btn-info" type=""><img width="30px"  src="/static/box.svg"></button>
       </a>
       
       &nbsp;&nbsp;
       <div style='display: inline-block;'>
         <input disabled  
-              id="{{m.name}}" 
+              id="{{category.name}}" 
               type="text" 
               class="form-control"
               name="category_name" 
               placeholder="Barcode" 
-              value="{{m.name}}">
+              value="{{category.name}}">
       </div>
       <a href="#" style="text-decoration: none; float:right;">
-        <button id='del-{{m.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+        <button id='del-{{category.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
       </a>
       &nbsp;
-      <a href="/category/edit/{{m.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
-        <button data-name="{{m.name}}" class="btn btn-warning" type=""><i id='ico-{{m.name}}' class="fas fa-pencil-alt"></i></button>
+      <a href="/category/edit/{{category.name}}" style="text-decoration: none; float:right; margin-right: 10px;">
+        <button data-name="{{category.name}}" class="btn btn-warning" type=""><i id='ico-{{category.name}}' class="fas fa-pencil-alt"></i></button>
+      </a>
+      &nbsp;
+      <a href="{{url_for('category.manage_sub', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
+        <button title="add subcategory" data-name="{{category.name}}" class="btn btn-info" type="">
+        Manage subcategory</button>
       </a>
     </div>
 
