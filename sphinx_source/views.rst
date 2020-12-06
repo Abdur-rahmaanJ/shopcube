@@ -23,7 +23,7 @@ Here are some boiler plate codes created:
     # from flask import flash
     # from flask import request
 
-    # from shopyoapi.enhance import base_context
+    # # 
     # from shopyoapi.html import notify_success
     # from shopyoapi.forms import flash_errors
 
