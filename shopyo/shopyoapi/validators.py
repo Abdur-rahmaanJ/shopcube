@@ -5,6 +5,10 @@ from wtforms.validators import ValidationError
 # https://wtforms.readthedocs.io/en/2.3.x/validators/
 
 
+def is_empty_str(string):
+    return string.strip() == ''
+
+
 def is_valid_slug(text):
     # from validators package
     slug_regex = re.compile(r"^[-a-zA-Z0-9_]+$")

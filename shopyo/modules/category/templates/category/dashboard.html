@@ -48,8 +48,13 @@
   <a href="" >
     <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
       
-      <a href="{{url_for('product.list', category_name=category.name)}}" style="text-decoration: none;">
-        <button style="width:75px;" class="btn btn-info" type=""><img width="30px"  src="/static/box.svg"></button>
+      <!--<img width="30px"  src="/static/box.svg">-->
+      
+      <!-- url_for('product.list', category_name=category.name) -->
+      <a href="{{url_for('category.choose_sub_dashboard', category_id=category.id)}}" style="text-decoration: none;">
+        <button style="width:75px;" class="btn btn-info" type="">
+          <i class="fa fa-tags"></i>
+        </button>
       </a>
       
       &nbsp;&nbsp;

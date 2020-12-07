@@ -2,6 +2,8 @@ import os
 import shutil
 import uuid
 
+from werkzeug.utils import secure_filename
+
 
 def trycopytree(source, dest):
     """
@@ -122,3 +124,6 @@ def unique_filename(fname):
 
 def delete_file(path):
     os.remove(path)
+
+def unique_sec_filename(filename):
+    return unique_filename(secure_filename(filename))

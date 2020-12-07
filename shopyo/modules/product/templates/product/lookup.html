@@ -34,10 +34,12 @@ $(function() {
       field = $("#choose_field input[type='radio']:checked").attr("value");
 
        $("#results_table tbody").html("<tr></tr>");
-        $.getJSON( "/prods/search/{{category}}/barcode/"+$("#searchinput").val()+"?"+
+        var api_url = "/product/sub/{{subcategory.id}}/search/"+$("#searchinput").val()+"?"+
           "global_search="+global_search+"&"+
-          "field="+field, 
+          "field="+field;
+        $.getJSON( api_url, 
               function( data ) {
+            console.log(api_url);
             for (var i = data.length - 1; i >= 0; i--) {
                 var result = data[i];
                 if ((result['discontinued'] === 'True') || (result['discontinued'] == 1))
@@ -52,14 +54,13 @@ $(function() {
                 "<td>"+result['barcode']+"</td>"+
                 "<td>"+result['name']+"</td>"+
                 "<td>"+result['description']+"</td>"+
-                "<td>"+result['category']+"</td>"+
                 "<td>"+result['date']+"</td>"+
                 "<td>"+result['price']+"</td>"+
                 "<td>"+result['selling_price']+"</td>"+
                 "<td>"+result['in_stock']+"</td>"+
                 "<td>"+result['discontinued']+"</td>"+
-                '<td><a href="/prods/delete/'+result['category']+'/'+result['barcode']+'" class="btn btn-danger" role="button">delete</a></td>'+
-                '<td><a href="/prods/edit/'+result['category']+'/'+result['barcode']+'" class="btn btn-info" role="button">edit</a></td>'+"</tr>");
+                '<td><a href="/product/'+result['barcode']+'/delete" class="btn btn-danger" role="button">delete</a></td>'+
+                '<td><a href="/product/'+result['barcode']+'/edit/dashboard" class="btn btn-info" role="button">edit</a></td>'+"</tr>");
                 //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
             }
         })
@@ -116,7 +117,6 @@ $(function() {
                 <td>barcode</td>
                 <td>name</td>
                 <td>description</td>
-                <td>category</td>
                 <td>date</td>
                 <td>price</td>
                 <td>selling price</td>

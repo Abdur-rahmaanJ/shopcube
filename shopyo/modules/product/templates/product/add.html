@@ -40,12 +40,12 @@ $(function() {
 {% endif %}
 
   <h2>Add product for 
-      <span class="badge badge-primary">{{SECTION_NAME}}</span>
-      <span class="badge badge-secondary">{{category}}</span>
+      <span class="badge badge-primary">---</span>
+      <span class="badge badge-secondary">---</span>
   </h2>
   <br>
 
-<form action="/prods/add/{{category}}" method="post" enctype="multipart/form-data">
+<form action="{{url_for('product.add', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <label>barcode (required)</label>
   <div class="input-group mb-3">

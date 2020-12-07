@@ -49,13 +49,16 @@
 
 <h2>Existing subcategories</h2>
 {%for subcategory in category.subcategories%}
-  
-    <form class="form">
-      <input class="" type="text" name="name" value="{{subcategory.name}}">
+
+    <form class="form" action="{{url_for('category.edit_sub_name', subcategory_id=subcategory.id)}}"
+      method="POST">
+      <input class="" type="text" name="name" value="{{subcategory.name}}" autocomplete="off">
       <input class="btn btn-info" type="submit" value="save">
       <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{subcategory.id}}">view image</button>
-      <a href="{{url_for('category.edit_sub_img', subcategory_id=subcategory.id)}}" class="btn btn-warning">edit image</a>
+      <a href="{{url_for('category.edit_sub_img_dashboard', subcategory_id=subcategory.id)}}" class="btn btn-warning">edit image</a>
       <a href="" class="btn btn-danger">delete</a>
+
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     </form>
 
     <!-- Image Modal -->

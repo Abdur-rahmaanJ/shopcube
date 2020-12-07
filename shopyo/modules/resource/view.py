@@ -62,21 +62,6 @@ def product_image(filename):
     )
 
 
-@module_blueprint.route("/<filename>/product/<barcode>/delete", methods=["GET"])
-def product_image_delete(filename, barcode):
-    resource = Resource.query.filter(Resource.filename == filename).first()
-    product = Product.query.filter(Product.barcode == barcode).first()
-    product.resources.remove(resource)
-    product.update()
-    delete_file(
-        os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
-    )
-
-    return redirect(
-        url_for(
-            "product.edit", category_name=product.category_name, barcode=barcode
-        )
-    )
 
 
 # Handles javascript image uploads from tinyMCE

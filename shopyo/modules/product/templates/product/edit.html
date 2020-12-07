@@ -49,12 +49,15 @@
   <br>
 
   <h2>Edit product for 
-      <span class="badge badge-primary">{{SECTION_NAME}}</span>
-      <span class="badge badge-secondary">{{category}}</span>
+      <span class="badge badge-primary">---</span>
+      <span class="badge badge-secondary">---</span>
   </h2>
   <br>
 
-<form action='/prods/update' method="post" enctype="multipart/form-data">
+<form 
+  action="{{url_for('product.update', subcategory_id=subcategory.id)}}" 
+  method="post" 
+  enctype="multipart/form-data">
   <label>barcode</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
@@ -88,6 +91,7 @@
         placeholder="Product Description" value="{{product.description}}">
   </div>
 
+  <!--
   <label>category</label>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
@@ -97,6 +101,7 @@
         name="category" autocomplete="off" id="category" type="text" class="form-control" 
         placeholder="Product Category" value="{{product.category_name}}">
   </div>
+-->
 
   <label>date</label>
   <div class="input-group mb-3">
@@ -156,6 +161,7 @@
   </div>
   <br>
 
+  {%if len(product.resources) != 0%}
   <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
 
@@ -164,7 +170,7 @@
       <div class="carousel-item {{'active' if loop.index == 1 else ''}}">
         <img class="d-block" width=300 src="{{url_for('resource.product_image', filename=resource.filename)}}" alt="---">
         <a style="margin-top: 10px" class="btn btn-danger" 
-        href="{{url_for('resource.product_image_delete', filename=resource.filename, barcode=product.barcode)}}">delete</a>
+        href="{{url_for('product.image_delete', filename=resource.filename, barcode=product.barcode)}}">delete</a>
       </div>
       {%endif%}
     {%endfor%}
@@ -179,6 +185,7 @@
   </a>
   <br>
 </div>
+  {%endif%}
 
   <br>
   <label>add images</label>

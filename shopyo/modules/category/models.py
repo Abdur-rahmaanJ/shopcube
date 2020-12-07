@@ -15,7 +15,7 @@ class Category(db.Model):
         "SubCategory", backref="category", lazy=True
     )
     resources = db.relationship(
-        "Resource", backref="resource_category", lazy=True
+        "Resource", backref="resource_category", lazy=True, 
     )
 
     def insert(self):

@@ -9,14 +9,19 @@ from flask import request
 from flask import url_for
 from flask import send_from_directory
 from flask import current_app
-from werkzeug.utils import secure_filename
+from flask import flash
+
 
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
 
 from shopyoapi.enhance import get_setting
-from shopyoapi.file import unique_filename
+from shopyoapi.file import unique_sec_filename
+from shopyoapi.file import delete_file
 from shopyoapi.init import subcategoryphotos
+from shopyoapi.validators import is_empty_str
+from shopyoapi.html import notify_warning
+from shopyoapi.html import notify_success
 
 from modules.category.models import Category
 from modules.category.models import SubCategory
@@ -131,9 +136,17 @@ def add_sub(category_name):
     if request.method == 'POST':
         name = request.form['name']
 
-        if name.strip() == '':
-            flash(notify_warning('subcategory name cannot be empty!'))
-            return redirect(url_for('add_sub', category_name=category_name))
+        if is_empty_str(name):
+            flash(notify_warning('Name cannot be empty'))
+            return redirect(url_for('category.manage_sub', category_name=subcategory.category.name))
+        category_name = subcategory.category.name
+        existing = SubCategory.query.filter(
+                (SubCategory.name == name) &
+                (Category.name == category_name)
+            ).first()
+        if existing:
+            flash(notify_warning('Name already exists for category'))
+            return redirect(url_for('category.manage_sub', category_name=subcategory.category.name))
 
         category = Category.query.filter(Category.name == category_name).first()
         subcategory = SubCategory(name=name)
@@ -142,7 +155,7 @@ def add_sub(category_name):
         if "photo" in request.files:
             file = request.files['photo']
             
-            filename = unique_filename(secure_filename(file.filename))
+            filename = unique_sec_filename(file.filename)
             file.filename = filename
             subcategoryphotos.save(file)
             subcategory.resources.append(
@@ -157,6 +170,109 @@ def add_sub(category_name):
         return redirect(url_for('category.manage_sub', category_name=category_name))
 
 
+
+
+@module_blueprint.route("{}/sub/<subcategory_id>/img/edit".format(module_info["panel_redirect"]), methods=["GET", "POST"])
+@login_required
+def edit_sub_img_dashboard(subcategory_id):
+    context = {}
+    subcategory = SubCategory.query.get(subcategory_id)
+    context.update({
+        'len': len,
+        'subcategory': subcategory
+        })
+    return render_template('category/edit_img_sub.html', **context)
+
+@module_blueprint.route("/sub/<subcategory_id>/name/edit", methods=["GET", "POST"])
+@login_required
+def edit_sub_name(subcategory_id):
+    if request.method == 'POST':
+        subcategory = SubCategory.query.get(subcategory_id)
+        name = request.form['name']
+        if is_empty_str(name):
+            flash(notify_warning('Name cannot be empty'))
+            return redirect(url_for('category.manage_sub', category_name=subcategory.category.name))
+        category_name = subcategory.category.name
+        existing = SubCategory.query.filter(
+                (SubCategory.name == name) &
+                (Category.name == category_name)
+            ).first()
+        if existing:
+            flash(notify_warning('Name already exists for category'))
+            return redirect(url_for('category.manage_sub', category_name=subcategory.category.name))
+        subcategory.name = name
+        subcategory.update()
+        flash(notify_success('Subcategory name updated successfully!'))
+        return redirect(url_for('category.manage_sub', category_name=subcategory.category.name))
+
+@module_blueprint.route("/sub/<subcategory_id>/img/edit", methods=["GET", "POST"])
+@login_required
+def edit_sub_img(subcategory_id):
+    if request.method == 'POST':
+        subcategory = SubCategory.query.get(subcategory_id)
+        if "photo" in request.files:
+            file = request.files['photo']
+            
+            filename = unique_sec_filename(file.filename)
+            file.filename = filename
+            subcategoryphotos.save(file)
+            subcategory.resources.append(
+                Resource(
+                    type="image", filename=filename, category="subcategory_image"
+                )
+            )
+        subcategory.update()
+        return redirect(url_for('category.edit_sub_img_dashboard', subcategory_id=subcategory.id))
+
+
+
+@module_blueprint.route("/sub/<subcategory_id>/img/<filename>/delete", methods=["GET"])
+@login_required
+def subcategory_image_delete(subcategory_id, filename):
+    resource = Resource.query.filter(Resource.filename == filename).first()
+    subcategory = SubCategory.query.get(subcategory_id)
+    subcategory.resources.remove(resource)
+    subcategory.update()
+    delete_file(
+        os.path.join(current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename)
+    )
+
+    return redirect(
+        url_for(
+            "category.edit_sub_img_dashboard", subcategory_id=subcategory_id
+        )
+    )
+
+
+@module_blueprint.route("/sub/<subcategory_id>/delete", methods=["GET", "POST"])
+@login_required
+def sub_delete(subcategory_id):
+
+    subcategory = SubCategory.query.get(subcategory_id)
+    for resource in subcategory.resources:
+        filename = resource.filename
+        resource.delete()
+        delete_file(
+            os.path.join(current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename)
+        )
+    subcategory.delete()
+
+    ## add for products change
+
+    return redirect(url_for())
+
+
+@module_blueprint.route("<category_id>/{}/sub".format(module_info["panel_redirect"]), methods=["GET", "POST"])
+@login_required
+def choose_sub_dashboard(category_id):
+    context = {}
+    category = Category.query.get(category_id)
+
+    context.update({
+        'category': category
+        })
+    return render_template('category/choose_sub.html', **context)
+
 #
 # serve files
 #
@@ -167,13 +283,3 @@ def subcategory_image(filename):
     return send_from_directory(
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
     )
-
-@module_blueprint.route("{}/sub/<subcategory_id>/img/edit".format(module_info["panel_redirect"]), methods=["GET", "POST"])
-@login_required
-def edit_sub_img(subcategory_id):
-    context = {}
-    subcategory = SubCategory.query.get(subcategory_id)
-    context.update({
-        'subcategory': subcategory
-        })
-    return render_template('category/edit_img_sub.html', **context)
