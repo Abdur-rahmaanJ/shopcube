@@ -6,7 +6,7 @@ from wtforms.validators import ValidationError
 
 
 def is_empty_str(string):
-    return string.strip() == ''
+    return string.strip() == ""
 
 
 def is_valid_slug(text):

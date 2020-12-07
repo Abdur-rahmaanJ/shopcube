@@ -28,9 +28,15 @@ def new_project(path, newfoldername):
 
     trycopytree(os.path.join(dirpath, "static"), base_path + "/static")
     trycopytree(os.path.join(dirpath, "tests"), base_path + "/tests")
-    trycopytree(os.path.join(dirpath, "modules", "base"), base_path + "/modules/base")
-    trycopytree(os.path.join(dirpath, "modules", "admin"), base_path + "/modules/admin")
-    trycopytree(os.path.join(dirpath, "modules", "login"), base_path + "/modules/login")
+    trycopytree(
+        os.path.join(dirpath, "modules", "base"), base_path + "/modules/base"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "admin"), base_path + "/modules/admin"
+    )
+    trycopytree(
+        os.path.join(dirpath, "modules", "login"), base_path + "/modules/login"
+    )
     trycopytree(
         os.path.join(dirpath, "modules", "appointment"),
         base_path + "/modules/appointment",

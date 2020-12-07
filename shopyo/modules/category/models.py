@@ -1,6 +1,6 @@
-'''
+"""
 remember: backrefs should be unique
-'''
+"""
 
 from sqlalchemy import exists
 
@@ -15,7 +15,7 @@ class Category(db.Model):
         "SubCategory", backref="category", lazy=True
     )
     resources = db.relationship(
-        "Resource", backref="resource_category", lazy=True, 
+        "Resource", backref="resource_category", lazy=True,
     )
 
     def insert(self):
@@ -41,15 +41,11 @@ class SubCategory(db.Model):
     __tablename__ = "subcategories"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    category_name = db.Column(
-        db.String(100), db.ForeignKey("categories.name")
-    )
+    category_name = db.Column(db.String(100), db.ForeignKey("categories.name"))
     # products = db.relationship(
     #     "Product", backref="subcategory", lazy=True, cascade="all, delete"
     # )
-    products = db.relationship(
-        "Product", backref="subcategory", lazy=True
-    )
+    products = db.relationship("Product", backref="subcategory", lazy=True)
     resources = db.relationship(
         "Resource", backref="resource_subcategory", lazy=True
     )

@@ -59,6 +59,7 @@
       <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{subcategory.id}}">view image</button>
       {%if subcategory.name != 'uncategorised' and subcategory.category.name != 'uncategorised'%}
       <a href="{{url_for('category.edit_sub_img_dashboard', subcategory_id=subcategory.id)}}" class="btn btn-warning">edit image</a>
+      
       <a href="{{url_for('category.sub_delete', subcategory_id=subcategory.id)}}" class="btn btn-danger">delete</a>
       {%endif%}
 

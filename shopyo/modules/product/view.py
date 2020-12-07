@@ -1,31 +1,31 @@
-import uuid
-import os
 import json
+import os
+import uuid
 
 from flask import Blueprint
+from flask import current_app
+from flask import flash
 from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
-from flask import current_app
 from flask import url_for
-from flask import flash
 
 import flask_uploads
 from flask_login import login_required
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
-from shopyoapi.file import unique_filename
 from shopyoapi.file import delete_file
+from shopyoapi.file import unique_filename
+from shopyoapi.html import notify_warning
 from shopyoapi.init import db
 from shopyoapi.init import ma
 from shopyoapi.init import productphotos
-from shopyoapi.html import notify_warning
 
-from modules.resource.models import Resource
-from modules.product.models import Product
 from modules.category.models import SubCategory
+from modules.product.models import Product
+from modules.resource.models import Resource
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -63,24 +63,23 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 module_name = module_info["module_name"]
 
+
 @module_blueprint.route("/sub/<subcategory_id>/dashboard")
 @login_required
 def list(subcategory_id):
     context = {}
     subcategory = SubCategory.query.get(subcategory_id)
 
-    context.update({
-        'subcategory': subcategory
-        })
+    context.update({"subcategory": subcategory})
     return render_template("product/list.html", **context)
 
 
-@module_blueprint.route("/sub/<subcategory_id>/add/dashboard", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/sub/<subcategory_id>/add/dashboard", methods=["GET", "POST"]
+)
 @login_required
 def add_dashboard(subcategory_id):
     context = {}
-
-    
 
     has_product = False
     subcategory = SubCategory.query.get(subcategory_id)
@@ -88,6 +87,7 @@ def add_dashboard(subcategory_id):
     context["has_product"] = str(has_product)
     context["barcodestr"] = uuid.uuid1()
     return render_template("product/add.html", **context)
+
 
 @module_blueprint.route("/sub/<subcategory_id>/add", methods=["GET", "POST"])
 @login_required
@@ -139,12 +139,16 @@ def add(subcategory_id):
                 if "photos[]" in request.files:
                     files = request.files.getlist("photos[]")
                     for file in files:
-                        filename = unique_filename(secure_filename(file.filename))
+                        filename = unique_filename(
+                            secure_filename(file.filename)
+                        )
                         file.filename = filename
                         productphotos.save(file)
                         p.resources.append(
                             Resource(
-                                type="image", filename=filename, category="product_image"
+                                type="image",
+                                filename=filename,
+                                category="product_image",
                             )
                         )
             except flask_uploads.UploadNotAllowed as e:
@@ -152,23 +156,26 @@ def add(subcategory_id):
 
             subcategory.products.append(p)
             subcategory.update()
-            return redirect(url_for('product.add_dashboard', subcategory_id=subcategory_id))
+            return redirect(
+                url_for("product.add_dashboard", subcategory_id=subcategory_id)
+            )
 
 
 @module_blueprint.route("/<barcode>/delete", methods=["GET", "POST"])
 @login_required
 def delete(barcode):
-    product = Product.query.filter(
-        Product.barcode == barcode).first()
+    product = Product.query.filter(Product.barcode == barcode).first()
     subcategory = product.subcategory
     for resource in product.resources:
         filename = resource.filename
         delete_file(
-            os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
+            os.path.join(
+                current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
+            )
         )
     product.delete()
     db.session.commit()
-    return redirect(url_for('product.list', subcategory_id=subcategory.id))
+    return redirect(url_for("product.list", subcategory_id=subcategory.id))
 
 
 @module_blueprint.route("/<barcode>/edit/dashboard", methods=["GET", "POST"])
@@ -176,18 +183,17 @@ def delete(barcode):
 def edit_dashboard(barcode):
     context = {}
 
-    product = Product.query.filter(
-        Product.barcode == barcode).first()
+    product = Product.query.filter(Product.barcode == barcode).first()
 
-    context.update({
-        'len': len,
-        'product': product,
-        'subcategory': product.subcategory
-        })
+    context.update(
+        {"len": len, "product": product, "subcategory": product.subcategory}
+    )
     return render_template("product/edit.html", **context)
 
 
-@module_blueprint.route("/sub/<subcategory_id>/update", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/sub/<subcategory_id>/update", methods=["GET", "POST"]
+)
 @login_required
 def update(subcategory_id):
     # this block is only entered when the form is submitted
@@ -225,19 +231,23 @@ def update(subcategory_id):
         # p.category = category
         try:
             if "photos[]" in request.files:
-                
+
                 files = request.files.getlist("photos[]")
                 for file in files:
                     filename = unique_filename(secure_filename(file.filename))
                     file.filename = filename
                     productphotos.save(file)
                     p.resources.append(
-                        Resource(type="image", filename=filename, category="product_image")
+                        Resource(
+                            type="image",
+                            filename=filename,
+                            category="product_image",
+                        )
                     )
         except flask_uploads.UploadNotAllowed as e:
             pass
         p.update()
-        return redirect(url_for('product.list', subcategory_id=subcategory.id))
+        return redirect(url_for("product.list", subcategory_id=subcategory.id))
 
 
 @module_blueprint.route("sub/<subcategory_id>/lookup")
@@ -281,29 +291,34 @@ def search(subcategory_id, user_input):
             result = product_schema.dump(all_p)
     return jsonify(result)
 
+
 # api
 @module_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
-    has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()
+    has_product = db.session.query(
+        exists().where(Product.barcode == barcode)
+    ).scalar()
     return jsonify({"exists": has_product})
+
 
 #
 # files
 #
 
-@module_blueprint.route("/<filename>/product/<barcode>/delete", methods=["GET"])
+
+@module_blueprint.route(
+    "/<filename>/product/<barcode>/delete", methods=["GET"]
+)
 def image_delete(filename, barcode):
     resource = Resource.query.filter(Resource.filename == filename).first()
     product = Product.query.filter(Product.barcode == barcode).first()
     product.resources.remove(resource)
     product.update()
     delete_file(
-        os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
-    )
-
-    return redirect(
-        url_for(
-            "product.edit_dashboard", barcode=barcode
+        os.path.join(
+            current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
         )
     )
+
+    return redirect(url_for("product.edit_dashboard", barcode=barcode))

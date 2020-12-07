@@ -49,7 +49,7 @@ def process(args):
             print("db requires more options")
             raise e
     else:
-        print('Command not recognised')
+        print("Command not recognised")
 
 
 if __name__ == "__main__":

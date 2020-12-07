@@ -1,7 +1,7 @@
 import importlib
+import json
 import os
 import sys
-import json
 
 from flask import Flask
 from flask import redirect
@@ -9,23 +9,20 @@ from flask import url_for
 
 from flask_wtf.csrf import CSRFProtect
 
-
-import sys
-
 sys.path.append(".")
 
 from flask_uploads import configure_uploads
 
 from config import app_config
 
+from shopyoapi.enhance import get_setting
+from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
 from shopyoapi.init import productphotos
-from shopyoapi.init import categoryphotos
 from shopyoapi.init import subcategoryphotos
-from shopyoapi.enhance import get_setting
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -50,8 +47,6 @@ def create_app(config_name):
         mod = importlib.import_module("modules.{}.view".format(module))
         app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
 
-    
-
     @app.context_processor
     def inject_global_vars():
         theme_dir = os.path.join(
@@ -61,14 +56,17 @@ def create_app(config_name):
         with open(info_path) as f:
             info_data = json.load(f)
 
-
         APP_NAME = get_setting("APP_NAME")
         SECTION_NAME = get_setting("SECTION_NAME")
         SECTION_ITEMS = get_setting("SECTION_ITEMS")
         ACTIVE_THEME = get_setting("ACTIVE_THEME")
         ACTIVE_THEME_VERSION = info_data["version"]
-        ACTIVE_THEME_STYLES_URL = url_for('resource.active_theme_css', active_theme=ACTIVE_THEME, v=ACTIVE_THEME_VERSION)
-        CONTACT_URL = url_for('contact.index')
+        ACTIVE_THEME_STYLES_URL = url_for(
+            "resource.active_theme_css",
+            active_theme=ACTIVE_THEME,
+            v=ACTIVE_THEME_VERSION,
+        )
+        CONTACT_URL = url_for("contact.index")
 
         base_context = {
             "APP_NAME": APP_NAME,
@@ -77,7 +75,7 @@ def create_app(config_name):
             "ACTIVE_THEME": ACTIVE_THEME,
             "ACTIVE_THEME_VERSION": ACTIVE_THEME_VERSION,
             "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL,
-            "CONTACT_URL": CONTACT_URL
+            "CONTACT_URL": CONTACT_URL,
         }
 
         return base_context

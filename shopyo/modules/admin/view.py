@@ -5,7 +5,7 @@
 """
 import json
 import os
-from config import Config
+
 from flask import Blueprint
 from flask import redirect
 from flask import render_template
@@ -14,6 +14,9 @@ from flask import url_for
 
 from flask_login import login_required
 from sqlalchemy import exists
+
+from config import Config
+
 from shopyoapi.init import db
 
 from modules.admin.admin import admin_required
@@ -69,7 +72,9 @@ def user_add():
         else:
             admin_user = False
 
-        has_user = db.session.query(exists().where(User.username == username)).scalar()
+        has_user = db.session.query(
+            exists().where(User.username == username)
+        ).scalar()
 
         if has_user is False:
             new_user = User()

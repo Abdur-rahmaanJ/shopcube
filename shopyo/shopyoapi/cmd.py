@@ -60,18 +60,20 @@ def initialise():
 
 
     """
-    SEP_CHAR = '#'
+    SEP_CHAR = "#"
     SEP_NUM = 23
 
     with open("config.json", "r") as config:
         config = json.load(config)
 
     print("Creating Db")
-    print(SEP_CHAR * SEP_NUM, end='\n')
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
-    
+    print(SEP_CHAR * SEP_NUM, end="\n")
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
+
     print("Migrating")
-    print(SEP_CHAR * SEP_NUM, end='\n')
+    print(SEP_CHAR * SEP_NUM, end="\n")
     subprocess.run(
         [sys.executable, "manage.py", "db", "migrate"], stdout=subprocess.PIPE
     )
@@ -80,16 +82,16 @@ def initialise():
     )
 
     print("Initialising User")
-    print(SEP_CHAR * SEP_NUM, end='\n')
+    print(SEP_CHAR * SEP_NUM, end="\n")
     add_admin(config["admin_user"]["name"], config["admin_user"]["password"])
 
     print("Initialising Settings")
-    print(SEP_CHAR * SEP_NUM, end='\n')
+    print(SEP_CHAR * SEP_NUM, end="\n")
     for name, value in config["settings"].items():
         add_setting(name, value)
-    
+
     print("Adding category and subcategory: uncategorised")
-    print(SEP_CHAR * SEP_NUM, end='\n')
+    print(SEP_CHAR * SEP_NUM, end="\n")
     add_uncategorised_category()
 
     print("Done!")

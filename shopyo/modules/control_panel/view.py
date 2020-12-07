@@ -7,6 +7,7 @@ from flask import flash
 from flask import render_template
 
 from flask_login import login_required
+
 from shopyoapi.html import notify_success
 
 control_panel_blueprint = Blueprint(
@@ -23,7 +24,9 @@ all_info = {}
 def index():
     context = {}
 
-    for module in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
+    for module in os.listdir(
+        os.path.join(current_app.config["BASE_DIR"], "modules")
+    ):
         if module.startswith("__"):
             continue
         if module not in ["control_panel"]:

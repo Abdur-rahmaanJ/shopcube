@@ -113,7 +113,9 @@ def absdiroffile(filepath):
 
 
 def get_folders(path):
-    dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+    dirs = [
+        d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))
+    ]
     return dirs
 
 
@@ -124,6 +126,7 @@ def unique_filename(fname):
 
 def delete_file(path):
     os.remove(path)
+
 
 def unique_sec_filename(filename):
     return unique_filename(secure_filename(filename))
