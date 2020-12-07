@@ -42,7 +42,7 @@ class SubCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     category_name = db.Column(
-        db.String(100), db.ForeignKey("categories.name"), nullable=False
+        db.String(100), db.ForeignKey("categories.name")
     )
     # products = db.relationship(
     #     "Product", backref="subcategory", lazy=True, cascade="all, delete"

@@ -11,6 +11,7 @@ from flask import current_app
 from flask import url_for
 from flask import flash
 
+import flask_uploads
 from flask_login import login_required
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
@@ -28,6 +29,7 @@ from modules.category.models import SubCategory
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
+
 
 with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
@@ -133,18 +135,20 @@ def add(subcategory_id):
 
             # if 'photos[]' not in request.files:
             #     flash(notify_warning('no file part'))
-
-            if "photos[]" in request.files:
-                files = request.files.getlist("photos[]")
-                for file in files:
-                    filename = unique_filename(secure_filename(file.filename))
-                    file.filename = filename
-                    productphotos.save(file)
-                    p.resources.append(
-                        Resource(
-                            type="image", filename=filename, category="product_image"
+            try:
+                if "photos[]" in request.files:
+                    files = request.files.getlist("photos[]")
+                    for file in files:
+                        filename = unique_filename(secure_filename(file.filename))
+                        file.filename = filename
+                        productphotos.save(file)
+                        p.resources.append(
+                            Resource(
+                                type="image", filename=filename, category="product_image"
+                            )
                         )
-                    )
+            except flask_uploads.UploadNotAllowed as e:
+                pass
 
             subcategory.products.append(p)
             subcategory.update()
@@ -219,17 +223,19 @@ def update(subcategory_id):
         p.in_stock = in_stock
         p.discontinued = discontinued
         # p.category = category
-
-        if "photos[]" in request.files:
-            
-            files = request.files.getlist("photos[]")
-            for file in files:
-                filename = unique_filename(secure_filename(file.filename))
-                file.filename = filename
-                productphotos.save(file)
-                p.resources.append(
-                    Resource(type="image", filename=filename, category="product_image")
-                )
+        try:
+            if "photos[]" in request.files:
+                
+                files = request.files.getlist("photos[]")
+                for file in files:
+                    filename = unique_filename(secure_filename(file.filename))
+                    file.filename = filename
+                    productphotos.save(file)
+                    p.resources.append(
+                        Resource(type="image", filename=filename, category="product_image")
+                    )
+        except flask_uploads.UploadNotAllowed as e:
+            pass
         p.update()
         return redirect(url_for('product.list', subcategory_id=subcategory.id))
 

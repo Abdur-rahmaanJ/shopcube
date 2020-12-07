@@ -40,7 +40,8 @@ $(function() {
 
 <h2>Add Category</h2>
 
-<form action="/category/add" method="post">
+<form action="/category/add" method="post" 
+    enctype="multipart/form-data">
 
   <label>name</label>
   <div class="input-group mb-3">
@@ -51,6 +52,14 @@ $(function() {
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   </div>
   
+  <label>image</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input class="form-control" type="file" name="photo" autocomplete="off" >
+  </div>
+
   <input required  type="submit" class="btn btn-info" value="add">
 </form>
 {% endblock %}

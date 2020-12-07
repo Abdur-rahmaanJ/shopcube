@@ -59,6 +59,13 @@
       
       &nbsp;&nbsp;
       <div style='display: inline-block;'>
+        {%set filename_ = ''%}
+        {%if category.resources%}
+          {%set filename_ = category.resources[0].filename%}
+        {%endif%}
+        <img style="width: 50px; height: 50px;" src="{{url_for('category.category_image', filename=filename_)}}">
+      </div>
+      <div style='display: inline-block;'>
         <input disabled  
               id="{{category.name}}" 
               type="text" 
@@ -67,14 +74,17 @@
               placeholder="Barcode" 
               value="{{category.name}}">
       </div>
-      <a href="#" style="text-decoration: none; float:right;">
+
+      {%if category.name != 'uncategorised'%}
+      <a href="{{url_for('category.delete', name=category.name)}}" style="text-decoration: none; float:right;">
         <button id='del-{{category.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
       </a>
       &nbsp;
-      <a href="{{url_for('category.edit', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
+      <a href="{{url_for('category.edit_dashboard', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
         <button data-name="{{category.name}}" class="btn btn-warning" type=""><i id='ico-{{category.name}}' class="fas fa-pencil-alt"></i></button>
       </a>
       &nbsp;
+      {%endif%}
       <a href="{{url_for('category.manage_sub', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
         <button title="add subcategory" data-name="{{category.name}}" class="btn btn-info" type="">
         Manage subcategory</button>

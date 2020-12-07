@@ -7,7 +7,8 @@ from shopyoapi.init import db
 from modules.admin.models import Role
 from modules.admin.models import User
 from modules.settings.models import Settings
-
+from modules.category.models import Category
+from modules.category.models import SubCategory
 
 def add_admin(username, password):
     with app.app_context():
@@ -28,3 +29,10 @@ def add_setting(name, value):
             s = Settings(setting=name, value=value)
             db.session.add(s)
             db.session.commit()
+
+
+def add_uncategorised_category():
+    with app.app_context():
+        category = Category(name='uncategorised')
+        category.subcategories.append(SubCategory(name='uncategorised'))
+        category.insert()

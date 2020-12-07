@@ -47,7 +47,8 @@
 {% block content %}
 
 
- <form action="{{url_for('category.edit_sub_img', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data">
+ <form action="{{url_for('category.edit_sub_img', subcategory_id=subcategory.id)}}" method="post" 
+  enctype="multipart/form-data">
 
   
   {%if len(subcategory.resources) == 0%}

@@ -15,10 +15,13 @@ from flask import flash
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
 
+import flask_uploads
+
 from shopyoapi.enhance import get_setting
 from shopyoapi.file import unique_sec_filename
 from shopyoapi.file import delete_file
 from shopyoapi.init import subcategoryphotos
+from shopyoapi.init import categoryphotos
 from shopyoapi.validators import is_empty_str
 from shopyoapi.html import notify_warning
 from shopyoapi.html import notify_success
@@ -62,22 +65,72 @@ def add():
     has_category = False
     if request.method == "POST":
         name = request.form["name"]
+        if is_empty_str(name):
+            return redirect(url_for('category.dashboard'))
+        if name.strip() == 'uncategorised':
+            flash(notify_warning('Category cannot be named as uncategorised'))
+            return redirect(url_for('category.dashboard'))
         has_category = Category.category_exists(name)
         if has_category is False:
-            m = Category(name=name)
-            m.insert()
+            category = Category(name=name)
+            try:
+                if "photo" in request.files:
+                    file = request.files['photo']
+                    
+                    filename = unique_sec_filename(file.filename)
+                    file.filename = filename
+                    categoryphotos.save(file)
+                    category.resources.append(
+                        Resource(
+                            type="image", filename=filename, category="category_image"
+                        )
+                    )
+            except flask_uploads.UploadNotAllowed as e:
+                pass
+            category.insert()
         return render_template("category/add.html", **context)
 
     context["has_category"] = str(has_category)
     return render_template("category/add.html", **context)
 
 
-@module_blueprint.route("/delete/<name>", methods=["GET", "POST"])
+@module_blueprint.route("<name>/delete", methods=["GET", "POST"])
 @login_required
 def delete(name):
-    category = Category.query.filter(Category.name == name).first()
-    category.delete()
-    return redirect("/category")
+
+    if name != 'uncategorised':
+
+        category = Category.query.filter(Category.name == name).first()
+
+        if len(category.subcategories) != 0:
+            flash(notify_warning('please delete all subcategories for category'.format(
+                name
+                )))
+            return url_for('category.dashboard')
+
+        category.delete()
+        return redirect(url_for('category.dashboard'))
+    else:
+        flash(notify_warning('Cannot delete category uncategorised'))
+        return redirect(url_for('category.dashboard'))
+
+
+@module_blueprint.route("/<category_name>/img/<filename>/delete", methods=["GET"])
+@login_required
+def category_image_delete(category_name, filename):
+    resource = Resource.query.filter(Resource.filename == filename).first()
+    category = Category.query.filter(Category.name==category_name).first()
+    category.resources.remove(resource)
+    category.update()
+    delete_file(
+        os.path.join(current_app.config["UPLOADED_CATEGORYPHOTOS_DEST"], filename)
+    )
+
+    return redirect(
+        url_for(
+            "category.dashboard"
+        )
+    )
 
 
 @module_blueprint.route("/update", methods=["GET", "POST"])
@@ -91,21 +144,44 @@ def update():
         name = request.form["category_name"]
         old_name = request.form["old_category_name"]
         try:
-            m = Category.query.filter_by(name=old_name).first()
-            m.name = name
-            m.update()
+            category = Category.query.filter_by(name=old_name).first()
+
+            try:
+                if "photo" in request.files:
+                    file = request.files['photo']
+                    
+                    filename = unique_sec_filename(file.filename)
+                    file.filename = filename
+                    categoryphotos.save(file)
+                    category.resources.append(
+                        Resource(
+                            type="image", filename=filename, category="category_image"
+                        )
+                    )
+            except flask_uploads.UploadNotAllowed as e:
+                pass
+
+            category.name = name
+            category.update()
         except sqlalchemy.exc.IntegrityError:
             context["message"] = "you cannot modify to an already existing category"
             context["redirect_url"] = "/category/"
             render_template("category/message.html", **context)
-        return redirect("/category/")
+        return redirect(url_for('category.dashboard'))
 
 
 @module_blueprint.route("{}/edit/<category_name>".format(module_info["panel_redirect"]), methods=["GET", "POST"])
 @login_required
-def edit(category_name):
+def edit_dashboard(category_name):
     context = {}
-    context["category_name"] = category_name
+    category = Category.query.filter(
+            Category.name == category_name
+        ).first()
+
+    context.update({
+        'len': len,
+        'category': category
+        })
     return render_template("category/edit.html", **context)
 
 # api
@@ -139,7 +215,7 @@ def add_sub(category_name):
         if is_empty_str(name):
             flash(notify_warning('Name cannot be empty'))
             return redirect(url_for('category.manage_sub', category_name=subcategory.category.name))
-        category_name = subcategory.category.name
+        
         existing = SubCategory.query.filter(
                 (SubCategory.name == name) &
                 (Category.name == category_name)
@@ -152,17 +228,21 @@ def add_sub(category_name):
         subcategory = SubCategory(name=name)
         
 
-        if "photo" in request.files:
-            file = request.files['photo']
-            
-            filename = unique_sec_filename(file.filename)
-            file.filename = filename
-            subcategoryphotos.save(file)
-            subcategory.resources.append(
-                Resource(
-                    type="image", filename=filename, category="subcategory_image"
+        try:
+            if "photo" in request.files:
+                file = request.files['photo']
+                
+                filename = unique_sec_filename(file.filename)
+                file.filename = filename
+                subcategoryphotos.save(file)
+                subcategory.resources.append(
+                    Resource(
+                        type="image", filename=filename, category="subcategory_image"
+                    )
                 )
-            )
+        except flask_uploads.UploadNotAllowed as e:
+            pass
+       
 
         category.subcategories.append(subcategory)
 
@@ -210,17 +290,20 @@ def edit_sub_name(subcategory_id):
 def edit_sub_img(subcategory_id):
     if request.method == 'POST':
         subcategory = SubCategory.query.get(subcategory_id)
-        if "photo" in request.files:
-            file = request.files['photo']
-            
-            filename = unique_sec_filename(file.filename)
-            file.filename = filename
-            subcategoryphotos.save(file)
-            subcategory.resources.append(
-                Resource(
-                    type="image", filename=filename, category="subcategory_image"
+        try:
+            if "photo" in request.files:
+                file = request.files['photo']
+                
+                filename = unique_sec_filename(file.filename)
+                file.filename = filename
+                subcategoryphotos.save(file)
+                subcategory.resources.append(
+                    Resource(
+                        type="image", filename=filename, category="subcategory_image"
+                    )
                 )
-            )
+        except flask_uploads.UploadNotAllowed as e:
+            pass
         subcategory.update()
         return redirect(url_for('category.edit_sub_img_dashboard', subcategory_id=subcategory.id))
 
@@ -247,19 +330,35 @@ def subcategory_image_delete(subcategory_id, filename):
 @module_blueprint.route("/sub/<subcategory_id>/delete", methods=["GET", "POST"])
 @login_required
 def sub_delete(subcategory_id):
-
     subcategory = SubCategory.query.get(subcategory_id)
-    for resource in subcategory.resources:
-        filename = resource.filename
-        resource.delete()
-        delete_file(
-            os.path.join(current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename)
-        )
-    subcategory.delete()
+    category_name = subcategory.name
+    if subcategory.name == 'uncategorised' and subcategory.category.name == 'uncategorised':
+        flash(notify_warning('Cannot delete subcategory uncategorised of catgeory uncategorised'))
+        return redirect(url_for('category.manage_sub', category_name=category_name))
+    
+    uncategorised_sub = SubCategory.query.filter(
+        (SubCategory.name == 'uncategorised') &
+        (SubCategory.category_name == 'uncategorised')
+    ).first()
 
-    ## add for products change
+    for product in subcategory.products:
+        uncategorised_sub.products.append(product)
+    uncategorised_sub.update()
+    subcategory.products = []
+    category = subcategory.category
+    category.subcategories.remove(subcategory)
+    category.update()
 
-    return redirect(url_for())
+    # for resource in subcategory.resources:
+    #     filename = resource.filename
+    #     resource.delete()
+    #     delete_file(
+    #         os.path.join(current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename)
+    #     )
+    # subcategory.delete()
+
+## add for products change
+    return redirect(url_for('category.manage_sub', category_name=category_name))
 
 
 @module_blueprint.route("<category_id>/{}/sub".format(module_info["panel_redirect"]), methods=["GET", "POST"])
@@ -282,4 +381,11 @@ def subcategory_image(filename):
 
     return send_from_directory(
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
+    )
+
+@module_blueprint.route("/file/<filename>", methods=["GET"])
+def category_image(filename):
+
+    return send_from_directory(
+        current_app.config["UPLOADED_CATEGORYPHOTOS_DEST"], filename
     )
