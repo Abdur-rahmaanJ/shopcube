@@ -60,3 +60,18 @@
       #flashed-messages{
         -ms-overflow-style: none;
       }
+
+
+.navbar{
+    padding-right: 120px;
+    padding-left: 120px;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+
+}
+
+.form-inline a{
+    font-size: 12px;
+}
+

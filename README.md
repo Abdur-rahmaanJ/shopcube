@@ -55,7 +55,7 @@ _Note: If the command does not get recognised, close and reopen your cmd_
 
 ```
 default login
-  username: user
+  mail: admin@domain.com
   password: pass
 ```
 

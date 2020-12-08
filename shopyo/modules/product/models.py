@@ -22,6 +22,9 @@ class Product(db.Model):
     in_stock = db.Column(db.Integer)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Float)
+
+    is_onsale = db.Column(db.Boolean, default=False)
+    is_featured = db.Column(db.Boolean, default=False)
     subcategory_name = db.Column(
         db.String(100), db.ForeignKey("subcategories.name")
     )
