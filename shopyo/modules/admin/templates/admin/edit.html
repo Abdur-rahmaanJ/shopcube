@@ -15,7 +15,6 @@
 
 
 {% block content %}
-{%include 'admin/nav.html'%}
 <br>
 <h2>Edit User</h2>
 
@@ -35,12 +34,28 @@
               </div>
               <input type="password" name="password" class="form-control" id="user_password" value="" autocomplete="off">
             </div>
+
             <div class="input-group mb-3">
               <div class="custom-control custom-checkbox">
                   <input type="checkbox" name="is_admin" id="is_admin" class="custom-control-input" value="True" autocomplete="off" checked>
                   <label for="admin_user" class="custom-control-label">Admin User</label>
               </div>
             </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="text" name="first_name" class="form-control" placeholder="First Name" autocomplete="off" value="{{ user.first_name }}">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="text" name="last_name" class="form-control" placeholder="Last Name" autocomplete="off" value="{{ user.last_name }}">
+            </div>
+
             <input required name="id"  id="user_id" type="hidden" class="form-control"  value="{{ user.id }}">  
             <div>
               Roles<br>

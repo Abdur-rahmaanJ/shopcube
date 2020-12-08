@@ -66,6 +66,8 @@ def user_add():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
         admin_user = request.form.get("is_admin")
         if admin_user == "True":
             is_admin = True
@@ -80,6 +82,8 @@ def user_add():
             new_user = User()
             new_user.email = email
             new_user.is_admin = is_admin
+            new_user.first_name = first_name
+            new_user.last_name = last_name
             new_user.set_hash(password)
 
             for key in request.form:
@@ -140,6 +144,8 @@ def admin_update():
     id = request.form["id"]
     password = request.form["password"]
     email = request.form["email"]
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
     admin_user = request.form.get("admin_user")
     if admin_user == "True":
         admin_user = True
@@ -149,6 +155,8 @@ def admin_update():
     user.set_hash(password)
     user.admin_user = admin_user
     user.email = email
+    user.first_name = first_name
+    user.last_name = last_name
     if password.strip():
         user.set_hash(password)
     user.roles[:] = []
