@@ -22,10 +22,10 @@ def load_user(id):
 def admin_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if current_user.admin_user is True:
+        if current_user.is_admin is True:
             return f(*args, **kwargs)
         else:
             flash("You need to be an admin to view this page.")
-            return redirect(url_for("category.category"))
+            return redirect(url_for("control_panel.index"))
 
     return wrap

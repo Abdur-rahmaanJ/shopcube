@@ -10,13 +10,16 @@ from modules.category.models import Category
 from modules.category.models import SubCategory
 from modules.settings.models import Settings
 
+import datetime
 
-def add_admin(username, password):
+def add_admin(email, password):
     with app.app_context():
         user = User()
-        user.username = username
+        user.email = email
         user.password = generate_password_hash(password, method="sha256")
-        user.admin_user = True
+        user.is_admin = True
+        user.email_confirmed = True
+        email_confirm_date = datetime.datetime.now()
         user.insert()
 
 

@@ -49,7 +49,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Username</th>
+                <th>Email</th>
                 <th>Password</th>
                 <th>Admin</th>
                 <th>Roles</th>
@@ -60,9 +60,9 @@
               {% for user in users %}
               <tr>
                 <td>{{user.id}}</td>
-                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
                 <td>*******</td>
-                <td>{{user.admin_user}}</td>
+                <td>{{user.is_admin}}</td>
                 <td>
                   {%for role in user.roles%}
                     <div class="badge badge-primary">

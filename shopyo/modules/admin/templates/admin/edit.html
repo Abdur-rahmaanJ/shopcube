@@ -20,14 +20,14 @@
 <h2>Edit User</h2>
 
 <form action='/admin/update' method="post">
-        <label>Edit User:<span> {{ user.username }} </span></label>
+        <label>Edit User:<span> {{ user.email }} </span></label>
             <div class="input-group mb-3">
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-key"></i></span>
               </div>
-              <input type="text" name="username" class="form-control" id="" value="{{ user.username }}" required autocomplete="off">
+              <input type="text" name="email" class="form-control" id="" value="{{ user.email }}" required autocomplete="off">
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -37,7 +37,7 @@
             </div>
             <div class="input-group mb-3">
               <div class="custom-control custom-checkbox">
-                  <input type="checkbox" name="admin_user" id="admin_user" class="custom-control-input" value="True" autocomplete="off" checked>
+                  <input type="checkbox" name="is_admin" id="is_admin" class="custom-control-input" value="True" autocomplete="off" checked>
                   <label for="admin_user" class="custom-control-label">Admin User</label>
               </div>
             </div>

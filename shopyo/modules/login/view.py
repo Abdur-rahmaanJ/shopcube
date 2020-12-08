@@ -36,19 +36,19 @@ def login():
     login_form = LoginForm()
     context["form"] = login_form
     if login_form.validate_on_submit():
-        username = login_form.username.data
+        email = login_form.email.data
         password = login_form.password.data
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(email=email).first()
         if user is None or not user.check_hash(password):
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("login.login"))
         login_user(user)
         return redirect(url_for("control_panel.index"))
-    return render_template("/login.html", **context)
+    return render_template("login/login.html", **context)
 
 
 @login_blueprint.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect("/login")
+    return redirect(url_for('login.login'))

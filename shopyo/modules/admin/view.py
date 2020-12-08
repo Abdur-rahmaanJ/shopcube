@@ -64,22 +64,22 @@ def user_add():
     """
     context = {}
     if request.method == "POST":
-        username = request.form["name"]
+        email = request.form["email"]
         password = request.form["password"]
-        admin_user = request.form.get("admin_user")
+        admin_user = request.form.get("is_admin")
         if admin_user == "True":
-            admin_user = True
+            is_admin = True
         else:
-            admin_user = False
+            is_admin = False
 
         has_user = db.session.query(
-            exists().where(User.username == username)
+            exists().where(User.email == email)
         ).scalar()
 
         if has_user is False:
             new_user = User()
-            new_user.username = username
-            new_user.admin_user = admin_user
+            new_user.email = email
+            new_user.is_admin = is_admin
             new_user.set_hash(password)
 
             for key in request.form:
@@ -139,7 +139,7 @@ def admin_update():
     """
     id = request.form["id"]
     password = request.form["password"]
-    username = request.form["username"]
+    email = request.form["email"]
     admin_user = request.form.get("admin_user")
     if admin_user == "True":
         admin_user = True
@@ -148,7 +148,7 @@ def admin_update():
     user = User.query.get(id)
     user.set_hash(password)
     user.admin_user = admin_user
-    user.username = username
+    user.email = email
     if password.strip():
         user.set_hash(password)
     user.roles[:] = []

@@ -20,6 +20,7 @@ class Config:
     UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
         STATIC, "uploads", "subcategory"
     )
+    PASSWORD_SALT = 'abcdefghi'
 
 
 class DevelopmentConfig(Config):
@@ -28,7 +29,6 @@ class DevelopmentConfig(Config):
     ENV = "development"
     DEBUG = True
     EXPLAIN_TEMPLATE_LOADING = True
-    LOGIN_DISABLED = True
 
 
 class TestingConfig(Config):
