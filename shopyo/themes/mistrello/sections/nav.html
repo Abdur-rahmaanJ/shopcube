@@ -1,17 +1,42 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">Sitename</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#"><img src="/static/shopyo.png" height="60" alt="CoolBrand"></a>
+
+  <!-- Collapse button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <!-- Collapsible content -->
+  <div class="collapse navbar-collapse" id="basicExampleNav">
+
+    <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="{{CONTACT_URL}}">Contact</a>
-      </li>
+
+       {%for category in get_categories()%}
+        {%if category.name.upper() != 'UNCATEGORISED'%}
+          <li class="nav-item text-white">
+            <a class="nav-link" href=""><b style="font-size: 12px">{{category.name.upper()}}</b></a>
+          </li>
+        {%endif%}
+      {%endfor%}
+
+      
+      
+
     </ul>
+    <!-- Links -->
+
+
+    <form class="form-inline text-white">
+    <a class="md-form my-0 text-white" href=""><i class="fa fa-search"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="md-form my-0 text-white" href="">LOGIN</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="md-form my-0 text-white" href="">CART/Rs0.00</a>
+  </form>
   </div>
+  <!-- Collapsible content -->
+
 </nav>
+<!--/.Navbar-->

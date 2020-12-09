@@ -36,10 +36,10 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 @module_blueprint.route("/")
 def index():
     # cant be defined above but must be manually set each time
-    active_theme_dir = os.path.join(
-        dirpath, "..", "..", "themes", get_setting("ACTIVE_THEME")
-    )
-    module_blueprint.template_folder = active_theme_dir
-
+    # active_theme_dir = os.path.join(
+    #     dirpath, "..", "..", "themes", get_setting("ACTIVE_THEME")
+    # )
+    # module_blueprint.template_folder = active_theme_dir
+    
     # return str(module_blueprint.template_folder)
-    return render_template("index.html")
+    return render_template(get_setting("ACTIVE_THEME")+"/index.html")

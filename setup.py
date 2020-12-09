@@ -61,7 +61,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    keywords="flask pos management shop",  # Optional
+    keywords="flask pos management shop ecommerce cms erp",  # Optional
     # You can just specify package directories manually here if your project is
     # simple. Or you can use find_packages().
     #

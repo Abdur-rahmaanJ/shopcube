@@ -6,6 +6,7 @@ from flask import current_app
 from flask import redirect
 from flask import render_template
 from flask import url_for
+import jinja2
 
 from flask_login import login_required
 
@@ -41,6 +42,7 @@ module_settings = {"module_info": module_info}
 module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 
+
 @module_blueprint.route("/")
 @login_required
 def index():
@@ -58,6 +60,7 @@ def index():
     active_theme = get_setting("ACTIVE_THEME")
     context.update({"all_info": all_info, "active_theme": active_theme})
     context.update(module_settings)
+    
     return render_template(
         "{}/index.html".format(module_info["module_name"]), **context
     )
@@ -67,4 +70,9 @@ def index():
 @login_required
 def activate(theme_name):
     set_setting("ACTIVE_THEME", theme_name)
+
+    # with app.app_context():
+    
+    # current_app.jinja_loader,
+    # print(current_app.jinja_loader.list_templates())
     return redirect(url_for("{}.index".format(module_info["module_name"])))

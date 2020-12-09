@@ -29,6 +29,7 @@ class DevelopmentConfig(Config):
     ENV = "development"
     DEBUG = True
     EXPLAIN_TEMPLATE_LOADING = True
+    LOGIN_DISABLED = True
 
 
 class TestingConfig(Config):

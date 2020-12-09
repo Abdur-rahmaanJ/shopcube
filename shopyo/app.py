@@ -15,6 +15,8 @@ from flask_uploads import configure_uploads
 
 from config import app_config
 
+import jinja2
+
 from shopyoapi.enhance import get_setting
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
@@ -48,6 +50,17 @@ def create_app(config_name):
             continue
         mod = importlib.import_module("modules.{}.view".format(module))
         app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
+
+
+    with app.app_context():
+        theme_dir = os.path.join(
+            app.config['BASE_DIR'], "themes"
+        )
+        my_loader = jinja2.ChoiceLoader([
+            app.jinja_loader,
+            jinja2.FileSystemLoader([theme_dir]),
+        ])
+        app.jinja_loader = my_loader
 
     @app.context_processor
     def inject_global_vars():
@@ -96,6 +109,13 @@ def create_app(config_name):
     # end of func
     return app
 
+    # if app.config["DEBUG"]:
+        # @app.after_request
+        # def after_request(response):
+            # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, public, max-age=0"
+            # response.headers["Expires"] = 0
+            # response.headers["Pragma"] = "no-cache"
+            # return response
 
 app = create_app("development")
 
