@@ -68,12 +68,8 @@ class LoginTest(TestBase):
         user.admin_user = True
         user.insert()
         self.driver.get(self.url)
-        self.driver.find_element_by_id("username").send_keys(
-            test_user2["username"]
-        )
-        self.driver.find_element_by_id("password").send_keys(
-            test_user2["password"]
-        )
+        self.driver.find_element_by_id("username").send_keys(test_user2["username"])
+        self.driver.find_element_by_id("password").send_keys(test_user2["password"])
         self.driver.find_element_by_id("submit").click()
         time.sleep(3)
         self.assertEqual(
@@ -82,14 +78,10 @@ class LoginTest(TestBase):
 
     def test_failed_login(self):
         self.driver.get(self.url)
-        self.driver.find_element_by_id("username").send_keys(
-            test_user2["username"]
-        )
+        self.driver.find_element_by_id("username").send_keys(test_user2["username"])
         self.driver.find_element_by_id("password").send_keys("wrong_password")
         self.driver.find_element_by_id("submit").click()
         time.sleep(3)
         error_message = self.driver.find_element_by_id("error").text
         self.assertEqual(self.driver.current_url, self.url)
-        self.assertEqual(
-            error_message, "please check your user id and password"
-        )
+        self.assertEqual(error_message, "please check your user id and password")

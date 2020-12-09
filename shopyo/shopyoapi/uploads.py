@@ -12,6 +12,7 @@ from modules.settings.models import Settings
 
 import datetime
 
+
 def add_admin(email, password):
     with app.app_context():
         user = User()

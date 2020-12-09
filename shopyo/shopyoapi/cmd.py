@@ -68,9 +68,7 @@ def initialise():
 
     print("Creating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
-    subprocess.run(
-        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
-    )
+    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
 
     print("Migrating")
     print(SEP_CHAR * SEP_NUM, end="\n\n")

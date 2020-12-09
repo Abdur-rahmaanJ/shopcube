@@ -27,8 +27,6 @@ role_helpers = db.Table(
 
 
 class AnonymousUser(AnonymousUserMixin):
-
-
     def set_password(self, password):
         return False
 
@@ -38,7 +36,7 @@ class AnonymousUser(AnonymousUserMixin):
     def avatar(self, size):
         return False
 
-    @property 
+    @property
     def is_admin(self):
         return False
 
@@ -64,13 +62,13 @@ class User(UserMixin, db.Model):
 
     email = db.Column(db.String(120), unique=True, nullable=False)
 
-    date_registered = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
+    date_registered = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.now()
+    )
     email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
 
-    roles = db.relationship(
-        "Role", secondary=role_helpers, cascade="all, delete"
-    )
+    roles = db.relationship("Role", secondary=role_helpers, cascade="all, delete")
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -94,24 +92,22 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     def generate_confirmation_token(self, email):
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        return serializer.dumps(email, salt=app.config['PASSWORD_SALT'])
+        serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+        return serializer.dumps(email, salt=app.config["PASSWORD_SALT"])
 
     @staticmethod
     def confirm_mail_token(self, token, expiration=3600):
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
         try:
             email = serializer.loads(
-                token,
-                salt=app.config['PASSWORD_SALT'],
-                max_age=expiration
+                token, salt=app.config["PASSWORD_SALT"], max_age=expiration
             )
         except:
             return False
         return email
 
         def __repr__(self):
-            return 'User: {}'.format(self.email)
+            return "User: {}".format(self.email)
 
 
 class Role(db.Model):

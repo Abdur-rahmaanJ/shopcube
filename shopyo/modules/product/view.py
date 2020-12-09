@@ -74,9 +74,7 @@ def list(subcategory_id):
     return render_template("product/list.html", **context)
 
 
-@module_blueprint.route(
-    "/sub/<subcategory_id>/add/dashboard", methods=["GET", "POST"]
-)
+@module_blueprint.route("/sub/<subcategory_id>/add/dashboard", methods=["GET", "POST"])
 @login_required
 def add_dashboard(subcategory_id):
     context = {}
@@ -139,9 +137,7 @@ def add(subcategory_id):
                 if "photos[]" in request.files:
                     files = request.files.getlist("photos[]")
                     for file in files:
-                        filename = unique_filename(
-                            secure_filename(file.filename)
-                        )
+                        filename = unique_filename(secure_filename(file.filename))
                         file.filename = filename
                         productphotos.save(file)
                         p.resources.append(
@@ -169,9 +165,7 @@ def delete(barcode):
     for resource in product.resources:
         filename = resource.filename
         delete_file(
-            os.path.join(
-                current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
-            )
+            os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
         )
     product.delete()
     db.session.commit()
@@ -185,15 +179,11 @@ def edit_dashboard(barcode):
 
     product = Product.query.filter(Product.barcode == barcode).first()
 
-    context.update(
-        {"len": len, "product": product, "subcategory": product.subcategory}
-    )
+    context.update({"len": len, "product": product, "subcategory": product.subcategory})
     return render_template("product/edit.html", **context)
 
 
-@module_blueprint.route(
-    "/sub/<subcategory_id>/update", methods=["GET", "POST"]
-)
+@module_blueprint.route("/sub/<subcategory_id>/update", methods=["GET", "POST"])
 @login_required
 def update(subcategory_id):
     # this block is only entered when the form is submitted
@@ -267,9 +257,7 @@ def lookup(subcategory_id):
 
 
 # api
-@module_blueprint.route(
-    "sub/<subcategory_id>/search/<user_input>", methods=["GET"]
-)
+@module_blueprint.route("sub/<subcategory_id>/search/<user_input>", methods=["GET"])
 @login_required
 def search(subcategory_id, user_input):
     if request.method == "GET":
@@ -296,9 +284,7 @@ def search(subcategory_id, user_input):
 @module_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
 def check(barcode):
-    has_product = db.session.query(
-        exists().where(Product.barcode == barcode)
-    ).scalar()
+    has_product = db.session.query(exists().where(Product.barcode == barcode)).scalar()
     return jsonify({"exists": has_product})
 
 
@@ -307,18 +293,14 @@ def check(barcode):
 #
 
 
-@module_blueprint.route(
-    "/<filename>/product/<barcode>/delete", methods=["GET"]
-)
+@module_blueprint.route("/<filename>/product/<barcode>/delete", methods=["GET"])
 def image_delete(filename, barcode):
     resource = Resource.query.filter(Resource.filename == filename).first()
     product = Product.query.filter(Product.barcode == barcode).first()
     product.resources.remove(resource)
     product.update()
     delete_file(
-        os.path.join(
-            current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
-        )
+        os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
     )
 
     return redirect(url_for("product.edit_dashboard", barcode=barcode))

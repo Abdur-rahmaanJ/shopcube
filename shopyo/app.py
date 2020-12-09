@@ -51,15 +51,14 @@ def create_app(config_name):
         mod = importlib.import_module("modules.{}.view".format(module))
         app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
 
-
     with app.app_context():
-        theme_dir = os.path.join(
-            app.config['BASE_DIR'], "themes"
+        theme_dir = os.path.join(app.config["BASE_DIR"], "themes")
+        my_loader = jinja2.ChoiceLoader(
+            [
+                app.jinja_loader,
+                jinja2.FileSystemLoader([theme_dir]),
+            ]
         )
-        my_loader = jinja2.ChoiceLoader([
-            app.jinja_loader,
-            jinja2.FileSystemLoader([theme_dir]),
-        ])
         app.jinja_loader = my_loader
 
     @app.context_processor
@@ -97,11 +96,9 @@ def create_app(config_name):
             "ACTIVE_THEME_VERSION": ACTIVE_THEME_VERSION,
             "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL,
             "CONTACT_URL": CONTACT_URL,
-
-            'len': len,
-
+            "len": len,
             "get_categories": get_categories,
-            'get_products': get_products
+            "get_products": get_products,
         }
 
         return base_context
@@ -110,12 +107,13 @@ def create_app(config_name):
     return app
 
     # if app.config["DEBUG"]:
-        # @app.after_request
-        # def after_request(response):
-            # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, public, max-age=0"
-            # response.headers["Expires"] = 0
-            # response.headers["Pragma"] = "no-cache"
-            # return response
+    # @app.after_request
+    # def after_request(response):
+    # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, public, max-age=0"
+    # response.headers["Expires"] = 0
+    # response.headers["Pragma"] = "no-cache"
+    # return response
+
 
 app = create_app("development")
 
