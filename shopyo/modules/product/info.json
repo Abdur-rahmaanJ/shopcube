@@ -4,5 +4,5 @@
         "type": "hidden",
         "fa-icon": "",
         "url_prefix": "/product",
-        "panel_redirect": "/dashboard"
+        "dashboard": "/dashboard"
 }

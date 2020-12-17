@@ -46,7 +46,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 module_name = module_info["module_name"]
 
 
-@module_blueprint.route(module_info["panel_redirect"])
+@module_blueprint.route(module_info["dashboard"])
 @login_required
 def dashboard():
     context = {}
@@ -177,7 +177,7 @@ def update():
 
 
 @module_blueprint.route(
-    "{}/edit/<category_name>".format(module_info["panel_redirect"]),
+    "{}/edit/<category_name>".format(module_info["dashboard"]),
     methods=["GET", "POST"],
 )
 @login_required
@@ -203,7 +203,7 @@ def check(category_name):
 
 
 @module_blueprint.route(
-    "{}/<category_name>/sub/".format(module_info["panel_redirect"]),
+    "{}/<category_name>/sub/".format(module_info["dashboard"]),
     methods=["GET", "POST"],
 )
 @login_required
@@ -216,7 +216,7 @@ def manage_sub(category_name):
 
 
 @module_blueprint.route(
-    "{}/<category_name>/sub/add".format(module_info["panel_redirect"]),
+    "{}/<category_name>/sub/add".format(module_info["dashboard"]),
     methods=["GET", "POST"],
 )
 @login_required
@@ -276,7 +276,7 @@ def add_sub(category_name):
 
 
 @module_blueprint.route(
-    "{}/sub/<subcategory_id>/img/edit".format(module_info["panel_redirect"]),
+    "{}/sub/<subcategory_id>/img/edit".format(module_info["dashboard"]),
     methods=["GET", "POST"],
 )
 @login_required
@@ -427,7 +427,7 @@ def sub_delete(subcategory_id):
 
 
 @module_blueprint.route(
-    "<category_id>/{}/sub".format(module_info["panel_redirect"]),
+    "<category_id>/{}/sub".format(module_info["dashboard"]),
     methods=["GET", "POST"],
 )
 @login_required
@@ -446,7 +446,10 @@ def choose_sub_dashboard(category_id):
 
 @module_blueprint.route("/sub/file/<filename>", methods=["GET"])
 def subcategory_image(filename):
-
+    if filename == 'default':
+        return send_from_directory(
+            os.path.join(current_app.config["BASE_DIR"], 'static', 'default'), 'default_subcategory.jpg'
+        )
     return send_from_directory(
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
     )

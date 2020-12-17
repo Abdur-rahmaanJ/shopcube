@@ -77,7 +77,7 @@ class LoginTest(TestBase):
         self.driver.find_element_by_id("submit").click()
         time.sleep(3)
         self.assertEqual(
-            self.driver.current_url, "http://localhost:8943/control_panel/"
+            self.driver.current_url, "http://localhost:8943/dashboard/"
         )
 
     def test_failed_login(self):

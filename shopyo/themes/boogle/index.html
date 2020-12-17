@@ -1,3 +1,5 @@
+{%set active_page = 'index.html'%}
+
 <!-- public facing landing page -->
 <!DOCTYPE html>
 <html>
@@ -57,6 +59,21 @@
     margin-left: .25em;
 
 }
+
+
+.navbar{
+    padding-right: 120px;
+    padding-left: 120px;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+
+}
+
+
+.carousel-inner img {
+  width: 100%;
+}
 		</style>
 		{% include ACTIVE_THEME+'/sections/resources.html'%}
 
@@ -70,8 +87,10 @@ $(function () {
 		</script>
 	</head>
 <body>
+
 	{% include ACTIVE_THEME+'/sections/nav.html'%}
-	<header> <!--https://startbootstrap.com/snippets/full-slider-->
+	<header style=""> <!--https://startbootstrap.com/snippets/full-slider-->
+
   		{% include ACTIVE_THEME+'/sections/carousel.html'%}
 	</header>
 
@@ -82,7 +101,7 @@ $(function () {
 		<h2 ><b>WELCOME TO OUR SHOP</b></h2>
 		<p >blablabla.</p>
 		<p>
-			<button type="button" class="btn btn-primary">Primary</button>
+			<a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">shop</button></a>
 		</p>
 	</div>
 </div>

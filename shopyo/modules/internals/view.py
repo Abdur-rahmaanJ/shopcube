@@ -23,7 +23,7 @@ def index():
     for module in os.listdir("modules"):
         if module.startswith("__"):
             continue
-        if module not in ["control_panel"]:
+        if module not in ["dashboard"]:
             with open("modules/{}/info.json".format(module)) as f:
                 module_info = json.load(f)
                 all_info[module] = module_info

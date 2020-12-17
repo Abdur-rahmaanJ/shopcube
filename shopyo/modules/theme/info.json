@@ -2,7 +2,7 @@
         "display_string": "Theme",
         "module_name":"theme",
         "type": "show",
-        "fa-icon": "fa fa-paint-brush",
+        "fa-icon": "fa fa-palette",
         "url_prefix": "/theme",
         "author": {
             "name":"",

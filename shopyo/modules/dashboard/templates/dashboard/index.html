@@ -11,14 +11,14 @@
 {% endblock %}
 
 {% block content %}
-  {% include 'control_panel/nav.html' %}
+  {% include 'dashboard/nav.html' %}
 
   <br>
 
     {% for info in all_info %}
         {% if all_info[info]['type'] == 'show'%}
-          {%if 'panel_redirect' in all_info[info]%}
-            <a href="{{all_info[info]['url_prefix'] + all_info[info]['panel_redirect']}}">
+          {%if 'dashboard' in all_info[info]%}
+            <a href="{{all_info[info]['url_prefix'] + all_info[info]['dashboard']}}">
           {%else%}
             <a href="{{all_info[info]['url_prefix']}}">
           {%endif%}

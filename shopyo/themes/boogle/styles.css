@@ -13,14 +13,6 @@
         min-width: 50px;
     }
 
-    li i {
-        font-size: 30px;
-    }
-
-    li {
-        margin-right: 10px;
-    }
-
     a{
         text-decoration: inherit;
         color: inherit;
@@ -37,7 +29,7 @@
     }
     .card-menu-icon{
         font-size: 40px;
-
+        color: #3f497d;
     }
 
     .shopyo-alert{
@@ -62,16 +54,22 @@
       }
 
 
-.navbar{
-    padding-right: 120px;
-    padding-left: 120px;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-
+.yo-admin-nav-icon{
+    font-size: 30px
 }
-
 .form-inline a{
-    font-size: 12px;
+    font-size: 15px;
 }
 
+#page-content-wrapper{
+    background-color: #f1f1f1;
+}
+
+.yo-sidebar-item{
+    background-color: #fff;
+    border: none;
+}
+.yo-sidebar-item:hover{
+    background-color: #ece0fd;
+    color:#6200ee;
+    border: none;

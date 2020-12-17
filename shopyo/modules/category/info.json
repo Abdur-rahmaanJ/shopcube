@@ -2,7 +2,7 @@
         "display_string": "Inventory",
         "module_name":"category",
         "type": "show",
-        "fa-icon": "fa fa-store",
+        "fa-icon": "fa fa-boxes",
         "url_prefix": "/category",
-        "panel_redirect": "/dashboard"
+        "dashboard": "/dashboard"
 }

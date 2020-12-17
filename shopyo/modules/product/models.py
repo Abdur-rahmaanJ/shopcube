@@ -14,6 +14,7 @@ transaction_helpers = db.Table(
 
 class Product(db.Model):
     __tablename__ = "product"
+    
     barcode = db.Column(db.String(100), primary_key=True)
     price = db.Column(db.Float)
     name = db.Column(db.String(100))

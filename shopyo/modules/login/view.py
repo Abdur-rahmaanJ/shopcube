@@ -43,7 +43,7 @@ def login():
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("login.login"))
         login_user(user)
-        return redirect(url_for("control_panel.index"))
+        return redirect(url_for("dashboard.index"))
     return render_template("login/login.html", **context)
 
 

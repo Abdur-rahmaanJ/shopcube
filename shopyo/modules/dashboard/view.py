@@ -10,16 +10,16 @@ from flask_login import login_required
 
 from shopyoapi.html import notify_success
 
-control_panel_blueprint = Blueprint(
-    "control_panel",
+dashboard_blueprint = Blueprint(
+    "dashboard",
     __name__,
     template_folder="templates",
-    url_prefix="/control_panel",
+    url_prefix="/dashboard",
 )
 all_info = {}
 
 
-@control_panel_blueprint.route("/")
+@dashboard_blueprint.route("/")
 @login_required
 def index():
     context = {}
@@ -29,7 +29,7 @@ def index():
     ):
         if module.startswith("__"):
             continue
-        if module not in ["control_panel"]:
+        if module not in ["dashboard"]:
             with open(
                 os.path.join(
                     current_app.config["BASE_DIR"],
@@ -43,4 +43,4 @@ def index():
 
     context["all_info"] = all_info
     flash(notify_success("Notif test"))
-    return render_template("control_panel/index.html", **context)
+    return render_template("dashboard/index.html", **context)

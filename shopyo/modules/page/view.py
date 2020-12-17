@@ -55,9 +55,9 @@ def view_page(page_id, slug):
     return render_template("page/view_page.html", **context)
 
 
-@module_blueprint.route(module_info["panel_redirect"])
+@module_blueprint.route(module_info["dashboard"])
 @login_required
-def panel_redirect():
+def dashboard():
     context = {}
     form = PageForm()
 
@@ -73,11 +73,11 @@ def check_pagecontent():
         form = PageForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return redirect(url_for("{}.panel_redirect".format(module_name)))
+            return redirect(url_for("{}.dashboard".format(module_name)))
         toaddpage = Page(
             slug=form.slug.data,
             content=form.content.data,
             title=form.title.data,
         )
         toaddpage.insert()
-        return redirect(url_for("{}.panel_redirect".format(module_name)))
+        return redirect(url_for("{}.dashboard".format(module_name)))

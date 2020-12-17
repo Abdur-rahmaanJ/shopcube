@@ -14,6 +14,7 @@ from flask import render_template
 # from shopyoapi.forms import flash_errors
 from shopyoapi.enhance import get_active_theme_dir
 from shopyoapi.enhance import get_setting
+from modules.shop.helpers import get_cart_data
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -42,4 +43,7 @@ def index():
     # module_blueprint.template_folder = active_theme_dir
     
     # return str(module_blueprint.template_folder)
-    return render_template(get_setting("ACTIVE_THEME")+"/index.html")
+    context = {}
+    cart_info = get_cart_data()
+    context.update(cart_info)
+    return render_template(get_setting("ACTIVE_THEME")+"/index.html", **context)

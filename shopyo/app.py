@@ -109,6 +109,7 @@ def create_app(config_name):
     # end of func
     return app
 
+    # app.jinja_env.globals.update(x=x)
     # if app.config["DEBUG"]:
         # @app.after_request
         # def after_request(response):

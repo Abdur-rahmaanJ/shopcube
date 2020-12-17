@@ -60,6 +60,10 @@ def active_theme_css(active_theme):
 def product_image(filename):
 
     # return theme_dir
+    if filename == 'default':
+        return send_from_directory(
+            os.path.join(current_app.config["BASE_DIR"], 'static', 'default'), 'default_product.jpg'
+        )
     return send_from_directory(
         current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
     )

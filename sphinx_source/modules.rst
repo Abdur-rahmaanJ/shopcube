@@ -60,7 +60,7 @@ specify the module url and panel icon.
             "type": "show",
             "fa-icon": "fa fa-store",
             "url_prefix": "/page",
-            "panel_redirect": "/dashboard"
+            "dashboard": "/dashboard"
     }
 
 * ``display_string``: Display name on control panel. If you decide to use Shopyo as a Flask base, it does not matter then
@@ -68,7 +68,7 @@ specify the module url and panel icon.
 * ``type``: Used to show or hide modules on control panel. If control panel module not present, you can skip it
 * ``fa-icon``: Used to show fontawesome icon on control panel. If control panel module not present, you can skip it
 * ``url_prefix``: Needed to specify module's base url
-* ``panel_redirect``: Used to redirect in control panel. For example the contact module's url is /contact. But we want it to be public. So we have a panel redirect of /dashboard to direct admin to /contact/dashboard. Dont include if you don't want redirect
+* ``dashboard``: Used to redirect in control panel. For example the contact module's url is /contact. But we want it to be public. So we have a panel redirect of /dashboard to direct admin to /contact/dashboard. Dont include if you don't want redirect
 
 Default Modules
 ----------------
