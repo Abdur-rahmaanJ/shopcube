@@ -216,7 +216,31 @@ def cart_update():
 #     return str(session['cart'][0]) 
 # 
 
+@module_blueprint.route("/prepare/checkout", methods=['GET', 'POST'])
+def prepare_checkout():
+    if request.method == 'POST':
+        # update cart
+
+        all_data = request.get_json()
+        session['option_id'] = all_data['option_id']
+
+        data = {}
+        for key in all_data['cart']:
+            barcode = key
+            quantity = all_data['cart'][key]
+            product = Product.query.get(barcode);
+            if int(quantity) > product.in_stock:
+                quantity = product.in_stock
+            data[barcode] = int(quantity)
+
+        if 'cart' in session:
+            session['cart'] = [data]
+        else:
+            session['cart'] = [{}]
+        
+        return jsonify({'goto': url_for('shop.checkout')})
+
+
 @module_blueprint.route("/checkout", methods=['GET', 'POST'])
 def checkout():
-    if request.method == 'POST':
-        return jsonify({'goto': url_for('shop.index')})
+    return 'checkout!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'

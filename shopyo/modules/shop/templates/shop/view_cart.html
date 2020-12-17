@@ -48,8 +48,9 @@ input[type=number]::-webkit-outer-spin-button {
                                     {%for item in cart_data%}
                                         {%set product = get_product(item)%}
                                         
-                                            <input type="hidden" name="barcode_{{ loop.index }}" value="{{ product.barcode }}">
+                                            
                                         <tr>
+                                            <input type="hidden" name="barcode_{{ loop.index }}" value="{{ product.barcode }}" class="barcode">
                                             <td><a href="{{ url_for('shop.cart_remove', product_barcode=product.barcode) }}">
                                                 <i style="color: #ff6565;" class="fa fa-times-circle"></i>
                                             </a></td>
@@ -204,15 +205,28 @@ $(reciviedXml).find('p').each(function () {
 <script type="text/javascript">
     $('#checkoutbut').click(function (){
         var csrf_token = "{{ csrf_token() }}";
+        var option_id = $('input[type=radio][name=option]:checked').attr('id');
+        var cart = {};
+        $('#cart-items .barcode').each(function () {
+            var barcode = $(this).val();
+            var row = $(this).parent();
+            var quantity_input = $(row).find('.quantity');
+            var quantity = quantity_input.val();
+            cart[barcode] = quantity;
+        });
+        var post_data = {
+            'option_id': option_id,
+            'cart': cart
+        };
         $.ajax({
             type: "POST",
             url: "{{ url_for('shop.prepare_checkout') }}",
             // The key needs to match your method's input parameter (case-sensitive).
-            data: JSON.stringify({'test': 'ok'}),
+            data: JSON.stringify(post_data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data){
-                // alert(data['message']);
+                // alert(JSON.stringify(data));
                 // window.location.reload();
                 // return false;
                 window.location.href = data['goto'];
