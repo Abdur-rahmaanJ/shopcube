@@ -17,6 +17,7 @@ from modules.shopman.forms import CouponForm
 
 from .models import DeliveryOption
 from .models import PaymentOption
+from .models import Coupon
 
 mhelp = ModuleHelp(__file__, __name__)
 
@@ -139,11 +140,57 @@ def payment_option_delete(option_id):
     flash(notify_success('Option Deleted!'))
     return mhelp.redirect_url('shopman.payment')
 
+
 @module_blueprint.route("/coupon/dashboard", methods=['GET', 'POST'])
 def coupon():
     form = CouponForm()
+    coupons = Coupon.query.all()
     context = {
-        'form': form
+        'form': form,
+        'coupons': coupons
     }
     context.update({'info': mhelp.info})
     return mhelp.render('coupon.html', **context)
+
+
+@module_blueprint.route('/coupon/add', methods=['GET', 'POST'])
+def coupon_add():
+    if request.method == 'POST':
+        form = CouponForm()
+        if form.validate_on_submit():
+            toadd = Coupon()
+            toadd.string = form.string.data
+            toadd.type = form.type.data
+            toadd.value = form.value.data
+            toadd.insert()
+            flash(notify_success('Coupon Added!'))
+            return mhelp.redirect_url('shopman.coupon')
+        else:
+            flash_errors(form)
+            return mhelp.redirect_url('shopman.coupon')
+
+@module_blueprint.route('/coupon/<coupon_id>/delete', methods=['GET'])
+def coupon_delete(coupon_id):
+    coupon = Coupon.query.get(coupon_id)
+    coupon.delete()
+
+    flash(notify_success('Coupon Deleted!'))
+    return mhelp.redirect_url('shopman.coupon')
+
+@module_blueprint.route('/coupon/update', methods=['GET', 'POST'])
+def coupon_update():
+    if request.method == 'POST':
+        form = CouponForm()
+        if form.validate_on_submit:
+            coupon_id = request.form['id']
+            coupon = Coupon.query.get(coupon_id)
+            coupon.string = form.string.data
+            coupon.type = form.type.data
+            coupon.value = form.value.data
+            coupon.update()
+
+            flash(notify_success('Coupon updated!'))
+            return mhelp.redirect_url('shopman.coupon')
+        else:
+            flash_errors(form)
+            return mhelp.redirect_url('shopman.coupon')

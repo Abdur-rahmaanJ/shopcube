@@ -227,7 +227,7 @@ $(function() {
                                 {%else%}
                                     {%set img_url = url_for('resource.product_image', filename='default') %}
                                 {%endif%}
-                                <div class="xzoom-container card">
+                                <div class="xzoom-container card" style="padding-left: 10px; padding-right: 10px; padding-top: 10px;"> 
                                     <img class="xzoom3" id="xzoom-default" src="{{ img_url }}" 
                                     xoriginal="{{ img_url }}">
 

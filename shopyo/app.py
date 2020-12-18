@@ -8,6 +8,7 @@ from flask import redirect
 from flask import url_for
 
 from flask_wtf.csrf import CSRFProtect
+from flask_login import current_user
 
 sys.path.append(".")
 
@@ -101,7 +102,9 @@ def create_app(config_name):
             'len': len,
 
             "get_categories": get_categories,
-            'get_products': get_products
+            'get_products': get_products,
+
+            'current_user': current_user
         }
 
         return base_context

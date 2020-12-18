@@ -16,6 +16,7 @@ input[type=number]::-webkit-outer-spin-button {
 #cart-items{
     min-width: 200px;
 }
+
 </style>
 {% endblock %}
 {% block content %}
@@ -76,10 +77,14 @@ input[type=number]::-webkit-outer-spin-button {
                                 </tbody>
                             </table>
                             <div>
-                                <button class="btn btn-primary"><- Continue shopping</button>
-                                <button class="btn btn-primary">Update Cart</button>
+                                <button class="btn btn-primary" type="button"><a href="{{ url_for('shop.index') }}">
+                                    
+                                    <- Continue shopping
+                                </a></button>
+                                <button class="btn btn-primary" type="submit">Update Cart</button>
                             </div>
                             </form>
+                            <br><br>
                         </div>
                         <div class="col-md-5 col-xs-3">
                             <h3>Cart Totals</h3><hr>

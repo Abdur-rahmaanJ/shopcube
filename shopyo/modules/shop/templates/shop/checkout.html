@@ -1,6 +1,7 @@
 {%set active_page = 'shop.html'%}
 {% extends "shop/base.html" %}
 {% block pagehead %}
+
 {% endblock %}
 {% block content %}
 <div class="shop-spacer-1">
@@ -121,6 +122,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="applyCoupon" value="applyCoupon" id="defaultCheck3">
+                                    <label class="form-check-label" for="defaultCheck3">
+                                        Apply coupon
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="applyCoupon" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Coupon</label><br>
+                                    <input class="form-control" type="" name="coupon" value="" >
+                                </div>
+                            </div>
+                        </div>
+                        {% if not current_user.is_authenticated %}
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="createAccount" value="createAccount" id="defaultCheck4">
+                                    <label class="form-check-label" for="defaultCheck4">
+                                        Create Account
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -229,6 +260,15 @@
 
 
         $('#grandsubtotal').text(subtotal());
+
+
+        $('input[type="checkbox"][name="applyCoupon"]').click(function() {
+
+            var inputValue = $(this).attr("value");
+            // console.log(inputValue)
+            $("." + inputValue).toggle();
+            //$('.applyCoupon').toggle();
+        });
     });
     </script>
     {% endblock %}

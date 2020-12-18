@@ -44,7 +44,7 @@ class CouponForm(FlaskForm):
         ('value', 'value')], 
         validators=[DataRequired()],
         render_kw={"class": "form-control"})
-    value = StringField(
+    value = IntegerField(
         "Value",
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},

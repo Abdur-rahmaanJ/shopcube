@@ -24,7 +24,7 @@
 <div>
     <div class="card">
         <div class="card-body">
-            <form class="form" method="POST" action="">
+            <form class="form" method="POST" action="{{ url_for('shopman.coupon_add') }}">
                 <div>
                     <label>{{ form.string.label }}</label>
                     {{ form.string() }}
@@ -48,20 +48,25 @@
                 
                 <thead>
                     <th>String</th>
-                    <th>Percentage</th>
+                    <th>Type</th>
                     <th>Value</th>
+                    <th></th>
                 </thead>
                 <tbody>
-                    {%for option in options%}
+                    {%for coupon in coupons%}
                         <tr>
-                            <form method="POST" action="{{ url_for('shopman.payment_option_update') }}">
-                            <input type="hidden" name="id" value="{{ option.id }}">
+                            <form method="POST" action="{{ url_for('shopman.coupon_update') }}">
+                            <input type="hidden" name="id" value="{{ coupon.id }}">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <td>
-                                <input style="min-width: 200px;" type="text" name="name" value="{{ option.name }}" class="form-control" />
+                                {{ form.string(value=coupon.string) }}
                             </td>
                             <td>
-                                <textarea style="min-width: 300px;" type="text" name="text" class="form-control" rows=10/>{{ option.text }}</textarea>
+                                {% set z = form.type.process_data(coupon.type) %}
+                                {{ form.type() }}
+                            </td>
+                            <td>
+                                {{ form.value(value=coupon.value) }}
                             </td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -69,7 +74,7 @@
                                     save
                                   </button>
 
-                                  <button onclick="location.href='{{ url_for('shopman.payment_option_delete', option_id=option.id) }}'" class="btn btn-danger" type="button">
+                                  <button onclick="location.href='{{ url_for('shopman.coupon_delete', coupon_id=coupon.id) }}'" class="btn btn-danger" type="button">
                                     delete
                                   </button>
                                 </div>
