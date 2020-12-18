@@ -3,18 +3,49 @@ from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import SubmitField
 from wtforms.validators import DataRequired
+from wtforms.validators import Optional
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email
 from wtforms.fields.html5 import IntegerField
+from wtforms.fields import SelectField
+from wtforms import TextAreaField
 
 class DeliveryOptionForm(FlaskForm):
     option = StringField(
-        "Option Text",
+        "Option",
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     price = IntegerField(
         "Price",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+
+
+class PaymentOptionForm(FlaskForm):
+    name = StringField(
+        "Option",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    text =  TextAreaField('Text', [DataRequired()], render_kw={"rows": 10,
+        "class": "form-control", "autocomplete": "off"})
+
+
+class CouponForm(FlaskForm):
+    string = StringField(
+        "String",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    type = SelectField('Type', choices = [
+        ('percentage', 'percentage'), 
+        ('value', 'value')], 
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"})
+    value = StringField(
+        "Value",
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )

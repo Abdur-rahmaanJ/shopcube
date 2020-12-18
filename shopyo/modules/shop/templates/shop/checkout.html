@@ -1,0 +1,234 @@
+{%set active_page = 'shop.html'%}
+{% extends "shop/base.html" %}
+{% block pagehead %}
+{% endblock %}
+{% block content %}
+<div class="shop-spacer-1">
+</div>
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.index') }}">Shop</a></li>
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.cart') }}">Cart</a></li>
+        <li class="breadcrumb-item active">Checkout</li>
+    </ol>
+</nav>
+<div>
+    <div class="container">
+        <form method="POST" action="#">
+        <div class="row">
+            <div class="col-md-6 col-xs-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="defaultAddress">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>First Name</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Last Name</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Country</label><br>
+                                    <input class="form-control" type="" name="" disabled value="Mauritius" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>Street Address</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>Town/City</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Phone</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Email</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>Order Notes (optional)</label><br>
+                                    <textarea class="form-control" rows='7'></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="diffAddress" value="diffAddress" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Ship to a different address than the default one?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="diffAddress" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>First Name</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Last Name</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Country</label><br>
+                                    <input class="form-control" type="" name="" disabled value="Mauritius" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>Street Address</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>Town/City</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Phone</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>Email</label><br>
+                                    <input class="form-control" type="" name="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>Order Notes (optional)</label><br>
+                                    <textarea class="form-control" rows='7'></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-4">
+                <div class="card">
+                    <div class="card-body">
+                        
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <table class="table table-responsive" id="cart-items">
+                                <thead>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </thead>
+                                <tbody>
+                                    {%for item in cart_data%}
+                                    {%set product = get_product(item)%}
+                                    <tr>
+                                        <input type="hidden" name="barcode_{{ loop.index }}" value="{{ product.barcode }}" class="barcode">
+                                        <td>{{product.name}}</td>
+                                        <td>{{cart_data[item]}}</td>
+                                        <td class="price">{{product.selling_price}}</td>
+                                        <td class="total_price">{{product.selling_price * cart_data[item]}}</td>
+                                    </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <div>
+                                Grand Subtotal: <span id="grandsubtotal"></span><br><br>
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <b>Shipping</b>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>option</th>
+                                            <th>price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for option in delivery_options%}
+                                        <tr>
+                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="deliveryoption" value="{{option.price}}" {{'checked' if loop.index == 1}}></th>
+                                            <td style="min-width: 200px">{{option.option}}</td>
+                                            <td>{{option.price}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <b>Payment</b>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for option in payment_options%}
+                                        <tr>
+                                            <td><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="option" value="{{option.price}}" {{'checked' if loop.index == 1}}></td>
+                                            <td style="min-width: 200px">{{option.name}}<br>
+                                            {{option.text}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                Grand total: <span id="grandtotal"></span><br><br>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary">Place order</button>
+                            </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+    function subtotal() {
+        var tbl = $("#cart-items .total_price");
+
+        sumVal = 0;
+
+        for (var i = 0; i < tbl.length; i++) {
+            // console.log(tbl[i].textContent);
+            sumVal += parseFloat(tbl[i].textContent);
+        }
+        return sumVal
+    }
+
+    $(document).ready(function() {
+        $('input[type="checkbox"][name="diffAddress"]').click(function() {
+            var inputValue = $(this).attr("value");
+            $("." + inputValue).toggle();
+            $('.defaultAddress').toggle();
+        });
+
+
+        $('#grandsubtotal').text(subtotal());
+    });
+    </script>
+    {% endblock %}

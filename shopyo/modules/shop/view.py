@@ -22,6 +22,7 @@ from modules.product.models import Product
 from modules.category.models import Category
 from modules.category.models import SubCategory
 from modules.shopman.models import DeliveryOption
+from modules.shopman.models import PaymentOption
 
 from .helpers import get_cart_data
 
@@ -39,6 +40,8 @@ globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
 )
 
 
+def get_product(product_id):
+    return Product.query.get(product_id)
 
 
 
@@ -173,8 +176,7 @@ def cart_remove(product_barcode):
         return redirect(url_for('shop.cart'))
 
 
-def get_product(product_id):
-    return Product.query.get(product_id)
+
 @module_blueprint.route("/cart", methods=['GET', 'POST'])
 def cart():
     context = {}
@@ -243,4 +245,14 @@ def prepare_checkout():
 
 @module_blueprint.route("/checkout", methods=['GET', 'POST'])
 def checkout():
-    return 'checkout!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    context = {}
+    delivery_options = DeliveryOption.query.all()
+    payment_options = PaymentOption.query.all()
+    context.update({
+        'get_product': get_product,
+        'delivery_options': delivery_options,
+        'payment_options': payment_options,
+        })
+    cart_info = get_cart_data()
+    context.update(cart_info)
+    return render_template('shop/checkout.html', **context)

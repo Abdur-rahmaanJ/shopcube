@@ -1,4 +1,4 @@
-{{
+ {{
 sidebar_item(
 'Home', 
 icon=info['fa-icon'], 
@@ -11,6 +11,22 @@ sidebar_item(
 'Delivery', 
 icon='fa fa-paper-plane', 
 url=url_for(info['module_name']+'.delivery')
+)
+}}
+
+{{
+sidebar_item(
+'Payment', 
+icon='fa fa-money-check-alt', 
+url=url_for(info['module_name']+'.payment')
+)
+}}
+
+{{
+sidebar_item(
+'Coupon', 
+icon='fa fa-candy-cane', 
+url=url_for(info['module_name']+'.coupon')
 )
 }}
 
