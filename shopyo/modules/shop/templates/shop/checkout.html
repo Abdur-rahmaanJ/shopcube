@@ -21,48 +21,56 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="defaultAddress">
+                            {%if not current_user.is_authenticated%}
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                <a class="shop_underline_pink" href="{{url_for('login.shop_login')}}">log in to retain your rewards</a>
+                                </div>
+                                
+                            </div><br>
+                            {%endif%}
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
                                     <label>First Name</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="default_first_name" required>
                                 </div>
                                 <div class="col-md-6 col-xs-4">
                                     <label>Last Name</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="default_last_name" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
                                     <label>Country</label><br>
-                                    <input class="form-control" type="" name="" disabled value="Mauritius" required>
+                                    <input class="form-control" type="" name="default_country" disabled value="Mauritius" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <label>Street Address</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="default_street" name="" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <label>Town/City</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="default_town_city" name="" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
                                     <label>Phone</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="number" name="default_phone" required>
                                 </div>
                                 <div class="col-md-6 col-xs-4">
                                     <label>Email</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="email" name="default_email" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <label>Order Notes (optional)</label><br>
-                                    <textarea class="form-control" rows='7'></textarea>
+                                    <textarea class="form-control" rows='7' name="default_order_notes"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -80,45 +88,45 @@
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
                                     <label>First Name</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="diff_first_name" required>
                                 </div>
                                 <div class="col-md-6 col-xs-4">
                                     <label>Last Name</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="diff_last_name" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
                                     <label>Country</label><br>
-                                    <input class="form-control" type="" name="" disabled value="Mauritius" required>
+                                    <input class="form-control" type="" name="diff_country" disabled value="Mauritius" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <label>Street Address</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="diff_street" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <label>Town/City</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="diff_town_city" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
                                     <label>Phone</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="diff_phone" required>
                                 </div>
                                 <div class="col-md-6 col-xs-4">
                                     <label>Email</label><br>
-                                    <input class="form-control" type="" name="" required>
+                                    <input class="form-control" type="" name="diff_email" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <label>Order Notes (optional)</label><br>
-                                    <textarea class="form-control" rows='7'></textarea>
+                                    <textarea class="form-control" rows='7' name='diff_order_notes'></textarea>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +134,7 @@
                             <div class="col-md-12 col-xs-12">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="applyCoupon" value="applyCoupon" id="defaultCheck3">
-                                    <label class="form-check-label" for="defaultCheck3">
+                                    <label class="form-check-label" for="defaultCheck3" >
                                         Apply coupon
                                     </label>
                                 </div>

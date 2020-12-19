@@ -13,7 +13,7 @@
               <h5 class="mb-0">
                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapse_{{category.id}}" aria-expanded="true" aria-controls="collapse_{{category.id}}">
                   <i class="fa fa-arrow-alt-circle-down"></i> 
-                </button> <a href="{{ url_for('shop.category', category_name=category.name) }}" style="border-bottom: 2px solid pink">{{category.name}}</a>
+                </button> <a class="shop_underline_pink" href="{{ url_for('shop.category', category_name=category.name) }}" >{{category.name}}</a>
               </h5>
             </div>
 
@@ -23,7 +23,7 @@
                     padding-left: 10px;">
                     <div >
                         {%for subcategory in category.subcategories%}
-                        <p class="subcategory_link"><a style="border-bottom: 2px solid pink" href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}">{{subcategory.name}}</a></p>
+                        <p class="subcategory_link"><a class="shop_underline_pink" href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}">{{subcategory.name}}</a></p>
                     {%endfor%}
                     </div>
                     

@@ -26,6 +26,12 @@ from modules.shopman.models import PaymentOption
 
 from .helpers import get_cart_data
 
+from .models import Order
+from .models import OrderItem
+from .models import BillingDetail
+
+from .forms import CheckoutForm
+
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
 
@@ -248,11 +254,17 @@ def checkout():
     context = {}
     delivery_options = DeliveryOption.query.all()
     payment_options = PaymentOption.query.all()
+    form = CheckoutForm()
     context.update({
         'get_product': get_product,
         'delivery_options': delivery_options,
         'payment_options': payment_options,
+        'form': form
         })
     cart_info = get_cart_data()
     context.update(cart_info)
     return render_template('shop/checkout.html', **context)
+
+@module_blueprint.route("/checkout/process", methods=['GET', 'POST'])
+def checkout_process():
+    pass
