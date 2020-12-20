@@ -16,7 +16,7 @@ class Order(db.Model):
     order_items = db.relationship(
         "OrderItem", backref="item_order", lazy=True,
     )
-    billing_detail = relationship("BillingDetail", uselist=False, backref="billing_detail_order")
+    billing_detail = db.relationship("BillingDetail", uselist=False, backref="billing_detail_order")
 
     status = db.Column(db.String(120))
 
@@ -74,7 +74,7 @@ class BillingDetail(db.Model):
     email = db.Column(db.String(100))
     order_notes = db.Column(db.String(100))
 
-    order_id = db.Column(db.Integer, ForeignKey('orders.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
 
     def add(self):
         db.session.add(self)

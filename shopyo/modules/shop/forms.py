@@ -8,91 +8,108 @@ from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email
 from wtforms.fields.html5 import IntegerField
 from wtforms.fields import SelectField
+from wtforms.fields import BooleanField
 from wtforms import TextAreaField
 
+from shopyoapi.validators import require_if_diff_address
+from shopyoapi.validators import require_if_default_address
+from shopyoapi.validators import require_if_apply_coupon
 
 class CheckoutForm(FlaskForm):
+    diffAddress = BooleanField('Ship to a different address than the default one?',
+        render_kw={"class": "form-check-input", 'value': 'diffAddress', 'id':'diffAddress'})
+    applyCoupon = BooleanField('Apply Coupon',
+        render_kw={"class": "form-check-input", 'value': 'applyCoupon', 'id':'applyCoupon'})
+    createAccount = BooleanField('Create Account?',
+        render_kw={"class": "form-check-input", 'value': 'createAccount', 'id':'createAccount'})
+
+
     default_first_name = StringField(
         "First Name",
-        [DataRequired()],
+        [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     default_last_name = StringField(
         "Last Name",
-        [DataRequired()],
+        [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     default_country = StringField(
         "Country",
-        [DataRequired()],
-        render_kw={"class": "form-control", "autocomplete": "off"},
+        render_kw={"class": "form-control", "autocomplete": "off", 'value': 'Mauritius', 'disabled':''},
     )
     default_street = StringField(
         "Street",
-        [DataRequired()],
+        [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     default_town_city = StringField(
         "Town / City",
-        [DataRequired()],
+        [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     default_phone = StringField(
         "Phone",
-        [DataRequired()],
+        [require_if_default_address],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    default_email = StringField(
+        "Email",
+        [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     default_order_notes =  TextAreaField(
-        'Text', 
-        [optional()], 
+        'Order Notes (optional)', 
+        [Optional()], 
         render_kw={"rows": 10,
         "class": "form-control", "autocomplete": "off"})
 
 
     diff_first_name = StringField(
         "First Name",
-        [DataRequired()],
+        [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     diff_last_name = StringField(
         "Last Name",
-        [DataRequired()],
+        [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     diff_country = StringField(
         "Country",
-        [DataRequired()],
-        render_kw={"class": "form-control", "autocomplete": "off"},
+        render_kw={"class": "form-control", "autocomplete": "off", 'value': 'Mauritius', 'disabled':''},
     )
     diff_street = StringField(
         "Street",
-        [DataRequired()],
+        [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     diff_town_city = StringField(
         "Town / City",
-        [DataRequired()],
+        [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     diff_phone = StringField(
         "Phone",
-        [DataRequired()],
+        [require_if_diff_address],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    diff_email = StringField(
+        "Email",
+        [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     diff_order_notes =  TextAreaField(
-        'Text', 
-        [optional()], 
+        'Order Notes (optional)', 
+        [Optional()], 
         render_kw={"rows": 10,
         "class": "form-control", "autocomplete": "off"})
 
     coupon = StringField(
         "Coupon",
-        [DataRequired()],
+        [require_if_apply_coupon],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
 
 
-    diffAddress = BooleanField('Diff address?',
-        render_kw={"class": "form-check-input", 'value': 'diffAddress'})
-    applyCoupon = BooleanField('Coupon',
-        render_kw={"class": "form-check-input", 'value': 'applyCoupon'})
+

@@ -15,127 +15,135 @@
 </nav>
 <div>
     <div class="container">
-        <form method="POST" action="#">
+        <form method="POST" action="{{ url_for('shop.checkout_process') }}">
+            {{ form.hidden_tag() }}
         <div class="row">
             <div class="col-md-6 col-xs-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="defaultAddress">
-                            {%if not current_user.is_authenticated%}
+                        {%if not current_user.is_authenticated%}
                             <div class="row">
-                                <div class="col-md-6 col-xs-4">
+                                <div class="col-md-12 col-xs-12">
                                 <a class="shop_underline_pink" href="{{url_for('login.shop_login')}}">log in to retain your rewards</a>
                                 </div>
                                 
                             </div><br>
-                            {%endif%}
+                        {%endif%}
+                        <div class="defaultAddress">
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
-                                    <label>First Name</label><br>
-                                    <input class="form-control" type="" name="default_first_name" required>
+                                    <label>{{ form.default_first_name.label }}</label><br>
+                                    {{ form.default_first_name(value=checkout_data['default_first_name']) }}
                                 </div>
                                 <div class="col-md-6 col-xs-4">
-                                    <label>Last Name</label><br>
-                                    <input class="form-control" type="" name="default_last_name" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-xs-4">
-                                    <label>Country</label><br>
-                                    <input class="form-control" type="" name="default_country" disabled value="Mauritius" required>
+                                    <label>{{ form.default_last_name.label }}</label><br>
+                                    {{ form.default_last_name(value=checkout_data['default_last_name']) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12 col-xs-12">
-                                    <label>Street Address</label><br>
-                                    <input class="form-control" type="default_street" name="" required>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_country.label }}</label><br>
+                                    {{ form.default_country() }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
-                                    <label>Town/City</label><br>
-                                    <input class="form-control" type="default_town_city" name="" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-xs-4">
-                                    <label>Phone</label><br>
-                                    <input class="form-control" type="number" name="default_phone" required>
-                                </div>
-                                <div class="col-md-6 col-xs-4">
-                                    <label>Email</label><br>
-                                    <input class="form-control" type="email" name="default_email" required>
+                                    <label>{{ form.default_street.label }}</label><br>
+                                    {{ form.default_street(value=checkout_data['default_street']) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
-                                    <label>Order Notes (optional)</label><br>
-                                    <textarea class="form-control" rows='7' name="default_order_notes"></textarea>
+                                    <label>{{ form.default_town_city.label }}</label><br>
+                                    {{ form.default_town_city(value=checkout_data['default_town_city']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_phone.label }}</label><br>
+                                    {{ form.default_phone(value=checkout_data['default_phone']) }}
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_email.label }}</label><br>
+                                    {{ form.default_email(value=checkout_data['default_email']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>{{ form.default_order_notes.label }}</label><br>
+                                    {{ form.default_order_notes(value=checkout_data['default_order_notes']) }}
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="diffAddress" value="diffAddress" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Ship to a different address than the default one?
-                                    </label>
+                                    {{ form.diffAddress() }}
+                                    {{ form.diffAddress.label }}
+
                                 </div>
                             </div>
                         </div>
                         <div class="diffAddress" style="display: none;">
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
-                                    <label>First Name</label><br>
-                                    <input class="form-control" type="" name="diff_first_name" required>
+                                    {{ form.diff_first_name.label }} <br>
+                                    {{ form.diff_first_name(value=checkout_data['diff_first_name']) }}
                                 </div>
                                 <div class="col-md-6 col-xs-4">
-                                    <label>Last Name</label><br>
-                                    <input class="form-control" type="" name="diff_last_name" required>
+                                    {{ form.diff_last_name.label }} <br>
+                                    {{ form.diff_last_name(value=checkout_data['diff_last_name']) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
-                                    <label>Country</label><br>
-                                    <input class="form-control" type="" name="diff_country" disabled value="Mauritius" required>
+                                    {{ form.diff_country.label }} <br>
+                                    {{ form.diff_country() }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
-                                    <label>Street Address</label><br>
-                                    <input class="form-control" type="" name="diff_street" required>
+                                    {{ form.diff_street.label }} <br>
+                                    {{ form.diff_street(value=checkout_data['diff_street']) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
-                                    <label>Town/City</label><br>
-                                    <input class="form-control" type="" name="diff_town_city" required>
+                                    {{ form.diff_town_city.label }} <br>
+                                    {{ form.diff_town_city(value=checkout_data['diff_town']) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
-                                    <label>Phone</label><br>
-                                    <input class="form-control" type="" name="diff_phone" required>
+                                    {{ form.diff_phone.label }} <br>
+                                    {{ form.diff_phone(value=checkout_data['diff_phone']) }}
                                 </div>
                                 <div class="col-md-6 col-xs-4">
-                                    <label>Email</label><br>
-                                    <input class="form-control" type="" name="diff_email" required>
+                                    {{ form.diff_email.label }} <br>
+                                    {{ form.diff_email(value=checkout_data['diff_email']) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
-                                    <label>Order Notes (optional)</label><br>
-                                    <textarea class="form-control" rows='7' name='diff_order_notes'></textarea>
+                                    {{ form.diff_order_notes.label }} <br>
+                                    {{ form.diff_order_notes(value=checkout_data['diff_order_notes']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <div class="form-check">
+                                        {{ form.createAccount() }}
+                                        {{ form.createAccount.label }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="applyCoupon" value="applyCoupon" id="defaultCheck3">
-                                    <label class="form-check-label" for="defaultCheck3" >
-                                        Apply coupon
+                                    {{ form.applyCoupon() }}
+                                    <label class="form-check-label" for="applyCoupon" >
+                                        {{ form.applyCoupon.label }}
                                     </label>
                                 </div>
                             </div>
@@ -143,23 +151,12 @@
                         <div class="applyCoupon" style="display: none;">
                             <div class="row">
                                 <div class="col-md-6 col-xs-4">
-                                    <label>Coupon</label><br>
-                                    <input class="form-control" type="" name="coupon" value="" >
+                                    {{ form.coupon.label }}<br>
+                                    {{ form.coupon(value=checkout_data['coupon']) }}
                                 </div>
                             </div>
                         </div>
-                        {% if not current_user.is_authenticated %}
-                        <div class="row">
-                            <div class="col-md-12 col-xs-12">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="createAccount" value="createAccount" id="defaultCheck4">
-                                    <label class="form-check-label" for="defaultCheck4">
-                                        Create Account
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
+
                     </div>
                 </div>
             </div>
@@ -206,7 +203,7 @@
                                     <tbody>
                                         {%for option in delivery_options%}
                                         <tr>
-                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="deliveryoption" value="{{option.price}}" {{'checked' if loop.index == 1}}></th>
+                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="deliveryoption" data-value="{{option.price}}" {{'checked' if loop.index == 1}}></th>
                                             <td style="min-width: 200px">{{option.option}}</td>
                                             <td>{{option.price}}</td>
                                         </tr>
@@ -224,7 +221,7 @@
                                     <tbody>
                                         {%for option in payment_options%}
                                         <tr>
-                                            <td><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="option" value="{{option.price}}" {{'checked' if loop.index == 1}}></td>
+                                            <td><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="paymentoption" value="{{option.price}}" {{'checked' if loop.index == 1}}></td>
                                             <td style="min-width: 200px">{{option.name}}<br>
                                             {{option.text}}</td>
                                         </tr>
@@ -267,8 +264,15 @@
         });
 
 
-        $('#grandsubtotal').text(subtotal());
+        var grandsubtotal = subtotal();
+        $('#grandsubtotal').text(grandsubtotal);
+        var oprice = parseFloat($('input[type=radio][name=deliveryoption]').attr('data-value'));
+        $('#grandtotal').text(grandsubtotal+oprice);
 
+        var boolMap = {
+            "False": false,
+            "True": true
+        }
 
         $('input[type="checkbox"][name="applyCoupon"]').click(function() {
 
@@ -277,6 +281,31 @@
             $("." + inputValue).toggle();
             //$('.applyCoupon').toggle();
         });
+
+
+        $('input[type=radio][name=deliveryoption]').change(function() {
+            var subtotal = parseFloat($('#grandsubtotal').text());
+            var option_price = parseFloat(this.attr('data-value'));
+            $('#grandtotal').text(subtotal+option_price);
+        });
+
+        var diffAddress = boolMap["{{checkout_data['diffAddress']}}"];
+        var applyCoupon = boolMap["{{checkout_data['applyCoupon']}}"];
+        var createAccount = boolMap["{{checkout_data['createAccount']}}"];
+
+        if (diffAddress){
+            $('input[type="checkbox"][name="diffAddress"]').click();
+        }
+
+        if(applyCoupon){
+            $('input[type="checkbox"][name="applyCoupon"]').click();
+        }
+
+        if(createAccount){
+            $('input[type="checkbox"][name="createAccount]').click();
+        }
+
+
     });
     </script>
     {% endblock %}

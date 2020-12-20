@@ -12,8 +12,8 @@ from flask import session
 from flask import jsonify
 
 # # 
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
+from shopyoapi.html import notify_success
+from shopyoapi.forms import flash_errors
 
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
@@ -255,11 +255,24 @@ def checkout():
     delivery_options = DeliveryOption.query.all()
     payment_options = PaymentOption.query.all()
     form = CheckoutForm()
+    
+
+    if 'checkout_data' not in session:
+        checkout_data = {}
+        for key in form._fields:
+            checkout_data[key] = ''
+
+        session['checkout_data'] = [{}]
+        session['checkout_data'][0] = [checkout_data]
+    else:
+        checkout_data = session['checkout_data'][0]
+
     context.update({
         'get_product': get_product,
         'delivery_options': delivery_options,
         'payment_options': payment_options,
-        'form': form
+        'form': form,
+        'checkout_data': checkout_data
         })
     cart_info = get_cart_data()
     context.update(cart_info)
@@ -267,4 +280,22 @@ def checkout():
 
 @module_blueprint.route("/checkout/process", methods=['GET', 'POST'])
 def checkout_process():
-    pass
+    if request.method == 'POST':
+        form = CheckoutForm()
+        # print(dir(form))
+        # ordered dict print(form._fields[0][0])
+
+        # print(form._fields['default_first_name'].data)
+
+        checkout_data = {}
+        for key in form._fields:
+            checkout_data[key] = form._fields[key].data
+
+        session['checkout_data'][0] = checkout_data
+
+        print(request.form['deliveryoption'])
+        if form.validate_on_submit():
+            flash(notify_success('Great!'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('shop.checkout'))

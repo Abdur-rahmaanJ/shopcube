@@ -21,3 +21,28 @@ def verify_slug(form, field):
         raise ValidationError(
             "Slugs can only contain alphabets, numbers and hyphens (-). eg. good-day-1"
         )
+
+
+def require_if_default_address(form, field):
+
+    if form.diffAddress.data == False:
+        if is_empty_str(field.data):
+            raise ValidationError(
+                "{} cannot be empty!".format(field.label)
+            )
+
+def require_if_diff_address(form, field):
+    if form.diffAddress.data == True:
+        if is_empty_str(field.data):
+            raise ValidationError(
+                "{} cannot be empty!".format(field.label)
+            )
+
+
+def require_if_apply_coupon(form, field):
+
+    if form.applyCoupon.data == True:
+        if is_empty_str(field.data):
+            raise ValidationError(
+                "{} cannot be empty!".format(field.label)
+            )
