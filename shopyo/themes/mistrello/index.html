@@ -1,3 +1,5 @@
+{%set active_page = 'index.html'%}
+
 <!-- public facing landing page -->
 <!DOCTYPE html>
 <html>
@@ -57,8 +59,23 @@
     margin-left: .25em;
 
 }
+
+
+.navbar{
+    padding-right: 120px;
+    padding-left: 120px;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+
+}
+
+
+.carousel-inner img {
+  width: 100%;
+}
 		</style>
-		{% include 'sections/resources.html'%}
+		{% include ACTIVE_THEME+'/sections/resources.html'%}
 
 		<script type="text/javascript">
 $(function () {
@@ -70,100 +87,25 @@ $(function () {
 		</script>
 	</head>
 <body>
-	{% include 'sections/nav.html'%}
-	<header> <!--https://startbootstrap.com/snippets/full-slider-->
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-      <!-- Slide One - Set the background image for this slide in the line below -->
-      <div class="carousel-item active" style="background-image: url('https://source.unsplash.com/LAaSoL0LrYs/1920x1080')">
-        <div class="carousel-caption d-none d-md-block">
-          <h2 class="display-4">First Slide</h2>
-          <p class="lead">This is a description for the first slide.</p>
-        </div>
-      </div>
-      <!-- Slide Two - Set the background image for this slide in the line below -->
-      <div class="carousel-item" style="background-image: url('https://source.unsplash.com/bF2vsubyHcQ/1920x1080')">
-        <div class="carousel-caption d-none d-md-block">
-          <h2 class="display-4">Second Slide</h2>
-          <p class="lead">This is a description for the second slide.</p>
-        </div>
-      </div>
-      <!-- Slide Three - Set the background image for this slide in the line below -->
-      <div class="carousel-item" style="background-image: url('https://source.unsplash.com/szFUQoyvrxM/1920x1080')">
-        <div class="carousel-caption d-none d-md-block">
-          <h2 class="display-4">Third Slide</h2>
-          <p class="lead">This is a description for the third slide.</p>
-        </div>
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-  </div>
-</header>
 
+	{% include ACTIVE_THEME+'/sections/nav.html'%}
+	<header style=""> <!--https://startbootstrap.com/snippets/full-slider-->
 
-<div class="">
-  <div class="row">
-    <div class="col-12 col-sm-6 col-md-4" style="padding-right: 0; padding-left: 0;">
-<!--Zoom effect-->
-<div class="view overlay zoom">
-    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img%20(131).jpg" class="img-fluid " alt="smaple image">
-    <div class="mask flex-center rgba-red-light">
-        <p class="white-text">
-        	pegje  p0rewtj e0e tyj <br>
-        	<button class="btn btn-info">wtgfwrtg</button>
-        </p>
-    </div>
-</div>
-    </div>
-    <div class="col-12 col-sm-6 col-md-4" style="padding-right: 0; padding-left: 0;">
-<!--Zoom effect-->
-<div class="view overlay zoom">
-    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img%20(131).jpg" class="img-fluid " alt="smaple image">
-    <div class="mask flex-center rgba-red-light">
-        <p class="white-text">
-        	pegje  p0rewtj e0e tyj <br>
-        	<button class="btn btn-info">wtgfwrtg</button>
-        </p>
-    </div>
-</div>
-    </div>
-    <div class="col-12 col-sm-6 col-md-4" style="padding-right: 0; padding-left: 0;">
-<!--Zoom effect-->
-<div class="view overlay zoom">
-    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img%20(131).jpg" class="img-fluid " alt="smaple image">
-    <div class="mask flex-center rgba-red-light">
-        <p class="white-text">
-        	pegje  p0rewtj e0e tyj <br>
-        	<button class="btn btn-info">wtgfwrtg</button>
-        </p>
-    </div>
-</div>
-    </div>
-  </div>
+  		{% include ACTIVE_THEME+'/sections/carousel.html'%}
+	</header>
 
-</div> <!--img end-->
+	{% include ACTIVE_THEME+'/sections/image_row.html'%}
 
 <div class="container p-5">
 	<div class="text-center">
 		<h2 ><b>WELCOME TO OUR SHOP</b></h2>
 		<p >blablabla.</p>
 		<p>
-			<button type="button" class="btn btn-primary">Primary</button>
+			<a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">shop</button></a>
 		</p>
 	</div>
 </div>
+
 <div style="background-color: #fff; border-top: 5px solid #DC417F; border-bottom: 5px solid #DC417F;">
 	<div style="background-color: #DC417F; border-top: 5px solid white; border-bottom: 5px solid white; padding-top: 30px; padding-bottom: 20px;"  class="text-center">
 		<h2 class="white-text"><b>HOME DELIVERY</b></h2>
@@ -269,6 +211,6 @@ $(function () {
 
 
 
-	{% include 'sections/footer.html'%}
+	{% include ACTIVE_THEME+'/sections/footer.html'%}
 </body>
 </html>

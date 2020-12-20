@@ -21,30 +21,35 @@
 
 {% block content %}
 <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Author</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {%for key in all_info%}
-                <tr>
-                    <td>{{key}}</td>
-                    <td>{{all_info[key]['author']}}</td>
-                    <td>
-                        {%if active_theme != key%}
-                            <a class="btn btn-info" href="{{url_for('theme.activate', theme_name=key)}}">activate</a>
-                        {%else%}
-                        active
-                        {%endif%}
-                    </td>
-                </tr>
-            {%endfor%}
-        </tbody>
-    </table>
+    <div class="card" style="color: black">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key in all_info%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{all_info[key]['author']}}</td>
+                            <td>
+                                {%if active_theme != key%}
+                                    <a class="btn btn-info" href="{{url_for('theme.activate', theme_name=key)}}">activate</a>
+                                {%else%}
+                                active
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 
 <div>
     efewfj {{ACTIVE_THEME}}
