@@ -4,18 +4,17 @@
 
 """
 
-from uuid import uuid4
 import datetime
+from uuid import uuid4
+
+from flask import current_app
 
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
 from flask_login import login_manager
+from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-
-from flask import current_app
-
-from itsdangerous import URLSafeTimedSerializer
 
 from shopyoapi.init import db
 
@@ -27,8 +26,6 @@ role_helpers = db.Table(
 
 
 class AnonymousUser(AnonymousUserMixin):
-
-
     def set_password(self, password):
         return False
 
@@ -38,7 +35,7 @@ class AnonymousUser(AnonymousUserMixin):
     def avatar(self, size):
         return False
 
-    @property 
+    @property
     def is_admin(self):
         return False
 
@@ -64,7 +61,9 @@ class User(UserMixin, db.Model):
 
     email = db.Column(db.String(120), unique=True, nullable=False)
 
-    date_registered = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
+    date_registered = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.now()
+    )
     email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
 
@@ -94,24 +93,22 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     def generate_confirmation_token(self, email):
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        return serializer.dumps(email, salt=app.config['PASSWORD_SALT'])
+        serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+        return serializer.dumps(email, salt=app.config["PASSWORD_SALT"])
 
     @staticmethod
     def confirm_mail_token(self, token, expiration=3600):
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
         try:
             email = serializer.loads(
-                token,
-                salt=app.config['PASSWORD_SALT'],
-                max_age=expiration
+                token, salt=app.config["PASSWORD_SALT"], max_age=expiration
             )
         except:
             return False
         return email
 
         def __repr__(self):
-            return 'User: {}'.format(self.email)
+            return "User: {}".format(self.email)
 
 
 class Role(db.Model):

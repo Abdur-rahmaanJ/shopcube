@@ -1,5 +1,6 @@
-from shopyoapi.init import db
 from datetime import datetime
+
+from shopyoapi.init import db
 
 
 class Order(db.Model):
@@ -8,16 +9,26 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.now())
 
-    logged_in_customer_email = db.Column(db.String(120), default='')
+    logged_in_customer_email = db.Column(db.String(120), default="")
 
-    coupon_string = db.Column(db.String(120), default='')
+    coupon_string = db.Column(db.String(120), default="")
 
     order_items = db.relationship(
-        "OrderItem", backref="item_order", lazy=True, cascade="all, delete, delete-orphan"
+        "OrderItem",
+        backref="item_order",
+        lazy=True,
+        cascade="all, delete, delete-orphan",
     )
-    billing_detail = db.relationship("BillingDetail", uselist=False, backref="billing_detail_order", cascade="all, delete, delete-orphan")
+    billing_detail = db.relationship(
+        "BillingDetail",
+        uselist=False,
+        backref="billing_detail_order",
+        cascade="all, delete, delete-orphan",
+    )
 
-    status = db.Column(db.String(120), default='created') # created, confirmed, shipped, cancelled, return
+    status = db.Column(
+        db.String(120), default="created"
+    )  # created, confirmed, shipped, cancelled, return
 
     shipping_option_name = db.Column(db.String(120))
     shipping_option_price = db.Column(db.String(120))
@@ -78,7 +89,7 @@ class BillingDetail(db.Model):
     email = db.Column(db.String(100))
     order_notes = db.Column(db.String(100))
 
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
 
     def add(self):
         db.session.add(self)

@@ -2,28 +2,46 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import SubmitField
-from wtforms.validators import DataRequired
-from wtforms.validators import Optional
-from wtforms.fields.html5 import EmailField
-from wtforms.validators import Email
-from wtforms.fields.html5 import IntegerField
-from wtforms.fields import SelectField
-from wtforms.fields import BooleanField
 from wtforms import TextAreaField
+from wtforms.fields import BooleanField
+from wtforms.fields import SelectField
+from wtforms.fields.html5 import EmailField
+from wtforms.fields.html5 import IntegerField
+from wtforms.validators import DataRequired
+from wtforms.validators import Email
+from wtforms.validators import Optional
 
-from shopyoapi.validators import require_if_diff_address
-from shopyoapi.validators import require_if_default_address
 from shopyoapi.validators import require_if_apply_coupon
 from shopyoapi.validators import require_if_create_account
+from shopyoapi.validators import require_if_default_address
+from shopyoapi.validators import require_if_diff_address
+
 
 class CheckoutForm(FlaskForm):
-    diffAddress = BooleanField('Ship to a different address than the default one?',
-        render_kw={"class": "form-check-input", 'value': 'diffAddress', 'id':'diffAddress'})
-    applyCoupon = BooleanField('Apply Coupon',
-        render_kw={"class": "form-check-input", 'value': 'applyCoupon', 'id':'applyCoupon'})
-    createAccount = BooleanField('Create Account?',
-        render_kw={"class": "form-check-input", 'value': 'createAccount', 'id':'createAccount'})
-
+    diffAddress = BooleanField(
+        "Ship to a different address than the default one?",
+        render_kw={
+            "class": "form-check-input",
+            "value": "diffAddress",
+            "id": "diffAddress",
+        },
+    )
+    applyCoupon = BooleanField(
+        "Apply Coupon",
+        render_kw={
+            "class": "form-check-input",
+            "value": "applyCoupon",
+            "id": "applyCoupon",
+        },
+    )
+    createAccount = BooleanField(
+        "Create Account?",
+        render_kw={
+            "class": "form-check-input",
+            "value": "createAccount",
+            "id": "createAccount",
+        },
+    )
 
     default_first_name = StringField(
         "First Name",
@@ -37,7 +55,12 @@ class CheckoutForm(FlaskForm):
     )
     default_country = StringField(
         "Country",
-        render_kw={"class": "form-control", "autocomplete": "off", 'value': 'Mauritius', 'disabled':''},
+        render_kw={
+            "class": "form-control",
+            "autocomplete": "off",
+            "value": "Mauritius",
+            "disabled": "",
+        },
     )
     default_street = StringField(
         "Street",
@@ -59,12 +82,11 @@ class CheckoutForm(FlaskForm):
         [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    default_order_notes =  TextAreaField(
-        'Order Notes (optional)', 
-        [Optional()], 
-        render_kw={"rows": 10,
-        "class": "form-control", "autocomplete": "off"})
-
+    default_order_notes = TextAreaField(
+        "Order Notes (optional)",
+        [Optional()],
+        render_kw={"rows": 10, "class": "form-control", "autocomplete": "off"},
+    )
 
     diff_first_name = StringField(
         "First Name",
@@ -78,7 +100,12 @@ class CheckoutForm(FlaskForm):
     )
     diff_country = StringField(
         "Country",
-        render_kw={"class": "form-control", "autocomplete": "off", 'value': 'Mauritius', 'disabled':''},
+        render_kw={
+            "class": "form-control",
+            "autocomplete": "off",
+            "value": "Mauritius",
+            "disabled": "",
+        },
     )
     diff_street = StringField(
         "Street",
@@ -100,11 +127,11 @@ class CheckoutForm(FlaskForm):
         [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    diff_order_notes =  TextAreaField(
-        'Order Notes (optional)', 
-        [Optional()], 
-        render_kw={"rows": 10,
-        "class": "form-control", "autocomplete": "off"})
+    diff_order_notes = TextAreaField(
+        "Order Notes (optional)",
+        [Optional()],
+        render_kw={"rows": 10, "class": "form-control", "autocomplete": "off"},
+    )
 
     coupon = StringField(
         "Coupon",
@@ -117,6 +144,3 @@ class CheckoutForm(FlaskForm):
         [require_if_create_account],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-
-
-

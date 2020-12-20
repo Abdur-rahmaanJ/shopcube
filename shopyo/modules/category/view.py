@@ -446,9 +446,10 @@ def choose_sub_dashboard(category_id):
 
 @module_blueprint.route("/sub/file/<filename>", methods=["GET"])
 def subcategory_image(filename):
-    if filename == 'default':
+    if filename == "default":
         return send_from_directory(
-            os.path.join(current_app.config["BASE_DIR"], 'static', 'default'), 'default_subcategory.jpg'
+            os.path.join(current_app.config["BASE_DIR"], "static", "default"),
+            "default_subcategory.jpg",
         )
     return send_from_directory(
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename

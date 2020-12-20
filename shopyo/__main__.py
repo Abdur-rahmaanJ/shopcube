@@ -28,6 +28,7 @@ def new_project(path, newfoldername):
 
     trycopytree(os.path.join(dirpathparent, "shopyo"), base_path + "/shopyo")
 
+
 def main():
     if not is_venv():
         print("Please use Shopyo in a virtual environment")

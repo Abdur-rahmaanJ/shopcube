@@ -20,7 +20,7 @@ class Config:
     UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
         STATIC, "uploads", "subcategory"
     )
-    PASSWORD_SALT = 'abcdefghi'
+    PASSWORD_SALT = "abcdefghi"
 
 
 class DevelopmentConfig(Config):

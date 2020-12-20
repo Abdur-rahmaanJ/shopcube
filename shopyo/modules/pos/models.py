@@ -1,5 +1,7 @@
-from shopyoapi.init import db
 from datetime import datetime
+
+from shopyoapi.init import db
+
 
 class Transaction(db.Model):
     __tablename__ = "transactions"

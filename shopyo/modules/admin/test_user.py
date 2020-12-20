@@ -22,5 +22,7 @@ def test_valid_login_logout(test_client, init_database):
     # Control panel
     # response = test_client.get('/logout', follow_redirects=True)
     # assert response.status_code == 200
+
+
 def test_dashboard(test_client, init_database):
     pass

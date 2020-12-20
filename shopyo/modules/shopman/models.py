@@ -1,5 +1,3 @@
-
-
 from shopyoapi.init import db
 
 
@@ -46,7 +44,7 @@ class Coupon(db.Model):
     __tablename__ = "coupons"
     id = db.Column(db.Integer, primary_key=True)
     string = db.Column(db.String(300))
-    type = db.Column(db.String(300)) # percentage, value
+    type = db.Column(db.String(300))  # percentage, value
     value = db.Column(db.String(300))
 
     def insert(self):

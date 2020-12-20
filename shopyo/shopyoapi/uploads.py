@@ -1,18 +1,19 @@
+import datetime
+import uuid
+
 from werkzeug.security import generate_password_hash
 
 from app import app
 
 from shopyoapi.init import db
-import uuid
 
 from modules.admin.models import Role
 from modules.admin.models import User
 from modules.category.models import Category
 from modules.category.models import SubCategory
-from modules.settings.models import Settings
 from modules.product.models import Product
+from modules.settings.models import Settings
 
-import datetime
 
 def add_admin(email, password):
     with app.app_context():
@@ -44,27 +45,30 @@ def add_uncategorised_category():
         p1 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
-            name='Apple',
+            name="Apple",
             in_stock=50,
             selling_price=15.0,
             discontinued=False,
-            description='')
+            description="",
+        )
         p2 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
-            name='Pear',
+            name="Pear",
             in_stock=50,
             selling_price=15.0,
             discontinued=False,
-            description='')
+            description="",
+        )
         p3 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
-            name='Peach',
+            name="Peach",
             in_stock=50,
             selling_price=15.0,
             discontinued=False,
-            description='')
+            description="",
+        )
 
         subcategory.products.extend([p1, p2, p3])
         category.subcategories.append(subcategory)

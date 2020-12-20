@@ -5,8 +5,8 @@ from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import render_template
-from flask import url_for
 from flask import request
+from flask import url_for
 
 from flask_login import login_required
 from flask_login import login_user
@@ -53,16 +53,16 @@ def shop_login():
     context = {}
     login_form = LoginForm()
     context["form"] = login_form
-    if request.method == 'POST':
+    if request.method == "POST":
         if login_form.validate_on_submit():
             email = login_form.email.data
             password = login_form.password.data
             user = User.query.filter_by(email=email).first()
             if user is None or not user.check_hash(password):
                 flash(notify_danger("please check your user id and password"))
-                return redirect(url_for('shop.checkout'))
+                return redirect(url_for("shop.checkout"))
             login_user(user)
-            return redirect(url_for('shop.checkout'))
+            return redirect(url_for("shop.checkout"))
     return render_template("login/shop_login.html", **context)
 
 
@@ -70,4 +70,4 @@ def shop_login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login.login'))
+    return redirect(url_for("login.login"))
