@@ -3,12 +3,14 @@ from werkzeug.security import generate_password_hash
 from app import app
 
 from shopyoapi.init import db
+import uuid
 
 from modules.admin.models import Role
 from modules.admin.models import User
 from modules.category.models import Category
 from modules.category.models import SubCategory
 from modules.settings.models import Settings
+from modules.product.models import Product
 
 import datetime
 
@@ -38,5 +40,32 @@ def add_setting(name, value):
 def add_uncategorised_category():
     with app.app_context():
         category = Category(name="uncategorised")
-        category.subcategories.append(SubCategory(name="uncategorised"))
+        subcategory = SubCategory(name="uncategorised")
+        p1 = Product(
+            barcode=str(uuid.uuid1()),
+            price=10.0,
+            name='Apple',
+            in_stock=50,
+            selling_price=15.0,
+            discontinued=False,
+            description='')
+        p2 = Product(
+            barcode=str(uuid.uuid1()),
+            price=10.0,
+            name='Pear',
+            in_stock=50,
+            selling_price=15.0,
+            discontinued=False,
+            description='')
+        p3 = Product(
+            barcode=str(uuid.uuid1()),
+            price=10.0,
+            name='Peach',
+            in_stock=50,
+            selling_price=15.0,
+            discontinued=False,
+            description='')
+
+        subcategory.products.extend([p1, p2, p3])
+        category.subcategories.append(subcategory)
         category.insert()

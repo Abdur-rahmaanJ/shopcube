@@ -7,18 +7,22 @@ class Order(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.now())
-    logged_in_customer = db.Column(db.Boolean, default=False)
+
     logged_in_customer_email = db.Column(db.String(120))
 
-    has_discount = db.Column(db.Boolean, default=False)
-    coupon_id = db.Column(db.Integer)
+    coupon_string = db.Column(db.String(120), default='')
 
     order_items = db.relationship(
         "OrderItem", backref="item_order", lazy=True,
     )
     billing_detail = db.relationship("BillingDetail", uselist=False, backref="billing_detail_order")
 
-    status = db.Column(db.String(120))
+    status = db.Column(db.String(120), default='created') # created, confirmed, shipped, cancelled, return
+
+    shipping_option_name = db.Column(db.String(120))
+    shipping_option_price = db.Column(db.String(120))
+    payment_option_name = db.Column(db.String(120))
+    payment_option_text = db.Column(db.String(120))
 
     def add(self):
         db.session.add(self)

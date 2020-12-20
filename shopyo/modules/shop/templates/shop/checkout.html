@@ -129,14 +129,6 @@
                                     {{ form.diff_order_notes(value=checkout_data['diff_order_notes']) }}
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 col-xs-12">
-                                    <div class="form-check">
-                                        {{ form.createAccount() }}
-                                        {{ form.createAccount.label }}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
@@ -153,6 +145,22 @@
                                 <div class="col-md-6 col-xs-4">
                                     {{ form.coupon.label }}<br>
                                     {{ form.coupon(value=checkout_data['coupon']) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    {{ form.createAccount() }}
+                                    {{ form.createAccount.label }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="createAccount" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.password.label }}<br>
+                                    {{ form.password() }}
                                 </div>
                             </div>
                         </div>
@@ -203,7 +211,7 @@
                                     <tbody>
                                         {%for option in delivery_options%}
                                         <tr>
-                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="deliveryoption" data-value="{{option.price}}" {{'checked' if loop.index == 1}}></th>
+                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="deliveryoption" data-value="{{option.price}}" value={{ option.id }} {{'checked' if loop.index == 1}}></th>
                                             <td style="min-width: 200px">{{option.option}}</td>
                                             <td>{{option.price}}</td>
                                         </tr>
@@ -221,7 +229,7 @@
                                     <tbody>
                                         {%for option in payment_options%}
                                         <tr>
-                                            <td><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="paymentoption" value="{{option.price}}" {{'checked' if loop.index == 1}}></td>
+                                            <td><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="paymentoption" value="{{option.id}}" {{'checked' if loop.index == 1}}></td>
                                             <td style="min-width: 200px">{{option.name}}<br>
                                             {{option.text}}</td>
                                         </tr>
@@ -285,7 +293,7 @@
 
         $('input[type=radio][name=deliveryoption]').change(function() {
             var subtotal = parseFloat($('#grandsubtotal').text());
-            var option_price = parseFloat(this.attr('data-value'));
+            var option_price = parseFloat($(this).attr('data-value'));
             $('#grandtotal').text(subtotal+option_price);
         });
 

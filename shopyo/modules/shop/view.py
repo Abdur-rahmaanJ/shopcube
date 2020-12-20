@@ -1,6 +1,7 @@
 
 import os
 import json
+from datetime import datetime
 
 from flask import Blueprint
 from flask import render_template
@@ -24,6 +25,8 @@ from modules.category.models import SubCategory
 from modules.shopman.models import DeliveryOption
 from modules.shopman.models import PaymentOption
 
+from modules.admin.models import User
+
 from .helpers import get_cart_data
 
 from .models import Order
@@ -31,6 +34,9 @@ from .models import OrderItem
 from .models import BillingDetail
 
 from .forms import CheckoutForm
+
+
+from flask_login import current_user
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -293,8 +299,80 @@ def checkout_process():
 
         session['checkout_data'][0] = checkout_data
 
-        print(request.form['deliveryoption'])
+        print(request.form['paymentoption'])
         if form.validate_on_submit():
+            if not form.diffAddress.data:
+                first_name = form.default_first_name.data
+                last_name = form.default_last_name.data
+                country = form.default_country.data
+                street = form.default_street.data
+                town_city = form.default_town_city.data
+                phone = form.default_phone.data
+                email = form.default_email.data
+                order_notes = form.default_order_notes.data
+
+            elif form.diffAddress.data:
+                first_name = form.diff_first_name.data
+                last_name = form.diff_last_name.data
+                country = form.diff_country.data
+                street = form.diff_street.data
+                town_city = form.diff_town_city.data
+                phone = form.diff_phone.data
+                email = form.diff_email.data
+                order_notes = form.dif_order_notes.data
+
+            billing_detail = BillingDetail()
+            billing_detail.first_name = first_name
+            billing_detail.last_name = last_name
+            billing_detail.country = country
+            billing_detail.street = street
+            billing_detail.town_city = town_city
+            billing_detail.phone = phone
+            billing_detail.email = email
+            billing_detail.order_notes = order_notes
+
+            if form.createAccount.data:
+                if not User.query.filter(
+                        (User.email == email)
+                    ).first():
+                    user = User()
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.email = email
+                    user.password = form.passoword.data
+                    user.email_confirmed = True
+                    user.email_confirm_date = datetime.now()
+
+
+            order = Order()
+            order.billing_detail = billing_detail
+            shipping_option = DeliveryOption.query.get(request.form['deliveryoption'])
+            order.shipping_option_name = shipping_option.option
+            order.shipping_price = shipping_option.price
+            payment_option = PaymentOption.query.get(request.form['paymentoption'])
+            order.payment_option_name = payment_option.name
+            order.payment_option_text = payment_option.text
+
+
+            if current_user.is_authenticated:
+                order.logged_in_customer_email = current_user.email
+
+
+            if form.applyCoupon.data: 
+                order.coupon_string = form.coupon.data
+
+            cart_info = get_cart_data()
+            cart_data = cart_info['cart_data']
+
+            for barcode in cart_data:
+                order_item = OrderItem()
+                product = Product.query.get(barcode)
+                order_item.barcode = barcode
+                order_item.quantity = cart_data[barcode]
+                order_item.price = product.selling_price
+                order.order_items.append(order_item)
+
+            order.insert()
             flash(notify_success('Great!'))
         else:
             flash_errors(form)

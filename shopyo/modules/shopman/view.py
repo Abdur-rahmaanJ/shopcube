@@ -194,3 +194,12 @@ def coupon_update():
         else:
             flash_errors(form)
             return mhelp.redirect_url('shopman.coupon')
+
+
+@module_blueprint.route('/order/dashboard', methods=['GET', 'POST'])
+def order():
+    context = {
+        
+    }
+    context.update({'info': mhelp.info})
+    return mhelp.render('order.html', **context)

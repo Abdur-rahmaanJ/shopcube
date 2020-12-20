@@ -14,6 +14,7 @@ from wtforms import TextAreaField
 from shopyoapi.validators import require_if_diff_address
 from shopyoapi.validators import require_if_default_address
 from shopyoapi.validators import require_if_apply_coupon
+from shopyoapi.validators import require_if_create_account
 
 class CheckoutForm(FlaskForm):
     diffAddress = BooleanField('Ship to a different address than the default one?',
@@ -53,7 +54,7 @@ class CheckoutForm(FlaskForm):
         [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    default_email = StringField(
+    default_email = EmailField(
         "Email",
         [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
@@ -94,7 +95,7 @@ class CheckoutForm(FlaskForm):
         [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    diff_email = StringField(
+    diff_email = EmailField(
         "Email",
         [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
@@ -108,6 +109,12 @@ class CheckoutForm(FlaskForm):
     coupon = StringField(
         "Coupon",
         [require_if_apply_coupon],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+
+    password = PasswordField(
+        "Coupon",
+        [require_if_create_account],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
 

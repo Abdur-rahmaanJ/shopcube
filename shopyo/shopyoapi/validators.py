@@ -46,3 +46,12 @@ def require_if_apply_coupon(form, field):
             raise ValidationError(
                 "{} cannot be empty!".format(field.label)
             )
+
+
+def require_if_create_account(form, field):
+
+    if form.createAccount.data == True:
+        if is_empty_str(field.data):
+            raise ValidationError(
+                "{} cannot be empty!".format(field.label)
+            )
