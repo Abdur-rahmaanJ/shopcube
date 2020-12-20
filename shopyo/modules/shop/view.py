@@ -348,7 +348,7 @@ def checkout_process():
             order.billing_detail = billing_detail
             shipping_option = DeliveryOption.query.get(request.form['deliveryoption'])
             order.shipping_option_name = shipping_option.option
-            order.shipping_price = shipping_option.price
+            order.shipping_option_price = shipping_option.price
             payment_option = PaymentOption.query.get(request.form['paymentoption'])
             order.payment_option_name = payment_option.name
             order.payment_option_text = payment_option.text
@@ -374,6 +374,7 @@ def checkout_process():
 
             order.insert()
             flash(notify_success('Great!'))
+            return render_template('shop/order_complete.html')
         else:
             flash_errors(form)
         return redirect(url_for('shop.checkout'))

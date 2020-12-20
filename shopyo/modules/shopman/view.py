@@ -14,6 +14,8 @@ from shopyoapi.module import ModuleHelp
 from modules.shopman.forms import DeliveryOptionForm
 from modules.shopman.forms import PaymentOptionForm
 from modules.shopman.forms import CouponForm
+from modules.shop.models import Order
+from modules.product.models import Product
 
 from .models import DeliveryOption
 from .models import PaymentOption
@@ -24,6 +26,9 @@ mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 
 module_blueprint = globals()[mhelp.blueprint_str]
+
+def get_product(barcode):
+    return Product.query.get(barcode)
 
 @module_blueprint.route(mhelp.info["dashboard"])
 def dashboard():
@@ -198,8 +203,18 @@ def coupon_update():
 
 @module_blueprint.route('/order/dashboard', methods=['GET', 'POST'])
 def order():
+    orders = Order.query.all()
     context = {
-        
+        'dir': dir,
+        'orders': orders,
+        'get_product': get_product
     }
     context.update({'info': mhelp.info})
     return mhelp.render('order.html', **context)
+
+
+@module_blueprint.route('/order/<order_id>/delete', methods=['GET', 'POST'])
+def order_delete(order_id):
+    order = Order.query.get(order_id)
+    order.delete()
+    return mhelp.redirect_url('shopman.order')
