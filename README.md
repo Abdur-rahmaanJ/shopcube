@@ -17,6 +17,7 @@ It also makes a great Flask base and supports commands such as:
 
 `python manage.py startapp loans` 
 
+
 # Test it out!
 
 | Info | Value |
@@ -61,7 +62,12 @@ default login
 
 # ⚗️ Stability
 
-**beta** - now in beta!
+**beta** - now in beta! - Not fully ready to be used by people without Flask knowledge.
+
+
+Note: since we are adding ecommerce as a demo, we don't guarantee security. It is currentlty your
+duty to assume the security aspects. Though the project is MIT licensed, we thought of warning you.
+The project gets better and better, we hope to provide a SOLID project, but as we continously switch to a better version of an aspect, we have not reached 'the' point where you can just take and install it at a client's place. Currently you need to flask-audit the code and see what you'd like to modify.
 
 
 # 💌 Contributing Countries
