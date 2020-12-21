@@ -11,11 +11,11 @@ class Category(db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
-    subcategories = db.relationship(
-        "SubCategory", backref="category", lazy=True
-    )
+    subcategories = db.relationship("SubCategory", backref="category", lazy=True)
     resources = db.relationship(
-        "Resource", backref="resource_category", lazy=True,
+        "Resource",
+        backref="resource_category",
+        lazy=True,
     )
 
     def insert(self):
@@ -46,9 +46,7 @@ class SubCategory(db.Model):
     #     "Product", backref="subcategory", lazy=True, cascade="all, delete"
     # )
     products = db.relationship("Product", backref="subcategory", lazy=True)
-    resources = db.relationship(
-        "Resource", backref="resource_subcategory", lazy=True
-    )
+    resources = db.relationship("Resource", backref="resource_subcategory", lazy=True)
 
     def insert(self):
         """Save category to the database"""

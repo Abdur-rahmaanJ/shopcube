@@ -13,9 +13,7 @@ def get_cart_data():
             for item in cart_data:
                 print(item)
                 product = Product.query.get(item)
-                cart_total_price += (
-                    int(cart_data[item]) * product.selling_price
-                )
+                cart_total_price += int(cart_data[item]) * product.selling_price
         except Exception as e:
             pass
 

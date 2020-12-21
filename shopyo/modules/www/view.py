@@ -47,6 +47,4 @@ def index():
     context = {}
     cart_info = get_cart_data()
     context.update(cart_info)
-    return render_template(
-        get_setting("ACTIVE_THEME") + "/index.html", **context
-    )
+    return render_template(get_setting("ACTIVE_THEME") + "/index.html", **context)
