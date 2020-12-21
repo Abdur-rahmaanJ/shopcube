@@ -56,11 +56,11 @@ here is a demo on returning template vars:
 
 .. code:: python
 
-  from shopyoapi.enhance import base_context
+  # 
   # ...
   @module_blueprint.route('/abc')
   def somefunc():
-      context = base_context()
+      context = {}
       form = PageForm()
 
       context.update({

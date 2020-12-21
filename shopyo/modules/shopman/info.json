@@ -1,0 +1,13 @@
+{
+        "display_string": "Manage Shop",
+        "module_name":"shopman",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/shopman",
+        "dashboard": "/dashboard",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

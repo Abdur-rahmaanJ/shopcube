@@ -23,7 +23,7 @@ if os.path.exists("testing.db"):
 
 @pytest.fixture(scope="session")
 def new_user():
-    user = User(username="abcd")
+    user = User(email="admin3@domain.com")
     user.set_hash("pass")
     return user
 
@@ -52,9 +52,9 @@ def init_database():
     db.create_all()
 
     # Insert user data
-    user1 = User(username="car")
+    user1 = User(email="admin1@domain.com")
     user1.set_hash("pass")
-    user2 = User(username="field")
+    user2 = User(email="admin2@domain.com")
     user2.set_hash("pass")
     db.session.add(user1)
     db.session.add(user2)

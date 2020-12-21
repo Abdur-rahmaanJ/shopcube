@@ -1,31 +1,27 @@
 import json
 import os
 
+# from flask import render_template
 from flask import Blueprint
 from flask import current_app
+from flask import redirect
 from flask import send_from_directory
+from flask import url_for
 
 from flask_login import login_required
 from PIL import Image as PILimage
 
 from shopyoapi.enhance import get_setting
+from shopyoapi.file import delete_file
 
+from modules.product.models import Product
 from modules.resource.models import Image
 from modules.resource.models import Resource
-from modules.product.models import Product
-
-# from flask import render_template
-from flask import url_for
-from flask import redirect
 
 # from flask import flash
-# from flask import request
-
-# from shopyoapi.enhance import base_context
+# from flask import request#
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
-
-from shopyoapi.file import delete_file
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -52,7 +48,9 @@ def index():
 
 @module_blueprint.route("/theme/<active_theme>/styles.css", methods=["GET"])
 def active_theme_css(active_theme):
-    theme_dir = os.path.join(current_app.config["BASE_DIR"], "themes", active_theme)
+    theme_dir = os.path.join(
+        current_app.config["BASE_DIR"], "themes", active_theme
+    )
     # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
 
@@ -61,25 +59,13 @@ def active_theme_css(active_theme):
 def product_image(filename):
 
     # return theme_dir
+    if filename == "default":
+        return send_from_directory(
+            os.path.join(current_app.config["BASE_DIR"], "static", "default"),
+            "default_product.jpg",
+        )
     return send_from_directory(
         current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
-    )
-
-
-@module_blueprint.route("/<filename>/product/<barcode>/delete", methods=["GET"])
-def product_image_delete(filename, barcode):
-    resource = Resource.query.filter(Resource.filename == filename).first()
-    product = Product.query.filter(Product.barcode == barcode).first()
-    product.resources.remove(resource)
-    product.update()
-    delete_file(
-        os.path.join(current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename)
-    )
-
-    return redirect(
-        url_for(
-            "product.prods_edit", category_name=product.category_name, barcode=barcode
-        )
     )
 
 
@@ -133,7 +119,9 @@ def upload_tinymce_image():
                 db.session.commit()
             except IOError:
                 output = make_response(404)
-                output.headers["Error"] = "Cannot create thumbnail for " + filename
+                output.headers["Error"] = (
+                    "Cannot create thumbnail for " + filename
+                )
                 return output
             return jsonify({"location": filename})
 

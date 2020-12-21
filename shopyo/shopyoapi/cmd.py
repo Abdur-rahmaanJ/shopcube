@@ -7,6 +7,7 @@ import sys
 
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
+from shopyoapi.uploads import add_uncategorised_category
 
 # from .file import trycopytree
 # from .file import trycopy
@@ -59,13 +60,20 @@ def initialise():
 
 
     """
+    SEP_CHAR = "#"
+    SEP_NUM = 23
+
     with open("config.json", "r") as config:
         config = json.load(config)
+
     print("Creating Db")
-    print("#######################")
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
+
     print("Migrating")
-    print("#######################")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
     subprocess.run(
         [sys.executable, "manage.py", "db", "migrate"], stdout=subprocess.PIPE
     )
@@ -74,13 +82,18 @@ def initialise():
     )
 
     print("Initialising User")
-    print("#######################")
-    add_admin(config["admin_user"]["name"], config["admin_user"]["password"])
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+    add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
 
     print("Initialising Settings")
-    print("#######################")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
     for name, value in config["settings"].items():
         add_setting(name, value)
+
+    print("Adding category and subcategory: uncategorised")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+    add_uncategorised_category()
+
     print("Done!")
 
 
@@ -121,7 +134,7 @@ from flask import Blueprint
 # from flask import flash
 # from flask import request
 
-# from shopyoapi.enhance import base_context
+# # 
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 

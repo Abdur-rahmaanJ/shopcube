@@ -1,0 +1,216 @@
+{%set active_page = 'index.html'%}
+
+<!-- public facing landing page -->
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<style type="text/css">
+.carousel-item {
+  height: 100vh;
+  min-height: 350px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+.carousel-item:after {
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,0.2);
+}
+
+
+.fixed-top.scrolled {
+  background-color: #5d3f3f !important;
+  transition: background-color 400ms linear;
+}    
+
+.fixed-top.scrolled .nav-link {
+  color:#555;
+}
+
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 2px solid #f1f1f1;
+}
+.separator::before {
+    margin-right: .25em;
+
+}
+.separator::after {
+    margin-left: .25em;
+
+}
+
+
+.navbar{
+    padding-right: 120px;
+    padding-left: 120px;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+
+}
+
+
+.carousel-inner img {
+  width: 100%;
+}
+		</style>
+		{% include ACTIVE_THEME+'/sections/resources.html'%}
+
+		<script type="text/javascript">
+$(function () {
+  $(document).scroll(function () {
+	  var $nav = $(".fixed-top");
+	  $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+	});
+});
+		</script>
+	</head>
+<body>
+
+	{% include ACTIVE_THEME+'/sections/nav.html'%}
+	<header style=""> <!--https://startbootstrap.com/snippets/full-slider-->
+
+  		{% include ACTIVE_THEME+'/sections/carousel.html'%}
+	</header>
+
+	{% include ACTIVE_THEME+'/sections/image_row.html'%}
+
+<div class="container p-5">
+	<div class="text-center">
+		<h2 ><b>WELCOME TO OUR SHOP</b></h2>
+		<p >blablabla. <a href="{{ url_for('dashboard.index') }}">View dashboard</a></p>
+		<p>
+			<a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">shop</button></a>
+		</p>
+	</div>
+</div>
+
+<div style="background-color: #fff; border-top: 5px solid #DC417F; border-bottom: 5px solid #DC417F;">
+	<div style="background-color: #DC417F; border-top: 5px solid white; border-bottom: 5px solid white; padding-top: 30px; padding-bottom: 20px;"  class="text-center">
+		<h2 class="white-text"><b>HOME DELIVERY</b></h2>
+		<p class="white-text">PLAINE WILHEMS ONLY</p>
+	</div>
+</div>
+
+<div class="container" style="padding-top: 50px;">
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>OUR CATEGORIES</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div>
+		<div class="row">
+		
+		{%for category in get_categories()%}
+			{%if category.name.upper() != 'UNCATEGORISED'%}
+			{%set filename_ = ''%}
+	        {%if category.resources%}
+	          {%set filename_ = category.resources[0].filename%}
+	        {%endif%}
+	        {%set img_url = url_for('category.category_image', filename=filename_) %}
+
+	        <div class="col-12 col-sm-6 col-md-3">
+	        <!-- Card -->
+			<div class="card" style="margin-bottom: 10px;">
+
+			  <!-- Card image -->
+			  <div style="background-image: url('{{img_url}}'); background-size: cover; height: 150px;">
+	        		
+	        	</div>
+
+			  <!-- Card content -->
+			  <div class="card-body text-center">
+
+			    <!-- Title -->
+			    <h4 class="card-title"><a>{{ category.name }}</a></h4>
+			    <!-- Text -->
+			    {%set sum_ = namespace(items=0) %}
+			    {%for subcategory in category.subcategories%}
+			    	{%set sum_.items =  sum_.items + len(subcategory.products) %}
+			    	
+			    {%endfor%}
+			    <p class="card-text">{{ sum_.items }} products</p>
+			    <!-- Button -->
+			    
+
+			  </div>
+
+			</div>
+			<!-- Card -->
+			</div>
+	        {%endif%}
+		{%endfor%}
+
+		</div>
+	</div>
+
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>NEW PRODUCTS</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div class="row">
+		{%set target_prds = get_products()[::-1]%}
+		{%set target_num=5%}
+		{%if len(target_prds) >= 5%}
+
+		{%else%}
+			{%set target_num=len(target_prds)%}
+		{%endif%}
+		{%for i in range(target_num)%}
+
+			{%set product = target_prds[i]%}
+			<div class="col-12 col-sm-6 col-md-3">
+	        <!-- Card -->
+			<div class="card" style="margin-bottom: 10px;">
+				{%set filename_ = ''%}
+	        {%if product.resources%}
+	          {%set filename_ = product.resources[0].filename%}
+	        {%endif%}
+	        {%set img_url = url_for('resource.product_image', filename=filename_) %}
+			  <!-- Card image -->
+			  <div style="background-image: url('{{img_url}}'); background-size: cover; height: 150px;">
+	        		
+	        	</div>
+
+			  <!-- Card content -->
+			  <div class="card-body text-center">
+
+			    <!-- Title -->
+			    <h4 class="card-title"><a>{{ product.name }}</a></h4>
+			    <!-- Text -->
+			    
+			    <p class="card-text">Rs {{product.selling_price}}</p>
+			    <!-- Button -->
+			    
+
+			  </div>
+
+			</div>
+			<!-- Card -->
+			</div>
+		{%endfor%}
+		
+	</div>
+</div>
+
+
+
+	{% include ACTIVE_THEME+'/sections/footer.html'%}
+</body>
+</html>

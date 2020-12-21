@@ -4,11 +4,15 @@
 
 """
 
+import datetime
 from uuid import uuid4
+
+from flask import current_app
 
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
 from flask_login import login_manager
+from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
@@ -31,6 +35,7 @@ class AnonymousUser(AnonymousUserMixin):
     def avatar(self, size):
         return False
 
+    @property
     def is_admin(self):
         return False
 
@@ -46,11 +51,25 @@ class User(UserMixin, db.Model):
 
     __tablename__ = "users"
     id = db.Column(db.String(10), primary_key=True)
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(128))
+    username = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(128), nullable=False)
 
-    admin_user = db.Column(db.Boolean, default=False)
-    roles = db.relationship("Role", secondary=role_helpers, cascade="all, delete")
+    first_name = db.Column(db.String(128))
+    last_name = db.Column(db.String(128))
+
+    is_admin = db.Column(db.Boolean, default=False)
+
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    date_registered = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.now()
+    )
+    email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
+    email_confirm_date = db.Column(db.DateTime)
+
+    roles = db.relationship(
+        "Role", secondary=role_helpers, cascade="all, delete"
+    )
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -73,8 +92,23 @@ class User(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def __repr__(self):
-        return f"User({self.username!r})"
+    def generate_confirmation_token(self, email):
+        serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+        return serializer.dumps(email, salt=app.config["PASSWORD_SALT"])
+
+    @staticmethod
+    def confirm_mail_token(self, token, expiration=3600):
+        serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+        try:
+            email = serializer.loads(
+                token, salt=app.config["PASSWORD_SALT"], max_age=expiration
+            )
+        except:
+            return False
+        return email
+
+        def __repr__(self):
+            return "User: {}".format(self.email)
 
 
 class Role(db.Model):

@@ -5,13 +5,13 @@ from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask import url_for
 
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 
-from shopyoapi.enhance import base_context
 from shopyoapi.html import notify_danger
 
 from modules.admin.models import User
@@ -33,23 +33,41 @@ login_blueprint = Blueprint(
 
 @login_blueprint.route("/", methods=["GET", "POST"])
 def login():
-    context = base_context()
+    context = {}
     login_form = LoginForm()
     context["form"] = login_form
     if login_form.validate_on_submit():
-        username = login_form.username.data
+        email = login_form.email.data
         password = login_form.password.data
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(email=email).first()
         if user is None or not user.check_hash(password):
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("login.login"))
         login_user(user)
-        return redirect(url_for("control_panel.index"))
-    return render_template("/login.html", **context)
+        return redirect(url_for("dashboard.index"))
+    return render_template("login/login.html", **context)
+
+
+@login_blueprint.route("/shop", methods=["GET", "POST"])
+def shop_login():
+    context = {}
+    login_form = LoginForm()
+    context["form"] = login_form
+    if request.method == "POST":
+        if login_form.validate_on_submit():
+            email = login_form.email.data
+            password = login_form.password.data
+            user = User.query.filter_by(email=email).first()
+            if user is None or not user.check_hash(password):
+                flash(notify_danger("please check your user id and password"))
+                return redirect(url_for("shop.checkout"))
+            login_user(user)
+            return redirect(url_for("shop.checkout"))
+    return render_template("login/shop_login.html", **context)
 
 
 @login_blueprint.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect("/login")
+    return redirect(url_for("login.login"))

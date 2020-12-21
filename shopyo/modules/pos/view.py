@@ -9,18 +9,15 @@ from flask import request
 from flask_login import current_user
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
+from shopyoapi.html import notify_success
 
 from modules.category.models import Category
 from modules.pos.models import Transaction
 from modules.product.models import Product
 
-# from flask import url_for
-# from flask import redirect
-# from flask import flash
-
-
-# from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
 
@@ -44,7 +41,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 @module_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
     categories = Category.query.all()
     context.update({"categories": categories})
     return render_template("pos/index.html", **context)

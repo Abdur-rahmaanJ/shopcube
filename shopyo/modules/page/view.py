@@ -9,7 +9,6 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
 from shopyoapi.forms import flash_errors
 
 from .forms import PageForm
@@ -40,7 +39,7 @@ module_settings = {"sidebar": sidebar}
 
 @module_blueprint.route("/")
 def index():
-    context = base_context()
+    context = {}
     pages = Page.query.all()
 
     context.update({"pages": pages})
@@ -49,17 +48,17 @@ def index():
 
 @module_blueprint.route("/<page_id>/<slug>")
 def view_page(page_id, slug):
-    context = base_context()
+    context = {}
     page = Page.query.get(page_id)
 
     context.update({"page": page})
     return render_template("page/view_page.html", **context)
 
 
-@module_blueprint.route(module_info["panel_redirect"])
+@module_blueprint.route(module_info["dashboard"])
 @login_required
-def panel_redirect():
-    context = base_context()
+def dashboard():
+    context = {}
     form = PageForm()
 
     context.update({"form": form, "module_name": module_name})
@@ -74,11 +73,11 @@ def check_pagecontent():
         form = PageForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return redirect(url_for("{}.panel_redirect".format(module_name)))
+            return redirect(url_for("{}.dashboard".format(module_name)))
         toaddpage = Page(
             slug=form.slug.data,
             content=form.content.data,
             title=form.title.data,
         )
         toaddpage.insert()
-        return redirect(url_for("{}.panel_redirect".format(module_name)))
+        return redirect(url_for("{}.dashboard".format(module_name)))

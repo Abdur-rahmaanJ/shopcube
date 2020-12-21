@@ -7,21 +7,20 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 
+import jinja2
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
 from shopyoapi.enhance import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.file import get_folders
+
+# from flask import flash
+# from flask import request
+from shopyoapi.html import notify_success
 from shopyoapi.init import db
 
 from modules.settings.models import Settings
 
-# from flask import flash
-# from flask import request
-
-
-# from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
 
@@ -47,7 +46,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 @login_required
 def index():
 
-    context = base_context()
+    context = {}
     themes_path = os.path.join(current_app.config["BASE_DIR"], "themes")
     all_info = {}
     theme_folders = get_folders(themes_path)
@@ -60,6 +59,7 @@ def index():
     active_theme = get_setting("ACTIVE_THEME")
     context.update({"all_info": all_info, "active_theme": active_theme})
     context.update(module_settings)
+
     return render_template(
         "{}/index.html".format(module_info["module_name"]), **context
     )
@@ -69,4 +69,9 @@ def index():
 @login_required
 def activate(theme_name):
     set_setting("ACTIVE_THEME", theme_name)
+
+    # with app.app_context():
+
+    # current_app.jinja_loader,
+    # print(current_app.jinja_loader.list_templates())
     return redirect(url_for("{}.index".format(module_info["module_name"])))

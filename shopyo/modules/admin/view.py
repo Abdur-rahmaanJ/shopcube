@@ -6,7 +6,6 @@
 import json
 import os
 
-# from config import Config
 from flask import Blueprint
 from flask import redirect
 from flask import render_template
@@ -16,7 +15,8 @@ from flask import url_for
 from flask_login import login_required
 from sqlalchemy import exists
 
-from shopyoapi.enhance import base_context
+from config import Config
+
 from shopyoapi.init import db
 
 from modules.admin.admin import admin_required
@@ -47,7 +47,7 @@ def user_list():
      Lists all users in the database.
 
     """
-    context = base_context()
+    context = {}
     context["users"] = User.query.all()
     return render_template("admin/index.html", **context)
 
@@ -62,22 +62,28 @@ def user_add():
     adds a user to database.
 
     """
-    context = base_context()
+    context = {}
     if request.method == "POST":
-        username = request.form["name"]
+        email = request.form["email"]
         password = request.form["password"]
-        admin_user = request.form.get("admin_user")
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        admin_user = request.form.get("is_admin")
         if admin_user == "True":
-            admin_user = True
+            is_admin = True
         else:
-            admin_user = False
+            is_admin = False
 
-        has_user = db.session.query(exists().where(User.username == username)).scalar()
+        has_user = db.session.query(
+            exists().where(User.email == email)
+        ).scalar()
 
         if has_user is False:
             new_user = User()
-            new_user.username = username
-            new_user.admin_user = admin_user
+            new_user.email = email
+            new_user.is_admin = is_admin
+            new_user.first_name = first_name
+            new_user.last_name = last_name
             new_user.set_hash(password)
 
             for key in request.form:
@@ -119,7 +125,7 @@ def admin_edit(id):
     :type id: int
 
     """
-    context = base_context()
+    context = {}
     user = User.query.get(id)
     context["user"] = user
     context["user_roles"] = [r.name for r in user.roles]
@@ -137,7 +143,9 @@ def admin_update():
     """
     id = request.form["id"]
     password = request.form["password"]
-    username = request.form["username"]
+    email = request.form["email"]
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
     admin_user = request.form.get("admin_user")
     if admin_user == "True":
         admin_user = True
@@ -146,7 +154,9 @@ def admin_update():
     user = User.query.get(id)
     user.set_hash(password)
     user.admin_user = admin_user
-    user.username = username
+    user.email = email
+    user.first_name = first_name
+    user.last_name = last_name
     if password.strip():
         user.set_hash(password)
     user.roles[:] = []
@@ -164,7 +174,7 @@ def admin_update():
 @login_required
 @admin_required
 def roles():
-    context = base_context()
+    context = {}
     context["roles"] = Role.query.all()
     return render_template("admin/roles.html", **context)
 

@@ -1,30 +1,22 @@
 {% extends "base/module_base.html" %}
-
 {% set active_page ='' %}
-
 {% block pagehead %}
-
 {% endblock %}
-
-
-
 {% block sidebar %}
-  {%include 'internals/blocks/sidebar.html'%}
+{%include 'internals/blocks/sidebar.html'%}
 {%endblock%}
-
-
-
 {% block content %}
-
-  <br>
-
-    {% for info in all_info %}
-    <div>
-      name: {{all_info[info]['display_string']}}<br>
-      type: {{all_info[info]['type']}}<br>
-      url: <a style="color: rgb(100, 100, 100); font-style: underline;" href="{{all_info[info]['url_prefix']}}">{{all_info[info]['url_prefix']}}</a>
+<br>
+<div class="card">
+    <div class="card-body">
+        {% for info in all_info %}
+        <div>
+            name: {{all_info[info]['display_string']}}<br>
+            type: {{all_info[info]['type']}}<br>
+            url: <a style="color: rgb(100, 100, 100); font-style: underline;" href="{{all_info[info]['url_prefix']}}">{{all_info[info]['url_prefix']}}</a>
+        </div>
+        <hr>
+        {% endfor %}
     </div>
-    <hr>
-        
-    {% endfor %}
- {% endblock %}
+</div>
+{% endblock %}

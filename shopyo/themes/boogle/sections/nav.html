@@ -1,0 +1,40 @@
+<!--Navbar-->
+<nav class="yo-public-nav navbar navbar-expand-lg navbar-dark {{'bg-transparent fixed-top' if active_page=='index.html' else ''}} ">
+    <!-- Navbar brand -->
+    <a class="navbar-brand" href="#"><img src="/static/shopyo.png" height="60" alt="CoolBrand"></a>
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            {%for category in get_categories()%}
+            {%if category.name.upper() != 'UNCATEGORISED'%}
+            <li class="nav-item text-white">
+                <a class="nav-link" href=""><b style="font-size: 12px">{{category.name.upper()}}</b></a>
+            </li>
+            {%endif%}
+            {%endfor%}
+        </ul>
+        <!-- Links -->
+        <form class="form-inline text-white">
+            <a class="md-form my-0 text-white" href=""><i class="fa fa-search"></i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            |
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {%if not current_user.is_authenticated%}
+                <a class="md-form my-0 text-white" href="{{ url_for('login.login') }}">LOGIN</a> 
+            {%else%}
+                <a class="md-form my-0 text-white" href="#">ACCOUNT</a> 
+            {%endif%}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            |
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="md-form my-0 text-white" href="{{ url_for('shop.cart') }}">CART {{cart_items}}/Rs {{cart_total_price}}</a>
+        </form>
+    </div>
+    <!-- Collapsible content -->
+</nav>
+<!--/.Navbar-->

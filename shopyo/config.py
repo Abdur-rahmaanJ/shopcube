@@ -10,12 +10,17 @@ class Config:
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.urandom(24)
-    HOMEPAGE_URL = "/control_panel"
     BASE_DIR = base_path
     STATIC = os.path.join(BASE_DIR, "static")
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
     UPLOADED_PATH_THUM = os.path.join(STATIC, "uploads", "thumbs")
+
     UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
+    UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "category")
+    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
+        STATIC, "uploads", "subcategory"
+    )
+    PASSWORD_SALT = "abcdefghi"
 
 
 class DevelopmentConfig(Config):
@@ -23,6 +28,8 @@ class DevelopmentConfig(Config):
 
     ENV = "development"
     DEBUG = True
+    # EXPLAIN_TEMPLATE_LOADING = True
+    LOGIN_DISABLED = True
 
 
 class TestingConfig(Config):

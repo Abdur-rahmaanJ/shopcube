@@ -3,5 +3,5 @@
   "type": "show",
   "fa-icon": "fa fa-envelope",
   "url_prefix": "/contact",
-  "panel_redirect": "/dashboard"
+  "dashboard": "/dashboard"
 }

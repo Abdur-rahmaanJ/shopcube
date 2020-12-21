@@ -10,7 +10,6 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
 from shopyoapi.init import db
 from shopyoapi.init import ma
 
@@ -59,7 +58,7 @@ people_schema = PeopleSchema(many=True)
 @people_blueprint.route("/")
 @login_required
 def index():
-    context = base_context()
+    context = {}
 
     context["people"] = People.query.all()
     return render_template("people/index.html", **context)
@@ -68,7 +67,7 @@ def index():
 @people_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 def people_add():
-    context = base_context()
+    context = {}
 
     if request.method == "POST":
         name = request.form["name"]
@@ -134,7 +133,7 @@ def people_delete(id):
 @people_blueprint.route("/edit/<id>", methods=["GET", "POST"])
 @login_required
 def people_edit(id):
-    context = base_context()
+    context = {}
 
     a = People.query.get(id)
 
@@ -210,7 +209,7 @@ def people_update():
 @people_blueprint.route("/lookup", methods=["GET", "POST"])
 @login_required
 def lookup():
-    context = base_context()
+    context = {}
     context["people"] = People.query.all()
     return render_template("people/lookup.html", **context)
 

@@ -7,23 +7,19 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.enhance import base_context
 from shopyoapi.html import notify_success
 
 from .forms import ContactForm
 from .models import ContactMessage
 
 contact_blueprint = Blueprint(
-    "contact",
-    __name__,
-    url_prefix="/contact",
-    template_folder="templates",
+    "contact", __name__, url_prefix="/contact", template_folder="templates",
 )
 
 
 @contact_blueprint.route("/")
 def index():
-    context = base_context()
+    context = {}
     form = ContactForm()
 
     context.update({"form": form})
@@ -43,7 +39,9 @@ def validate_message():
         email = form.email.data
         message = form.message.data
 
-        contact_message = ContactMessage(name=name, email=email, message=message)
+        contact_message = ContactMessage(
+            name=name, email=email, message=message
+        )
         contact_message.insert()
         flash(notify_success("Message submitted!"))
         return redirect(url_for("contact.index"))
@@ -53,7 +51,7 @@ def validate_message():
 @contact_blueprint.route("/dashboard/<int:page>", methods=["GET"])
 @login_required
 def dashboard(page):
-    context = base_context()
+    context = {}
 
     per_page = 10
     messages = ContactMessage.query.paginate(page, per_page, error_out=False)
