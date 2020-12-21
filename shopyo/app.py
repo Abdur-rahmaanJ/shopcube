@@ -55,7 +55,10 @@ def create_app(config_name):
     with app.app_context():
         theme_dir = os.path.join(app.config["BASE_DIR"], "themes")
         my_loader = jinja2.ChoiceLoader(
-            [app.jinja_loader, jinja2.FileSystemLoader([theme_dir]),]
+            [
+                app.jinja_loader,
+                jinja2.FileSystemLoader([theme_dir]),
+            ]
         )
         app.jinja_loader = my_loader
 
