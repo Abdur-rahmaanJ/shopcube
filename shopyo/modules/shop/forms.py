@@ -18,6 +18,7 @@ from shopyoapi.validators import require_if_diff_address
 
 
 class CheckoutForm(FlaskForm):
+
     diffAddress = BooleanField(
         "Ship to a different address than the default one?",
         render_kw={
@@ -53,13 +54,11 @@ class CheckoutForm(FlaskForm):
         [require_if_default_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    default_country = StringField(
+    default_country = SelectField(
         "Country",
         render_kw={
             "class": "form-control",
-            "autocomplete": "off",
-            "value": "Mauritius",
-            "disabled": "",
+            "autocomplete": "off"
         },
     )
     default_street = StringField(
@@ -98,13 +97,11 @@ class CheckoutForm(FlaskForm):
         [require_if_diff_address],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    diff_country = StringField(
+    diff_country = SelectField(
         "Country",
         render_kw={
             "class": "form-control",
             "autocomplete": "off",
-            "value": "Mauritius",
-            "disabled": "",
         },
     )
     diff_street = StringField(

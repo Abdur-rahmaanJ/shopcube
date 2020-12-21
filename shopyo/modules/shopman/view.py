@@ -1,20 +1,28 @@
 # from flask import render_template
 # from flask import url_for
 # from flask import redirect
+
+import os 
+import json
+
 from flask import flash
 from flask import request
+from flask import current_app
 
 from shopyoapi.forms import flash_errors
 
 # #
 from shopyoapi.html import notify_success
 from shopyoapi.module import ModuleHelp
+from shopyoapi.enhance import get_setting
+from shopyoapi.enhance import set_setting
 
 from modules.product.models import Product
 from modules.shop.models import Order
 from modules.shopman.forms import CouponForm
 from modules.shopman.forms import DeliveryOptionForm
 from modules.shopman.forms import PaymentOptionForm
+from modules.shopman.forms import CurrencyForm
 
 from .models import Coupon
 from .models import DeliveryOption
@@ -34,9 +42,26 @@ def get_product(barcode):
 @module_blueprint.route(mhelp.info["dashboard"])
 def dashboard():
     context = {}
-
+    form = CurrencyForm()
+    with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'currency.json')) as f:
+        currencies = json.load(f)
+    currency_choices = [(c['cc'], c['name']) for c in currencies]
+    form.currency.choices = currency_choices
+    
+    context.update({
+        'form': form,
+        'current_currency': get_setting('CURRENCY')
+        })
     context.update({"info": mhelp.info})
     return mhelp.render("dashboard.html", **context)
+
+
+@module_blueprint.route('currency/set', methods=['GET', 'POST'])
+def set_currency():
+    if request.method == 'POST':
+        form = CurrencyForm()
+        set_setting('CURRENCY', form.currency.data)
+        return mhelp.redirect_url('shopman.dashboard')
 
 
 @module_blueprint.route("/delivery" + mhelp.info["dashboard"])

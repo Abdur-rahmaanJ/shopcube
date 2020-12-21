@@ -10,6 +10,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+from flask import current_app
 
 from flask_login import current_user
 
@@ -264,12 +265,21 @@ def prepare_checkout():
         return jsonify({"goto": url_for("shop.checkout")})
 
 
+
+
 @module_blueprint.route("/checkout", methods=["GET", "POST"])
 def checkout():
     context = {}
     delivery_options = DeliveryOption.query.all()
     payment_options = PaymentOption.query.all()
+    with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'country.json')) as f:
+        countries = json.load(f)
     form = CheckoutForm()
+    country_choices = [(c['name'], c['name']) for c in countries]
+    form.default_country.choices = country_choices
+    form.diff_country.choices = country_choices
+
+
 
     if "checkout_data" not in session:
         checkout_data = {}
