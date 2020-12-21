@@ -17,37 +17,39 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Total $<span id='checkout-total'>0</span></span>
-                <span class="badge badge-secondary badge-pill"><span id="checkout-item-count">0</span></span>
-            </h4>
-            <div id="checkout-panel" class="list-group">
-            </div>
-            <div>
-                <label for="user-change">User Change</label>
-                <input type="number" id="user-change" type="" class="form-control" name="">
-                <p>Return $<span id="change-return">---</span></p>
-                <p class="d-flex justify-content-between align-items-center mb-3">
-                    <button id="calculate-change" class="btn btn-primary">Calculate</button>
-                    <button id="confirm-transaction" class="btn btn-success">Confirm</button>
-                </p>
-            </div>
-        </div>
-        <div class="col-sm-9">
-            <div>
-                <div class="row">
-                    <ul class="nav nav-tabs left-tabs">
-                        {%for category in categories%}
-                        <li class="nav-item">
-                            <a class="nav-link 
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Total $<span id='checkout-total'>0</span></span>
+                        <span class="badge badge-secondary badge-pill"><span id="checkout-item-count">0</span></span>
+                    </h4>
+                    <div id="checkout-panel" class="list-group">
+                    </div>
+                    <div>
+                        <label for="user-change">User Change</label>
+                        <input type="number" id="user-change" type="" class="form-control" name="">
+                        <p>Return $<span id="change-return">---</span></p>
+                        <p class="d-flex justify-content-between align-items-center mb-3">
+                            <button id="calculate-change" class="btn btn-primary">Calculate</button>
+                            <button id="confirm-transaction" class="btn btn-success">Confirm</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div>
+                        <div class="row">
+                            <ul class="nav nav-tabs left-tabs">
+                                {%for category in categories%}
+                                <li class="nav-item">
+                                    <a class="nav-link 
               {{'active' if loop.index==1}}" href="#tab-panel-{{category.id}}" data-toggle="tab">{{category.name}}</a>
-                        </li>
-                        {%endfor%}
-                        <!-- use the title attribute to show a tooltip with the full long name
+                                </li>
+                                {%endfor%}
+                                <!-- use the title attribute to show a tooltip with the full long name
                    in case the tab is trucated-->
-                        <!--
+                                <!--
             <li class="nav-item">
               
               <a
@@ -58,24 +60,26 @@
                 >Tab 3</a
               >
             </li>-->
-                    </ul>
-                    <div class="tab-content">
-                        {%for category in categories%}
-                        <article class="tab-pane container 
+                            </ul>
+                            <div class="tab-content">
+                                {%for category in categories%}
+                                <article class="tab-pane container 
             {{'active' if loop.index==1}}" id="tab-panel-{{category.id}}">
-                            {%for subcategory in category.subcategories%}
-                            <p><b>{{subcategory.name}}</b></p>
-                            {%for product in subcategory.products%}
-                            {%if product.in_stock > 0%}
-                            <p style="border: 2px solid black; padding: 5px; margin: 5px; display: inline-block">
-                                <span class="product-item" id="product_{{product.barcode}}">{{product.name}} - {{product.selling_price}}</span>
-                                <span class="badge badge-secondary">{{product.in_stock}}</span>
-                            </p>
-                            {%endif%}
-                            {%endfor%}
-                            {%endfor%}
-                        </article>
-                        {%endfor%}
+                                    {%for subcategory in category.subcategories%}
+                                    <p><b>{{subcategory.name}}</b></p>
+                                    {%for product in subcategory.products%}
+                                    {%if product.in_stock > 0%}
+                                    <p style="border: 2px solid black; padding: 5px; margin: 5px; display: inline-block">
+                                        <span class="product-item" id="product_{{product.barcode}}">{{product.name}} - {{product.selling_price}}</span>
+                                        <span class="badge badge-secondary">{{product.in_stock}}</span>
+                                    </p>
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%endfor%}
+                                </article>
+                                {%endfor%}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

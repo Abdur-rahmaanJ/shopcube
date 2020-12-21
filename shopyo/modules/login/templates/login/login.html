@@ -33,9 +33,15 @@
 {% block content %}
 
 	<div class="container col-md-6 off-set-2 text-center">
-        <img src="/static/shopyo.svg" width="175" height="150">
-        <form action="/login/" method="post">
-         {%include 'login/blocks/login_form.html'%}
-        </form>
+        
+        <div class="card">
+            <div class="card-body">
+                <img src="/static/shopyo.svg" width="175" height="150">
+                <form action="/login/" method="post">
+                    {%include 'login/blocks/login_form.html'%}
+                </form>
+            </div>
+        </div>
+        
              
 {% endblock %}
