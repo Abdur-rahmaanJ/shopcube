@@ -109,6 +109,7 @@ def index(page=1):
 
 @module_blueprint.route("/c/<category_name>")
 def category(category_name):
+
     context = mhelp.context()
     current_category = Category.query.filter(Category.name == category_name).first()
 
