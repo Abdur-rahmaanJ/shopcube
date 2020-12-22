@@ -14,3 +14,5 @@ Sphinx
 pytest
 selenium
 isort
+email_validator
+pillow
