@@ -44,18 +44,27 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 
 def get_currency_symbol():
-    curr_code = get_setting('CURRENCY')
-    with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'currency.json')) as f:
+    curr_code = get_setting("CURRENCY")
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"],
+            "modules",
+            "shopman",
+            "data",
+            "currency.json",
+        )
+    ) as f:
         currencies = json.load(f)
     for curr in currencies:
-        if curr['cc'] == curr_code:
-            return curr['symbol']
+        if curr["cc"] == curr_code:
+            return curr["symbol"]
 
-mhelp._context.update({'get_currency_symbol': get_currency_symbol})
+
+mhelp._context.update({"get_currency_symbol": get_currency_symbol})
+
 
 def get_product(product_id):
     return Product.query.get(product_id)
-
 
 
 @module_blueprint.route("/home")
@@ -70,9 +79,7 @@ def homepage():
     context = mhelp.context()
     cart_info = get_cart_data()
     context.update(cart_info)
-    return render_template(
-        get_setting("ACTIVE_THEME") + "/index.html", **context
-    )
+    return render_template(get_setting("ACTIVE_THEME") + "/index.html", **context)
 
 
 @module_blueprint.route("/page/<int:page>")
@@ -103,9 +110,7 @@ def index(page=1):
 @module_blueprint.route("/c/<category_name>")
 def category(category_name):
     context = mhelp.context()
-    current_category = Category.query.filter(
-        Category.name == category_name
-    ).first()
+    current_category = Category.query.filter(Category.name == category_name).first()
 
     cart_info = get_cart_data()
 
@@ -127,9 +132,7 @@ def subcategory(subcategory_name, page=1):
     end = page * PAGINATION
     start = end - PAGINATION
 
-    subcategory = SubCategory.query.filter(
-        SubCategory.name == subcategory_name
-    ).first()
+    subcategory = SubCategory.query.filter(SubCategory.name == subcategory_name).first()
     products = subcategory.products[start:end]
     total_pages = (len(products) // PAGINATION) + 1
     current_category_name = subcategory.category.name
@@ -189,9 +192,7 @@ def cart_add(product_barcode):
                             "Products in cart cannot be greater than product in stock"
                         )
                     )
-                    return redirect(
-                        url_for("shop.product", product_barcode=barcode)
-                    )
+                    return redirect(url_for("shop.product", product_barcode=barcode))
                 data[barcode] = updated_quantity
                 session["cart"][0] = data
 
@@ -202,9 +203,7 @@ def cart_add(product_barcode):
     return mhelp.redirect_url("shop.product", product_barcode=barcode)
 
 
-@module_blueprint.route(
-    "/cart/remove/<product_barcode>", methods=["GET", "POST"]
-)
+@module_blueprint.route("/cart/remove/<product_barcode>", methods=["GET", "POST"])
 def cart_remove(product_barcode):
     if "cart" in session:
 
@@ -226,9 +225,7 @@ def cart():
     cart_info = get_cart_data()
     delivery_options = DeliveryOption.query.all()
 
-    context.update(
-        {"delivery_options": delivery_options, "get_product": get_product}
-    )
+    context.update({"delivery_options": delivery_options, "get_product": get_product})
     context.update(cart_info)
     return mhelp.render("view_cart.html", **context)
 
@@ -286,22 +283,22 @@ def prepare_checkout():
         return jsonify({"goto": url_for("shop.checkout")})
 
 
-
-
 @module_blueprint.route("/checkout", methods=["GET", "POST"])
 def checkout():
     context = mhelp.context()
 
     delivery_options = DeliveryOption.query.all()
     payment_options = PaymentOption.query.all()
-    with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'country.json')) as f:
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"], "modules", "shopman", "data", "country.json"
+        )
+    ) as f:
         countries = json.load(f)
     form = CheckoutForm()
-    country_choices = [(c['name'], c['name']) for c in countries]
+    country_choices = [(c["name"], c["name"]) for c in countries]
     form.default_country.choices = country_choices
     form.diff_country.choices = country_choices
-
-
 
     if "checkout_data" not in session:
         checkout_data = {}
@@ -331,14 +328,22 @@ def checkout():
 def checkout_process():
     if request.method == "POST":
         cart_info = get_cart_data()
-        if len(cart_info['cart_data']) == 0:
-            flash(notify_warning('Cart cannot be empty!'))
-            return mhelp.redirect_url('shop.checkout')
-            
+        if len(cart_info["cart_data"]) == 0:
+            flash(notify_warning("Cart cannot be empty!"))
+            return mhelp.redirect_url("shop.checkout")
+
         form = CheckoutForm()
-        with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'country.json')) as f:
+        with open(
+            os.path.join(
+                current_app.config["BASE_DIR"],
+                "modules",
+                "shopman",
+                "data",
+                "country.json",
+            )
+        ) as f:
             countries = json.load(f)
-        country_choices = [(c['name'], c['name']) for c in countries]
+        country_choices = [(c["name"], c["name"]) for c in countries]
         form.default_country.choices = country_choices
         form.diff_country.choices = country_choices
         # print(dir(form))
@@ -396,14 +401,10 @@ def checkout_process():
 
             order = Order()
             order.billing_detail = billing_detail
-            shipping_option = DeliveryOption.query.get(
-                request.form["deliveryoption"]
-            )
+            shipping_option = DeliveryOption.query.get(request.form["deliveryoption"])
             order.shipping_option_name = shipping_option.option
             order.shipping_option_price = shipping_option.price
-            payment_option = PaymentOption.query.get(
-                request.form["paymentoption"]
-            )
+            payment_option = PaymentOption.query.get(request.form["paymentoption"])
             order.payment_option_name = payment_option.name
             order.payment_option_text = payment_option.text
 

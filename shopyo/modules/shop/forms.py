@@ -56,10 +56,7 @@ class CheckoutForm(FlaskForm):
     )
     default_country = SelectField(
         "Country",
-        render_kw={
-            "class": "form-control",
-            "autocomplete": "off"
-        },
+        render_kw={"class": "form-control", "autocomplete": "off"},
     )
     default_street = StringField(
         "Street",

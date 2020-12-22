@@ -13,7 +13,10 @@ from .forms import ContactForm
 from .models import ContactMessage
 
 contact_blueprint = Blueprint(
-    "contact", __name__, url_prefix="/contact", template_folder="templates",
+    "contact",
+    __name__,
+    url_prefix="/contact",
+    template_folder="templates",
 )
 
 
@@ -39,9 +42,7 @@ def validate_message():
         email = form.email.data
         message = form.message.data
 
-        contact_message = ContactMessage(
-            name=name, email=email, message=message
-        )
+        contact_message = ContactMessage(name=name, email=email, message=message)
         contact_message.insert()
         flash(notify_success("Message submitted!"))
         return redirect(url_for("contact.index"))

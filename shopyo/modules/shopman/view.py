@@ -2,7 +2,7 @@
 # from flask import url_for
 # from flask import redirect
 
-import os 
+import os
 import json
 
 from flask import flash
@@ -39,30 +39,33 @@ def get_product(barcode):
     return Product.query.get(barcode)
 
 
-
-
 @module_blueprint.route(mhelp.info["dashboard"])
 def dashboard():
     context = mhelp.context()
     form = CurrencyForm()
-    with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'currency.json')) as f:
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"],
+            "modules",
+            "shopman",
+            "data",
+            "currency.json",
+        )
+    ) as f:
         currencies = json.load(f)
-    currency_choices = [(c['cc'], c['name']) for c in currencies]
+    currency_choices = [(c["cc"], c["name"]) for c in currencies]
     form.currency.choices = currency_choices
-    
-    context.update({
-        'form': form,
-        'current_currency': get_setting('CURRENCY')
-        })
+
+    context.update({"form": form, "current_currency": get_setting("CURRENCY")})
     return mhelp.render("dashboard.html", **context)
 
 
-@module_blueprint.route('currency/set', methods=['GET', 'POST'])
+@module_blueprint.route("currency/set", methods=["GET", "POST"])
 def set_currency():
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CurrencyForm()
-        set_setting('CURRENCY', form.currency.data)
-        return mhelp.redirect_url('shopman.dashboard')
+        set_setting("CURRENCY", form.currency.data)
+        return mhelp.redirect_url("shopman.dashboard")
 
 
 @module_blueprint.route("/delivery" + mhelp.info["dashboard"])

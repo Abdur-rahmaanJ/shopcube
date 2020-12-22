@@ -25,12 +25,12 @@ class ModuleHelp:
             url_prefix=self.info["url_prefix"],
         )
 
-        self._context.update({'info': self.info})
+        self._context.update({"info": self.info})
 
     def render(self, filename, **kwargs):
-        '''
+        """
         .render('file.html') renders file.html found in module/templates/module/file.html
-        '''
+        """
         return render_template(
             "{}/{}".format(self.info["module_name"], filename), **kwargs
         )

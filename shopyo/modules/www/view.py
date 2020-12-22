@@ -46,4 +46,4 @@ def index():
     # module_blueprint.template_folder = active_theme_dir
 
     # return str(module_blueprint.template_folder)
-    return redirect(url_for('shop.homepage'))
+    return redirect(url_for("shop.homepage"))

@@ -24,9 +24,7 @@ all_info = {}
 def index():
     context = {}
 
-    for module in os.listdir(
-        os.path.join(current_app.config["BASE_DIR"], "modules")
-    ):
+    for module in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
         if module.startswith("__"):
             continue
         if module not in ["dashboard"]:

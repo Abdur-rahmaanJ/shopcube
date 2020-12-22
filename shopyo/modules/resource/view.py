@@ -48,9 +48,7 @@ def index():
 
 @module_blueprint.route("/theme/<active_theme>/styles.css", methods=["GET"])
 def active_theme_css(active_theme):
-    theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "themes", active_theme
-    )
+    theme_dir = os.path.join(current_app.config["BASE_DIR"], "themes", active_theme)
     # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
 
@@ -119,9 +117,7 @@ def upload_tinymce_image():
                 db.session.commit()
             except IOError:
                 output = make_response(404)
-                output.headers["Error"] = (
-                    "Cannot create thumbnail for " + filename
-                )
+                output.headers["Error"] = "Cannot create thumbnail for " + filename
                 return output
             return jsonify({"location": filename})
 
