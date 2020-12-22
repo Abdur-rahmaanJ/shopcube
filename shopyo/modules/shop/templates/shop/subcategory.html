@@ -55,6 +55,7 @@
     </div>
     <nav aria-label="breadcrumb ">
       <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Shop</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('shop.category', category_name=subcategory.category.name) }}">{{ subcategory.category.name }}</a></li>
         <li class="breadcrumb-item active"> {{ subcategory.name }} </li>

@@ -39,9 +39,11 @@ def get_product(barcode):
     return Product.query.get(barcode)
 
 
+
+
 @module_blueprint.route(mhelp.info["dashboard"])
 def dashboard():
-    context = {}
+    context = mhelp.context()
     form = CurrencyForm()
     with open(os.path.join(current_app.config['BASE_DIR'],'modules', 'shopman', 'data', 'currency.json')) as f:
         currencies = json.load(f)
@@ -52,7 +54,6 @@ def dashboard():
         'form': form,
         'current_currency': get_setting('CURRENCY')
         })
-    context.update({"info": mhelp.info})
     return mhelp.render("dashboard.html", **context)
 
 
@@ -66,12 +67,11 @@ def set_currency():
 
 @module_blueprint.route("/delivery" + mhelp.info["dashboard"])
 def delivery():
-    context = {}
+    context = mhelp.context()
     form = DeliveryOptionForm()
     options = DeliveryOption.query.all()
 
     context.update({"form": form, "options": options})
-    context.update({"info": mhelp.info})
     return mhelp.render("delivery.html", **context)
 
 
@@ -119,12 +119,11 @@ def delivery_option_delete(option_id):
 
 @module_blueprint.route("/payment/dashboard", methods=["GET", "POST"])
 def payment():
-    context = {}
+    context = mhelp.context()
     form = PaymentOptionForm()
     options = PaymentOption.query.all()
 
     context.update({"form": form, "options": options})
-    context.update({"info": mhelp.info})
     return mhelp.render("payment.html", **context)
 
 
@@ -174,8 +173,8 @@ def payment_option_delete(option_id):
 def coupon():
     form = CouponForm()
     coupons = Coupon.query.all()
-    context = {"form": form, "coupons": coupons}
-    context.update({"info": mhelp.info})
+    context = mhelp.context()
+    context.update({"form": form, "coupons": coupons})
     return mhelp.render("coupon.html", **context)
 
 
@@ -227,8 +226,8 @@ def coupon_update():
 @module_blueprint.route("/order/dashboard", methods=["GET", "POST"])
 def order():
     orders = Order.query.all()
-    context = {"dir": dir, "orders": orders, "get_product": get_product}
-    context.update({"info": mhelp.info})
+    context = mhelp.context()
+    context.update({"dir": dir, "orders": orders, "get_product": get_product})
     return mhelp.render("order.html", **context)
 
 

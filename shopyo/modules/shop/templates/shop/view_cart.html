@@ -24,6 +24,7 @@ input[type=number]::-webkit-outer-spin-button {
 </div>
 <nav aria-label="breadcrumb ">
   <ol class="breadcrumb bg-white">
+    <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
     <li class="breadcrumb-item "><a href="{{ url_for('shop.index') }}">Shop</a></li>
     <li class="breadcrumb-item active">Cart</li>
   </ol>
@@ -89,7 +90,7 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="col-md-5 col-xs-3">
                             <h3>Cart Totals</h3><hr>
                             <p>
-                                <span>Subtotal: <span id="subtotal">{{ cart_total_price }}</span></span>
+                                <span>Subtotal: {{ get_currency_symbol() }}<span id="subtotal">{{ cart_total_price }}</span></span>
                                 <span></span>
                             </p>
                             <div>
@@ -116,7 +117,7 @@ input[type=number]::-webkit-outer-spin-button {
                                 </table>
                             </div>
                             <p>
-                                <span>Total: <span id="grandtotal"></span></span>
+                                <span>Total: {{ get_currency_symbol() }}<span id="grandtotal"></span></span>
                                 <span></span>
                             </p>
                             <p>
