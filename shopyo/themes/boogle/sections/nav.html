@@ -32,7 +32,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             |
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a class="md-form my-0 text-white" href="{{ url_for('shop.cart') }}">CART {{cart_items}}/Rs {{cart_total_price}}</a>
+            <a class="md-form my-0 text-white" href="{{ url_for('shop.cart') }}">CART {{cart_items}}/{{get_currency_symbol()}} {{cart_total_price}}</a>
         </form>
     </div>
     <!-- Collapsible content -->

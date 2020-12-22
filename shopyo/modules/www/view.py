@@ -8,6 +8,8 @@ import os
 from flask import Blueprint
 from flask import current_app
 from flask import render_template
+from flask import redirect
+from flask import url_for
 
 #
 # from shopyoapi.html import notify_success
@@ -44,7 +46,6 @@ def index():
     # module_blueprint.template_folder = active_theme_dir
 
     # return str(module_blueprint.template_folder)
-    context = {}
-    cart_info = get_cart_data()
-    context.update(cart_info)
-    return render_template(get_setting("ACTIVE_THEME") + "/index.html", **context)
+
+    return redirect(url_for("shop.homepage"))
+

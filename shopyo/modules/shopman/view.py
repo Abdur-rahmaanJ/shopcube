@@ -1,20 +1,28 @@
 # from flask import render_template
 # from flask import url_for
 # from flask import redirect
+
+import os
+import json
+
 from flask import flash
 from flask import request
+from flask import current_app
 
 from shopyoapi.forms import flash_errors
 
 # #
 from shopyoapi.html import notify_success
 from shopyoapi.module import ModuleHelp
+from shopyoapi.enhance import get_setting
+from shopyoapi.enhance import set_setting
 
 from modules.product.models import Product
 from modules.shop.models import Order
 from modules.shopman.forms import CouponForm
 from modules.shopman.forms import DeliveryOptionForm
 from modules.shopman.forms import PaymentOptionForm
+from modules.shopman.forms import CurrencyForm
 
 from .models import Coupon
 from .models import DeliveryOption
@@ -33,20 +41,40 @@ def get_product(barcode):
 
 @module_blueprint.route(mhelp.info["dashboard"])
 def dashboard():
-    context = {}
+    context = mhelp.context()
+    form = CurrencyForm()
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"],
+            "modules",
+            "shopman",
+            "data",
+            "currency.json",
+        )
+    ) as f:
+        currencies = json.load(f)
+    currency_choices = [(c["cc"], c["name"]) for c in currencies]
+    form.currency.choices = currency_choices
 
-    context.update({"info": mhelp.info})
+    context.update({"form": form, "current_currency": get_setting("CURRENCY")})
     return mhelp.render("dashboard.html", **context)
+
+
+@module_blueprint.route("currency/set", methods=["GET", "POST"])
+def set_currency():
+    if request.method == "POST":
+        form = CurrencyForm()
+        set_setting("CURRENCY", form.currency.data)
+        return mhelp.redirect_url("shopman.dashboard")
 
 
 @module_blueprint.route("/delivery" + mhelp.info["dashboard"])
 def delivery():
-    context = {}
+    context = mhelp.context()
     form = DeliveryOptionForm()
     options = DeliveryOption.query.all()
 
     context.update({"form": form, "options": options})
-    context.update({"info": mhelp.info})
     return mhelp.render("delivery.html", **context)
 
 
@@ -94,12 +122,11 @@ def delivery_option_delete(option_id):
 
 @module_blueprint.route("/payment/dashboard", methods=["GET", "POST"])
 def payment():
-    context = {}
+    context = mhelp.context()
     form = PaymentOptionForm()
     options = PaymentOption.query.all()
 
     context.update({"form": form, "options": options})
-    context.update({"info": mhelp.info})
     return mhelp.render("payment.html", **context)
 
 
@@ -149,8 +176,8 @@ def payment_option_delete(option_id):
 def coupon():
     form = CouponForm()
     coupons = Coupon.query.all()
-    context = {"form": form, "coupons": coupons}
-    context.update({"info": mhelp.info})
+    context = mhelp.context()
+    context.update({"form": form, "coupons": coupons})
     return mhelp.render("coupon.html", **context)
 
 
@@ -202,8 +229,8 @@ def coupon_update():
 @module_blueprint.route("/order/dashboard", methods=["GET", "POST"])
 def order():
     orders = Order.query.all()
-    context = {"dir": dir, "orders": orders, "get_product": get_product}
-    context.update({"info": mhelp.info})
+    context = mhelp.context()
+    context.update({"dir": dir, "orders": orders, "get_product": get_product})
     return mhelp.render("order.html", **context)
 
 

@@ -54,3 +54,11 @@ class CouponForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
+
+
+class CurrencyForm(FlaskForm):
+    currency = SelectField(
+        "Currency",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"},
+    )

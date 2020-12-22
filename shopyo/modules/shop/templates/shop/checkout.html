@@ -8,6 +8,7 @@
 </div>
 <nav aria-label="breadcrumb ">
     <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
         <li class="breadcrumb-item "><a href="{{ url_for('shop.index') }}">Shop</a></li>
         <li class="breadcrumb-item "><a href="{{ url_for('shop.cart') }}">Cart</a></li>
         <li class="breadcrumb-item active">Checkout</li>
@@ -194,7 +195,7 @@
                                 </tbody>
                             </table>
                             <div>
-                                Grand Subtotal: <span id="grandsubtotal"></span><br><br>
+                                Grand Subtotal: {{get_currency_symbol()}} <span id="grandsubtotal"></span><br><br>
                             </div>
                             <div>
                                 <table class="table">
@@ -238,7 +239,7 @@
                                 </table>
                             </div>
                             <div>
-                                Grand total: <span id="grandtotal"></span><br><br>
+                                Grand total: {{get_currency_symbol()}} <span id="grandtotal"></span><br><br>
                             </div>
                             <div>
                                 <button class="btn btn-primary">Place order</button>

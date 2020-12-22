@@ -10,6 +10,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+from flask import current_app
 
 from flask_login import current_user
 
@@ -18,6 +19,7 @@ from shopyoapi.forms import flash_errors
 # #
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
+from shopyoapi.module import ModuleHelp
 
 from modules.admin.models import User
 from modules.category.models import Category
@@ -26,37 +28,64 @@ from modules.product.models import Product
 from modules.shopman.models import DeliveryOption
 from modules.shopman.models import PaymentOption
 
-from .forms import CheckoutForm
-from .helpers import get_cart_data
-from .models import BillingDetail
-from .models import Order
-from .models import OrderItem
+from shopyoapi.enhance import get_setting
+from shopyoapi.enhance import set_setting
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
+from modules.shop.forms import CheckoutForm
+from modules.shop.helpers import get_cart_data
+from modules.shop.models import BillingDetail
+from modules.shop.models import Order
+from modules.shop.models import OrderItem
 
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
 
-globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
+
+
+def get_currency_symbol():
+    curr_code = get_setting("CURRENCY")
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"],
+            "modules",
+            "shopman",
+            "data",
+            "currency.json",
+        )
+    ) as f:
+        currencies = json.load(f)
+    for curr in currencies:
+        if curr["cc"] == curr_code:
+            return curr["symbol"]
+
+
+mhelp._context.update({"get_currency_symbol": get_currency_symbol})
 
 
 def get_product(product_id):
     return Product.query.get(product_id)
 
 
-module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
+@module_blueprint.route("/home")
+def homepage():
+    # cant be defined above but must be manually set each time
+    # active_theme_dir = os.path.join(
+    #     dirpath, "..", "..", "themes", get_setting("ACTIVE_THEME")
+    # )
+    # module_blueprint.template_folder = active_theme_dir
+
+    # return str(module_blueprint.template_folder)
+    context = mhelp.context()
+    cart_info = get_cart_data()
+    context.update(cart_info)
+    return render_template(get_setting("ACTIVE_THEME") + "/index.html", **context)
 
 
 @module_blueprint.route("/page/<int:page>")
 @module_blueprint.route("/")
 def index(page=1):
-    context = {}
+    context = mhelp.context()
     PAGINATION = 5
     end = page * PAGINATION
     start = end - PAGINATION
@@ -75,12 +104,13 @@ def index(page=1):
         }
     )
     context.update(cart_info)
-    return render_template("shop/shop.html", **context)
+    return mhelp.render("shop.html", **context)
 
 
 @module_blueprint.route("/c/<category_name>")
 def category(category_name):
-    context = {}
+
+    context = mhelp.context()
     current_category = Category.query.filter(Category.name == category_name).first()
 
     cart_info = get_cart_data()
@@ -92,13 +122,13 @@ def category(category_name):
         }
     )
     context.update(cart_info)
-    return render_template("shop/category.html", **context)
+    return mhelp.render("category.html", **context)
 
 
 @module_blueprint.route("/sub/<subcategory_name>/page/<int:page>")
 @module_blueprint.route("/sub/<subcategory_name>")
 def subcategory(subcategory_name, page=1):
-    context = {}
+    context = mhelp.context()
     PAGINATION = 5
     end = page * PAGINATION
     start = end - PAGINATION
@@ -122,12 +152,12 @@ def subcategory(subcategory_name, page=1):
         }
     )
     context.update(cart_info)
-    return render_template("shop/subcategory.html", **context)
+    return mhelp.render("subcategory.html", **context)
 
 
 @module_blueprint.route("/product/<product_barcode>")
 def product(product_barcode):
-    context = {}
+    context = mhelp.context()
     product = Product.query.get(product_barcode)
 
     cart_info = get_cart_data()
@@ -137,7 +167,7 @@ def product(product_barcode):
 
     context.update({"product": product})
     context.update(cart_info)
-    return render_template("shop/product.html", **context)
+    return mhelp.render("product.html", **context)
 
 
 @module_blueprint.route("/cart/add/<product_barcode>", methods=["GET", "POST"])
@@ -171,7 +201,7 @@ def cart_add(product_barcode):
             # In this block, the user has not started a cart, so we start it for them and add the product.
             session["cart"] = [{barcode: quantity}]
 
-    return redirect(url_for("shop.product", product_barcode=barcode))
+    return mhelp.redirect_url("shop.product", product_barcode=barcode)
 
 
 @module_blueprint.route("/cart/remove/<product_barcode>", methods=["GET", "POST"])
@@ -182,23 +212,23 @@ def cart_remove(product_barcode):
         if product_barcode in data:
             del data[product_barcode]
         flash(notify_success("Removed!"))
-        return redirect(url_for("shop.cart"))
+        return mhelp.redirect_url("shop.cart")
 
     else:
         # In this block, the user has not started a cart, so we start it for them and add the product.
-        return redirect(url_for("shop.cart"))
+        return mhelp.redirect_url("shop.cart")
 
 
 @module_blueprint.route("/cart", methods=["GET", "POST"])
 def cart():
-    context = {}
+    context = mhelp.context()
 
     cart_info = get_cart_data()
     delivery_options = DeliveryOption.query.all()
 
     context.update({"delivery_options": delivery_options, "get_product": get_product})
     context.update(cart_info)
-    return render_template("shop/view_cart.html", **context)
+    return mhelp.render("view_cart.html", **context)
 
 
 @module_blueprint.route("/cart/update", methods=["GET", "POST"])
@@ -220,7 +250,7 @@ def cart_update():
             session["cart"] = [data]
         else:
             session["cart"] = [{}]
-        return redirect(url_for("shop.cart"))
+        return mhelp.redirect_url("shop.cart")
 
 
 # @module_blueprint.route("/session", methods=['GET', 'POST'])
@@ -256,10 +286,20 @@ def prepare_checkout():
 
 @module_blueprint.route("/checkout", methods=["GET", "POST"])
 def checkout():
-    context = {}
+    context = mhelp.context()
+
     delivery_options = DeliveryOption.query.all()
     payment_options = PaymentOption.query.all()
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"], "modules", "shopman", "data", "country.json"
+        )
+    ) as f:
+        countries = json.load(f)
     form = CheckoutForm()
+    country_choices = [(c["name"], c["name"]) for c in countries]
+    form.default_country.choices = country_choices
+    form.diff_country.choices = country_choices
 
     if "checkout_data" not in session:
         checkout_data = {}
@@ -282,13 +322,31 @@ def checkout():
     )
     cart_info = get_cart_data()
     context.update(cart_info)
-    return render_template("shop/checkout.html", **context)
+    return mhelp.render("checkout.html", **context)
 
 
 @module_blueprint.route("/checkout/process", methods=["GET", "POST"])
 def checkout_process():
     if request.method == "POST":
+        cart_info = get_cart_data()
+        if len(cart_info["cart_data"]) == 0:
+            flash(notify_warning("Cart cannot be empty!"))
+            return mhelp.redirect_url("shop.checkout")
+
         form = CheckoutForm()
+        with open(
+            os.path.join(
+                current_app.config["BASE_DIR"],
+                "modules",
+                "shopman",
+                "data",
+                "country.json",
+            )
+        ) as f:
+            countries = json.load(f)
+        country_choices = [(c["name"], c["name"]) for c in countries]
+        form.default_country.choices = country_choices
+        form.diff_country.choices = country_choices
         # print(dir(form))
         # ordered dict print(form._fields[0][0])
 
@@ -370,7 +428,8 @@ def checkout_process():
 
             order.insert()
             flash(notify_success("Great!"))
-            return render_template("shop/order_complete.html")
+            context = mhelp.context()
+            return render_template("shop/order_complete.html", **context)
         else:
             flash_errors(form)
-        return redirect(url_for("shop.checkout"))
+        return mhelp.redirect_url("shop.checkout")
