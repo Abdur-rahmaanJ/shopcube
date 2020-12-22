@@ -196,7 +196,8 @@ In Progress
 
 ![](screenshots/theme_boogle.png)
 ![](screenshots/theme_mistrello.png)
-![](screenshots/module_v2.png)
+![](screenshots/module_demo.png)
+![](screenshots/checkout.png)
 
 ## Supporters
 
