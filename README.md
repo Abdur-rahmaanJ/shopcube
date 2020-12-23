@@ -23,7 +23,7 @@ It also makes a great Flask base and supports commands such as:
 | Info | Value |
 |---|---|
 | Link | [shopyo.pythonanywhere.com](http://shopyo.pythonanywhere.com/) |
-| Credentials | User: testuser - password: pass |
+| Credentials | User: admin@domain.com - password: pass |
 
 **By code**
 
