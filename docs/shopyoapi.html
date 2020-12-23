@@ -72,6 +72,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="docs.html">Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_hosting.html">Deploy on shared hosting</a></li>
 </ul>
 
 
@@ -180,6 +181,11 @@ flask_migrate does not miss models when migrating</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="shopyoapi.enhance.get_active_theme_dir">
+<code class="sig-prename descclassname">shopyoapi.enhance.</code><code class="sig-name descname">get_active_theme_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/enhance.html#get_active_theme_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.enhance.get_active_theme_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="shopyoapi.enhance.get_setting">
 <code class="sig-prename descclassname">shopyoapi.enhance.</code><code class="sig-name descname">get_setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/enhance.html#get_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.enhance.get_setting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used as key-value lookup from Settings table</p>
@@ -195,6 +201,11 @@ flask_migrate does not miss models when migrating</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt id="shopyoapi.enhance.set_setting">
+<code class="sig-prename descclassname">shopyoapi.enhance.</code><code class="sig-name descname">set_setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/enhance.html#set_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.enhance.set_setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-shopyoapi.file">
@@ -216,6 +227,16 @@ param</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt id="shopyoapi.file.delete_file">
+<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">delete_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#delete_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.file.delete_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="shopyoapi.file.get_folders">
+<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">get_folders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#get_folders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.file.get_folders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt id="shopyoapi.file.trycopy">
@@ -293,6 +314,16 @@ param</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt id="shopyoapi.file.unique_filename">
+<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">unique_filename</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#unique_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.file.unique_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="shopyoapi.file.unique_sec_filename">
+<code class="sig-prename descclassname">shopyoapi.file.</code><code class="sig-name descname">unique_sec_filename</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/file.html#unique_sec_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.file.unique_sec_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-shopyoapi.forms">
@@ -382,12 +413,17 @@ flash(notify_success(‘mail sent!’))</p>
 <span id="shopyoapi-uploads"></span><h2>shopyoapi.uploads<a class="headerlink" href="#module-shopyoapi.uploads" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="shopyoapi.uploads.add_admin">
-<code class="sig-prename descclassname">shopyoapi.uploads.</code><code class="sig-name descname">add_admin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/uploads.html#add_admin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.uploads.add_admin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">shopyoapi.uploads.</code><code class="sig-name descname">add_admin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">email</span></em>, <em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/uploads.html#add_admin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.uploads.add_admin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="shopyoapi.uploads.add_setting">
 <code class="sig-prename descclassname">shopyoapi.uploads.</code><code class="sig-name descname">add_setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/uploads.html#add_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.uploads.add_setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="shopyoapi.uploads.add_uncategorised_category">
+<code class="sig-prename descclassname">shopyoapi.uploads.</code><code class="sig-name descname">add_uncategorised_category</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/shopyoapi/uploads.html#add_uncategorised_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shopyoapi.uploads.add_uncategorised_category" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

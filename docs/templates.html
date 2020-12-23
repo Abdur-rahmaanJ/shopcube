@@ -66,6 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs.html">Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_hosting.html">Deploy on shared hosting</a></li>
 </ul>
 
 
@@ -112,184 +113,22 @@
 15
 16
 17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;icon&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/static/shopyo.png&quot;</span><span class="p">&gt;</span>
-    <span class="c">&lt;!--&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css&quot;&gt;--&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/static/bootstrap.min.css&quot;</span><span class="p">&gt;</span>
-    <span class="c">&lt;!--&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css&quot;&gt;--&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/static/fontawesome/css/all.css&quot;</span><span class="p">&gt;</span>
-    <span class="c">&lt;!--&lt;link rel=&quot;stylesheet&quot; href=&quot;{{ url_for(&#39;static&#39;, filename = &#39;style.css&#39;) }}&quot;&gt;--&gt;</span>
-    
-
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
-    
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/static/jquery_3.2.1.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;static&#39;, filename =&#39;bootstrap.bundle.min.js&#39;) }}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;static&#39;, filename =&#39;js/python.js&#39;) }}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="c">&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;{{ url_for(&#39;static&#39;, filename = &#39;logic.js&#39;) }}&quot;&gt;&lt;/script&gt;--&gt;</span>
-
-    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
-            <span class="nt">html</span> <span class="p">{</span>
-         <span class="n">scroll-behavior</span><span class="p">:</span> <span class="kc">smooth</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">.</span><span class="nc">suggest</span> <span class="p">{</span>
-
-        <span class="p">}</span>
-
-        <span class="p">.</span><span class="nc">suggest</span> <span class="nt">span</span> <span class="p">{</span>
-            <span class="k">padding-left</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">padding-right</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">margin</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">min-width</span><span class="p">:</span> <span class="mi">50</span><span class="kt">px</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="nt">li</span> <span class="nt">i</span> <span class="p">{</span>
-            <span class="k">font-size</span><span class="p">:</span> <span class="mi">30</span><span class="kt">px</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="nt">li</span> <span class="p">{</span>
-            <span class="k">margin-right</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="nt">a</span><span class="p">{</span>
-            <span class="k">text-decoration</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-            <span class="k">color</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="nt">a</span><span class="p">:</span><span class="nd">hover</span><span class="p">{</span>
-            <span class="k">text-decoration</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-            <span class="k">color</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="p">.</span><span class="nc">card-menu</span><span class="p">{</span>
-            <span class="k">display</span><span class="p">:</span> <span class="kc">inline-block</span><span class="p">;</span> 
-            <span class="k">min-width</span><span class="p">:</span> <span class="mi">200</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">margin-top</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="p">.</span><span class="nc">card-menu-icon</span><span class="p">{</span>
-            <span class="k">font-size</span><span class="p">:</span> <span class="mi">40</span><span class="kt">px</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="p">#</span><span class="nn">flashed-messages</span><span class="p">{</span>
-            <span class="k">padding</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">position</span><span class="p">:</span> <span class="kc">fixed</span><span class="p">;</span>
-            <span class="k">right</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">top</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">z-index</span><span class="p">:</span> <span class="mi">10</span><span class="p">;</span>
-            <span class="k">height</span><span class="p">:</span> <span class="mi">300</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">overflow-y</span><span class="p">:</span> <span class="kc">scroll</span><span class="p">;</span>
-
-          <span class="p">}</span>
-          <span class="p">#</span><span class="nn">flashed-messages</span><span class="p">::</span><span class="nd">-webkit-scrollbar</span> <span class="p">{</span>
-            <span class="k">display</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-          <span class="p">}</span>
-          <span class="c">/* Hide scrollbar for IE and Edge */</span>
-          <span class="p">#</span><span class="nn">flashed-messages</span><span class="p">{</span>
-            <span class="kp">-ms-</span><span class="k">overflow-style</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-          <span class="p">}</span>
-    <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+    {% include &#39;base/blocks/resources.html&#39;%}
+    {% include &#39;base/blocks/default_styles.html&#39;%}
     {% block pagehead %}{% endblock %}
 <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    
-<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;flashed-messages&quot;</span><span class="p">&gt;</span>
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        {{ message | safe}}
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-
-<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot; shopyo-main-area&quot;</span><span class="p">&gt;</span>
     {% include &quot;base/nav_base.html&quot; %}
-    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
-    {% block content %}{% endblock %}
-<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% include &#39;base/blocks/flashed_messages.html&#39;%}
+
+	<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+	    
+	    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+	    {% block content %}{% endblock %}
+	<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
@@ -352,56 +191,56 @@
 49
 50
 51</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
-<span class="p">{</span><span class="o">%</span> <span class="n">extends</span> <span class="s2">&quot;base/main_base.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        {% include ACTIVE_THEME+&#39;/sections/resources.html&#39;%}
+    &lt;/head&gt;
+&lt;body class=&quot;&quot;&gt;
+    {% include ACTIVE_THEME+&#39;/sections/nav.html&#39;%}
 
-<span class="p">{</span><span class="o">%</span> <span class="nb">set</span> <span class="n">active_page</span> <span class="o">=</span> <span class="s2">&quot;contact&quot;</span> <span class="o">%</span><span class="p">}</span>
-<span class="p">{</span><span class="o">%</span> <span class="n">block</span> <span class="n">pagehead</span> <span class="o">%</span><span class="p">}</span>
-    <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="p">{{</span><span class="n">active_page</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()}}</span><span class="o">&lt;/</span><span class="n">title</span><span class="o">&gt;</span>
+&lt;div class=&quot;container&quot;&gt;
+    &lt;form action=&quot;{{url_for(&#39;contact.validate_message&#39;)}}&quot; method=&quot;POST&quot;&gt;
 
-<span class="p">{</span><span class="o">%</span> <span class="n">endblock</span> <span class="o">%</span><span class="p">}</span>
+        &lt;div class=&quot;form-field&quot;&gt;
+        {{ form.name.label }} &lt;br&gt;
+        &lt;div class=&quot;input-group mb-3&quot;&gt;
+            &lt;div class=&quot;input-group-prepend&quot;&gt;
+                &lt;span class=&quot;input-group-text&quot;&gt;&lt;i class=&quot;fa fa-info&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            {{ form.name }}
+        &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;form-field&quot;&gt;
+        {{ form.email.label }} &lt;br&gt;
+        &lt;div class=&quot;input-group mb-3&quot;&gt;
+            &lt;div class=&quot;input-group-prepend&quot;&gt;
+                &lt;span class=&quot;input-group-text&quot;&gt;&lt;i class=&quot;fa fa-envelope&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            {{ form.email }}
+        &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;form-field&quot;&gt;
+        {{ form.message.label }} &lt;br&gt;
+        &lt;div class=&quot;input-group mb-3&quot;&gt;
+            &lt;div class=&quot;input-group-prepend&quot;&gt;
+                &lt;span class=&quot;input-group-text&quot;&gt;&lt;i class=&quot;fa fa-pencil-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            {{ form.message }}
+        &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;br&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; class=&quot;btn btn-info&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;csrf_token&quot; value=&quot;{{csrf_token()}}&quot;&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
 
 
-
-<span class="p">{</span><span class="o">%</span> <span class="n">block</span> <span class="n">content</span> <span class="o">%</span><span class="p">}</span>
-
-<span class="o">&lt;</span><span class="n">form</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;{{url_for(&#39;contact.validate_message&#39;)}}&quot;</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;form-field&quot;</span><span class="o">&gt;</span>
-<span class="p">{{</span> <span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">label</span> <span class="p">}}</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group mb-3&quot;</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-prepend&quot;</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-text&quot;</span><span class="o">&gt;&lt;</span><span class="n">i</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;fa fa-info&quot;</span><span class="o">&gt;&lt;/</span><span class="n">i</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
-    <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-    <span class="p">{{</span> <span class="n">form</span><span class="o">.</span><span class="n">name</span> <span class="p">}}</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;form-field&quot;</span><span class="o">&gt;</span>
-<span class="p">{{</span> <span class="n">form</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">label</span> <span class="p">}}</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group mb-3&quot;</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-prepend&quot;</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-text&quot;</span><span class="o">&gt;&lt;</span><span class="n">i</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;fa fa-envelope&quot;</span><span class="o">&gt;&lt;/</span><span class="n">i</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
-    <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-    <span class="p">{{</span> <span class="n">form</span><span class="o">.</span><span class="n">email</span> <span class="p">}}</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;form-field&quot;</span><span class="o">&gt;</span>
-<span class="p">{{</span> <span class="n">form</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">label</span> <span class="p">}}</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group mb-3&quot;</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-prepend&quot;</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-text&quot;</span><span class="o">&gt;&lt;</span><span class="n">i</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;fa fa-pencil-alt&quot;</span><span class="o">&gt;&lt;/</span><span class="n">i</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
-    <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-    <span class="p">{{</span> <span class="n">form</span><span class="o">.</span><span class="n">message</span> <span class="p">}}</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Submit&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-info&quot;</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;csrf_token&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;{{csrf_token()}}&quot;</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-<span class="p">{</span><span class="o">%</span> <span class="n">endblock</span> <span class="o">%</span><span class="p">}</span>
-
+    {% include ACTIVE_THEME+&#39;/sections/footer.html&#39;%}
+&lt;/body&gt;
+&lt;/html&gt;
 </pre></div>
 </td></tr></table></div>
 <p>If you extend the base template, you will be able to use the
@@ -416,24 +255,24 @@ notification mechanism used for shopyo api</p>
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="o">----------</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-        <span class="n">name</span> <span class="n">of</span> <span class="n">key</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
 
-    <span class="n">Returns</span>
-    <span class="o">-------</span>
-    <span class="nb">str</span>
+<span class="k">def</span> <span class="nf">get_active_theme_dir</span><span class="p">():</span>
+    <span class="n">active_theme_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span> <span class="s2">&quot;themes&quot;</span><span class="p">,</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_THEME&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">active_theme_dir</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="passing-parameters-to-templates">
 <h2>Passing parameters to templates<a class="headerlink" href="#passing-parameters-to-templates" title="Permalink to this headline">¶</a></h2>
 <p>here is a demo on returning template vars:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">shopyoapi.enhance</span> <span class="kn">import</span> <span class="n">base_context</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># ...</span>
 <span class="nd">@module_blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/abc&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">somefunc</span><span class="p">():</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="n">base_context</span><span class="p">()</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">PageForm</span><span class="p">()</span>
 
     <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>

@@ -27,6 +27,7 @@ It also makes a great, Django-like flask base
    Shopyoapi <shopyoapi>
    Docs <docs>
    Testing <testing>
+   Deploy on shared hosting <shared_hosting>
 
 Indices and tables
 ==================

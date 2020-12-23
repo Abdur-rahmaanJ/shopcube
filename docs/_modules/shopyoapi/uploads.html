@@ -59,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../docs.html">Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../shared_hosting.html">Deploy on shared hosting</a></li>
 </ul>
 
 
@@ -81,22 +82,31 @@
           <div class="body" role="main">
             
   <h1>Source code for shopyoapi.uploads</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">werkzeug.security</span> <span class="kn">import</span> <span class="n">generate_password_hash</span>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
 
-<span class="kn">from</span> <span class="nn">shopyoapi.init</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">werkzeug.security</span> <span class="kn">import</span> <span class="n">generate_password_hash</span>
+
 <span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span>
 
-<span class="kn">from</span> <span class="nn">modules.admin.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">shopyoapi.init</span> <span class="kn">import</span> <span class="n">db</span>
+
 <span class="kn">from</span> <span class="nn">modules.admin.models</span> <span class="kn">import</span> <span class="n">Role</span>
+<span class="kn">from</span> <span class="nn">modules.admin.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">modules.category.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modules.category.models</span> <span class="kn">import</span> <span class="n">SubCategory</span>
+<span class="kn">from</span> <span class="nn">modules.product.models</span> <span class="kn">import</span> <span class="n">Product</span>
 <span class="kn">from</span> <span class="nn">modules.settings.models</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 
-<div class="viewcode-block" id="add_admin"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.uploads.add_admin">[docs]</a><span class="k">def</span> <span class="nf">add_admin</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="viewcode-block" id="add_admin"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.uploads.add_admin">[docs]</a><span class="k">def</span> <span class="nf">add_admin</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
         <span class="n">user</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">admin_user</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">email_confirm_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="n">user</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span></div>
 
 
@@ -110,6 +120,43 @@
             <span class="n">s</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">setting</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
             <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
             <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="add_uncategorised_category"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.uploads.add_uncategorised_category">[docs]</a><span class="k">def</span> <span class="nf">add_uncategorised_category</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;uncategorised&quot;</span><span class="p">)</span>
+        <span class="n">subcategory</span> <span class="o">=</span> <span class="n">SubCategory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;uncategorised&quot;</span><span class="p">)</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span>
+            <span class="n">barcode</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()),</span>
+            <span class="n">price</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span>
+            <span class="n">in_stock</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">selling_price</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
+            <span class="n">discontinued</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span>
+            <span class="n">barcode</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()),</span>
+            <span class="n">price</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Pear&quot;</span><span class="p">,</span>
+            <span class="n">in_stock</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">selling_price</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
+            <span class="n">discontinued</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">p3</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span>
+            <span class="n">barcode</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()),</span>
+            <span class="n">price</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Peach&quot;</span><span class="p">,</span>
+            <span class="n">in_stock</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">selling_price</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
+            <span class="n">discontinued</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">subcategory</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">])</span>
+        <span class="n">category</span><span class="o">.</span><span class="n">subcategories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subcategory</span><span class="p">)</span>
+        <span class="n">category</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span></div>
 </pre></div>
 
           </div>
