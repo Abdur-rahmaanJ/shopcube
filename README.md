@@ -103,7 +103,7 @@ Shopyo's engine which provides a Django-like structure and awesome mechanisms ha
 
 ## 💬 Community: Discord¶
 
-Join the Discord community [Discord Group](https://discord.gg/k37Ef6w/)
+Join the Discord community [Discord Group](https://discord.gg/k37Ef6w)
 
 # Docs
 
