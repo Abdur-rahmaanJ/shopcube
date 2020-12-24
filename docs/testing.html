@@ -93,6 +93,19 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pytest .
 </pre></div>
 </div>
+<p>Alternatively, you can run your tests via <a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a>.</p>
+<p>run all tests, for all supported Python interpreters</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox
+</pre></div>
+</div>
+<p>run all tests, on Python 3.8 only</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox -e py38
+</pre></div>
+</div>
+<p>run all only the <cite>test_home_page</cite> test, on Python 3.9 only</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox -e py39 -- -k test_home_page
+</pre></div>
+</div>
 </div>
 
 
