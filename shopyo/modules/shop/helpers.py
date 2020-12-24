@@ -1,7 +1,29 @@
+import os
+import json
+
 from flask import session
+from flask import current_app
+
 
 from modules.product.models import Product
 
+from shopyoapi.enhance import get_setting
+
+def get_currency_symbol():
+    curr_code = get_setting("CURRENCY")
+    with open(
+        os.path.join(
+            current_app.config["BASE_DIR"],
+            "modules",
+            "shopman",
+            "data",
+            "currency.json",
+        )
+    ) as f:
+        currencies = json.load(f)
+    for curr in currencies:
+        if curr["cc"] == curr_code:
+            return curr["symbol"]
 
 def get_cart_data():
     if "cart" in session:

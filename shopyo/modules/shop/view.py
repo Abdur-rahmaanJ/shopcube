@@ -33,6 +33,7 @@ from shopyoapi.enhance import set_setting
 
 from modules.shop.forms import CheckoutForm
 from modules.shop.helpers import get_cart_data
+from modules.shop.helpers import get_currency_symbol
 from modules.shop.models import BillingDetail
 from modules.shop.models import Order
 from modules.shop.models import OrderItem
@@ -43,24 +44,10 @@ globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]
 
 
-def get_currency_symbol():
-    curr_code = get_setting("CURRENCY")
-    with open(
-        os.path.join(
-            current_app.config["BASE_DIR"],
-            "modules",
-            "shopman",
-            "data",
-            "currency.json",
-        )
-    ) as f:
-        currencies = json.load(f)
-    for curr in currencies:
-        if curr["cc"] == curr_code:
-            return curr["symbol"]
 
 
-mhelp._context.update({"get_currency_symbol": get_currency_symbol})
+
+# mhelp._context.update({"get_currency_symbol": get_currency_symbol})
 
 
 def get_product(product_id):

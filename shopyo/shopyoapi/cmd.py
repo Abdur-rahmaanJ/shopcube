@@ -180,3 +180,14 @@ def index():
         base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html",
         "",
     )
+
+    global_file_content = '''
+available_everywhere = {
+    
+}
+'''
+    trymkfile(
+        os.path.join(base_path, 'global.py'),
+        global_file_content,
+    )
+

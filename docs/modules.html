@@ -60,6 +60,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#default-modules">Default Modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-shopyo-as-a-flask-base">Using Shopyo as a Flask base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#importing-modules">Importing modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#global-py">global.py</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
@@ -121,6 +122,7 @@ name. The EuroPython talk under the <a class="reference external" href="educatio
     info.json
     models.py
     view.py
+    global.py
 </pre></div>
 </div>
 <p>The command in the last section auto creates it for you!</p>
@@ -179,6 +181,11 @@ specify the module url and panel icon.</p>
 <div class="section" id="importing-modules">
 <h2>Importing modules<a class="headerlink" href="#importing-modules" title="Permalink to this headline">¶</a></h2>
 <p>If you want to import from forms.py in same folder you write <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">.forms</span> <span class="pre">import</span> <span class="pre">...</span></code> . If you want to import from other modules you do: <code class="docutils literal notranslate"><span class="pre">`from</span> <span class="pre">modules.modulename.forms</span> <span class="pre">import</span> <span class="pre">...`</span></code></p>
+</div>
+<div class="section" id="global-py">
+<h2>global.py<a class="headerlink" href="#global-py" title="Permalink to this headline">¶</a></h2>
+<p>Expects</p>
+<p>Where you pass functions or vars or classes you want to makle available in all templates! Try ‘x’: 1</p>
 </div>
 </div>
 

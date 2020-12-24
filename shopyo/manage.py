@@ -9,6 +9,7 @@ from shopyoapi.cmd import create_module
 from shopyoapi.cmd import initialise
 from shopyoapi.database import autoload_models
 from shopyoapi.init import db
+from shopyoapi.info import printinfo
 
 
 def runserver():
@@ -18,6 +19,7 @@ def runserver():
 @click.command()
 @click.argument("args", nargs=-1)
 def process(args):
+    printinfo()
     if args[0] == "initialise":
         autoload_models()
         initialise()

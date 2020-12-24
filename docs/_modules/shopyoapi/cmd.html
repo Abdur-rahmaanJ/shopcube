@@ -263,7 +263,18 @@
     <span class="n">trymkfile</span><span class="p">(</span>
         <span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/templates/&quot;</span> <span class="o">+</span> <span class="n">modulename</span> <span class="o">+</span> <span class="s2">&quot;/blocks/&quot;</span> <span class="o">+</span> <span class="s2">&quot;sidebar.html&quot;</span><span class="p">,</span>
         <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">global_file_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">available_everywhere = {</span>
+<span class="s1">    </span>
+<span class="s1">}</span>
+<span class="s1">&#39;&#39;&#39;</span>
+    <span class="n">trymkfile</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s1">&#39;global.py&#39;</span><span class="p">),</span>
+        <span class="n">global_file_content</span><span class="p">,</span>
     <span class="p">)</span></div>
+
 </pre></div>
 
           </div>

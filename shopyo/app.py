@@ -46,10 +46,18 @@ def create_app(config_name):
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
 
+    available_everywhere_entities = {}
+
     for module in os.listdir(os.path.join(base_path, "modules")):
         if module.startswith("__"):
             continue
         mod = importlib.import_module("modules.{}.view".format(module))
+        try:
+            mod_global = importlib.import_module("modules.{}.global".format(module))
+            available_everywhere_entities.update(mod_global.available_everywhere)
+        except ImportError as e:
+            # print(e)
+            pass
         app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
 
     with app.app_context():
@@ -102,6 +110,9 @@ def create_app(config_name):
             "get_products": get_products,
             "current_user": current_user,
         }
+        base_context.update(available_everywhere_entities)
+
+        # print('\nav everywhere entities\n', available_everywhere_entities)
 
         return base_context
 

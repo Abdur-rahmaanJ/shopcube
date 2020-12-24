@@ -17,6 +17,8 @@ It also makes a great Flask base and supports commands such as:
 
 `python manage.py startapp loans` 
 
+**Shopyo can be used to manage organisations and to build pretty much any site you want, not just e-commerce!**
+
 
 # Test it out!
 
@@ -120,6 +122,7 @@ Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo
 * Shopyoapi
 * Docs
 * Unittests
+* Shared hosting deployment
 
 # 📜 Testimonial
 

@@ -42,6 +42,7 @@ name. The EuroPython talk under the `Education Section <education.html>`_ might 
         info.json
         models.py
         view.py
+        global.py
 
 The command in the last section auto creates it for you!
 
@@ -117,3 +118,18 @@ Importing modules
 -----------------
 
 If you want to import from forms.py in same folder you write ``from .forms import ...`` . If you want to import from other modules you do: ```from modules.modulename.forms import ...```
+
+global.py
+---------
+
+
+Expects 
+
+.. code::python
+
+    available_everywhere = {
+        
+    }
+
+
+Where you pass functions or vars or classes you want to makle available in all templates! Try 'x': 1
