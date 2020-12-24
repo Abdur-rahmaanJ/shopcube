@@ -125,7 +125,7 @@ global.py
 
 Expects 
 
-.. code::python
+.. code:: python
 
     available_everywhere = {
         
