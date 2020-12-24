@@ -4,8 +4,8 @@ def test_new_user(new_user):
     assert not new_user.is_admin
 
 
-def test_home_page(test_client):
-    response = test_client.get("/")
+def test_home_page(test_client, init_database):
+    response = test_client.get("/",  follow_redirects=True)
     assert response.status_code == 200
 
 
