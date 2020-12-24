@@ -19,8 +19,10 @@ It also makes a great Flask base and supports commands such as:
 
 **Shopyo can be used to manage organisations and to build pretty much any site you want, not just e-commerce!**
 
+👉 Join the [Discord](https://discord.gg/k37Ef6w) & learn about Flask tricks during our dev talks!
 
-# Test it out!
+
+# 🍜 Test it out!
 
 | Info | Value |
 |---|---|
@@ -67,11 +69,6 @@ default login
 **beta** - now in beta! - Not fully ready to be used by people without Flask knowledge.
 
 
-Note: since we are adding ecommerce as a demo, we don't guarantee security. It is currentlty your
-duty to assume the security aspects. Though the project is MIT licensed, we thought of warning you.
-The project gets better and better, we hope to provide a SOLID project, but as we continously switch to a better version of an aspect, we have not reached 'the' point where you can just take and install it at a client's place. Currently you need to flask-audit the code and see what you'd like to modify.
-
-
 # 💌 Contributing Countries
 
 🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬 🇲🇽
@@ -105,11 +102,11 @@ Shopyo's engine which provides a Django-like structure and awesome mechanisms ha
 
 ## 💬 Community: Discord¶
 
-Join the Discord community [Discord Group](https://discord.gg/k37Ef6w)
+Join the [Discord Group](https://discord.gg/k37Ef6w)
 
-# Docs
+# 📚 Docs
 
-Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
+👉 Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
 
 * Setting up Shopyo
 * Education section
