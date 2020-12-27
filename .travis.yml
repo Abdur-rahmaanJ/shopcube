@@ -1,10 +1,10 @@
-language :
+language:
     - python3
 python:
-  - "3.5"
-  - "3.6"   # current default Python on Travis CI
-  - "3.7"
-  - "3.8"
+    - "3.5"
+    - "3.6"   # current default Python on Travis CI
+    - "3.7"
+    - "3.8"
 before_install:
     - python --version
     - pip install -U pip
@@ -15,13 +15,13 @@ before_install:
     - pip install Flask-Testing
     - pip install selenium
 install:
-  # Install remaining dev requirements
-  - pip install -r dev-requirements.txt
-  - pip install -U pytest
+    # Install remaining dev requirements
+    - pip install -r dev_requirements.txt
+    - pip install -U pytest
 script:
     - cd shopyo
     - echo 'Running Tests....'
     - python -m pytest -v
     - sphinx-build -b html sphinx_source docs
 after_success:
-  - codecov # submit coverage
+    - codecov   # submit coverage
