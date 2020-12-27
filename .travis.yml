@@ -18,9 +18,9 @@ install:
     - pip install -r dev_requirements.txt
     - pip install -U pytest
 script:
+    - sphinx-build -b html sphinx_source docs
     - cd shopyo
     - echo 'Running Tests....'
     - python -m pytest -v
-    - sphinx-build -b html sphinx_source docs
 after_success:
     - codecov   # submit coverage
