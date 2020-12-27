@@ -54,7 +54,7 @@ def init_database():
     # Insert user data
     user1 = User(email="admin1@domain.com")
     user1.set_hash("pass")
-    user2 = User(email="admin2@domain.com")
+    user2 = User(email="admin2@domain.com", is_admin=True)
     user2.set_hash("pass")
     db.session.add(user1)
     db.session.add(user2)
