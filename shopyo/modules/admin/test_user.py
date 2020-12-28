@@ -1,3 +1,6 @@
+from flask import url_for, request
+
+
 def test_new_user(new_user):
     """
     GIVEN a User model
@@ -30,7 +33,7 @@ def test_valid_login_logout(test_client):
 
     # Login to the app
     response = test_client.post(
-        "/login/",
+        url_for("login.login"),
         data=dict(email="admin1@domain.com", password="pass"),
         follow_redirects=True,
     )
@@ -38,10 +41,13 @@ def test_valid_login_logout(test_client):
     # Check if login was successful
     assert response.status_code == 200
     assert b"Control panel" in response.data
+    assert b"Notif test" in response.data
 
-    # Replace route with url_for. Not working at the moment
-    response = test_client.get('/login/logout', follow_redirects=True)
+    # Check response is redirect to login page
+    response = test_client.get(url_for("login.logout"), follow_redirects=True)
     assert response.status_code == 200
+    assert request.path == url_for('login.login')
+    assert b"Successfully logged out" in response.data
 
 
 def test_admin_home_page(test_client):
@@ -53,7 +59,7 @@ def test_admin_home_page(test_client):
 
     # Login with admin credentials
     response = test_client.post(
-        "/login/",
+        url_for("login.login"),
         data=dict(email="admin2@domain.com", password="pass"),
         follow_redirects=True,
     )
@@ -62,7 +68,7 @@ def test_admin_home_page(test_client):
     assert response.status_code == 200
 
     # Allow user with admin privilege to a access the admin page
-    response = test_client.get("/admin/")
+    response = test_client.get(url_for("admin.user_list"))
     assert response.status_code == 200
     assert b"Admin" in response.data
     assert b"id" in response.data
@@ -72,7 +78,7 @@ def test_admin_home_page(test_client):
 
     # Login with non-admin credentials
     response = test_client.post(
-        "/login/",
+        url_for("login.login"),
         data=dict(email="admin1@domain.com", password="pass"),
         follow_redirects=True,
     )
@@ -80,11 +86,11 @@ def test_admin_home_page(test_client):
     # Check if login was successful
     assert response.status_code == 200
 
-    # Redirect user with non-admin privilege
-    # Note: change this to check if it redirects to dashboard route.
-    response = test_client.get("/admin/")
-    # assert request.path == '/dashboard/'
-    assert response.status_code == 302
+    # Redirect user with non-admin privilege to dashboard
+    response = test_client.get("/admin/", follow_redirects=True)
+    assert response.status_code == 200
+    assert request.path == url_for("dashboard.index")
+    assert b"You need to be an admin to view this page" in response.data
 
 
 def test_admin_sidebar(test_client):
@@ -97,7 +103,7 @@ def test_admin_sidebar(test_client):
 
     # Login with admin credentials
     response = test_client.post(
-        "/login/",
+        url_for("login.login"),
         data=dict(email="admin2@domain.com", password="pass"),
         follow_redirects=True,
     )
@@ -106,7 +112,7 @@ def test_admin_sidebar(test_client):
     assert response.status_code == 200
 
     # check if add route is working
-    response = test_client.get("/admin/add")
+    response = test_client.get(url_for("admin.user_add"))
     assert response.status_code == 200
     assert b"Email" in response.data
     assert b"Password" in response.data
@@ -115,10 +121,10 @@ def test_admin_sidebar(test_client):
     assert b"Admin User" in response.data
 
     # check if the roles route is working
-    response = test_client.get("/admin/roles")
+    response = test_client.get(url_for("admin.roles"))
     assert response.status_code == 200
     assert b"Roles" in response.data
 
     # check admin route is still working
-    response = test_client.get("/admin/")
+    response = test_client.get(url_for("admin.user_list"))
     assert response.status_code == 200
