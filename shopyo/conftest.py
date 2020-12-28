@@ -32,17 +32,12 @@ def new_user():
 def test_client():
     flask_app = create_app("testing")
 
-    # Flask provides a way to test your application by exposing the Werkzeug test Client
-    # and handling the context locals for you.
-    testing_client = flask_app.test_client()
-
-    # Establish an application context before running the tests.
-    ctx = flask_app.app_context()
-    ctx.push()
-
-    yield testing_client  # this is where the testing happens!
-
-    ctx.pop()
+    # Create a test client using the Flask application configured for testing
+    # we need this with block to be able to use application context
+    with flask_app.test_client() as testing_client:
+        # Establish an application context
+        with flask_app.app_context():
+            yield testing_client  # this is where the testing happens!
 
 
 @pytest.fixture(scope="session")
@@ -64,7 +59,6 @@ def init_database():
     for name, value in config["settings"].items():
         s = Settings(setting=name, value=value)
         db.session.add(s)
-    db.session.commit()
 
     # Commit the changes for the users
     db.session.commit()

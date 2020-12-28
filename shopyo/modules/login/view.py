@@ -13,6 +13,7 @@ from flask_login import login_user
 from flask_login import logout_user
 
 from shopyoapi.html import notify_danger
+from shopyoapi.html import notify_success
 
 from modules.admin.models import User
 from modules.login.forms import LoginForm
@@ -70,4 +71,5 @@ def shop_login():
 @login_required
 def logout():
     logout_user()
+    flash(notify_success("Successfully logged out"))
     return redirect(url_for("login.login"))
