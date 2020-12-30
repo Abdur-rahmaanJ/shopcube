@@ -1,3 +1,10 @@
+"""
+This file (test_contact.py) contains the functional tests for the
+`contact` blueprint.
+
+These tests use GETs and POSTs to different endpoints to check for
+the proper behavior of the `contact` blueprint.
+"""
 from flask import url_for, request
 
 
@@ -54,6 +61,12 @@ def test_contact_dashboard(test_client):
 
 
 def test_contact_validate_msg(test_client):
+    """
+    GIVEN a Flask application configured for testing,
+    WHEN POST request is made contact validate page
+    THEN check that the response is valid and that
+    the new validated message appears on contact dashboard
+    """
 
     # GET request should fail for validate message
     # Currently test is uncommented since no return statement for

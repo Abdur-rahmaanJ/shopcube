@@ -10,6 +10,7 @@ from shopyoapi.uploads import add_setting
 
 from modules.admin.models import User
 from modules.settings.models import Settings
+from flask import url_for
 
 # from shopyoapi.cmd import initialise
 
@@ -41,7 +42,7 @@ def test_client():
 
 
 @pytest.fixture(scope="session")
-def init_database():
+def init_database(test_client):
 
     # Create the database and the database table
     db.create_all()
@@ -56,6 +57,7 @@ def init_database():
 
     with open("config.json", "r") as config:
         config = json.load(config)
+
     for name, value in config["settings"].items():
         s = Settings(setting=name, value=value)
         db.session.add(s)
@@ -63,7 +65,36 @@ def init_database():
     # Commit the changes for the users
     db.session.commit()
 
-    # initialise()
-    yield db  # this is where the testing happens!
+    yield db    # this is where the testing happens!
 
-    # db.drop_all()
+    db.drop_all()
+
+
+@pytest.fixture(scope='session')
+def _db(init_database):
+    return init_database
+
+# Want TO USE THE BELOW CODE FOR LOGIN AND LOGOUT
+# TO REMOVE REPEATED CODE FROM ALL TESTS. BUT
+# CURRENTLY FAILING TO MAKE LOGIN WORK FROM OUTSIDE
+# THE TEST FUNCTION
+
+# @pytest.fixture
+# def auth(test_client):
+#     return AuthActions(test_client)
+
+
+# class AuthActions(object):
+#     def __init__(self, client):
+#         self._client = client
+
+#     def login(self, user):
+#         return self._client.post(
+#             url_for("login.login"),
+#             data=dict(email="admin1@domain.com", password="pass"),
+#             follow_redirects=True,
+#         )
+
+    # def logout(self):
+    #     return self._client.get(
+    #         url_for("login.logout"), follow_redirects=True)

@@ -64,10 +64,11 @@ def add():
     if request.method == "POST":
         name = request.form["name"]
         if is_empty_str(name):
-            return redirect(url_for("category.dashboard"))
-        if name.strip() == "uncategorised":
+            flash(notify_warning("Category name cannot be empty"))
+            return redirect(url_for("category.add"))
+        if name.strip().lower() == "uncategorised" or name.strip().lower() == "uncategorized":
             flash(notify_warning("Category cannot be named as uncategorised"))
-            return redirect(url_for("category.dashboard"))
+            return redirect(url_for("category.add"))
         has_category = Category.category_exists(name)
         if has_category is False:
             category = Category(name=name)
@@ -88,6 +89,10 @@ def add():
             except flask_uploads.UploadNotAllowed as e:
                 pass
             category.insert()
+            flash(notify_success("Category added successfully"))
+        else:
+            flash(notify_warning("Category already exists"))
+
         return render_template("category/add.html", **context)
 
     context["has_category"] = str(has_category)
