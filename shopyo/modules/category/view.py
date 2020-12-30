@@ -91,7 +91,8 @@ def add():
             category.insert()
             flash(notify_success("Category added successfully"))
         else:
-            flash(notify_warning("Category already exists"))
+            flash(notify_warning("Category " +
+                  "already exists"))
 
         return render_template("category/add.html", **context)
 
