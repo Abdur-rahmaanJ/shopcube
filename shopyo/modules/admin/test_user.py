@@ -14,10 +14,10 @@ def test_new_user(new_user):
 
 
 @pytest.mark.order('first')
-def test_home_page(test_client, init_database):
+def test_home_page(test_client, db):
     """
-    GIVEN a Flask application configured for testing and an
-    intitail testing database,
+    GIVEN a Flask application configured for testing and a
+    intitail testing database db,
     WHEN the '/' page is requested (GET)
     THEN check that the response is valid
     """
