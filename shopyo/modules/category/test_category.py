@@ -23,6 +23,7 @@ def test_category_dashboard_page(test_client):
     # check request to category correctly redirects to login page
     response = test_client.get(
         url_for('category.dashboard'), follow_redirects=True)
+    assert response.status_code == 200
     assert request.path == url_for('login.login')
 
     # Login and try to access the category dashboard. It should return OK
@@ -53,6 +54,7 @@ def test_category_add_get(test_client):
 
     # check request to contact correctly redirects to login page
     response = test_client.get(url_for('category.add'), follow_redirects=True)
+    response.status_code == 200
     assert request.path == url_for('login.login')
 
     # Login and try to access the category dashboard. It should return OK
@@ -177,6 +179,7 @@ def test_category_delete_get_valid(test_client, db_session):
     response = test_client.get(
         url_for('category.delete', name="test-delete-category"),
         follow_redirects=True)
+    response.status_code == 200
     assert request.path == url_for('login.login')
 
     # Login and try to access the category delete route. It should return OK
