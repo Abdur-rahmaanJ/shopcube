@@ -90,9 +90,9 @@ def add():
             except flask_uploads.UploadNotAllowed as e:
                 pass
             category.insert()
-            flash(notify_success("Category added successfully"))
+            flash(notify_success(f"Category \"{name}\" added successfully"))
         else:
-            flash(notify_warning("Category already exists"))
+            flash(notify_warning(f"Category \"{name}\" already exists"))
 
         return render_template("category/add.html", **context)
 
@@ -104,23 +104,32 @@ def add():
 @login_required
 def delete(name):
 
+    if is_empty_str(name):
+        flash(notify_warning(f"Cannot delete a category with no name"))
+        return redirect(url_for("category.dashboard"))
+
     if name != "uncategorised":
 
         category = Category.query.filter(Category.name == name).first()
 
-        if len(category.subcategories) != 0:
+        if not category:
+            flash(notify_warning(f"Category \"{name}\" does not exist."))
+            return redirect(url_for("category.dashboard"))
+
+        if category.subcategories:
             flash(
                 notify_warning(
-                    "please delete all subcategories for category".format(name)
+                    f"Please delete all subcategories for category \"{name}\""
                 )
             )
-            return url_for("category.dashboard")
+            return redirect(url_for("category.dashboard"))
 
         category.delete()
+        flash(notify_success(f"Category \"{name}\" sucessfully deleted"))
         return redirect(url_for("category.dashboard"))
-    else:
-        flash(notify_warning("Cannot delete category uncategorised"))
-        return redirect(url_for("category.dashboard"))
+
+    flash(notify_warning("Cannot delete category uncategorised"))
+    return redirect(url_for("category.dashboard"))
 
 
 @module_blueprint.route("/<category_name>/img/<filename>/delete", methods=["GET"])
