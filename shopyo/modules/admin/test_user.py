@@ -16,7 +16,7 @@ def test_new_user(new_user):
 
 
 @pytest.mark.order("first")
-def test_home_page(test_client, init_database):
+def test_home_page(test_client, db):
 
     """
     GIVEN a Flask application configured for testing and a

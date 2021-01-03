@@ -6,10 +6,8 @@ These tests use GETs and POSTs to different URLs to check
 for the proper behavior of the `category` blueprint.
 """
 
-from flask import request
-from flask import url_for
-
-from modules.category.models import Category
+from flask import url_for, request
+from modules.category.models import Category, SubCategory
 
 
 def test_category_dashboard_page(test_client):
@@ -122,6 +120,7 @@ def test_category_add_post_invalid(test_client, db_session):
         follow_redirects=True,
     )
     assert response.status_code == 200
+
     assert b'Category "test-exiting-category" already exists' in response.data
     assert db_session.query(Category).count() == 1
 
@@ -144,15 +143,15 @@ def test_category_add_post_valid(test_client, db_session):
 
     # it should succesfully be added
     assert response.status_code == 200
+
     assert (
         b'Category "test-valid-category-1" added successfully' in response.data
     )
     assert db_session.query(Category).count() == 1
 
     # make sure the correct category exits
-
     row = (
-        init_database.session.query(Category)
+        db_session.query(Category)
         .filter(Category.name == "test-valid-category-1")
         .scalar()
     )
@@ -188,7 +187,6 @@ def test_category_delete_get_valid(test_client, db_session):
         url_for("category.delete", name="test-delete-category"),
         follow_redirects=True,
     )
-    response.status_code == 200
     assert request.path == url_for("login.login")
 
     # Login and try to access the category delete route. It should return OK
@@ -213,6 +211,7 @@ def test_category_delete_get_valid(test_client, db_session):
         .filter(Category.name == "test-delete-category")
         .scalar()
     )
+
     assert not row
 
 

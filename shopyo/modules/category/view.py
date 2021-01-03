@@ -92,6 +92,7 @@ def add():
             except flask_uploads.UploadNotAllowed as e:
                 pass
             category.insert()
+
             flash(notify_success(f'Category "{name}" added successfully'))
         else:
             flash(notify_warning(f'Category "{name}" already exists'))

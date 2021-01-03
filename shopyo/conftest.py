@@ -74,17 +74,18 @@ def db(test_client):
     # Commit the changes for the users
     _db.session.commit()
 
-    yield _db    # this is where the testing happens!
+    yield _db  # this is where the testing happens!
 
     _db.drop_all()
 
 
-@pytest.yield_fixture(scope='function', autouse=True)
+@pytest.yield_fixture(scope="function", autouse=True)
 def db_session(db):
     """
     Creates a new database session for a test. Note you must use this fixture
     if your test connects to db. Autouse is set to true which implies
     that the fixture will be setup before each test
+
     Here we not only support commit calls but also rollback calls in tests.
     """
     connection = db.engine.connect()
@@ -123,6 +124,6 @@ def db_session(db):
 #             follow_redirects=True,
 #         )
 
-    # def logout(self):
-    #     return self._client.get(
-    #         url_for("login.logout"), follow_redirects=True)
+# def logout(self):
+#     return self._client.get(
+#         url_for("login.logout"), follow_redirects=True)
