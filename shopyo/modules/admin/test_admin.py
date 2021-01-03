@@ -5,7 +5,8 @@ the `admin` blueprint.
 These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `admin` blueprint.
 """
-from flask import url_for, request
+from flask import request
+from flask import url_for
 
 
 def test_admin_home_page(test_client):

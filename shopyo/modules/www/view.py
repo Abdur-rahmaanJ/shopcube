@@ -7,8 +7,8 @@ import os
 # from flask import request
 from flask import Blueprint
 from flask import current_app
-from flask import render_template
 from flask import redirect
+from flask import render_template
 from flask import url_for
 
 #
@@ -48,4 +48,3 @@ def index():
     # return str(module_blueprint.template_folder)
 
     return redirect(url_for("shop.homepage"))
-

@@ -68,7 +68,9 @@ def initialise():
 
     print("Creating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
 
     print("Migrating")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
@@ -181,13 +183,50 @@ def index():
         "",
     )
 
-    global_file_content = '''
+    global_file_content = """
 available_everywhere = {
     
 }
-'''
+"""
     trymkfile(
-        os.path.join(base_path, 'global.py'),
-        global_file_content,
+        os.path.join(base_path, "global.py"), global_file_content,
     )
 
+
+def create_box(name):
+    base_path = "modules/" + "box__" + name
+    trymkdir(base_path)
+    info_json_content = """{{
+    "display_string": "{0}",
+    "box_name":"{1}",
+    "author": {{
+        "name":"",
+        "website":"",
+        "mail":""
+    }}
+}}""".format(
+        name.capitalize(), name
+    )
+    trymkfile(base_path + "/" + "box_info.json", info_json_content)
+
+
+def create_module_in_box(modulename, boxname):
+
+    if not boxname.startswith("box__"):
+        print("Invalid box {}. Boxes should start with box__".format(boxname))
+
+    elif not os.path.exists(box_path):
+        print("Box {} does not exists!".format(box_path))
+        available_boxes = "\n* ".join(
+            [f for f in os.listdir("modules/") if f.startswith("box__")]
+        )
+        print("Available boxes: \n* {}".format(available_boxes))
+
+    elif os.path.exists(module_path):
+        print("Module {} exists".format(module_path))
+
+    else:
+        box_path = os.path.join("modules", boxname)
+        module_path = os.path.join("modules", boxname, modulename)
+        print("Creating module {}".format(module_path))
+        create_module(modulename, base_path=module_path)

@@ -67,7 +67,9 @@ class User(UserMixin, db.Model):
     email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
 
-    roles = db.relationship("Role", secondary=role_helpers, cascade="all, delete")
+    roles = db.relationship(
+        "Role", secondary=role_helpers, cascade="all, delete"
+    )
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)

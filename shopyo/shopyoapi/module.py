@@ -1,6 +1,6 @@
+import copy
 import json
 import os
-import copy
 
 from flask import Blueprint
 from flask import redirect

@@ -5,6 +5,11 @@ for more details on pytest
 """
 import json
 import os
+
+
+from flask import url_for
+
+
 import pytest
 
 from app import create_app
@@ -12,6 +17,9 @@ from shopyoapi.init import db as _db
 from shopyoapi.uploads import add_setting
 from modules.admin.models import User
 from modules.settings.models import Settings
+
+# from shopyoapi.cmd import initialise
+
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v
@@ -74,12 +82,12 @@ def db(test_client):
     # Commit the changes for the users
     _db.session.commit()
 
-    yield _db    # this is where the testing happens!
+    yield _db  # this is where the testing happens!
 
     _db.drop_all()
 
 
-@pytest.yield_fixture(scope='function', autouse=True)
+@pytest.yield_fixture(scope="function", autouse=True)
 def db_session(db):
     """
     Creates a new database session for a test. Note you must use this fixture
@@ -94,13 +102,17 @@ def db_session(db):
     options = dict(bind=connection, binds={})
     session = db.create_scoped_session(options=options)
 
-    db.session = session
-
+    yield db  # this is where the testing happens!
     yield session
 
     transaction.rollback()
     connection.close()
     session.remove()
+
+
+@pytest.fixture(scope="session")
+def _db(init_database):
+    return init_database
 
 
 # Want TO USE THE BELOW CODE FOR LOGIN AND LOGOUT
@@ -124,6 +136,6 @@ def db_session(db):
 #             follow_redirects=True,
 #         )
 
-    # def logout(self):
-    #     return self._client.get(
-    #         url_for("login.logout"), follow_redirects=True)
+# def logout(self):
+#     return self._client.get(
+#         url_for("login.logout"), follow_redirects=True)
