@@ -11,10 +11,7 @@ from flask_login import login_required
 from shopyoapi.html import notify_success
 
 dashboard_blueprint = Blueprint(
-    "dashboard",
-    __name__,
-    template_folder="templates",
-    url_prefix="/dashboard",
+    "dashboard", __name__, template_folder="templates", url_prefix="/dashboard",
 )
 all_info = {}
 
@@ -24,9 +21,7 @@ all_info = {}
 def index():
     context = {}
 
-    for folder in os.listdir(
-        os.path.join(current_app.config["BASE_DIR"], "modules")
-    ):
+    for folder in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
         if folder.startswith("__"):
             continue
         elif folder.startswith("box__"):
@@ -53,10 +48,7 @@ def index():
             if folder not in ["dashboard"]:
                 with open(
                     os.path.join(
-                        current_app.config["BASE_DIR"],
-                        "modules",
-                        folder,
-                        "info.json",
+                        current_app.config["BASE_DIR"], "modules", folder, "info.json",
                     )
                 ) as f:
                     module_info = json.load(f)

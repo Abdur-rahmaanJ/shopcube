@@ -7,10 +7,7 @@ from flask import render_template
 from flask_login import login_required
 
 internals_blueprint = Blueprint(
-    "internals",
-    __name__,
-    url_prefix="/internals",
-    template_folder="templates",
+    "internals", __name__, url_prefix="/internals", template_folder="templates",
 )
 all_info = {}
 

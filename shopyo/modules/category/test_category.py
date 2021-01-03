@@ -24,9 +24,7 @@ def test_category_dashboard_page(test_client):
     assert b"Successfully logged out" in response.data
 
     # check request to category correctly redirects to login page
-    response = test_client.get(
-        url_for("category.dashboard"), follow_redirects=True
-    )
+    response = test_client.get(url_for("category.dashboard"), follow_redirects=True)
     assert request.path == url_for("login.login")
 
     # Login and try to access the category dashboard. It should return OK
@@ -144,9 +142,7 @@ def test_category_add_post_valid(test_client, db_session):
 
     # it should succesfully be added
     assert response.status_code == 200
-    assert (
-        b'Category "test-valid-category-1" added successfully' in response.data
-    )
+    assert b'Category "test-valid-category-1" added successfully' in response.data
     assert db_session.query(Category).count() == 1
 
     # make sure the correct category exits
@@ -185,8 +181,7 @@ def test_category_delete_get_valid(test_client, db_session):
     assert b"Successfully logged out" in response.data
     # Check request to category delete correctly redirects to login page
     response = test_client.get(
-        url_for("category.delete", name="test-delete-category"),
-        follow_redirects=True,
+        url_for("category.delete", name="test-delete-category"), follow_redirects=True,
     )
     response.status_code == 200
     assert request.path == url_for("login.login")
@@ -201,12 +196,9 @@ def test_category_delete_get_valid(test_client, db_session):
     assert response.status_code == 200
     # after login we should be able to successfully delete category
     response = test_client.get(
-        url_for("category.delete", name="test-delete-category"),
-        follow_redirects=True,
+        url_for("category.delete", name="test-delete-category"), follow_redirects=True,
     )
-    assert (
-        b'Category "test-delete-category" sucessfully deleted' in response.data
-    )
+    assert b'Category "test-delete-category" sucessfully deleted' in response.data
     assert request.path == url_for("category.dashboard")
     row = (
         db_session.query(Category)
@@ -243,8 +235,7 @@ def test_category_delete_invalid(test_client, db_session):
 
     # Should not allow deleting category that does not exist
     response = test_client.get(
-        url_for("category.delete", name="test-delete-category"),
-        follow_redirects=True,
+        url_for("category.delete", name="test-delete-category"), follow_redirects=True,
     )
     assert response.status_code == 200
     assert request.path == url_for("category.dashboard")
@@ -260,14 +251,12 @@ def test_category_delete_invalid(test_client, db_session):
 
     # should not allow deleting a category with subcategories
     response = test_client.get(
-        url_for("category.delete", name="test-delete-category"),
-        follow_redirects=True,
+        url_for("category.delete", name="test-delete-category"), follow_redirects=True,
     )
     assert response.status_code == 200
     assert request.path == url_for("category.dashboard")
     assert (
-        b"Please delete all subcategories for category "
-        + b'"test-delete-category"'
+        b"Please delete all subcategories for category " + b'"test-delete-category"'
         in response.data
     )
 
@@ -279,14 +268,12 @@ def test_category_delete_invalid(test_client, db_session):
 
     # Still should not allow deleting a category with subcategories
     response = test_client.get(
-        url_for("category.delete", name="test-delete-category"),
-        follow_redirects=True,
+        url_for("category.delete", name="test-delete-category"), follow_redirects=True,
     )
     assert response.status_code == 200
     assert request.path == url_for("category.dashboard")
     assert (
-        b"Please delete all subcategories for category "
-        + b'"test-delete-category"'
+        b"Please delete all subcategories for category " + b'"test-delete-category"'
         in response.data
     )
 
@@ -297,13 +284,10 @@ def test_category_delete_invalid(test_client, db_session):
 
     # should now allow deleting a category with no subcategory
     response = test_client.get(
-        url_for("category.delete", name="test-delete-category"),
-        follow_redirects=True,
+        url_for("category.delete", name="test-delete-category"), follow_redirects=True,
     )
     assert response.status_code == 200
     assert request.path == url_for("category.dashboard")
-    assert (
-        b'Category "test-delete-category" sucessfully deleted' in response.data
-    )
+    assert b'Category "test-delete-category" sucessfully deleted' in response.data
     assert db_session.query(Category).count() == 0
     assert db_session.query(SubCategory).count() == 0
