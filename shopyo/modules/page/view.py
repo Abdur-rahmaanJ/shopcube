@@ -75,7 +75,9 @@ def check_pagecontent():
             flash_errors(form)
             return redirect(url_for("{}.dashboard".format(module_name)))
         toaddpage = Page(
-            slug=form.slug.data, content=form.content.data, title=form.title.data,
+            slug=form.slug.data,
+            content=form.content.data,
+            title=form.title.data,
         )
         toaddpage.insert()
         return redirect(url_for("{}.dashboard".format(module_name)))

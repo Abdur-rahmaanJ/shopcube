@@ -18,7 +18,11 @@ class PageForm(FlaskForm):
     content = TextAreaField(
         "Content",
         [],
-        render_kw={"class": "form-control", "rows": "20", "autocomplete": "off",},
+        render_kw={
+            "class": "form-control",
+            "rows": "20",
+            "autocomplete": "off",
+        },
     )
     slug = StringField(
         "Slug",

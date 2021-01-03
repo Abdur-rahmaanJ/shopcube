@@ -57,7 +57,9 @@ def create_app(config_name):
 
         if folder.startswith("box__"):
             # boxes
-            for sub_folder in os.listdir(os.path.join(base_path, "modules", folder)):
+            for sub_folder in os.listdir(
+                os.path.join(base_path, "modules", folder)
+            ):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
@@ -82,8 +84,12 @@ def create_app(config_name):
             # apps
             mod = importlib.import_module("modules.{}.view".format(folder))
             try:
-                mod_global = importlib.import_module("modules.{}.global".format(folder))
-                available_everywhere_entities.update(mod_global.available_everywhere)
+                mod_global = importlib.import_module(
+                    "modules.{}.global".format(folder)
+                )
+                available_everywhere_entities.update(
+                    mod_global.available_everywhere
+                )
             except ImportError as e:
                 # print(e)
                 pass

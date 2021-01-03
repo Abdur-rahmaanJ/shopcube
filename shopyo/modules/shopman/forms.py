@@ -58,5 +58,7 @@ class CouponForm(FlaskForm):
 
 class CurrencyForm(FlaskForm):
     currency = SelectField(
-        "Currency", validators=[DataRequired()], render_kw={"class": "form-control"},
+        "Currency",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"},
     )

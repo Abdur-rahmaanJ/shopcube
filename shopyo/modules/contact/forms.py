@@ -25,5 +25,9 @@ class ContactForm(FlaskForm):
     message = TextAreaField(
         "Message",
         [DataRequired()],
-        render_kw={"class": "form-control", "rows": "20", "autocomplete": "off",},
+        render_kw={
+            "class": "form-control",
+            "rows": "20",
+            "autocomplete": "off",
+        },
     )

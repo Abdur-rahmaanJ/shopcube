@@ -84,7 +84,9 @@ def add():
                     categoryphotos.save(file)
                     category.resources.append(
                         Resource(
-                            type="image", filename=filename, category="category_image",
+                            type="image",
+                            filename=filename,
+                            category="category_image",
                         )
                     )
             except flask_uploads.UploadNotAllowed as e:
@@ -118,7 +120,9 @@ def delete(name):
 
         if category.subcategories:
             flash(
-                notify_warning(f'Please delete all subcategories for category "{name}"')
+                notify_warning(
+                    f'Please delete all subcategories for category "{name}"'
+                )
             )
             return redirect(url_for("category.dashboard"))
 
@@ -130,7 +134,9 @@ def delete(name):
     return redirect(url_for("category.dashboard"))
 
 
-@module_blueprint.route("/<category_name>/img/<filename>/delete", methods=["GET"])
+@module_blueprint.route(
+    "/<category_name>/img/<filename>/delete", methods=["GET"]
+)
 @login_required
 def category_image_delete(category_name, filename):
     resource = Resource.query.filter(Resource.filename == filename).first()
@@ -138,7 +144,9 @@ def category_image_delete(category_name, filename):
     category.resources.remove(resource)
     category.update()
     delete_file(
-        os.path.join(current_app.config["UPLOADED_CATEGORYPHOTOS_DEST"], filename)
+        os.path.join(
+            current_app.config["UPLOADED_CATEGORYPHOTOS_DEST"], filename
+        )
     )
 
     return redirect(url_for("category.dashboard"))
@@ -166,7 +174,9 @@ def update():
                     categoryphotos.save(file)
                     category.resources.append(
                         Resource(
-                            type="image", filename=filename, category="category_image",
+                            type="image",
+                            filename=filename,
+                            category="category_image",
                         )
                     )
             except flask_uploads.UploadNotAllowed as e:
@@ -175,14 +185,17 @@ def update():
             category.name = name
             category.update()
         except sqlalchemy.exc.IntegrityError:
-            context["message"] = "you cannot modify to an already existing category"
+            context[
+                "message"
+            ] = "you cannot modify to an already existing category"
             context["redirect_url"] = "/category/"
             render_template("category/message.html", **context)
         return redirect(url_for("category.dashboard"))
 
 
 @module_blueprint.route(
-    "{}/edit/<category_name>".format(module_info["dashboard"]), methods=["GET", "POST"],
+    "{}/edit/<category_name>".format(module_info["dashboard"]),
+    methods=["GET", "POST"],
 )
 @login_required
 def edit_dashboard(category_name):
@@ -207,7 +220,8 @@ def check(category_name):
 
 
 @module_blueprint.route(
-    "{}/<category_name>/sub/".format(module_info["dashboard"]), methods=["GET", "POST"],
+    "{}/<category_name>/sub/".format(module_info["dashboard"]),
+    methods=["GET", "POST"],
 )
 @login_required
 def manage_sub(category_name):
@@ -230,7 +244,10 @@ def add_sub(category_name):
         if is_empty_str(name):
             flash(notify_warning("Name cannot be empty"))
             return redirect(
-                url_for("category.manage_sub", category_name=subcategory.category.name,)
+                url_for(
+                    "category.manage_sub",
+                    category_name=subcategory.category.name,
+                )
             )
 
         existing = SubCategory.query.filter(
@@ -239,10 +256,15 @@ def add_sub(category_name):
         if existing:
             flash(notify_warning("Name already exists for category"))
             return redirect(
-                url_for("category.manage_sub", category_name=subcategory.category.name,)
+                url_for(
+                    "category.manage_sub",
+                    category_name=subcategory.category.name,
+                )
             )
 
-        category = Category.query.filter(Category.name == category_name).first()
+        category = Category.query.filter(
+            Category.name == category_name
+        ).first()
         subcategory = SubCategory(name=name)
 
         try:
@@ -254,7 +276,9 @@ def add_sub(category_name):
                 subcategoryphotos.save(file)
                 subcategory.resources.append(
                     Resource(
-                        type="image", filename=filename, category="subcategory_image",
+                        type="image",
+                        filename=filename,
+                        category="subcategory_image",
                     )
                 )
         except flask_uploads.UploadNotAllowed as e:
@@ -263,7 +287,9 @@ def add_sub(category_name):
         category.subcategories.append(subcategory)
 
         category.update()
-        return redirect(url_for("category.manage_sub", category_name=category_name))
+        return redirect(
+            url_for("category.manage_sub", category_name=category_name)
+        )
 
 
 @module_blueprint.route(
@@ -278,7 +304,9 @@ def edit_sub_img_dashboard(subcategory_id):
     return render_template("category/edit_img_sub.html", **context)
 
 
-@module_blueprint.route("/sub/<subcategory_id>/name/edit", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/sub/<subcategory_id>/name/edit", methods=["GET", "POST"]
+)
 @login_required
 def edit_sub_name(subcategory_id):
     if request.method == "POST":
@@ -287,7 +315,10 @@ def edit_sub_name(subcategory_id):
         if is_empty_str(name):
             flash(notify_warning("Name cannot be empty"))
             return redirect(
-                url_for("category.manage_sub", category_name=subcategory.category.name,)
+                url_for(
+                    "category.manage_sub",
+                    category_name=subcategory.category.name,
+                )
             )
         category_name = subcategory.category.name
         existing = SubCategory.query.filter(
@@ -296,17 +327,24 @@ def edit_sub_name(subcategory_id):
         if existing:
             flash(notify_warning("Name already exists for category"))
             return redirect(
-                url_for("category.manage_sub", category_name=subcategory.category.name,)
+                url_for(
+                    "category.manage_sub",
+                    category_name=subcategory.category.name,
+                )
             )
         subcategory.name = name
         subcategory.update()
         flash(notify_success("Subcategory name updated successfully!"))
         return redirect(
-            url_for("category.manage_sub", category_name=subcategory.category.name)
+            url_for(
+                "category.manage_sub", category_name=subcategory.category.name
+            )
         )
 
 
-@module_blueprint.route("/sub/<subcategory_id>/img/edit", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/sub/<subcategory_id>/img/edit", methods=["GET", "POST"]
+)
 @login_required
 def edit_sub_img(subcategory_id):
     if request.method == "POST":
@@ -320,18 +358,25 @@ def edit_sub_img(subcategory_id):
                 subcategoryphotos.save(file)
                 subcategory.resources.append(
                     Resource(
-                        type="image", filename=filename, category="subcategory_image",
+                        type="image",
+                        filename=filename,
+                        category="subcategory_image",
                     )
                 )
         except flask_uploads.UploadNotAllowed as e:
             pass
         subcategory.update()
         return redirect(
-            url_for("category.edit_sub_img_dashboard", subcategory_id=subcategory.id,)
+            url_for(
+                "category.edit_sub_img_dashboard",
+                subcategory_id=subcategory.id,
+            )
         )
 
 
-@module_blueprint.route("/sub/<subcategory_id>/img/<filename>/delete", methods=["GET"])
+@module_blueprint.route(
+    "/sub/<subcategory_id>/img/<filename>/delete", methods=["GET"]
+)
 @login_required
 def subcategory_image_delete(subcategory_id, filename):
     resource = Resource.query.filter(Resource.filename == filename).first()
@@ -339,15 +384,21 @@ def subcategory_image_delete(subcategory_id, filename):
     subcategory.resources.remove(resource)
     subcategory.update()
     delete_file(
-        os.path.join(current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename)
+        os.path.join(
+            current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
+        )
     )
 
     return redirect(
-        url_for("category.edit_sub_img_dashboard", subcategory_id=subcategory_id)
+        url_for(
+            "category.edit_sub_img_dashboard", subcategory_id=subcategory_id
+        )
     )
 
 
-@module_blueprint.route("/sub/<subcategory_id>/delete", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/sub/<subcategory_id>/delete", methods=["GET", "POST"]
+)
 @login_required
 def sub_delete(subcategory_id):
     subcategory = SubCategory.query.get(subcategory_id)
@@ -361,7 +412,9 @@ def sub_delete(subcategory_id):
                 "Cannot delete subcategory uncategorised of catgeory uncategorised"
             )
         )
-        return redirect(url_for("category.manage_sub", category_name=category_name))
+        return redirect(
+            url_for("category.manage_sub", category_name=category_name)
+        )
 
     uncategorised_sub = SubCategory.query.filter(
         (SubCategory.name == "uncategorised")
@@ -385,11 +438,14 @@ def sub_delete(subcategory_id):
     # subcategory.delete()
 
     ## add for products change
-    return redirect(url_for("category.manage_sub", category_name=category_name))
+    return redirect(
+        url_for("category.manage_sub", category_name=category_name)
+    )
 
 
 @module_blueprint.route(
-    "<category_id>/{}/sub".format(module_info["dashboard"]), methods=["GET", "POST"],
+    "<category_id>/{}/sub".format(module_info["dashboard"]),
+    methods=["GET", "POST"],
 )
 @login_required
 def choose_sub_dashboard(category_id):

@@ -68,7 +68,9 @@ def initialise():
 
     print("Creating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
 
     print("Migrating")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
@@ -178,7 +180,8 @@ def index():
 
     trymkdir(base_path + "/templates/" + modulename + "/blocks")
     trymkfile(
-        base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html", "",
+        base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html",
+        "",
     )
 
     global_file_content = """

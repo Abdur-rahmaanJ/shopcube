@@ -64,7 +64,9 @@ def base_context():
     ACTIVE_THEME = get_setting("ACTIVE_THEME")
     ACTIVE_THEME_VERSION = info_data["version"]
     ACTIVE_THEME_STYLES_URL = url_for(
-        "resource.active_theme_css", active_theme=ACTIVE_THEME, v=ACTIVE_THEME_VERSION,
+        "resource.active_theme_css",
+        active_theme=ACTIVE_THEME,
+        v=ACTIVE_THEME_VERSION,
     )
 
     base_context = {
