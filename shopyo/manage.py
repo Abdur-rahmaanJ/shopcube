@@ -12,7 +12,6 @@ from shopyoapi.cmd import create_module_in_box
 from shopyoapi.cmd import initialise
 from shopyoapi.database import autoload_models
 from shopyoapi.info import printinfo
-from shopyoapi.init import db
 
 
 def runserver():

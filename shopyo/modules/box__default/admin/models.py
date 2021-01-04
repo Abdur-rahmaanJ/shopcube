@@ -7,8 +7,6 @@
 import datetime
 from uuid import uuid4
 
-from flask import current_app
-
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
 from flask_login import login_manager

@@ -4,19 +4,19 @@ import os
 # from flask import render_template
 from flask import Blueprint
 from flask import current_app
-from flask import redirect
+# from flask import redirect
 from flask import send_from_directory
-from flask import url_for
+# from flask import url_for
 
 from flask_login import login_required
 from PIL import Image as PILimage
 
-from shopyoapi.enhance import get_setting
-from shopyoapi.file import delete_file
+# from shopyoapi.enhance import get_setting
+# from shopyoapi.file import delete_file
 
-from modules.box__ecommerce.product.models import Product
+# from modules.box__ecommerce.product.models import Product
 from modules.resource.models import Image
-from modules.resource.models import Resource
+# from modules.resource.models import Resource
 
 # from flask import flash
 # from flask import request#

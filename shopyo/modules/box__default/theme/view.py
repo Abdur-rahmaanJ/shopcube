@@ -7,7 +7,6 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 
-import jinja2
 from flask_login import login_required
 
 from shopyoapi.enhance import get_setting
@@ -16,10 +15,10 @@ from shopyoapi.file import get_folders
 
 # from flask import flash
 # from flask import request
-from shopyoapi.html import notify_success
-from shopyoapi.init import db
+# from shopyoapi.html import notify_success
+# from shopyoapi.init import db
 
-from modules.box__default.settings.models import Settings
+# from modules.box__default.settings.models import Settings
 
 # from shopyoapi.forms import flash_errors
 

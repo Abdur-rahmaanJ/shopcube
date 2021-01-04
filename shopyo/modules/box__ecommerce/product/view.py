@@ -4,7 +4,7 @@ import uuid
 
 from flask import Blueprint
 from flask import current_app
-from flask import flash
+# from flask import flash
 from flask import jsonify
 from flask import redirect
 from flask import render_template

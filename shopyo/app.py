@@ -4,7 +4,7 @@ import os
 import sys
 
 from flask import Flask
-from flask import redirect
+# from flask import redirect
 from flask import url_for
 
 from flask_login import current_user
@@ -126,10 +126,6 @@ def create_app(config_name):
             v=ACTIVE_THEME_VERSION,
         )
         CONTACT_URL = url_for("contact.index")
-
-        
-
-        
 
         base_context = {
             "APP_NAME": APP_NAME,

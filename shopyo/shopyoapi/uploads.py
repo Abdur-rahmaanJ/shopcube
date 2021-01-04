@@ -22,7 +22,7 @@ def add_admin(email, password):
         user.password = generate_password_hash(password, method="sha256")
         user.is_admin = True
         user.email_confirmed = True
-        email_confirm_date = datetime.datetime.now()
+        user.email_confirm_date = datetime.datetime.now()
         user.insert()
 
 
