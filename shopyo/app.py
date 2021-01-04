@@ -26,8 +26,6 @@ from shopyoapi.init import migrate
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
 
-from modules.category.models import Category
-from modules.product.models import Product
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -129,11 +127,9 @@ def create_app(config_name):
         )
         CONTACT_URL = url_for("contact.index")
 
-        def get_categories():
-            return Category.query.all()
+        
 
-        def get_products():
-            return Product.query.all()
+        
 
         base_context = {
             "APP_NAME": APP_NAME,
@@ -144,8 +140,6 @@ def create_app(config_name):
             "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL,
             "CONTACT_URL": CONTACT_URL,
             "len": len,
-            "get_categories": get_categories,
-            "get_products": get_products,
             "current_user": current_user,
         }
         base_context.update(available_everywhere_entities)

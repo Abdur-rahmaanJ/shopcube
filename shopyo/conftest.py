@@ -10,8 +10,8 @@ import pytest
 from app import create_app
 from shopyoapi.init import db as _db
 from shopyoapi.uploads import add_setting
-from modules.admin.models import User
-from modules.settings.models import Settings
+from modules.box__default.admin.models import User
+from modules.box__default.settings.models import Settings
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v

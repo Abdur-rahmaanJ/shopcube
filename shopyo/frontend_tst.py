@@ -7,8 +7,8 @@ from app import create_app
 
 from shopyoapi.init import db
 
-from modules.admin.models import User
-from modules.settings.models import Settings
+from modules.box__default.admin.models import User
+from modules.box__default.settings.models import Settings
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")

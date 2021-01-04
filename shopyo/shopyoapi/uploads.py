@@ -7,12 +7,12 @@ from app import app
 
 from shopyoapi.init import db
 
-from modules.admin.models import Role
-from modules.admin.models import User
-from modules.category.models import Category
-from modules.category.models import SubCategory
-from modules.product.models import Product
-from modules.settings.models import Settings
+from modules.box__default.admin.models import Role
+from modules.box__default.admin.models import User
+from modules.box__ecommerce.category.models import Category
+from modules.box__ecommerce.category.models import SubCategory
+from modules.box__ecommerce.product.models import Product
+from modules.box__default.settings.models import Settings
 
 
 def add_admin(email, password):

@@ -17,7 +17,7 @@ from flask import url_for
 from shopyoapi.enhance import get_active_theme_dir
 from shopyoapi.enhance import get_setting
 
-from modules.shop.helpers import get_cart_data
+from modules.box__ecommerce.shop.helpers import get_cart_data
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
