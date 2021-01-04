@@ -15,7 +15,6 @@ def test_admin_home_page(test_client):
     WHEN the '/admin' page is requested (GET) by user with admin privileges
     THEN check that the response is valid
     """
-
     # Login with admin credentials
     response = test_client.post(
         url_for("login.login"),
@@ -59,7 +58,6 @@ def test_admin_sidebar(test_client):
     admin privileges
     THEN check that the response is valid
     """
-
     # Login with admin credentials
     response = test_client.post(
         url_for("login.login"),

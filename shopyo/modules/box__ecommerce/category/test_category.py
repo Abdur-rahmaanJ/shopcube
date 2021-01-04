@@ -19,7 +19,7 @@ def test_category_dashboard_page(test_client):
     # Logout and try to access the category dashboard. It should redirect
     response = test_client.get(url_for("login.logout"), follow_redirects=True)
     assert response.status_code == 200
-    assert b"Successfully logged out" in response.data
+    assert request.path == url_for("login.login")
 
     # check request to category correctly redirects to login page
     response = test_client.get(
@@ -38,6 +38,7 @@ def test_category_dashboard_page(test_client):
     # check if successfully logged in
     assert response.status_code == 200
 
+    # After successfull login, category dashboard can be accessed
     response = test_client.get(url_for("category.dashboard"))
     assert response.status_code == 200
     assert b"Category" in response.data
@@ -52,7 +53,7 @@ def test_category_add_get(test_client):
     # Logout and try to access the category dashboard. It should redirect
     response = test_client.get(url_for("login.logout"), follow_redirects=True)
     assert response.status_code == 200
-    assert b"Successfully logged out" in response.data
+    assert request.path == url_for("login.login")
 
     # check request to contact correctly redirects to login page
     response = test_client.get(url_for("category.add"), follow_redirects=True)
@@ -181,7 +182,7 @@ def test_category_delete_get_valid(test_client, db_session):
     # Logout and try to access category delete route. It should redirect
     response = test_client.get(url_for("login.logout"), follow_redirects=True)
     assert response.status_code == 200
-    assert b"Successfully logged out" in response.data
+    assert request.path == url_for("login.login")
     # Check request to category delete correctly redirects to login page
     response = test_client.get(
         url_for("category.delete", name="test-delete-category"),

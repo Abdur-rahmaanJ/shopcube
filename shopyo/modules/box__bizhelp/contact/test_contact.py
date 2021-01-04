@@ -15,8 +15,7 @@ def test_contact_page(test_client):
     WHEN the /contact page is requested (GET)
     THEN check that the response is valid
     """
-
-    response = test_client.get(url_for("contact.index"))
+    response = test_client.get("/contact/")
     assert response.status_code == 200
     assert b"Name" in response.data
     assert b"Email" in response.data
@@ -30,11 +29,11 @@ def test_contact_dashboard(test_client):
     WHEN the /contact/dashboard page is requested (GET)
     THEN check that the response is valid
     """
-
     # Logout and try to access the contact dashboard. It should redirect
     response = test_client.get(url_for("login.logout"), follow_redirects=True)
+    print(request.path)
     assert response.status_code == 200
-    assert b"Successfully logged out" in response.data
+    assert request.path == url_for("login.login")
 
     # check request to contact correctly redirects to login page
     response = test_client.get("/contact/dashboard", follow_redirects=True)
@@ -68,7 +67,6 @@ def test_contact_validate_msg(test_client):
     THEN check that the response is valid and that
     the new validated message appears on contact dashboard
     """
-
     # GET request should fail for validate message
     # Currently test is uncommented since no return statement for
     # validate_message for GET
