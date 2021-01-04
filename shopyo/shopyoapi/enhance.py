@@ -5,7 +5,7 @@ import random
 from flask import current_app
 from flask import url_for
 
-from modules.settings.models import Settings
+from modules.box__default.settings.models import Settings
 
 
 def get_active_theme_dir():

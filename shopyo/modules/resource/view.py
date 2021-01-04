@@ -14,7 +14,7 @@ from PIL import Image as PILimage
 from shopyoapi.enhance import get_setting
 from shopyoapi.file import delete_file
 
-from modules.product.models import Product
+from modules.box__ecommerce.product.models import Product
 from modules.resource.models import Image
 from modules.resource.models import Resource
 
