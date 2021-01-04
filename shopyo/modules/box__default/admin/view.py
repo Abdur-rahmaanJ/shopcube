@@ -15,7 +15,7 @@ from flask import url_for
 from flask_login import login_required
 from sqlalchemy import exists
 
-from config import Config
+# from config import Config
 
 from shopyoapi.init import db
 

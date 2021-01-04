@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from .shopyoapi.file import trycopy
+# from .shopyoapi.file import trycopy
 from .shopyoapi.file import trycopytree
 from .shopyoapi.file import trymkdir
 from .shopyoapi.info import printinfo

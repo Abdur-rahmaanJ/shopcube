@@ -17,10 +17,8 @@ from flask_login import current_user
 from shopyoapi.enhance import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
-
-# #
 from shopyoapi.html import notify_success
-from shopyoapi.html import notify_warning
+# from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
 
 from modules.box__default.admin.models import User
@@ -29,7 +27,6 @@ from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.shop.forms import CheckoutForm
 from modules.box__ecommerce.shop.helpers import get_cart_data
-from modules.box__ecommerce.shop.helpers import get_currency_symbol
 from modules.box__ecommerce.shop.models import BillingDetail
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem

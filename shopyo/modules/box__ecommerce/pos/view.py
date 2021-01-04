@@ -12,7 +12,7 @@ from flask_login import login_required
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
-from shopyoapi.html import notify_success
+# from shopyoapi.html import notify_success
 
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.pos.models import Transaction

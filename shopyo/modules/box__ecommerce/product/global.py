@@ -1,5 +1,6 @@
 from modules.box__ecommerce.product.models import Product
 
+
 def get_products():
     return Product.query.all()
 
