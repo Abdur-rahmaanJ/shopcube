@@ -17,7 +17,9 @@ class Config:
 
     UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
     UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "category")
-    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "subcategory")
+    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
+        STATIC, "uploads", "subcategory"
+    )
     PASSWORD_SALT = "abcdefghi"
 
 

@@ -1,13 +1,13 @@
-import os
 import json
+import os
 
-from flask import session
 from flask import current_app
+from flask import session
 
+from shopyoapi.enhance import get_setting
 
 from modules.product.models import Product
 
-from shopyoapi.enhance import get_setting
 
 def get_currency_symbol():
     curr_code = get_setting("CURRENCY")
@@ -25,6 +25,7 @@ def get_currency_symbol():
         if curr["cc"] == curr_code:
             return curr["symbol"]
 
+
 def get_cart_data():
     if "cart" in session:
         cart_data = session["cart"][0]
@@ -35,7 +36,9 @@ def get_cart_data():
             for item in cart_data:
                 print(item)
                 product = Product.query.get(item)
-                cart_total_price += int(cart_data[item]) * product.selling_price
+                cart_total_price += (
+                    int(cart_data[item]) * product.selling_price
+                )
         except Exception as e:
             pass
 

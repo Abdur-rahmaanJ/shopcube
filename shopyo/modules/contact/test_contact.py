@@ -5,7 +5,8 @@ This file (test_contact.py) contains the functional tests for the
 These tests use GETs and POSTs to different endpoints to check for
 the proper behavior of the `contact` blueprint.
 """
-from flask import url_for, request
+from flask import request
+from flask import url_for
 
 
 def test_contact_page(test_client):
@@ -15,7 +16,7 @@ def test_contact_page(test_client):
     THEN check that the response is valid
     """
 
-    response = test_client.get(url_for('contact.index'))
+    response = test_client.get(url_for("contact.index"))
     assert response.status_code == 200
     assert b"Name" in response.data
     assert b"Email" in response.data
@@ -31,17 +32,17 @@ def test_contact_dashboard(test_client):
     """
 
     # Logout and try to access the contact dashboard. It should redirect
-    response = test_client.get(url_for('login.logout'), follow_redirects=True)
+    response = test_client.get(url_for("login.logout"), follow_redirects=True)
     assert response.status_code == 200
     assert b"Successfully logged out" in response.data
 
     # check request to contact correctly redirects to login page
     response = test_client.get("/contact/dashboard", follow_redirects=True)
-    assert request.path == url_for('login.login')
+    assert request.path == url_for("login.login")
 
     # Login and try to access the contact dashboard. It should return OK
     response = test_client.post(
-        url_for('login.login'),
+        url_for("login.login"),
         data=dict(email="admin1@domain.com", password="pass"),
         follow_redirects=True,
     )
@@ -79,9 +80,8 @@ def test_contact_validate_msg(test_client):
     response = test_client.post(
         url_for("contact.validate_message"),
         data=dict(
-            name="User1",
-            email="user1@gmail.com",
-            message="User1 Message"),
+            name="User1", email="user1@gmail.com", message="User1 Message"
+        ),
         follow_redirects=True,
     )
     assert response.status_code == 200

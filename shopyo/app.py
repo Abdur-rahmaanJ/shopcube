@@ -48,28 +48,66 @@ def create_app(config_name):
 
     available_everywhere_entities = {}
 
-    for module in os.listdir(os.path.join(base_path, "modules")):
-        if module.startswith("__"):
+    #
+    #  load blueprints
+    #
+    for folder in os.listdir(os.path.join(base_path, "modules")):
+        if folder.startswith("__"):  # ignore __pycache__
             continue
-        mod = importlib.import_module("modules.{}.view".format(module))
-        try:
-            mod_global = importlib.import_module("modules.{}.global".format(module))
-            available_everywhere_entities.update(mod_global.available_everywhere)
-        except ImportError as e:
-            # print(e)
-            pass
-        app.register_blueprint(getattr(mod, "{}_blueprint".format(module)))
 
+        if folder.startswith("box__"):
+            # boxes
+            for sub_folder in os.listdir(
+                os.path.join(base_path, "modules", folder)
+            ):
+                if sub_folder.startswith("__"):  # ignore __pycache__
+                    continue
+                elif sub_folder.endswith(".json"):  # box_info.json
+                    continue
+                sys_mod = importlib.import_module(
+                    "modules.{}.{}.view".format(folder, sub_folder)
+                )
+                try:
+                    mod_global = importlib.import_module(
+                        "modules.{}.{}.global".format(folder, sub_folder)
+                    )
+                    available_everywhere_entities.update(
+                        mod_global.available_everywhere
+                    )
+                except ImportError as e:
+                    # print(e)
+                    pass
+                app.register_blueprint(
+                    getattr(sys_mod, "{}_blueprint".format(sub_folder))
+                )
+        else:
+            # apps
+            mod = importlib.import_module("modules.{}.view".format(folder))
+            try:
+                mod_global = importlib.import_module(
+                    "modules.{}.global".format(folder)
+                )
+                available_everywhere_entities.update(
+                    mod_global.available_everywhere
+                )
+            except ImportError as e:
+                # print(e)
+                pass
+            app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
+
+    #
+    # custom templates folder
+    #
     with app.app_context():
         theme_dir = os.path.join(app.config["BASE_DIR"], "themes")
         my_loader = jinja2.ChoiceLoader(
-            [
-                app.jinja_loader,
-                jinja2.FileSystemLoader([theme_dir]),
-            ]
+            [app.jinja_loader, jinja2.FileSystemLoader([theme_dir]),]
         )
         app.jinja_loader = my_loader
 
+    #
+    # global vars
+    #
     @app.context_processor
     def inject_global_vars():
         theme_dir = os.path.join(

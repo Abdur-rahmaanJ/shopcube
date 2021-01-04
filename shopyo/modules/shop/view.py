@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 
 from flask import Blueprint
+from flask import current_app
 from flask import flash
 from flask import jsonify
 from flask import redirect
@@ -10,10 +11,11 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-from flask import current_app
 
 from flask_login import current_user
 
+from shopyoapi.enhance import get_setting
+from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
 
 # #
@@ -25,26 +27,18 @@ from modules.admin.models import User
 from modules.category.models import Category
 from modules.category.models import SubCategory
 from modules.product.models import Product
-from modules.shopman.models import DeliveryOption
-from modules.shopman.models import PaymentOption
-
-from shopyoapi.enhance import get_setting
-from shopyoapi.enhance import set_setting
-
 from modules.shop.forms import CheckoutForm
 from modules.shop.helpers import get_cart_data
 from modules.shop.helpers import get_currency_symbol
 from modules.shop.models import BillingDetail
 from modules.shop.models import Order
 from modules.shop.models import OrderItem
-
+from modules.shopman.models import DeliveryOption
+from modules.shopman.models import PaymentOption
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]
-
-
-
 
 
 # mhelp._context.update({"get_currency_symbol": get_currency_symbol})
@@ -66,7 +60,9 @@ def homepage():
     context = mhelp.context()
     cart_info = get_cart_data()
     context.update(cart_info)
-    return render_template(get_setting("ACTIVE_THEME") + "/index.html", **context)
+    return render_template(
+        get_setting("ACTIVE_THEME") + "/index.html", **context
+    )
 
 
 @module_blueprint.route("/page/<int:page>")
@@ -98,7 +94,9 @@ def index(page=1):
 def category(category_name):
 
     context = mhelp.context()
-    current_category = Category.query.filter(Category.name == category_name).first()
+    current_category = Category.query.filter(
+        Category.name == category_name
+    ).first()
 
     cart_info = get_cart_data()
 
@@ -120,7 +118,9 @@ def subcategory(subcategory_name, page=1):
     end = page * PAGINATION
     start = end - PAGINATION
 
-    subcategory = SubCategory.query.filter(SubCategory.name == subcategory_name).first()
+    subcategory = SubCategory.query.filter(
+        SubCategory.name == subcategory_name
+    ).first()
     products = subcategory.products[start:end]
     total_pages = (len(products) // PAGINATION) + 1
     current_category_name = subcategory.category.name
@@ -180,7 +180,9 @@ def cart_add(product_barcode):
                             "Products in cart cannot be greater than product in stock"
                         )
                     )
-                    return redirect(url_for("shop.product", product_barcode=barcode))
+                    return redirect(
+                        url_for("shop.product", product_barcode=barcode)
+                    )
                 data[barcode] = updated_quantity
                 session["cart"][0] = data
 
@@ -191,7 +193,9 @@ def cart_add(product_barcode):
     return mhelp.redirect_url("shop.product", product_barcode=barcode)
 
 
-@module_blueprint.route("/cart/remove/<product_barcode>", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/cart/remove/<product_barcode>", methods=["GET", "POST"]
+)
 def cart_remove(product_barcode):
     if "cart" in session:
 
@@ -213,7 +217,9 @@ def cart():
     cart_info = get_cart_data()
     delivery_options = DeliveryOption.query.all()
 
-    context.update({"delivery_options": delivery_options, "get_product": get_product})
+    context.update(
+        {"delivery_options": delivery_options, "get_product": get_product}
+    )
     context.update(cart_info)
     return mhelp.render("view_cart.html", **context)
 
@@ -279,7 +285,11 @@ def checkout():
     payment_options = PaymentOption.query.all()
     with open(
         os.path.join(
-            current_app.config["BASE_DIR"], "modules", "shopman", "data", "country.json"
+            current_app.config["BASE_DIR"],
+            "modules",
+            "shopman",
+            "data",
+            "country.json",
         )
     ) as f:
         countries = json.load(f)
@@ -389,10 +399,14 @@ def checkout_process():
 
             order = Order()
             order.billing_detail = billing_detail
-            shipping_option = DeliveryOption.query.get(request.form["deliveryoption"])
+            shipping_option = DeliveryOption.query.get(
+                request.form["deliveryoption"]
+            )
             order.shipping_option_name = shipping_option.option
             order.shipping_option_price = shipping_option.price
-            payment_option = PaymentOption.query.get(request.form["paymentoption"])
+            payment_option = PaymentOption.query.get(
+                request.form["paymentoption"]
+            )
             order.payment_option_name = payment_option.name
             order.payment_option_text = payment_option.text
 

@@ -68,7 +68,9 @@ def initialise():
 
     print("Creating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
-    subprocess.run([sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE)
+    subprocess.run(
+        [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
+    )
 
     print("Migrating")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
@@ -95,7 +97,7 @@ def initialise():
     print("Done!")
 
 
-def create_module(modulename):
+def create_module(modulename, base_path=None):
     """
     creates module with the structure defined in the modules section in docs
 
@@ -117,7 +119,8 @@ def create_module(modulename):
         )
         sys.exit()
     print("creating module: {}".format(modulename))
-    base_path = "modules/" + modulename
+    if not base_path:
+        base_path = "modules/" + modulename
     trymkdir(base_path)
     trymkdir(base_path + "/templates")
     trymkdir(base_path + "/templates/" + modulename)
@@ -181,13 +184,85 @@ def index():
         "",
     )
 
-    global_file_content = '''
+    global_file_content = """
 available_everywhere = {
     
 }
-'''
+"""
     trymkfile(
-        os.path.join(base_path, 'global.py'),
-        global_file_content,
+        os.path.join(base_path, "global.py"), global_file_content,
     )
 
+
+def create_box(name):
+    """
+    creates box with box_info.json
+
+    Parameters
+    ----------
+    name: str
+        name of box, in alphanumeric-underscore
+
+    Returns
+    -------
+    None
+
+
+    """
+    base_path = "modules/" + "box__" + name
+    if os.path.exists(base_path):
+        print("Box {} exists!".format(base_path))
+    else:
+        trymkdir(base_path)
+        info_json_content = """{{
+        "display_string": "{0}",
+        "box_name":"{1}",
+        "author": {{
+            "name":"",
+            "website":"",
+            "mail":""
+        }}
+    }}""".format(
+            name.capitalize(), name
+        )
+        trymkfile(base_path + "/" + "box_info.json", info_json_content)
+
+
+def create_module_in_box(modulename, boxname):
+    """
+    creates module with the structure defined in the modules section in docs in
+    a box
+
+    Parameters
+    ----------
+    modulename: str
+        name of module, in alphanumeric-underscore
+
+    boxname: str
+        name of box, in alphanumeric-underscore
+
+    Returns
+    -------
+    None
+
+
+    """
+    box_path = os.path.join("modules", boxname)
+    module_path = os.path.join("modules", boxname, modulename)
+
+    if not boxname.startswith("box__"):
+        print("Invalid box {}. Boxes should start with box__".format(boxname))
+
+    elif not os.path.exists(box_path):
+        print("Box {} does not exists!".format(box_path))
+        available_boxes = "\n* ".join(
+            [f for f in os.listdir("modules/") if f.startswith("box__")]
+        )
+        print("Available boxes: \n* {}".format(available_boxes))
+
+    elif os.path.exists(module_path):
+        print("Module {} exists".format(module_path))
+
+    else:
+        print("Creating module {}".format(module_path))
+        create_module(modulename, base_path=module_path)

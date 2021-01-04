@@ -24,20 +24,43 @@ all_info = {}
 def index():
     context = {}
 
-    for module in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
-        if module.startswith("__"):
+    for folder in os.listdir(
+        os.path.join(current_app.config["BASE_DIR"], "modules")
+    ):
+        if folder.startswith("__"):
             continue
-        if module not in ["dashboard"]:
-            with open(
-                os.path.join(
-                    current_app.config["BASE_DIR"],
-                    "modules",
-                    module,
-                    "info.json",
-                )
-            ) as f:
-                module_info = json.load(f)
-                all_info[module] = module_info
+        elif folder.startswith("box__"):
+            for sub_folder in os.listdir(
+                os.path.join(current_app.config["BASE_DIR"], "modules", folder)
+            ):
+                if sub_folder.startswith("__"):  # ignore __pycache__
+                    continue
+                elif sub_folder.endswith(".json"):  # box_info.json
+                    continue
+                with open(
+                    os.path.join(
+                        current_app.config["BASE_DIR"],
+                        "modules",
+                        folder,
+                        sub_folder,
+                        "info.json",
+                    )
+                ) as f:
+                    module_info = json.load(f)
+                    all_info[sub_folder] = module_info
+        else:
+
+            if folder not in ["dashboard"]:
+                with open(
+                    os.path.join(
+                        current_app.config["BASE_DIR"],
+                        "modules",
+                        folder,
+                        "info.json",
+                    )
+                ) as f:
+                    module_info = json.load(f)
+                    all_info[folder] = module_info
 
     context["all_info"] = all_info
     flash(notify_success("Notif test"))

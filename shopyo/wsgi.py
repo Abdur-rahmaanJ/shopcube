@@ -5,6 +5,7 @@
 #
 #
 import sys
+
 #
 ## The "/home/appinv" below specifies your home
 ## directory -- the rest should be the directory you uploaded your Flask
@@ -13,11 +14,12 @@ import sys
 ## ...or uploaded files to the directory "myproject", then you should
 ## specify "/home/appinv/myproject"
 # on shell do pwd to get a path like this:'/home2/folder/shopyo/shopyo' set path to this
-path = ''
+path = ""
 if path not in sys.path:
-   sys.path.insert(0, path)
+    sys.path.insert(0, path)
 #
 from app import app as application  # noqa
+
 #
 # NB -- many Flask guides suggest you use a file called run.py; that's
 # not necessary on PythonAnywhere.  And you should make sure your code

@@ -1,4 +1,6 @@
-from flask import url_for, request
+from flask import request
+from flask import url_for
+
 import pytest
 
 
@@ -13,8 +15,9 @@ def test_new_user(new_user):
     assert not new_user.is_admin
 
 
-@pytest.mark.order('first')
+@pytest.mark.order("first")
 def test_home_page(test_client, db):
+
     """
     GIVEN a Flask application configured for testing and a
     intitail testing database db,
@@ -22,11 +25,11 @@ def test_home_page(test_client, db):
     THEN check that the response is valid
     """
     # '/' redirects to /shop/home
-    response = test_client.get("/",  follow_redirects=True)
+    response = test_client.get("/", follow_redirects=True)
     assert response.status_code == 200
 
 
-@pytest.mark.order('second')
+@pytest.mark.order("second")
 def test_valid_login_logout(test_client):
     """
     GIVEN a Flask application configured for testing,
@@ -49,5 +52,5 @@ def test_valid_login_logout(test_client):
     # Check response is redirect to login page
     response = test_client.get(url_for("login.logout"), follow_redirects=True)
     assert response.status_code == 200
-    assert request.path == url_for('login.login')
+    assert request.path == url_for("login.login")
     assert b"Successfully logged out" in response.data

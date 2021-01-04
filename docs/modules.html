@@ -61,6 +61,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#using-shopyo-as-a-flask-base">Using Shopyo as a Flask base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#importing-modules">Importing modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#global-py">global.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boxes-or-many-apps-together">Boxes or many apps together</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
@@ -191,6 +192,19 @@ specify the module url and panel icon.</p>
 </pre></div>
 </div>
 <p>Where you pass functions or vars or classes you want to makle available in all templates! Try ‘x’: 1</p>
+</div>
+<div class="section" id="boxes-or-many-apps-together">
+<h2>Boxes or many apps together<a class="headerlink" href="#boxes-or-many-apps-together" title="Permalink to this headline">¶</a></h2>
+<p>If you want to create submodules, first create a box:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startbox demo
+</pre></div>
+</div>
+<p>This will be created as box__demo in modules/</p>
+<p>Then create the submodule:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp in box__demo
+</pre></div>
+</div>
+<p>If you go to url <cite>/demoapp</cite>, you will get Demoapp returned</p>
 </div>
 </div>
 

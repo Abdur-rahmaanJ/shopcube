@@ -133,3 +133,22 @@ Expects
 
 
 Where you pass functions or vars or classes you want to makle available in all templates! Try 'x': 1
+
+Boxes or many apps together
+---------------------------
+
+If you want to create submodules, first create a box:
+
+.. code:: bash
+
+    python manage.py startbox demo
+
+This will be created as box__demo in modules/
+
+Then create the submodule:
+
+.. code:: bash
+
+    python manage.py startsubapp demoapp in box__demo
+
+If you go to url `/demoapp`, you will get Demoapp returned

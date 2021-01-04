@@ -74,12 +74,12 @@ def db(test_client):
     # Commit the changes for the users
     _db.session.commit()
 
-    yield _db    # this is where the testing happens!
+    yield _db  # this is where the testing happens!
 
     _db.drop_all()
 
 
-@pytest.yield_fixture(scope='function', autouse=True)
+@pytest.yield_fixture(scope="function", autouse=True)
 def db_session(db):
     """
     Creates a new database session for a test. Note you must use this fixture
@@ -124,6 +124,6 @@ def db_session(db):
 #             follow_redirects=True,
 #         )
 
-    # def logout(self):
-    #     return self._client.get(
-    #         url_for("login.logout"), follow_redirects=True)
+# def logout(self):
+#     return self._client.get(
+#         url_for("login.logout"), follow_redirects=True)

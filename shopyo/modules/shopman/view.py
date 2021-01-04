@@ -2,27 +2,27 @@
 # from flask import url_for
 # from flask import redirect
 
-import os
 import json
+import os
 
+from flask import current_app
 from flask import flash
 from flask import request
-from flask import current_app
 
+from shopyoapi.enhance import get_setting
+from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
 
 # #
 from shopyoapi.html import notify_success
 from shopyoapi.module import ModuleHelp
-from shopyoapi.enhance import get_setting
-from shopyoapi.enhance import set_setting
 
 from modules.product.models import Product
 from modules.shop.models import Order
 from modules.shopman.forms import CouponForm
+from modules.shopman.forms import CurrencyForm
 from modules.shopman.forms import DeliveryOptionForm
 from modules.shopman.forms import PaymentOptionForm
-from modules.shopman.forms import CurrencyForm
 
 from .models import Coupon
 from .models import DeliveryOption
