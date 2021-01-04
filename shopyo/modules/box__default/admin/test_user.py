@@ -16,11 +16,9 @@ def test_new_user(new_user):
 
 
 @pytest.mark.order("first")
-def test_home_page(test_client, db):
-
+def test_home_page(test_client):
     """
-    GIVEN a Flask application configured for testing and a
-    intitail testing database db,
+    GIVEN a Flask application configured for testing,
     WHEN the '/' page is requested (GET)
     THEN check that the response is valid
     """
@@ -29,14 +27,12 @@ def test_home_page(test_client, db):
     assert response.status_code == 200
 
 
-@pytest.mark.order("second")
 def test_valid_login_logout(test_client):
     """
     GIVEN a Flask application configured for testing,
     WHEN the logging in and loggoing out from the app
     THEN check that the response is valid for each case
     """
-
     # Login to the app
     response = test_client.post(
         url_for("login.login"),
