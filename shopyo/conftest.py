@@ -96,7 +96,7 @@ def db(test_client, non_admin_user, admin_user):
     _db.drop_all()
 
 
-@pytest.yield_fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def db_session(db):
     """
     Creates a new database session for a test. Note you must use this fixture
