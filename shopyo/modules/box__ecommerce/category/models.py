@@ -3,6 +3,7 @@ remember: backrefs should be unique
 """
 
 from sqlalchemy import exists
+from sqlalchemy.orm import validates
 
 from shopyoapi.init import db
 
@@ -10,7 +11,7 @@ from shopyoapi.init import db
 class Category(db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
     subcategories = db.relationship(
         "SubCategory", backref="category", lazy=True
     )
@@ -34,14 +35,20 @@ class Category(db.Model):
 
     @classmethod
     def category_exists(cls, name):
-        return db.session.query(exists().where(cls.name == name)).scalar()
+        return db.session.query(
+            exists().where(cls.name == name.lower())
+        ).scalar()
+
+    @validates('name')
+    def convert_lower(self, key, value):
+        return value.lower()
 
 
 class SubCategory(db.Model):
     __tablename__ = "subcategories"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    category_name = db.Column(db.String(100), db.ForeignKey("categories.name"))
+    name = db.Column(db.String(100), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     # products = db.relationship(
     #     "Product", backref="subcategory", lazy=True, cascade="all, delete"
     # )
@@ -66,4 +73,10 @@ class SubCategory(db.Model):
 
     @classmethod
     def category_exists(cls, name):
-        return db.session.query(exists().where(cls.name == name)).scalar()
+        return db.session.query(
+            exists().where(cls.name == name.lower())
+        ).scalar()
+
+    @validates('name')
+    def convert_lower(self, key, value):
+        return value.lower()

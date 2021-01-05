@@ -6,6 +6,7 @@ for more details on pytest
 import json
 import os
 import pytest
+from flask import url_for
 
 from app import create_app
 from shopyoapi.init import db as _db
@@ -32,6 +33,26 @@ def new_user():
 
 
 @pytest.fixture(scope="session")
+def non_admin_user():
+    """
+    A pytest fixture that returns a non admin user
+    """
+    user = User(email="admin1@domain.com")
+    user.set_hash("pass")
+    return user
+
+
+@pytest.fixture(scope="session")
+def admin_user():
+    """
+    A pytest fixture that returns an admin user
+    """
+    user = User(email="admin2@domain.com", is_admin=True)
+    user.set_hash("pass")
+    return user
+
+
+@pytest.fixture(scope="session")
 def test_client():
     """
     setups up and returns the flask testing app
@@ -47,7 +68,7 @@ def test_client():
 
 
 @pytest.fixture(scope="session")
-def db(test_client):
+def db(test_client, non_admin_user, admin_user):
     """
     creates and returns the initial testing database
     """
@@ -56,12 +77,8 @@ def db(test_client):
     _db.create_all()
 
     # Insert user data
-    user1 = User(email="admin1@domain.com")
-    user1.set_hash("pass")
-    user2 = User(email="admin2@domain.com", is_admin=True)
-    user2.set_hash("pass")
-    _db.session.add(user1)
-    _db.session.add(user2)
+    _db.session.add(non_admin_user)
+    _db.session.add(admin_user)
 
     # add the default settings
     with open("config.json", "r") as config:
@@ -108,22 +125,22 @@ def db_session(db):
 # CURRENTLY FAILING TO MAKE LOGIN WORK FROM OUTSIDE
 # THE TEST FUNCTION
 
-# @pytest.fixture
-# def auth(test_client):
-#     return AuthActions(test_client)
+@pytest.fixture
+def auth(test_client):
+    return AuthActions(test_client)
 
 
-# class AuthActions(object):
-#     def __init__(self, client):
-#         self._client = client
+class AuthActions(object):
+    def __init__(self, client):
+        self._client = client
 
-#     def login(self, user):
-#         return self._client.post(
-#             url_for("login.login"),
-#             data=dict(email="admin1@domain.com", password="pass"),
-#             follow_redirects=True,
-#         )
+    def login(self, user, password="pass"):
+        return self._client.post(
+            url_for("login.login"),
+            data=dict(email=user.email, password=password),
+            follow_redirects=True,
+        )
 
-# def logout(self):
-#     return self._client.get(
-#         url_for("login.logout"), follow_redirects=True)
+    def logout(self):
+        return self._client.get(
+            url_for("login.logout"), follow_redirects=True)

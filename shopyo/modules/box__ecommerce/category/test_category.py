@@ -308,3 +308,111 @@ def test_category_delete_invalid(test_client, db_session):
     )
     assert db_session.query(Category).count() == 0
     assert db_session.query(SubCategory).count() == 0
+
+
+def test_category_sub_add_valid(test_client, auth, non_admin_user, db_session):
+    """
+    GIVEN a Flask application configured for testing,
+    auth class for user login and logout, a non admin user,
+    and a database session,
+    WHEN the adding sub category with valid parameters
+    THEN check that the response is valid
+    """
+    # make sure no Categories as of yet
+    assert db_session.query(Category).count() == 0
+
+    # add a test category
+    category = Category(name="test-category")
+    db_session.add(category)
+    db_session.commit()
+    assert db_session.query(Category).count() == 1
+
+    # logout
+    auth.logout()
+
+    # access to category add_sub should not be
+    # allowed since not logged in
+    response = test_client.post(
+        url_for("category.add_sub", category_name="test-category"),
+        data=dict(name="test-sub-category"),
+        follow_redirects=True,
+    )
+    assert response.status_code == 200
+    assert request.path == url_for("login.login")
+    assert db_session.query(SubCategory).count() == 0
+
+    # login to the app with a non admin user
+    auth.login(non_admin_user)
+
+    # should successfully create the subcategory
+    response = test_client.post(
+        url_for("category.add_sub", category_name="test-category"),
+        data=dict(name="test-sub-category"),
+        follow_redirects=True,
+    )
+    assert request.path == url_for(
+        "category.manage_sub",
+        category_name="test-category"
+    )
+    exiting_subcat = (
+        db_session.query(SubCategory)
+        .filter(SubCategory.name == "test-sub-category")
+        .scalar()
+    )
+    assert exiting_subcat and exiting_subcat.category.name == "test-category"
+    assert db_session.query(SubCategory).count() == 1
+
+
+def test_category_sub_add_invalid(test_client, auth,
+                                  non_admin_user, db_session):
+    """
+    GIVEN a Flask application configured for testing,
+    auth class for user login and logout, a non admin user,
+    and a database session,
+    WHEN the adding sub category with invalid parameters
+    THEN check that the response is valid
+    """
+    # make sure no Categories as of yet
+    assert db_session.query(Category).count() == 0
+    assert db_session.query(SubCategory).count() == 0
+
+    # login to the app with a non admin user
+    auth.login(non_admin_user)
+
+    # add a test category and a subcategory
+    category = Category(name="test-category")
+    subcategory = SubCategory(name="test-sub-category")
+    category.subcategories.append(subcategory)
+    db_session.add(category)
+    db_session.add(subcategory)
+    db_session.commit()
+    assert db_session.query(Category).count() == 1
+    assert db_session.query(SubCategory).count() == 1
+
+    # should not allow adding existing subcategory
+    response = test_client.post(
+        url_for("category.add_sub", category_name="test-category"),
+        data=dict(name="test-sub-category"),
+        follow_redirects=True,
+    )
+    assert b"Name already exists for category" in response.data
+    assert db_session.query(SubCategory).count() == 1
+
+    # should not allow adding empty category
+    response = test_client.post(
+        url_for("category.add_sub", category_name="test-category"),
+        data=dict(name="  "),
+        follow_redirects=True,
+    )
+    assert b"Name cannot be empty" in response.data
+    assert db_session.query(SubCategory).count() == 1
+
+    # should not allow adding existing category with leading
+    # trailing spaces
+    response = test_client.post(
+        url_for("category.add_sub", category_name="test-category"),
+        data=dict(name="   test-sub-category   "),
+        follow_redirects=True,
+    )
+    assert b"Name already exists for category" in response.data
+    assert db_session.query(SubCategory).count() == 1

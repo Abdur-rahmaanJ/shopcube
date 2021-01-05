@@ -10,6 +10,7 @@ from flask import render_template
 from flask import request
 from flask import send_from_directory
 from flask import url_for
+from sqlalchemy import and_
 
 import flask_uploads
 from flask_login import login_required
@@ -22,6 +23,7 @@ from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import subcategoryphotos
+from shopyoapi.init import db
 from shopyoapi.validators import is_empty_str
 
 from modules.box__ecommerce.category.models import Category
@@ -58,45 +60,56 @@ def dashboard():
 @module_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
-    context = {}
 
+    context = {}
     has_category = False
+
     if request.method == "POST":
-        name = request.form["name"]
+        # convert name to lower case and remove leading
+        # and trailing spaces
+        name = request.form["name"].lower().strip()
+
+        # case 1: do not allow adding empty category name
         if is_empty_str(name):
             flash(notify_warning("Category name cannot be empty"))
             return redirect(url_for("category.add"))
-        if (
-            name.strip().lower() == "uncategorised"
-            or name.strip().lower() == "uncategorized"
-        ):
+
+        # case 2: do not allow category name uncategorised
+        # not sure if this is needed since if we add this
+        # during initialization then this check will be covered
+        # by case 3
+        if (name == "uncategorised" or name == "uncategorized"):
             flash(notify_warning("Category cannot be named as uncategorised"))
             return redirect(url_for("category.add"))
+
         has_category = Category.category_exists(name)
-        if has_category is False:
-            category = Category(name=name)
-            try:
-                if "photo" in request.files:
-                    file = request.files["photo"]
 
-                    filename = unique_sec_filename(file.filename)
-                    file.filename = filename
-                    categoryphotos.save(file)
-                    category.resources.append(
-                        Resource(
-                            type="image",
-                            filename=filename,
-                            category="category_image",
-                        )
-                    )
-            except flask_uploads.UploadNotAllowed as e:
-                pass
-            category.insert()
-
-            flash(notify_success(f'Category "{name}" added successfully'))
-        else:
+        # case 3: do not allow adding existing category name
+        if has_category:
             flash(notify_warning(f'Category "{name}" already exists'))
+            return render_template("category/add.html", **context)
 
+        # case 4: sucessfully add the category
+        category = Category(name=name)
+        try:
+            if "photo" in request.files:
+                file = request.files["photo"]
+
+                filename = unique_sec_filename(file.filename)
+                file.filename = filename
+                categoryphotos.save(file)
+                category.resources.append(
+                    Resource(
+                        type="image",
+                        filename=filename,
+                        category="category_image",
+                    )
+                )
+        except flask_uploads.UploadNotAllowed as e:
+            pass
+
+        category.insert()
+        flash(notify_success(f'Category "{name}" added successfully'))
         return render_template("category/add.html", **context)
 
     context["has_category"] = str(has_category)
@@ -240,29 +253,40 @@ def manage_sub(category_name):
 @login_required
 def add_sub(category_name):
     if request.method == "POST":
-        name = request.form["name"]
+        # convert name to lower case and remove leading
+        # and trailing spaces
+        name = request.form["name"].lower().strip()
 
+        # case 1: do not allow adding subcategory with
+        # empty name
         if is_empty_str(name):
             flash(notify_warning("Name cannot be empty"))
             return redirect(
                 url_for(
                     "category.manage_sub",
-                    category_name=subcategory.category.name,
+                    category_name=category_name,
                 )
             )
 
-        existing = SubCategory.query.filter(
-            (SubCategory.name == name) & (Category.name == category_name)
+        # case 2: do not allow adding existing subcategory
+        # inside a given category
+        existing = SubCategory.query.join(Category).filter(
+            and_(
+                SubCategory.name == name,
+                Category.name == category_name
+            )
         ).first()
+
         if existing:
             flash(notify_warning("Name already exists for category"))
             return redirect(
                 url_for(
                     "category.manage_sub",
-                    category_name=subcategory.category.name,
+                    category_name=category_name,
                 )
             )
 
+        # case 3: sucessfully add subcategory to desired category
         category = Category.query.filter(
             Category.name == category_name
         ).first()
@@ -286,11 +310,10 @@ def add_sub(category_name):
             pass
 
         category.subcategories.append(subcategory)
-
         category.update()
-        return redirect(
-            url_for("category.manage_sub", category_name=category_name)
-        )
+    return redirect(
+        url_for("category.manage_sub", category_name=category_name)
+    )
 
 
 @module_blueprint.route(
@@ -403,42 +426,47 @@ def subcategory_image_delete(subcategory_id, filename):
 @login_required
 def sub_delete(subcategory_id):
     subcategory = SubCategory.query.get(subcategory_id)
-    category_name = subcategory.name
+    category_name = subcategory.category.name
     if (
         subcategory.name == "uncategorised"
         and subcategory.category.name == "uncategorised"
     ):
         flash(
-            notify_warning(
-                "Cannot delete subcategory uncategorised of catgeory uncategorised"
-            )
+            notify_warning("Cannot delete subcategory uncategorised "
+                           + "of catgeory uncategorised")
         )
         return redirect(
             url_for("category.manage_sub", category_name=category_name)
         )
 
-    uncategorised_sub = SubCategory.query.filter(
-        (SubCategory.name == "uncategorised")
-        & (SubCategory.category_name == "uncategorised")
+    uncategorised_sub = SubCategory.query.join(Category).filter(
+        and_(
+            SubCategory.name == "uncategorised",
+            Category.name == "uncategorised"
+        )
     ).first()
 
+    # before removing the subcategory, move the products
+    # in this subcategory to uncategorised subcategory
     for product in subcategory.products:
         uncategorised_sub.products.append(product)
-    uncategorised_sub.update()
+
     subcategory.products = []
-    category = subcategory.category
-    category.subcategories.remove(subcategory)
-    category.update()
+    db.session.delete(subcategory)
+    db.session.commit()
 
     # for resource in subcategory.resources:
     #     filename = resource.filename
     #     resource.delete()
     #     delete_file(
-    #         os.path.join(current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename)
+    #         os.path.join(
+    #             current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"],
+    #             filename
+    #         )
     #     )
     # subcategory.delete()
 
-    ## add for products change
+    # add for products change
     return redirect(
         url_for("category.manage_sub", category_name=category_name)
     )
