@@ -18,7 +18,7 @@ from shopyoapi.enhance import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
-# from shopyoapi.html import notify_warning
+from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
 
 from modules.box__default.admin.models import User
@@ -32,6 +32,7 @@ from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem
 from modules.box__ecommerce.shopman.models import DeliveryOption
 from modules.box__ecommerce.shopman.models import PaymentOption
+from modules.box__ecommerce.shopman.models import Coupon
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -284,6 +285,7 @@ def checkout():
         os.path.join(
             current_app.config["BASE_DIR"],
             "modules",
+            "box__ecommerce",
             "shopman",
             "data",
             "country.json",
@@ -332,6 +334,7 @@ def checkout_process():
             os.path.join(
                 current_app.config["BASE_DIR"],
                 "modules",
+                "box__ecommerce",
                 "shopman",
                 "data",
                 "country.json",
@@ -399,19 +402,20 @@ def checkout_process():
             shipping_option = DeliveryOption.query.get(
                 request.form["deliveryoption"]
             )
-            order.shipping_option_name = shipping_option.option
-            order.shipping_option_price = shipping_option.price
+            order.shipping_option = shipping_option
             payment_option = PaymentOption.query.get(
                 request.form["paymentoption"]
             )
-            order.payment_option_name = payment_option.name
-            order.payment_option_text = payment_option.text
-
+            order.payment_option = payment_option
             if current_user.is_authenticated:
                 order.logged_in_customer_email = current_user.email
 
             if form.applyCoupon.data:
-                order.coupon_string = form.coupon.data
+                coupon = Coupon.query.filter(Coupon.string == form.coupon.data).first()
+                if coupon:
+                    order.coupon = coupon
+                else:
+                    flash(notify_warning('Invalid Coupon'))
 
             cart_info = get_cart_data()
             cart_data = cart_info["cart_data"]
