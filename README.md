@@ -21,6 +21,8 @@ It also makes a great Flask base and supports commands such as:
 
 👉 Join the [Discord](https://discord.gg/k37Ef6w) & learn about Flask tricks during our dev talks!
 
+👉 If you want to contribute, even if new to Python or Flask or Git, comment OnBoard Me Please [here](https://github.com/Abdur-rahmaanJ/shopyo/discussions/255)
+
 
 # 🍜 Test it out!
 
