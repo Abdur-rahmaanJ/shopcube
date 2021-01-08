@@ -11,6 +11,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask import flash
 
 from flask_login import login_required
 from sqlalchemy import exists
@@ -22,6 +23,7 @@ from shopyoapi.init import db
 from modules.box__default.admin.admin import admin_required
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
+from shopyoapi.html import notify_warning
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -78,7 +80,7 @@ def user_add():
             exists().where(User.email == email)
         ).scalar()
 
-        if has_user is False:
+        if not has_user:
             new_user = User()
             new_user.email = email
             new_user.is_admin = is_admin
@@ -93,6 +95,8 @@ def user_add():
                     new_user.roles.append(role)
             new_user.insert()
             return redirect(url_for("admin.user_add"))
+
+        flash(notify_warning("User with same email already exists"))
 
     context["roles"] = Role.query.all()
     return render_template("admin/add.html", **context)

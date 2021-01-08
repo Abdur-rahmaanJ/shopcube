@@ -66,7 +66,8 @@ class User(UserMixin, db.Model):
     email_confirm_date = db.Column(db.DateTime)
 
     roles = db.relationship(
-        "Role", secondary=role_helpers, cascade="all, delete"
+        "Role", secondary=role_helpers,
+        cascade="all, delete", backref="users",
     )
 
     def __init__(self, **kwargs):
@@ -113,7 +114,7 @@ class Role(db.Model):
 
     __tablename__ = "roles"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
+    name = db.Column(db.String(100), nullable=False)
 
     def insert(self):
         db.session.add(self)
