@@ -1,30 +1,12 @@
-from flask import request
+"""
+This file (test_login.py) contains the functional tests for
+the `login` blueprint.
+
+These tests use GETs and POSTs to different endpoints to check
+for the proper behavior of the `login` blueprint.
+"""
 from flask import url_for
-
-import pytest
-
-
-def test_new_user(new_user):
-    """
-    GIVEN a User model
-    WHEN a new User is created
-    THEN check the email, password, admin privilege
-    """
-    assert new_user.email == "newuser@domain.com"
-    assert new_user.password != "pass"
-    assert not new_user.is_admin
-
-
-@pytest.mark.order("first")
-def test_home_page(test_client):
-    """
-    GIVEN a Flask application configured for testing,
-    WHEN the '/' page is requested (GET)
-    THEN check that the response is valid
-    """
-    # '/' redirects to /shop/home
-    response = test_client.get("/", follow_redirects=True)
-    assert response.status_code == 200
+from flask import request
 
 
 def test_valid_login_logout(test_client):
