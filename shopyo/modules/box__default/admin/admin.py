@@ -7,11 +7,12 @@ from flask import url_for
 from flask_login import current_user
 
 from shopyoapi.init import login_manager
+from shopyoapi.html import notify_warning
 
 from modules.box__default.admin.models import User
 
 login_manager.login_view = "login.login"
-login_manager.login_message = "Please login for access"
+login_manager.login_message = notify_warning("Please login for access")
 
 
 @login_manager.user_loader
