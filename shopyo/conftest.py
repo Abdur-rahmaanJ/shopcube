@@ -27,8 +27,10 @@ def new_user():
     """
     A pytest fixture that returns a user model object
     """
-    user = User(email="admin3@domain.com")
+    user = User(email="newuser@domain.com")
     user.set_hash("pass")
+    user.first_name = "New"
+    user.last_name = "User"
     return user
 
 
@@ -130,7 +132,7 @@ def auth(test_client):
     return AuthActions(test_client)
 
 
-class AuthActions(object):
+class AuthActions():
     def __init__(self, client):
         self._client = client
 

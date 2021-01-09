@@ -10,7 +10,7 @@ def test_new_user(new_user):
     WHEN a new User is created
     THEN check the email, password, admin privilege
     """
-    assert new_user.email == "admin3@domain.com"
+    assert new_user.email == "newuser@domain.com"
     assert new_user.password != "pass"
     assert not new_user.is_admin
 

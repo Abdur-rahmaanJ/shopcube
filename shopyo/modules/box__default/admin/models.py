@@ -16,10 +16,23 @@ from werkzeug.security import generate_password_hash
 
 from shopyoapi.init import db
 
-role_helpers = db.Table(
-    "role_helpers",
-    db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
-    db.Column("role_id", db.Integer, db.ForeignKey("roles.id")),
+role_user_link = db.Table(
+
+    "role_user_link",
+
+    db.Column(
+        "user_id",
+        db.Integer,
+        db.ForeignKey("users.id", ondelete='CASCADE'),
+        primary_key=True
+    ),
+
+    db.Column(
+        "role_id",
+        db.Integer,
+        db.ForeignKey("roles.id", ondelete='CASCADE'),
+        primary_key=True
+    )
 )
 
 
@@ -66,8 +79,7 @@ class User(UserMixin, db.Model):
     email_confirm_date = db.Column(db.DateTime)
 
     roles = db.relationship(
-        "Role", secondary=role_helpers,
-        cascade="all, delete", backref="users",
+        "Role", secondary=role_user_link, backref="users",
     )
 
     def __init__(self, **kwargs):
