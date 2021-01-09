@@ -7,7 +7,9 @@ for the proper behavior of the `admin` blueprint.
 """
 from flask import request
 from flask import url_for
-from modules.box__default.admin.models import Role, User
+from modules.box__default.admin.models import Role
+from modules.box__default.admin.models import User
+from modules.box__default.admin.models import role_user_link
 
 
 def test_admin_home_page(test_client, auth, admin_user, non_admin_user):
@@ -153,6 +155,78 @@ def test_admin_add_post(test_client, admin_user, auth, db_session):
     assert response.status_code == 200
     assert b"User with same email already exists"
     assert test_users == 1
+
+
+def test_admin_delete(test_client, new_user, admin_user,
+                      non_admin_user, db_session, auth):
+
+    # create test users with roles
+    assert db_session.query(Role).count() == 0
+    role1 = Role(name="test1-role")
+    role2 = Role(name="test2-role")
+    new_user.roles = [role1, role2]
+    db_session.add(new_user)
+    db_session.commit()
+    user_role = (
+        db_session.query(role_user_link).join(User).join(Role)
+        .filter(User.id == new_user.id).count()
+    )
+    assert db_session.query(Role).count() == 2
+    assert role1.users[0].email == new_user.email
+    assert role2.users[0].email == new_user.email
+    assert user_role == 2
+
+    # Logout the current user
+    auth.logout()
+
+    # Accesing the admin delete without login should redirect
+    response = test_client.get(
+        url_for("admin.admin_delete", id=new_user.id), follow_redirects=True
+    )
+    assert response.status_code == 200
+    assert request.path == url_for("login.login")
+
+    # Non admin user should not allow accessing the admin delete
+    # Login with non-admin credentials
+    auth.login(non_admin_user)
+
+    # Redirect user with non-admin privilege to dashboard
+    response = test_client.get(
+        url_for("admin.admin_delete", id=new_user.id), follow_redirects=True
+    )
+    assert response.status_code == 200
+    assert request.path == url_for("dashboard.index")
+
+    # login with admin
+    auth.login(admin_user)
+    response = test_client.get(url_for("admin.admin_delete", id=new_user.id))
+
+    # Get the user with the email of the new user that was just deleted
+    test_user = (
+        db_session.query(User)
+        .filter(User.email == new_user.email)
+        .scalar()
+    )
+
+    # Get the number of roles in the db for this session
+    test_roles = (
+        db_session.query(Role)
+        .count()
+    )
+
+    # Get all entires for the new user in the Role to User
+    # two way mapping helper table
+    user_role = (
+        db_session.query(role_user_link).join(User).join(Role)
+        .filter(User.id == new_user.id).all()
+    )
+
+    # make sure user is deleted but the role is still present
+    assert not test_user and test_roles == 2
+    # make sure not mappings in the helper table exists
+    # since all the previous mappings were related to
+    # the
+    assert not user_role
 
 
 def test_admin_roles_get(test_client, admin_user, non_admin_user, auth):
