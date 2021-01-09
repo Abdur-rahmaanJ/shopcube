@@ -24,9 +24,9 @@ $(function() {
         var name = id.split('-')[1];
         console.log(name);
         var ask = confirm("Do you want to delete ?");
-        if (ask == true) {
-            window.open("/category/delete/" + name, "_self")
-        } else {
+        if (ask === true) {
+            window.open("/category/" + name + "/delete", "_self")
+        } else if (ask === false) {
 
         }
     });
@@ -56,7 +56,7 @@ $(function() {
                     <input disabled id="{{category.name}}" type="text" class="form-control" name="category_name" placeholder="Barcode" value="{{category.name}}">
                 </div>
                 {%if category.name != 'uncategorised'%}
-                <a href="{{url_for('category.delete', name=category.name)}}" style="text-decoration: none; float:right;">
+                <a href="#" style="text-decoration: none; float:right;">
                     <button id='del-{{category.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
                 </a>
                 &nbsp;
