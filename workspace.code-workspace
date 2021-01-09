@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.pythonPath": "c:\\Users\\shams\\Documents\\venvs\\shopyo\\Scripts\\python.exe",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true
+		
+	}
+}
