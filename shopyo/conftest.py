@@ -132,7 +132,7 @@ def auth(test_client):
     return AuthActions(test_client)
 
 
-class AuthActions():
+class AuthActions:
     def __init__(self, client):
         self._client = client
 

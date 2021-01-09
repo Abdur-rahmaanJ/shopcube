@@ -21,6 +21,6 @@ script:
     - sphinx-build -b html sphinx_source docs
     - cd shopyo
     - echo 'Running Tests....'
-    - python -m pytest -v
+    - python -m pytest .
 after_success:
     - codecov   # submit coverage

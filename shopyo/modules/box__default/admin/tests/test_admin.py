@@ -7,7 +7,9 @@ for the proper behavior of the `admin` blueprint.
 """
 from flask import request
 from flask import url_for
-from modules.box__default.admin.models import Role, User, role_user_link
+from modules.box__default.admin.models import Role 
+from modules.box__default.admin.models import User
+from modules.box__default.admin.models import role_user_link
 
 
 def test_admin_home_page(test_client, auth, admin_user, non_admin_user):
