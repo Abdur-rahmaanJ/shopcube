@@ -122,6 +122,7 @@ migrations/
 
 #vscode
 .vscode
+workspace.code-workspace
 
 #uploads
 shopyo/static/uploads/products/

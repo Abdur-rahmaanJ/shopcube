@@ -43,7 +43,7 @@ example
 
 .. note ::
 
-    If the shopyo command is not recohnised. close your commandline prompt and repopen
+    If the shopyo command is not recognized. close your commandline prompt and reopen
 
 
 🔧 Install from Github
@@ -88,11 +88,11 @@ run the app.
 go to the indicated url
 
 
-**Default password**
+**Default Login**
 -----------------------
 
 .. code-block:: none
 
-    username: user
+    email: admin@domain.com
     password: pass
 

@@ -54,8 +54,8 @@
 <li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to Shopyo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#github-instructions">Github instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#update-fork">Update Fork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-instructions">Setup Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-a-pull-request">Making a Pull Request</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#contributing-to-package">Contributing to package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#maintainers-notes">Maintainers notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#community-discord">💬 Community: Discord</a></li>
@@ -99,31 +99,150 @@ to contribute, it’s nice to know Flask well. Here are some resources which mig
 <h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
 <p>Please see the <a class="reference external" href="education.html">Education</a> section to see what you need to learn before contributing.</p>
 </div>
-<div class="section" id="github-instructions">
-<h2>Github instructions<a class="headerlink" href="#github-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="setup-instructions">
+<span id="setup"></span><h2>Setup Instructions<a class="headerlink" href="#setup-instructions" title="Permalink to this headline">¶</a></h2>
 <p>If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.</p>
-<ul class="simple">
-<li><p>Fork repo.</p></li>
-<li><p>Create a new branch. For example: <code class="docutils literal notranslate"><span class="pre">bg-fix-migration-file</span></code>.</p></li>
-<li><p>Once you have add your changes ensure tests are still passing.</p></li>
-<li><p>Add tests for any new functionality added.</p></li>
-<li><p>Ensure you commits follow the standard specified <a class="reference external" href="https://udacity.github.io/git-styleguide/">here</a>.</p></li>
-<li><p>Follow the Pull request template.</p></li>
-<li><p>Add your country flag in readme after accepted PR</p></li>
-<li><p>Follow <a class="reference internal" href="#update-fork"><span class="std std-ref">Update Fork</span></a> then</p></li>
-<li><p>Push <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">&lt;branch-name&gt;</span></code></p></li>
-<li><p>If it closes an issue, add <code class="docutils literal notranslate"><span class="pre">Fixes</span> <span class="pre">#94</span></code> for example, as seen <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo/pull/95">here</a></p></li>
-<li><p>PR against <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch, not master</p></li>
-</ul>
-</div>
-<div class="section" id="update-fork">
-<h2>Update Fork<a class="headerlink" href="#update-fork" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt;
-git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
-git fetch upstream
-git pull upstream master
+<ol class="arabic">
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">git</span></code> is installed on your computer and <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">version</span> <span class="pre">3.6</span></code> or higher is installed. You can run the following command to check if git is installed and which python version you have. If either commands gives error then it means you need to install that software</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git --version
+python --version
 </pre></div>
 </div>
+</li>
+<li><p>Fork repo. To do so go to the <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo">shopyo repo</a> and press the fork button</p></li>
+<li><p>Clone the repo by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/&lt;replace with your github username&gt;/shopyo.git.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also get the clone link by clicking the green <code class="docutils literal notranslate"><span class="pre">code</span></code> button on your cloned shopyo repo page.</p>
+</div>
+</li>
+<li><p>Next run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above command should be <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">shopyo</span></code> if you cloned using the git command above</p>
+</div>
+</li>
+<li><p>Setup the python <a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">virtual environment</a> based on your Operating System</p></li>
+<li><p>Activate the <a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">virtual environment</a>. Now you should see something like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>env<span class="o">)</span> &lt;/my/path/to/shopyo&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">env</span></code> is the name of virtual environment that you setup in step above
+Make sure to always activate this <code class="docutils literal notranslate"><span class="pre">env</span></code> when working on <code class="docutils literal notranslate"><span class="pre">shopyo</span></code></p>
+</div>
+</li>
+<li><p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -r dev_requirements.txt
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find <code class="docutils literal notranslate"><span class="pre">dev_requirements.txt</span></code> make sure you are in the cloned <code class="docutils literal notranslate"><span class="pre">shopyo</span></code> directory and try again</p>
+</div>
+</li>
+<li><p>Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner’s shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt; <span class="c1"># not needed if you are already inside your cloned shopyo directory</span>
+git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+</pre></div>
+</div>
+</li>
+<li><p>Once upstream is setup, you can fetch the latest changes made to shopyo repo. Make sure to do this every time before you make branch to work on a feature. Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git fetch upstream
+git pull upstream dev
+</pre></div>
+</div>
+</li>
+<li><p>Do another:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo <span class="c1"># so now your path should be something likes &lt;your path&gt;/shopyo/shopyo</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now initialize the app by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py initialise
+</pre></div>
+</div>
+</li>
+<li><p>To start the app, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
+</pre></div>
+</div>
+</li>
+<li><p>The app should now be running on IP <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> at port# <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can go to <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a> or <a class="reference external" href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> (127.0.0.1 is another name for localhost). You can click the login nav link or go directly to <a class="reference external" href="http://localhost:5000/login/">http://localhost:5000/login/</a>. Login with email <code class="docutils literal notranslate"><span class="pre">admin&#64;domain.com</span></code> and password <code class="docutils literal notranslate"><span class="pre">pass</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="making-a-pull-request">
+<h2>Making a Pull Request<a class="headerlink" href="#making-a-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you have setup the repo as explained in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> before making Pull Request (PR)</p>
+<ol class="arabic">
+<li><p>Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code>. Most likely you will see <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch colored green or marked to tell you that you are on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch. Before creating a new branch from <code class="docutils literal notranslate"><span class="pre">dev</span></code> make sure you have fetched latest changes as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 8</p></li>
+<li><p>To create a branch and switch to that branch you run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout -b &lt;name of branch&gt; <span class="c1"># example: git checkout -b add-form-validation</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can do the above using 2 separate commands if that makes it easier:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git branch &lt;name of branch&gt; <span class="c1"># First create a new branch from current branch</span>
+git checkout &lt;name of branch to switch to&gt; <span class="c1"># Next switch to this new branch</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>After git checkout command above, run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code> to make sure you are not working on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch but are on the newly created branch.</p></li>
+<li><p>Now you can start working on the feature for which you want to make PR</p></li>
+<li><p>Add tests for any new features that you add.</p></li>
+<li><p>Run the following to make sure all the existing and new tests pass. Check the <a class="reference external" href="testing.html">Testing</a> section for more details</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pytest .
+</pre></div>
+</div>
+</li>
+<li><dl class="simple">
+<dt>Make sure to bump the version number in file <code class="docutils literal notranslate"><span class="pre">shopyo/__init__.py</span></code> as follows:</dt><dd><ul class="simple">
+<li><p>small fixes: <code class="docutils literal notranslate"><span class="pre">_._.x</span></code>, (example <code class="docutils literal notranslate"><span class="pre">3.4.6</span></code> to <code class="docutils literal notranslate"><span class="pre">3.4.7</span></code>)</p></li>
+<li><p>feature, many fixes etc: <code class="docutils literal notranslate"><span class="pre">_.x.0</span></code>, (example <code class="docutils literal notranslate"><span class="pre">3.4.6</span></code> to <code class="docutils literal notranslate"><span class="pre">3.5.0</span></code>)</p></li>
+<li><p>big feature, breaking change etc <code class="docutils literal notranslate"><span class="pre">x.0.0</span></code> (example <code class="docutils literal notranslate"><span class="pre">3.4.6</span></code> to <code class="docutils literal notranslate"><span class="pre">4.0.0</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Once you are happy with the changes you made you can double check the changed files by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git status
+</pre></div>
+</div>
+</li>
+<li><p>Next add the changes as required</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git add . <span class="c1"># to add all changes</span>
+git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add desired files</span>
+</pre></div>
+</div>
+</li>
+<li><p>Commit the changes. For the commit messages, follow the guidelines <a class="reference external" href="https://udacity.github.io/git-styleguide/">here</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git commit -m <span class="s2">&quot;&lt;put your commit message here&gt;&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Finally push the committed changes from local repository to a remote repository (the one you forked)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git push origin &lt;the current branch name&gt;
+</pre></div>
+</div>
+</li>
+<li><p>You can now make a PR. When you go to your forked repo or the owner’s repo you will see a <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">&amp;</span> <span class="pre">pull</span> <span class="pre">request</span></code> button. Click on it and mention the changes you made. Look at the <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo/pulls?q=is%3Apr+is%3Aclosed">past PRs</a> for examples of what to mention when submitting a PR. If a PR closes an issue, add <code class="docutils literal notranslate"><span class="pre">Fixes</span> <span class="pre">#&lt;issue</span> <span class="pre">number&gt;</span></code>, as seen <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo/pull/95">here</a></p></li>
+<li><p>If you want you can request reviews when submitting PR.</p></li>
+<li><p>Add your country flag in readme after accepted PR</p></li>
+<li><p>At times when you do git status after fetching the latest changes it might say something like: <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">branch</span> <span class="pre">is</span> <span class="pre">ahead</span> <span class="pre">of</span> <span class="pre">'origin/dev</span></code> which mean the forked branch does not have the latest changes. To push the latest changes to your forked repo, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git push origin head
+</pre></div>
+</div>
+</li>
+</ol>
 </div>
 <div class="section" id="contributing-to-package">
 <h2>Contributing to package<a class="headerlink" href="#contributing-to-package" title="Permalink to this headline">¶</a></h2>
@@ -153,9 +272,7 @@ git pull upstream master
 </div>
 <div class="section" id="community-discord">
 <h2>💬 Community: Discord<a class="headerlink" href="#community-discord" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>Join the Discord community <a class="reference external" href="https://discord.gg/k37Ef6w/">Discord Group</a></p>
-</div></blockquote>
+<p>Join the Discord community <a class="reference external" href="https://discord.com/invite/k37Ef6w">Discord Group</a></p>
 </div>
 </div>
 
