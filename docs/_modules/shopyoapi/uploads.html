@@ -91,12 +91,12 @@
 
 <span class="kn">from</span> <span class="nn">shopyoapi.init</span> <span class="kn">import</span> <span class="n">db</span>
 
-<span class="kn">from</span> <span class="nn">modules.admin.models</span> <span class="kn">import</span> <span class="n">Role</span>
-<span class="kn">from</span> <span class="nn">modules.admin.models</span> <span class="kn">import</span> <span class="n">User</span>
-<span class="kn">from</span> <span class="nn">modules.category.models</span> <span class="kn">import</span> <span class="n">Category</span>
-<span class="kn">from</span> <span class="nn">modules.category.models</span> <span class="kn">import</span> <span class="n">SubCategory</span>
-<span class="kn">from</span> <span class="nn">modules.product.models</span> <span class="kn">import</span> <span class="n">Product</span>
-<span class="kn">from</span> <span class="nn">modules.settings.models</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">modules.box__default.admin.models</span> <span class="kn">import</span> <span class="n">Role</span>
+<span class="kn">from</span> <span class="nn">modules.box__default.admin.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">modules.box__ecommerce.category.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modules.box__ecommerce.category.models</span> <span class="kn">import</span> <span class="n">SubCategory</span>
+<span class="kn">from</span> <span class="nn">modules.box__ecommerce.product.models</span> <span class="kn">import</span> <span class="n">Product</span>
+<span class="kn">from</span> <span class="nn">modules.box__default.settings.models</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 
 <div class="viewcode-block" id="add_admin"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.uploads.add_admin">[docs]</a><span class="k">def</span> <span class="nf">add_admin</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
@@ -106,7 +106,7 @@
         <span class="n">user</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
         <span class="n">user</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">email_confirm_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">email_confirm_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="n">user</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span></div>
 
 
