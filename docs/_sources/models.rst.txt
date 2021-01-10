@@ -12,7 +12,7 @@ Creating a model
 Here is a sample model which uses sqlalchemy
 
 
-.. literalinclude:: ../shopyo/modules/contact/models.py
+.. literalinclude:: ../shopyo/modules/box__bizhelp/contact/models.py
    :language: python
    :linenos:
    :lines: 5-26
@@ -36,9 +36,7 @@ Here is a sample model which uses sqlalchemy
 
 In case of change to models, do
 
-.. code-block:: python
-   :caption: Updating the database.
-   :name: migrations
+.. code-block:: bash
 
    python manage.py db migrate
    python manage.py db upgrade

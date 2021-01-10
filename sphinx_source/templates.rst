@@ -14,7 +14,7 @@ Please see the `Modules section <modules.html>`_ on how to structure a module.
 Having said that, this is the base file we are extending from. 
 
 
-.. literalinclude:: ../shopyo/modules/base/templates/base/main_base.html
+.. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
    :language: html
    :linenos:
    :lines: 1-99
@@ -28,10 +28,10 @@ It includes:
 
 Here is the contact form using the base:
 
-.. literalinclude:: ../shopyo/modules/contact/templates/contact/contact_form.html
-   :language: python
+.. literalinclude:: ../shopyo/modules/box__bizhelp/contact/templates/contact/contact_form.html
+   :language: html
    :linenos:
-   :lines: 1-51
+   :lines: 1-53
 
 
 If you extend the base template, you will be able to use the 
