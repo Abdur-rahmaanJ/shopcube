@@ -144,7 +144,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
        git add . # to add all changes 
        git add <file1 name> <file2 name> # to only add desired files
     
-#. Commit the changes. For the commit messages, follow the guidelines `here <https://udacity.github.io/git-styleguide/>`_
+#. Commit the changes. For the commit messages, follow the guidelines `here <https://udacity.github.io/git-styleguide/>`__
    
    .. code-block:: bash
 
