@@ -228,12 +228,12 @@ git checkout &lt;name of branch to switch to&gt;
 </dd>
 </dl>
 </li>
-<li><p>Check that there are no linting errors according to <code class="docutils literal notranslate"><span class="pre">pycodestyle</span></code>. To do so you can run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycodestyle &lt;path of file that you want to check&gt;
+<li><p>Check that there are no linting errors according to <code class="docutils literal notranslate"><span class="pre">flake8</span></code>. To do so you can run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flake8 &lt;path of file that you want to check&gt;
 
 <span class="c1"># example to check the linting error for test_dashboard.py file</span>
 <span class="c1"># assuming you are in shopyo/shopyo directory, run</span>
-pycodestyle ./modules/box__default/dashboard/tests/test_dashboard.py
+flake8 ./modules/box__default/dashboard/tests/test_dashboard.py
 </pre></div>
 </div>
 <div class="admonition note">
@@ -241,9 +241,9 @@ pycodestyle ./modules/box__default/dashboard/tests/test_dashboard.py
 <p>If the command above returns without any output, then there are no
 linting errors, otherwise it will tell you the line number and type
 of linting error.
-If typing <code class="docutils literal notranslate"><span class="pre">pycodestyle</span></code> gives error related to command not found, then you
-do not have pycodestyle installed and it can be installed as follows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install pycodestyle
+If typing <code class="docutils literal notranslate"><span class="pre">flake8</span></code> gives error related to command not found, then you
+do not have <code class="docutils literal notranslate"><span class="pre">flake8</span></code> installed and it can be installed as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install flake8
 </pre></div>
 </div>
 <p>In addition, if you are using <a class="reference external" href="https://code.visualstudio.com/">VS Code</a>
@@ -251,7 +251,7 @@ then you can create a <code class="docutils literal notranslate"><span class="pr
 file to it with the following content. This way it auto detects the
 linting errors for you</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="nt">&quot;python.linting.pycodestyleEnabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
+   <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -259,7 +259,7 @@ linting errors for you</p>
 then your json file will look similar to one below</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe&quot;</span><span class="p">,</span>
-   <span class="nt">&quot;python.linting.pycodestyleEnabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
+   <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>

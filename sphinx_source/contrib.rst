@@ -148,26 +148,26 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
     * feature, many fixes etc: ``_.x.0``, (example ``3.4.6`` to ``3.5.0``)
     * big feature, breaking change etc ``x.0.0`` (example ``3.4.6`` to ``4.0.0``)
 
-#. Check that there are no linting errors according to ``pycodestyle``. To do so you can run
+#. Check that there are no linting errors according to ``flake8``. To do so you can run
 
    .. code-block:: bash
 
-      pycodestyle <path of file that you want to check>
+      flake8 <path of file that you want to check>
       
       # example to check the linting error for test_dashboard.py file 
       # assuming you are in shopyo/shopyo directory, run
-      pycodestyle ./modules/box__default/dashboard/tests/test_dashboard.py
+      flake8 ./modules/box__default/dashboard/tests/test_dashboard.py
 
    .. note::
       If the command above returns without any output, then there are no 
       linting errors, otherwise it will tell you the line number and type
       of linting error.
-      If typing ``pycodestyle`` gives error related to command not found, then you
-      do not have pycodestyle installed and it can be installed as follows:
+      If typing ``flake8`` gives error related to command not found, then you
+      do not have ``flake8`` installed and it can be installed as follows:
 
       .. code-block:: bash
          
-         python -m pip install pycodestyle
+         python -m pip install flake8
 
       In addition, if you are using `VS Code <https://code.visualstudio.com/>`__ 
       then you can create a ``.vscode`` folder at the root level and add ``setting.json`` 
@@ -177,7 +177,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
       .. code-block:: json
 
          {
-            "python.linting.pycodestyleEnabled": true
+            "python.linting.flake8Enabled": true
          }
 
       If you have already created the ``setting.json`` file as mentioned in :ref:`setup` step 6,
@@ -187,7 +187,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
          {
             "python.pythonPath": "c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe",
-            "python.linting.pycodestyleEnabled": true
+            "python.linting.flake8Enabled": true
          }
 
 #. Once you are happy with the changes you made you can double check the changed files by running:
