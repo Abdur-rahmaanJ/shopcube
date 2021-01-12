@@ -39,7 +39,7 @@ class TestingConfig(Config):
     DEBUG = True
     LIVESERVER_PORT = 8943
     LIVESERVER_TIMEOUT = 10
-
+    SERVER_NAME = "localhost.com"
     BCRYPT_LOG_ROUNDS = 4
     TESTING = True
     WTF_CSRF_ENABLED = False
