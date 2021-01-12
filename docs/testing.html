@@ -89,8 +89,12 @@
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>run in shopyo/shopyo</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pytest .
+<p>For <a class="reference external" href="https://docs.pytest.org/en/stable/example/simple.html">pytests</a>, run all tests inside <code class="docutils literal notranslate"><span class="pre">shopyo/shopyo</span></code> directory</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># tests with compact output</span>
+python -m pytest .
+
+<span class="c1"># test with verbose output</span>
+python -m pytest -v
 </pre></div>
 </div>
 <p>Alternatively, you can run your tests via <a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a>.</p>
@@ -103,7 +107,7 @@
 </pre></div>
 </div>
 <p>run all only the <cite>test_home_page</cite> test, on Python 3.9 only</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox -e py39 -- -k test_home_page
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox -e py39 -- -k test_shop_home_page
 </pre></div>
 </div>
 </div>

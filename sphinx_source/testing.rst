@@ -5,11 +5,15 @@ Testing
     :titlesonly:
 
 
-run in shopyo/shopyo
+For `pytests <https://docs.pytest.org/en/stable/example/simple.html>`__, run all tests inside ``shopyo/shopyo`` directory
 
 .. code:: bash
 
+    # tests with compact output
     python -m pytest .
+
+    # test with verbose output
+    python -m pytest -v
 
 
 Alternatively, you can run your tests via `tox <https://tox.readthedocs.io/en/latest/>`_.
@@ -32,4 +36,4 @@ run all only the `test_home_page` test, on Python 3.9 only
 
 .. code:: bash
 
-    tox -e py39 -- -k test_home_page
+    tox -e py39 -- -k test_shop_home_page

@@ -53,8 +53,19 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
       (env) </my/path/to/shopyo> 
     
    .. note::
-      ``env`` is the name of virtual environment that you setup in step above
-      Make sure to always activate this ``env`` when working on ``shopyo``
+      ``env`` is the name of virtual environment that you setup in step above.
+      Make sure to always activate this ``env`` when working on ``shopyo``. If you are using
+      `VS Code <https://code.visualstudio.com/>`__  then you can also add the ``"python.pythonPath"`` by creating a ``.vscode`` 
+      folder at the root level and adding ``setting.json`` file to it with the content below.
+      You need to replace the path with your own path to the virtual environment's ``python.exe`` 
+      file and the example below is for a path in Windows OS hence the double backward slash.
+      Now you can create a new terminal with virtual environment activated in VS Code using ``Ctrl`` + ``Shift`` + `````
+
+      .. code-block:: json
+
+         {
+            "python.pythonPath": "c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe"
+         }
 
 #. Run:
 
@@ -82,7 +93,8 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
    .. code-block:: bash
 
-      cd shopyo # so now your path should be something likes <your path>/shopyo/shopyo
+      cd shopyo 
+      # so now your path should be something likes <your path>/shopyo/shopyo
 
 #. Now initialize the app by running:
 
@@ -108,15 +120,19 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
    
    .. code-block:: bash
 
-      git checkout -b <name of branch> # example: git checkout -b add-form-validation
+      git checkout -b <name of branch> 
+      # example: git checkout -b add-form-validation
 
    .. note::
        You can do the above using 2 separate commands if that makes it easier:
 
        .. code-block:: bash
-
-          git branch <name of branch> # First create a new branch from current branch
-          git checkout <name of branch to switch to> # Next switch to this new branch
+          
+          # First create a new branch from current branch
+          git branch <name of branch> 
+          
+          # Next switch to this new branch
+          git checkout <name of branch to switch to> 
 
 #. After git checkout command above, run ``git branch`` to make sure you are not working on ``dev`` branch but are on the newly created branch.
 #. Now you can start working on the feature for which you want to make PR
@@ -131,6 +147,49 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
     * small fixes: ``_._.x``, (example ``3.4.6`` to ``3.4.7``)
     * feature, many fixes etc: ``_.x.0``, (example ``3.4.6`` to ``3.5.0``)
     * big feature, breaking change etc ``x.0.0`` (example ``3.4.6`` to ``4.0.0``)
+
+#. Check that there are no linting errors according to ``pycodestyle``. To do so you can run
+
+   .. code-block:: bash
+
+      pycodestyle <path of file that you want to check>
+      
+      # example to check the linting error for test_dashboard.py file 
+      # assuming you are in shopyo/shopyo directory, run
+      pycodestyle ./modules/box__default/dashboard/tests/test_dashboard.py
+
+   .. note::
+      If the command above returns without any output, then there are no 
+      linting errors, otherwise it will tell you the line number and type
+      of linting error.
+      If typing ``pycodestyle`` gives error related to command not found, then you
+      do not have pycodestyle installed and it can be installed as follows:
+
+      .. code-block:: bash
+         
+         python -m pip install pycodestyle
+
+      In addition, if you are using `VS Code <https://code.visualstudio.com/>`__ 
+      then you can create a ``.vscode`` folder at the root level and add ``setting.json`` 
+      file to it with the following content. This way it auto detects the
+      linting errors for you
+
+      .. code-block:: json
+
+         {
+            "python.linting.pycodestyleEnabled": true
+         }
+
+      If you have already created the ``setting.json`` file as mentioned in :ref:`setup` step 6,
+      then your json file will look similar to one below
+      
+      .. code-block:: json
+
+         {
+            "python.pythonPath": "c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe",
+            "python.linting.pycodestyleEnabled": true
+         }
+
 #. Once you are happy with the changes you made you can double check the changed files by running:
 
    .. code-block:: bash
