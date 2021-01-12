@@ -135,8 +135,18 @@ python --version
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">env</span></code> is the name of virtual environment that you setup in step above
-Make sure to always activate this <code class="docutils literal notranslate"><span class="pre">env</span></code> when working on <code class="docutils literal notranslate"><span class="pre">shopyo</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">env</span></code> is the name of virtual environment that you setup in step above.
+Make sure to always activate this <code class="docutils literal notranslate"><span class="pre">env</span></code> when working on <code class="docutils literal notranslate"><span class="pre">shopyo</span></code>. If you are using
+<a class="reference external" href="https://code.visualstudio.com/">VS Code</a>  then you can also add the <code class="docutils literal notranslate"><span class="pre">&quot;python.pythonPath&quot;</span></code> by creating a <code class="docutils literal notranslate"><span class="pre">.vscode</span></code>
+folder at the root level and adding <code class="docutils literal notranslate"><span class="pre">setting.json</span></code> file to it with the content below.
+You need to replace the path with your own path to the virtual environment’s <code class="docutils literal notranslate"><span class="pre">python.exe</span></code>
+file and the example below is for a path in Windows OS hence the double backward slash.
+Now you can create a new terminal with virtual environment activated in VS Code using <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code> + <code class="docutils literal notranslate"><span class="pre">Shift</span></code> + <code class="docutils literal notranslate"><span class="pre">`</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </li>
 <li><p>Run:</p>
@@ -161,7 +171,8 @@ git pull upstream dev
 </div>
 </li>
 <li><p>Do another:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo <span class="c1"># so now your path should be something likes &lt;your path&gt;/shopyo/shopyo</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo
+<span class="c1"># so now your path should be something likes &lt;your path&gt;/shopyo/shopyo</span>
 </pre></div>
 </div>
 </li>
@@ -184,14 +195,18 @@ git pull upstream dev
 <ol class="arabic">
 <li><p>Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code>. Most likely you will see <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch colored green or marked to tell you that you are on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch. Before creating a new branch from <code class="docutils literal notranslate"><span class="pre">dev</span></code> make sure you have fetched latest changes as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 9</p></li>
 <li><p>To create a branch and switch to that branch you run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout -b &lt;name of branch&gt; <span class="c1"># example: git checkout -b add-form-validation</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout -b &lt;name of branch&gt;
+<span class="c1"># example: git checkout -b add-form-validation</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You can do the above using 2 separate commands if that makes it easier:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git branch &lt;name of branch&gt; <span class="c1"># First create a new branch from current branch</span>
-git checkout &lt;name of branch to switch to&gt; <span class="c1"># Next switch to this new branch</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># First create a new branch from current branch</span>
+git branch &lt;name of branch&gt;
+
+<span class="c1"># Next switch to this new branch</span>
+git checkout &lt;name of branch to switch to&gt;
 </pre></div>
 </div>
 </div>
@@ -212,6 +227,43 @@ git checkout &lt;name of branch to switch to&gt; <span class="c1"># Next switch 
 </ul>
 </dd>
 </dl>
+</li>
+<li><p>Check that there are no linting errors according to <code class="docutils literal notranslate"><span class="pre">flake8</span></code>. To do so you can run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flake8 &lt;path of file that you want to check&gt;
+
+<span class="c1"># example to check the linting error for test_dashboard.py file</span>
+<span class="c1"># assuming you are in shopyo/shopyo directory, run</span>
+flake8 ./modules/box__default/dashboard/tests/test_dashboard.py
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the command above returns without any output, then there are no
+linting errors, otherwise it will tell you the line number and type
+of linting error.
+If typing <code class="docutils literal notranslate"><span class="pre">flake8</span></code> gives error related to command not found, then you
+do not have <code class="docutils literal notranslate"><span class="pre">flake8</span></code> installed and it can be installed as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install flake8
+</pre></div>
+</div>
+<p>In addition, if you are using <a class="reference external" href="https://code.visualstudio.com/">VS Code</a>
+then you can create a <code class="docutils literal notranslate"><span class="pre">.vscode</span></code> folder at the root level and add <code class="docutils literal notranslate"><span class="pre">setting.json</span></code>
+file to it with the following content. This way it auto detects the
+linting errors for you</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you have already created the <code class="docutils literal notranslate"><span class="pre">setting.json</span></code> file as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 6,
+then your json file will look similar to one below</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </li>
 <li><p>Once you are happy with the changes you made you can double check the changed files by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git status
