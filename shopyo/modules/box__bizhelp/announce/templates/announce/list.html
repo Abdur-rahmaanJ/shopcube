@@ -1,0 +1,27 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        {%for announce in announcements%}
+            <div class="card">
+                <div class="card-header">
+                    {{announce.title}} | {{announce.created_date.strftime("%m/%d/%Y, %H:%M:%S")}}
+                </div>
+                <div class="card-body">
+                    {{announce.content | safe}}
+                </div>
+            </div>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

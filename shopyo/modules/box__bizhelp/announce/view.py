@@ -4,13 +4,14 @@
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
-# from flask import request
+from flask import request
 
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 from shopyoapi.module import ModuleHelp
 
 from .forms import AnnounceForm
+from .models import Announcement
 
 from flask_login import login_required
 
@@ -39,4 +40,25 @@ def dashboard():
 @module_blueprint.route("/add/check", methods=["GET", "POST"])
 @login_required
 def add_check():
-    return ''
+    if request.method == 'POST':
+        form = AnnounceForm()
+        if not form.validate_on_submit():
+            flash_errors(form)
+            return redirect(url_for("{}.dashboard".format(mhelp.info['module_name'])))
+        toadd_announce = Announcement(
+            content=form.content.data,
+            title=form.title.data,
+        )
+        toadd_announce.insert()
+    return mhelp.redirect_url('{}.dashboard'.format(mhelp.info['module_name']))
+
+
+@module_blueprint.route("/list", methods=["GET", "POST"])
+@login_required
+def list():
+    context = mhelp.context()
+    announcements = Announcement.query.all()
+    context.update({
+        'announcements': announcements
+        })
+    return mhelp.render('list.html', **context)
