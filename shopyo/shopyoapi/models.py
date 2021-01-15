@@ -13,7 +13,7 @@ class CRUDMixin:
 
     @classmethod
     def create(cls, **kwargs):
-        """Create a new record and save it the database.
+        """Create a new record and save it in the database.
 
         Returns:
             DB Class Object: returns the created record
@@ -45,8 +45,7 @@ class CRUDMixin:
             commit (bool, optional): flag whether to commit. Defaults to True.
 
         Returns:
-            Db Class object: returns the updated record if committed,
-            None otherwise
+            Db Class object: returns the record saved to db session
         """
         db.session.add(self)
         if commit:
@@ -96,6 +95,11 @@ class PkModel(Model):
             DB Class object: object identified by record_id if any,
             None otherwise
         """
-        if not isinstance(record_id, int):
-            return None
-        return cls.query.get(record_id)
+        if any(
+            (
+                isinstance(record_id, (str, bytes)) and record_id.isdigit(),
+                isinstance(record_id, (int, float)),
+            )
+        ):
+            return cls.query.get(int(record_id))
+        return None

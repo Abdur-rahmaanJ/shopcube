@@ -90,10 +90,10 @@ def user_add():
 
             for key in request.form:
                 if key.startswith("role_"):
-                    roleid = key.split("_")[1]
-                    role = Role.query.get(roleid)
+                    role_id = key.split("_")[1]
+                    role = Role.get_by_id(role_id)
                     new_user.roles.append(role)
-            new_user.insert()
+            new_user.save()
             return redirect(url_for("admin.user_add"))
 
         flash(notify_warning("User with same email already exists"))
@@ -166,8 +166,8 @@ def admin_update():
     user.roles[:] = []
     for key in request.form:
         if key.startswith("role_"):
-            roleid = key.split("_")[1]
-            role = Role.query.get(roleid)
+            role_id = key.split("_")[1]
+            role = Role.get_by_id(role_id)
             user.roles.append(role)
 
     user.update()
@@ -190,7 +190,7 @@ def roles_add():
     if request.method == "POST":
         if not Role.query.filter(Role.name == request.form["name"]).first():
             role = Role(name=request.form["name"])
-            role.insert()
+            role.save()
     return redirect(url_for("admin.roles"))
 
 
@@ -198,7 +198,7 @@ def roles_add():
 @login_required
 @admin_required
 def roles_delete(role_id):
-    role = Role.query.get(role_id)
+    role = Role.get_by_id(role_id)
     role.delete()
     return redirect(url_for("admin.roles"))
 
@@ -208,7 +208,7 @@ def roles_delete(role_id):
 @admin_required
 def roles_update():
     if request.method == "POST":
-        role = Role.query.get(request.form["role_id"])
+        role = Role.get_by_id(request.form["role_id"])
         role.name = request.form["role_name"]
         role.update()
     return redirect(url_for("admin.roles"))

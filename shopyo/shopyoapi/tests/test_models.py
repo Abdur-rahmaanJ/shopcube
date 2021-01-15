@@ -32,16 +32,18 @@ class TestPKModel:
         user_foo = ExampleUserModel(username="foo", email="foo@domain.com")
         user_bar.save()
         user_foo.save()
-        result = ExampleUserModel.get_by_id(user_bar.id)
+        result_int = ExampleUserModel.get_by_id(user_bar.id)
+        result_str = ExampleUserModel.get_by_id(str(user_bar.id))
         expected = (
             db_session.query(ExampleUserModel)
             .filter(ExampleUserModel.username == "bar")
             .scalar()
         )
 
-        assert result
+        assert result_int
         assert expected
-        assert result.username == expected.username
+        assert result_int.username == expected.username
+        assert result_str.username == expected.username
 
 
 @pytest.mark.usefixtures("db_session")
