@@ -12,6 +12,11 @@ from wtforms.validators import DataRequired
 
 
 class AnnounceForm(FlaskForm):
+    title = StringField(
+        "Title",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
 
     content = TextAreaField(
         "Content",
@@ -22,8 +27,4 @@ class AnnounceForm(FlaskForm):
             "autocomplete": "off",
         },
     )
-    title = StringField(
-        "Title",
-        [DataRequired()],
-        render_kw={"class": "form-control", "autocomplete": "off"},
-    )
+    

@@ -3,11 +3,11 @@
 # from flask import render_template
 # from flask import url_for
 # from flask import redirect
-# from flask import flash
+from flask import flash
 from flask import request
 
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
+from shopyoapi.html import notify_success
+from shopyoapi.forms import flash_errors
 from shopyoapi.module import ModuleHelp
 
 from .forms import AnnounceForm
@@ -49,7 +49,7 @@ def add_check():
             content=form.content.data,
             title=form.title.data,
         )
-        toadd_announce.insert()
+        toadd_announce.save()
     return mhelp.redirect_url('{}.dashboard'.format(mhelp.info['module_name']))
 
 
@@ -62,3 +62,44 @@ def list():
         'announcements': announcements
         })
     return mhelp.render('list.html', **context)
+
+
+@module_blueprint.route("/<announce_id>/delete/check", methods=["GET"])
+@login_required
+def delete_check(announce_id):
+    announcement = Announcement.query.get(announce_id)
+    announcement.delete()
+    return mhelp.redirect_url(mhelp.method('list'))
+
+
+@module_blueprint.route("/<announce_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit(announce_id):
+    context = mhelp.context()
+    announcement = Announcement.query.get(announce_id)
+    
+    form = AnnounceForm(obj=announcement)
+
+    context.update({
+        'dir':dir,
+        'announcement': announcement,
+        'form': form
+        })
+    return mhelp.render('edit.html', **context)
+
+
+
+@module_blueprint.route("/<announce_id>/edit/check", methods=["GET", "POST"])
+@login_required
+def edit_check(announce_id):
+
+    if request.method == 'POST':
+        announcement = Announcement.query.get(announce_id)
+        form = AnnounceForm(obj=announcement)
+        if not form.validate_on_submit():
+            flash_errors(form)
+            return mhelp.redirect_url(mhelp.method('list'))
+        form.populate_obj(announcement)
+        announcement.update()
+        flash(notify_success('Announcement updated!'))
+        return mhelp.redirect_url(mhelp.method('list'))
