@@ -1,3 +1,44 @@
+'''
+commandline utilities functions
+
+
+# Past view.py code
+
+import os
+import json
+
+from flask import Blueprint
+# from flask import render_template
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
+# from flask import request
+
+# # 
+# from shopyoapi.html import notify_success
+# from shopyoapi.forms import flash_errors
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
+module_info = {}
+
+with open(dirpath + "/info.json") as f:
+    module_info = json.load(f)
+
+globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
+    "{}".format(module_info["module_name"]),
+    __name__,
+    template_folder="templates",
+    url_prefix=module_info["url_prefix"],
+)
+
+
+module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
+
+@module_blueprint.route("/")
+def index():
+    return module_info['display_string']
+'''
+
 import json
 import os
 import re
@@ -125,39 +166,35 @@ def create_module(modulename, base_path=None):
     trymkdir(base_path + "/templates")
     trymkdir(base_path + "/templates/" + modulename)
     view_content = """
-import os
-import json
-
-from flask import Blueprint
+from shopyoapi.module import ModuleHelp
 # from flask import render_template
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
 # from flask import request
 
-# # 
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
-
-
-module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
 @module_blueprint.route("/")
 def index():
-    return module_info['display_string']
+    return mhelp.info['display_string']
+
+# If "dashboard": "/dashboard" is set in info.json
+# 
+# @module_blueprint.route("/dashboard", methods=["GET"])
+# def dashboard():
+
+#     context = mhelp.context()
+
+#     context.update({
+
+#         })
+#     return mhelp.render('dashboard.html', **context)
 """
     trymkfile(base_path + "/" + "view.py", view_content)
     trymkfile(base_path + "/" + "forms.py", "")
@@ -182,6 +219,31 @@ def index():
     trymkfile(
         base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html",
         "",
+    )
+    dashboard_file_content = '''
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{% include info['module_name']+'/blocks/sidebar.html' %}
+{% endblock %}
+{% block content %}
+<br>
+
+<div class="card">
+    <div class="card-body">
+
+    </div>
+ </div>
+{% endblock %}
+'''
+    trymkfile(
+        os.path.join(base_path, "templates", modulename, 'dashboard.html'),
+        dashboard_file_content
     )
 
     global_file_content = """
