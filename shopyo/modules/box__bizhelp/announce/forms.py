@@ -27,4 +27,3 @@ class AnnounceForm(FlaskForm):
             "autocomplete": "off",
         },
     )
-    
