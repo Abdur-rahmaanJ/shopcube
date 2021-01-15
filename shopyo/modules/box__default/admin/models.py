@@ -15,6 +15,8 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from shopyoapi.init import db
+from shopyoapi.models import PkModel
+from shopyoapi.models import Model
 
 role_user_link = db.Table(
 
@@ -57,27 +59,24 @@ class AnonymousUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymousUser
 
 
-class User(UserMixin, db.Model):
-    """ User model """
+class User(UserMixin, Model):
+    """The user of the app"""
 
     __tablename__ = "users"
     id = db.Column(db.String(10), primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(128), nullable=False)
-
     first_name = db.Column(db.String(128))
     last_name = db.Column(db.String(128))
-
     is_admin = db.Column(db.Boolean, default=False)
-
     email = db.Column(db.String(120), unique=True, nullable=False)
-
     date_registered = db.Column(
         db.DateTime, nullable=False, default=datetime.datetime.now()
     )
     email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
 
+    # A user can have many roles and a role can have many users
     roles = db.relationship(
         "Role", secondary=role_user_link, backref="users",
     )
@@ -91,17 +90,6 @@ class User(UserMixin, db.Model):
 
     def check_hash(self, password):
         return check_password_hash(self.password, password)
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
     def generate_confirmation_token(self, email):
         serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
@@ -122,19 +110,7 @@ class User(UserMixin, db.Model):
             return "User: {}".format(self.email)
 
 
-class Role(db.Model):
-
+class Role(PkModel):
+    """A role for a user."""
     __tablename__ = "roles"
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()

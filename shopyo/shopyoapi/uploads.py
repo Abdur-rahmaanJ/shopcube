@@ -4,10 +4,7 @@ import uuid
 from werkzeug.security import generate_password_hash
 
 from app import app
-
 from shopyoapi.init import db
-
-from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
@@ -23,7 +20,7 @@ def add_admin(email, password):
         user.is_admin = True
         user.email_confirmed = True
         user.email_confirm_date = datetime.datetime.now()
-        user.insert()
+        user.save()
 
 
 def add_setting(name, value):
