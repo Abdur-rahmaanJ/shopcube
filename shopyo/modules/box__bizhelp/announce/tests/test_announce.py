@@ -11,6 +11,8 @@ import os
 from flask import request
 from flask import url_for
 
+from modules.box__bizhelp.announce.models import Announcement
+
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.dirname(dirpath)
 
@@ -68,19 +70,27 @@ def test_announce_add_check(test_client):
     assert b"abc" in response.data
     assert b"def" in response.data
 
-
-def test_announce_edit_check(test_client):
+def test_announce_add_check_wrong(test_client):
     """"""
     response = test_client.post(
         url_for(module_info["module_name"] + ".add_check"),
-        data=dict(title="abc", content="def"),
+        data=dict(title="abc", content=""),
         follow_redirects=True,
     )
-    assert response.status_code == 200
+    
+    announcement = Announcement.query.filter(Announcement.title == 'abc').first()
+    assert announcement is None
+
+def test_announce_edit_check(test_client):
+    """"""
+    announcement = Announcement(title='abcx', content='def')
+    announcement.save()
+
+    assert Announcement.query.get(1).title == 'abcx'
 
     response = test_client.post(
         url_for(module_info["module_name"] + ".edit_check", announce_id=1),
-        data=dict(title="abcd", content="def"),
+        data=dict(title="abcxd", content="def"),
         follow_redirects=True,
     )
     assert response.status_code == 200
@@ -88,5 +98,5 @@ def test_announce_edit_check(test_client):
     # check if message was added successfully
     response = test_client.get(url_for(module_info["module_name"] + ".list"))
     assert response.status_code == 200
-    assert b"abcd" in response.data
+    assert b"abcxd" in response.data
     assert b"def" in response.data

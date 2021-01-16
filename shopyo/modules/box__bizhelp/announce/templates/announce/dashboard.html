@@ -29,7 +29,9 @@
                     </div>
                 </div>
                 <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                <input type="submit" class="btn btn-info" value="submit">
+                <button class="btn btn-primary">
+                    submit
+                </button>
             </form>
     </div>
 </div>
@@ -42,7 +44,7 @@ tinymce.init({
     plugins: [
         'advlist autolink link image imagetools lists charmap print preview hr anchor pagebreak spellchecker',
         'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-        'save table contextmenu directionality template paste textcolor codesample'
+        'save table directionality template paste codesample'
     ],
     imagetools_toolbar: "rotateleft rotateright | flipv fliph | editimage imageoptions",
     toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | codesample',
