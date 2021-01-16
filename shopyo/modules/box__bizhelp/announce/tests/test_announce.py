@@ -74,11 +74,11 @@ def test_announce_add_check_wrong(test_client):
     """"""
     response = test_client.post(
         url_for(module_info["module_name"] + ".add_check"),
-        data=dict(title="abc", content=""),
+        data=dict(title="", content="abc_wrong"),
         follow_redirects=True,
     )
     
-    announcement = Announcement.query.filter(Announcement.title == 'abc').first()
+    announcement = Announcement.query.filter(Announcement.content == 'abc_wrong').first()
     assert announcement is None
 
 def test_announce_edit_check(test_client):
