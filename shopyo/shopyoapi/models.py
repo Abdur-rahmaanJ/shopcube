@@ -69,13 +69,13 @@ class CRUDMixin:
         return None
 
 
-class Model(CRUDMixin, db.Model):
+class YoModel(CRUDMixin, db.Model):
     """Base model class that includes CRUD convenience methods."""
 
     __abstract__ = True
 
 
-class PkModel(Model):
+class PkModel(YoModel):
     """
     Base model class that includes CRUD convenience methods,
     plus adds a 'primary key' column named 'id'.
