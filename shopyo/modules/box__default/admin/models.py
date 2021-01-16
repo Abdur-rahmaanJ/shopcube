@@ -16,7 +16,7 @@ from werkzeug.security import generate_password_hash
 
 from shopyoapi.init import db
 from shopyoapi.models import PkModel
-from shopyoapi.models import Model
+from shopyoapi.models import YoModel
 
 role_user_link = db.Table(
 
@@ -59,7 +59,7 @@ class AnonymousUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymousUser
 
 
-class User(UserMixin, Model):
+class User(UserMixin, YoModel):
     """The user of the app"""
 
     __tablename__ = "users"
