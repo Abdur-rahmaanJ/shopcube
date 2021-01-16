@@ -40,7 +40,9 @@ $(function() {
                         {{announce.title}} | {{announce.created_date.strftime("%m/%d/%Y, %H:%M:%S")}}
                     </div>
                     <div class="card-body">
-                        {{announce.content | safe}}
+                        <div style="height: 200px; overflow-y: scroll;">
+                            {{announce.content | safe}}
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="btn-group" role="group" aria-label="Basic example">
