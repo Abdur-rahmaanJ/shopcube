@@ -40,3 +40,6 @@ class ModuleHelp:
 
     def context(self):
         return copy.deepcopy(self._context)
+
+    def method(self, methodname):
+        return '{}.{}'.format(self.info['module_name'], methodname)
