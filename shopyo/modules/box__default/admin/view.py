@@ -24,6 +24,7 @@ from modules.box__default.admin.admin import admin_required
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
 from shopyoapi.html import notify_warning
+from shopyoapi.html import notify_success
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -114,7 +115,13 @@ def admin_delete(id):
 
     """
     user = User.query.get(id)
+
+    if not user:
+        flash(notify_warning("Unable to delete. Invalid user id"))
+        return redirect("/admin")
+
     user.delete()
+    flash(notify_success("User successfully deleted"))
     return redirect("/admin")
 
 

@@ -10,13 +10,11 @@ from flask import url_for
 
 from app import create_app
 from shopyoapi.init import db as _db
-from shopyoapi.uploads import add_setting
 from modules.box__default.admin.models import User
 from modules.box__default.settings.models import Settings
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v
-
 
 if os.path.exists("testing.db"):
     os.remove("testing.db")
@@ -55,14 +53,17 @@ def admin_user():
 
 
 @pytest.fixture(scope="session")
-def test_client():
+def flask_app():
+    flask_app = create_app("testing")
+    return flask_app
+
+
+@pytest.fixture(scope="session")
+def test_client(flask_app):
     """
     setups up and returns the flask testing app
     """
-    flask_app = create_app("testing")
-
     # Create a test client using the Flask application configured for testing
-    # we need this with block to be able to use application context
     with flask_app.test_client() as testing_client:
         # Establish an application context
         with flask_app.app_context():
@@ -78,14 +79,13 @@ def db(test_client, non_admin_user, admin_user):
     _db.app = test_client
     _db.create_all()
 
-    # Insert user data
+    # Insert admin and non admin users
     _db.session.add(non_admin_user)
     _db.session.add(admin_user)
 
     # add the default settings
     with open("config.json", "r") as config:
         config = json.load(config)
-
     for name, value in config["settings"].items():
         s = Settings(setting=name, value=value)
         _db.session.add(s)
@@ -109,10 +109,8 @@ def db_session(db):
     """
     connection = db.engine.connect()
     transaction = connection.begin()
-
     options = dict(bind=connection, binds={})
     session = db.create_scoped_session(options=options)
-
     db.session = session
 
     yield session
@@ -122,10 +120,21 @@ def db_session(db):
     session.remove()
 
 
-# Want TO USE THE BELOW CODE FOR LOGIN AND LOGOUT
-# TO REMOVE REPEATED CODE FROM ALL TESTS. BUT
-# CURRENTLY FAILING TO MAKE LOGIN WORK FROM OUTSIDE
-# THE TEST FUNCTION
+@pytest.fixture
+def login_admin_user(auth, admin_user):
+    """Login with admin and logout during teadown"""
+    auth.login(admin_user)
+    yield
+    auth.logout()
+
+
+@pytest.fixture
+def login_non_admin_user(auth, non_admin_user):
+    """Login with non-admin and logout during teadown"""
+    auth.login(non_admin_user)
+    yield
+    auth.logout()
+
 
 @pytest.fixture
 def auth(test_client):
@@ -146,3 +155,42 @@ class AuthActions:
     def logout(self):
         return self._client.get(
             url_for("login.logout"), follow_redirects=True)
+
+
+# Want TO USE THE BELOW 2 FIXTURES TO DYNAMICALLY
+# GET THE ROUTES FOR A GIVEN MODULE BUT UNABLE TO
+# PARAMETERIZE THE LIST OF ROUTES RETURNED FROM THE FIXTURE
+# CURRENTLY THIS NOT POSSIBLE WITH FIXTURES IN PYTEST
+
+# @pytest.fixture(scope="module")
+# def get_module_routes(request, get_routes):
+#     module_prefix = getattr(request.module, "module_prefix", "/")
+#     return get_routes[module_prefix]
+
+
+# @pytest.fixture(scope="session")
+# def get_routes(flask_app):
+
+#     routes_dict = {}
+#     relative_path = "/"
+#     prefix = "/"
+
+#     for route in flask_app.url_map.iter_rules():
+#         split_route = list(filter(None, str(route).split("/", 2)))
+
+#         if len(split_route) == 0:
+#             prefix = "/"
+#             relative_path = ""
+#         elif len(split_route) == 1:
+#             prefix = "/" + split_route[0]
+#             relative_path = "/"
+#         else:
+#             prefix = "/" + split_route[0]
+#             relative_path = split_route[1]
+
+#         if prefix in routes_dict:
+#             routes_dict[prefix].append(relative_path)
+#         else:
+#             routes_dict[prefix] = [relative_path]
+
+#     return routes_dict
