@@ -150,14 +150,14 @@ def admin_update():
     email = request.form["email"]
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
-    admin_user = request.form.get("admin_user")
-    if admin_user == "True":
-        admin_user = True
+    is_admin = request.form.get("is_admin")
+    if is_admin:
+        is_admin = True
     else:
-        admin_user = False
+        is_admin = False
     user = User.query.get(id)
     user.set_hash(password)
-    user.admin_user = admin_user
+    user.is_admin = is_admin
     user.email = email
     user.first_name = first_name
     user.last_name = last_name
