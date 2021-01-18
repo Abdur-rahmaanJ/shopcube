@@ -23,10 +23,10 @@ def load_user(id):
 def admin_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if current_user.is_admin is True:
+        if current_user.is_anonymous or current_user.is_admin:
             return f(*args, **kwargs)
         else:
-            flash("You need to be an admin to view this page.")
+            flash(notify_warning("You need to be an admin to view this page."))
             return redirect(url_for("dashboard.index"))
 
     return wrap
