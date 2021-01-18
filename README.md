@@ -8,6 +8,8 @@
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
+A 45 mins talk was dedicated to it at [EuroPython](https://youtu.be/rkzXQOC1T0Q) 🌟
+
 # What?
 
 Your back office. Use it with any front you like. Headless support coming soon. 
