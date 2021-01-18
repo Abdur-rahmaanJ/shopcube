@@ -165,6 +165,15 @@ def create_module(modulename, base_path=None):
     trymkdir(base_path)
     trymkdir(base_path + "/templates")
     trymkdir(base_path + "/templates/" + modulename)
+    trymkdir(base_path + "/tests")
+    test_func_content = """
+Please add your functional tests to this file.
+"""
+    test_model_content = """
+Please add your models tests to this file.
+"""
+    trymkfile(base_path + "/tests/" + "test_"+ modulename + "_functional.py", test_func_content)
+    trymkfile(base_path + "/tests/" + "test_"+ modulename + "_models.py", test_model_content)
     view_content = """
 from shopyoapi.module import ModuleHelp
 # from flask import render_template
