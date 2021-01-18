@@ -132,11 +132,11 @@ class TestAdminAPI:
             .scalar()
         )
 
-        assert test_user
+        assert test_user is not None
         assert test_user.first_name == "Test"
         assert test_user.last_name == "User"
-        assert not test_user.is_admin
-        assert test_user.roles
+        assert test_user.is_admin is False
+        assert test_user.roles is not None
         assert len(test_user.roles) == 2
         assert role1.users[0].email == "test@gmail.com"
         assert role2.users[0].email == "test@gmail.com"
@@ -165,7 +165,7 @@ class TestAdminAPI:
         )
 
         assert response.status_code == 200
-        assert b"User with same email already exists"
+        assert b"User with same email already exists" in response.data
         assert test_users == 1
 
     def test_admin_delete_existing_user_get(self, test_client, db_session):
@@ -191,12 +191,13 @@ class TestAdminAPI:
         )
         user_role = (
             db_session.query(role_user_link).join(User).join(Role)
-            .filter(User.id == user.id).all()
+            .filter(User.id == user.id)
+            .scalar()
         )
 
         assert response.status_code == 200
-        assert not test_user
-        assert not user_role
+        assert test_user is None
+        assert user_role is None
         assert test_roles == 2
 
     def test_admin_delete_nonexisting_user_get(self, test_client):
@@ -206,7 +207,7 @@ class TestAdminAPI:
         )
 
         assert response.status_code == 200
-        assert b"Unable to delete. Invalid user id"
+        assert b"Unable to delete. Invalid user id" in response.data
 
     def test_admin_roles_get(self, test_client):
         response = test_client.get(module_info['url_prefix'] + "/roles")
