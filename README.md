@@ -2,27 +2,83 @@
 
 <h1 align="center">
   <br>
-  <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/master/screenshots/shoyo_social.png" alt="shopyo" width="" height=""></a>
+  <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/dev/github_banner.png" alt="shopyo" width="" height=""></a>
 </h1>
 
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
-🎁 Open inventory management  and Point of sales (powered by python) for small shops. 
+# What?
 
-- :sparkler: Plug and Play modules
-- :sparkler: Themes!
+Your back office. Use it with any front you like. Headless support coming soon. 
 
-It also makes a great Flask base and supports commands such as:
+Use it for your next web project.
 
-`python manage.py startapp loans` 
+# Big??
 
-**Shopyo can be used to manage organisations and to build pretty much any site you want, not just e-commerce!**
+Powered by apps / modules. Add as many as you like. 
 
-👉 Join the [Discord](https://discord.gg/k37Ef6w) & learn about Flask tricks during our dev talks!
+Apps are not enough, organise them in boxes and get the ultimate order you need.
 
-👉 If you want to contribute, even if new to Python or Flask or Git, comment OnBoard Me Please [here](https://github.com/Abdur-rahmaanJ/shopyo/discussions/255)
+You need a customised Django? This is the project. You need to build an ERP? This is the project.
 
+# Linux??
+
+Hackable to the core. Even the dashboard is but a module.
+
+Don't need our modules? Nuke them. Look boring? modify them
+
+# Reliable?
+
+We don't maintain middlewares. We rely on battle tested batteries like:
+
+- flask_sqlalchemy
+- flask_login & co
+
+Heck remove them if you don't want. Want to use Peewee? You can.
+
+# Rich Flask API
+
+Common flask patterns are integrated, the structure is over the moon.
+
+Common flask tasks are provided with an API: custom notifications, bulk form errors
+
+# Back office feel & Theme
+
+All looks are 100% customisable with themes ~ Backend, bootstrap included by default.
+
+Again blow it up & use what you want. It's possible
+
+# Transparent: Code your own web distro
+
+Everything is clear, not hidden. You can 100% customise whatever you want.
+
+We did not hardcode our choices. Our APIS are incremental. You can always use barebones.
+
+# Plug & Play
+
+The modules are put by copy paste. No blueprint codes to write. 
+
+# Contribute
+
+We follow a 100% first-timers friendly policy.
+
+👉 Get started [here](https://abdur-rahmaanj.github.io/shopyo/contrib.html)
+
+👉 Join the [Discord](https://discord.gg/k37Ef6w), ask questions & learn about Flask tricks during our dev talks!
+
+# 📚 Docs
+
+👉 Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
+
+# By default
+
+We include some custom apps to get started and act as a demo:
+
+- ecommerce
+- appointment
+- pages
+- contact
 
 # 🍜 Test it out!
 
@@ -66,103 +122,12 @@ default login
   password: pass
 ```
 
-# ⚗️ Stability
-
-**beta** - now in beta! - Not fully ready to be used by people without Flask knowledge.
-
-
-# 💌 Contributing Countries
-
-🇲🇺 🇩🇪 🇨🇳 🇬🇧 🇸🇬 🇺🇬 🇲🇽
-
-# 🔥 Default Modules:
-
-Basics:
-
-- Control Panel
-- Admin
-- Base
-- Login
-- Settings
-- Theme
-
-Shop:
-
-- Appointment
-- Products
-- People
-- Internals
-- Page
-- Contact
-
-If you want to use the project as a Flask base, just remove 
-the shop modules in modules/
-
-## The engine
-
-Shopyo's engine which provides a Django-like structure and awesome mechanisms has been abstracted into [hadbox](https://www.github.com/hadbox/hadbox)
-
-## 💬 Community: Discord¶
-
-Join the [Discord Group](https://discord.gg/k37Ef6w)
-
-# 📚 Docs
-
-👉 Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
-
-* Setting up Shopyo
-* Education section
-* Contributing to Shopyo
-* Modules/Apps
-* Templates
-* Models
-* Views
-* Commandline
-* Shopyoapi
-* Docs
-* Unittests
-* Shared hosting deployment
-
-# 📜 Testimonial
-
- >  This is my first time contributing to a public repo and I have quite enjoyed it. If you're a ``first-time-contributor`` the community is very helpful and can help you progress. Since I have been helping in this repo, I have also learnt a few things myself. The owner of the repo is active and is always willing to help.
->
-> Also, if I'm around and you're stuck give us a shout. I'll help if I can. ``@blips5``
-
-
-
-# 📖 History
-
-
-See [this](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328) linked-in article!
-
-# 📰 In The News
-
-- Shopyo is [announced on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:6551367967978979328)
-- Featured on Python Weekly issue 436
-- [Bhavesh Solanki](https://www.linkedin.com/in/bhavesh-solanki26/) tells about his Open Source experience [contributing to Shopyo](https://www.linkedin.com/feed/update/urn:li:activity:6569959051420098560/) on LinkedIn
-- [Arthur Nangai](https://www.linkedin.com/in/arthur-nangai/) from Andela joins the project as 3rd core committer
-- Project goes officially in Beta, v1.0.0 released
-- Duckduckgo recognises Shopyo
-![](screenshots/shopyo_duckduckgo.png)
-- Shopyo becomes a trending OpenSource project
-![](screenshots/shopyo_trending.png)
-
-
 
 # Who uses Shopyo?
 
 | site name | description
 |:---:|:---:|
 |Maurilearn.com|Elearning platform|
-
-# TODO modules
-
-- Point of Sales
-- Accounting
-- Contact [done]
-- Pages [in progress]
-
 
 # 📞 Contact
 
@@ -171,28 +136,9 @@ Support team if you are stuck
 - [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) - arj.python@gmail.com
 - [Nathan](https://github.com/blips5) - 
 - [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
+- [Shamsuddin Rehmani](https://github.com/rehmanis) - rehmani@usc.edu
 
 
-# Roadmap
-
-- ✔️ Models
-- ✔️ Migrations
-- ✔️ Restful Api
-- ✔️ Manage.py
-- ✔️ CSRF protection
-- ✔️ Easy dev/production mode switch
-- ✔️ Login
-- ✔️ Api namespacing / apps
-- ✔️ Django-like structure (where models, views and templates all in one  folder)
-- ✔️ Relative reference (.forms for example)
-- ✔️ Roles management
-- ✔️ Themes
-
-In Progress
-
-- 🔃 Unit tests
-- 🔃 Integration tests
-- 🔃 Permission levels
 
 ## 🍳 In Action
 
@@ -206,5 +152,12 @@ In Progress
 [![Stargazers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/stars/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/stargazers)
 
 [![Forkers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/forks/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/network/members)
+
+
+## The engine
+
+Shopyo's engine which provides a Django-like structure and awesome mechanisms has been abstracted into [hadbox](https://www.github.com/hadbox/hadbox)
+
+
 
 
