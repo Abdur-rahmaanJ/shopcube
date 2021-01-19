@@ -107,12 +107,9 @@ class TestAdminAPI:
         assert b"Last Name" in response.data
         assert b"Admin User" in response.data
 
-    def test_admin_add_unique_user_post(self, test_client, db_session):
-        role1 = Role(name="test1-role")
-        role2 = Role(name="test2-role")
-        db_session.add(role1)
-        db_session.add(role2)
-        db_session.commit()
+    def test_admin_add_unique_user_post(self, test_client):
+        role1 = Role.create(name="test1-role")
+        role2 = Role.create(name="test2-role")
         data = {
             "email": "test@gmail.com",
             "password": "pass",
@@ -128,11 +125,7 @@ class TestAdminAPI:
             data=data,
             follow_redirects=True
         )
-        test_user = (
-            db_session.query(User)
-            .filter(User.email == "test@gmail.com")
-            .scalar()
-        )
+        test_user = User.query.filter(User.email == "test@gmail.com").scalar()
 
         assert test_user is not None
         assert test_user.first_name == "Test"
@@ -143,10 +136,8 @@ class TestAdminAPI:
         assert role1.users[0].email == "test@gmail.com"
         assert role2.users[0].email == "test@gmail.com"
 
-    def test_admin_add_existing_user_post(self, test_client, db_session):
-        user = User(email="test@gmail.com", password="pass")
-        db_session.add(user)
-        db_session.commit()
+    def test_admin_add_existing_user_post(self, test_client):
+        User.create(email="test@gmail.com", password="pass")
         data = {
             "email": "test@gmail.com",
             "password": "pass",
@@ -160,32 +151,24 @@ class TestAdminAPI:
             data=data,
             follow_redirects=True
         )
-        test_users = (
-            db_session.query(User)
-            .filter(User.email == "test@gmail.com")
-            .count()
-        )
+        test_users = User.query.filter(User.email == "test@gmail.com").count()
 
         assert response.status_code == 200
         assert b"User with same email already exists" in response.data
         assert test_users == 1
 
-    def test_admin_delete_existing_user_get(self, test_client, db_session):
+    def test_admin_delete_existing_user_get(self, test_client):
         user = User(email="test@gmail.com", password="pass")
         role1 = Role(name="test1-role")
         role2 = Role(name="test2-role")
         user.roles = [role1, role2]
-
         user.save()
+
         response = test_client.get(
             f"{module_info['url_prefix']}/delete/{user.id}",
             follow_redirects=True
         )
-        test_user = (
-            User.query
-            .filter(User.email == user.email)
-            .scalar()
-        )
+        test_user = User.query.filter(User.email == user.email).scalar()
         test_roles = Role.query.count()
         user_role = (
             User.query.join(role_user_link).join(Role)
