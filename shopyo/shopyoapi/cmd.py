@@ -14,7 +14,7 @@ from flask import Blueprint
 # from flask import flash
 # from flask import request
 
-# # 
+# #
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
@@ -156,24 +156,31 @@ def create_module(modulename, base_path=None):
 
     if bool(re.match(r"^[A-Za-z0-9_]+$", modulename)) is False:
         print(
-            "Error: modulename is not valid, please use alphanumeric and underscore only"
+            "Error: modulename is not valid, please use alphanumeric\
+             and underscore only"
         )
         sys.exit()
-    print("creating module: {}".format(modulename))
+    print(f"creating module: {modulename}")
     if not base_path:
-        base_path = "modules/" + modulename
+        base_path = f"modules/{modulename}"
     trymkdir(base_path)
-    trymkdir(base_path + "/templates")
-    trymkdir(base_path + "/templates/" + modulename)
-    trymkdir(base_path + "/tests")
+    trymkdir(f"{base_path}/templates")
+    trymkdir(f"{base_path}/templates/{modulename}")
+    trymkdir(f"{base_path}/tests")
     test_func_content = """
 Please add your functional tests to this file.
 """
     test_model_content = """
 Please add your models tests to this file.
 """
-    trymkfile(base_path + "/tests/" + "test_"+ modulename + "_functional.py", test_func_content)
-    trymkfile(base_path + "/tests/" + "test_"+ modulename + "_models.py", test_model_content)
+    trymkfile(
+        f"{base_path}/tests/test_{modulename}_functional.py",
+        test_func_content
+    )
+    trymkfile(
+        f"{base_path}/tests/test_{modulename}_models.py",
+        test_model_content
+    )
     view_content = """
 from shopyoapi.module import ModuleHelp
 # from flask import render_template
@@ -194,7 +201,7 @@ def index():
     return mhelp.info['display_string']
 
 # If "dashboard": "/dashboard" is set in info.json
-# 
+#
 # @module_blueprint.route("/dashboard", methods=["GET"])
 # def dashboard():
 
@@ -205,9 +212,9 @@ def index():
 #         })
 #     return mhelp.render('dashboard.html', **context)
 """
-    trymkfile(base_path + "/" + "view.py", view_content)
-    trymkfile(base_path + "/" + "forms.py", "")
-    trymkfile(base_path + "/" + "models.py", "")
+    trymkfile(f"{base_path}/view.py", view_content)
+    trymkfile(f"{base_path}/forms.py", "")
+    trymkfile(f"{base_path}/models.py", "")
     info_json_content = """{{
         "display_string": "{0}",
         "module_name":"{1}",
@@ -222,13 +229,10 @@ def index():
 }}""".format(
         modulename.capitalize(), modulename
     )
-    trymkfile(base_path + "/" + "info.json", info_json_content)
+    trymkfile(f"{base_path}/info.json", info_json_content)
 
-    trymkdir(base_path + "/templates/" + modulename + "/blocks")
-    trymkfile(
-        base_path + "/templates/" + modulename + "/blocks/" + "sidebar.html",
-        "",
-    )
+    trymkdir(f"{base_path}/templates/{modulename}/blocks")
+    trymkfile(f"{base_path}/templates/{modulename}/blocks/sidebar.html", "")
     dashboard_file_content = '''
 {% extends "base/module_base.html" %}
 {% set active_page = info['display_string']+' dashboard' %}
@@ -251,18 +255,15 @@ def index():
 {% endblock %}
 '''
     trymkfile(
-        os.path.join(base_path, "templates", modulename, 'dashboard.html'),
+        f"{base_path}/templates/{modulename}/dashboard.html",
         dashboard_file_content
     )
-
     global_file_content = """
 available_everywhere = {
-    
+
 }
 """
-    trymkfile(
-        os.path.join(base_path, "global.py"), global_file_content,
-    )
+    trymkfile(f"{base_path}/global.py", global_file_content)
 
 
 def create_box(name):
@@ -280,9 +281,9 @@ def create_box(name):
 
 
     """
-    base_path = "modules/" + "box__" + name
+    base_path = f"modules/box__{name}"
     if os.path.exists(base_path):
-        print("Box {} exists!".format(base_path))
+        print(f"Box {base_path} exists!")
     else:
         trymkdir(base_path)
         info_json_content = """{{
@@ -296,7 +297,7 @@ def create_box(name):
     }}""".format(
             name.capitalize(), name
         )
-        trymkfile(base_path + "/" + "box_info.json", info_json_content)
+        trymkfile(f"{base_path}/box_info.json", info_json_content)
 
 
 def create_module_in_box(modulename, boxname):
@@ -322,18 +323,18 @@ def create_module_in_box(modulename, boxname):
     module_path = os.path.join("modules", boxname, modulename)
 
     if not boxname.startswith("box__"):
-        print("Invalid box {}. Boxes should start with box__".format(boxname))
+        print(f"Invalid box {boxname}. Boxes should start with box__")
 
     elif not os.path.exists(box_path):
-        print("Box {} does not exists!".format(box_path))
+        print(f"Box {box_path} does not exists!")
         available_boxes = "\n* ".join(
             [f for f in os.listdir("modules/") if f.startswith("box__")]
         )
-        print("Available boxes: \n* {}".format(available_boxes))
+        print(f"Available boxes: \n* {available_boxes}")
 
     elif os.path.exists(module_path):
-        print("Module {} exists".format(module_path))
+        print(f"Module {module_path} exists")
 
     else:
-        print("Creating module {}".format(module_path))
+        print(f"Creating module {module_path}")
         create_module(modulename, base_path=module_path)
