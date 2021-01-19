@@ -14,7 +14,7 @@ from flask import Blueprint
 # from flask import flash
 # from flask import request
 
-# # 
+# #
 # from shopyoapi.html import notify_success
 # from shopyoapi.forms import flash_errors
 
@@ -156,7 +156,8 @@ def create_module(modulename, base_path=None):
 
     if bool(re.match(r"^[A-Za-z0-9_]+$", modulename)) is False:
         print(
-            "Error: modulename is not valid, please use alphanumeric and underscore only"
+            "Error: modulename is not valid, please use alphanumeric\
+             and underscore only"
         )
         sys.exit()
     print(f"creating module: {modulename}")
@@ -172,8 +173,14 @@ Please add your functional tests to this file.
     test_model_content = """
 Please add your models tests to this file.
 """
-    trymkfile(f"{base_path}/tests/test_{modulename}_functional.py", test_func_content)
-    trymkfile(f"{base_path}/tests/test_{modulename}_models.py", test_model_content)
+    trymkfile(
+        f"{base_path}/tests/test_{modulename}_functional.py",
+        test_func_content
+    )
+    trymkfile(
+        f"{base_path}/tests/test_{modulename}_models.py",
+        test_model_content
+    )
     view_content = """
 from shopyoapi.module import ModuleHelp
 # from flask import render_template
@@ -194,7 +201,7 @@ def index():
     return mhelp.info['display_string']
 
 # If "dashboard": "/dashboard" is set in info.json
-# 
+#
 # @module_blueprint.route("/dashboard", methods=["GET"])
 # def dashboard():
 
@@ -225,7 +232,7 @@ def index():
     trymkfile(f"{base_path}/info.json", info_json_content)
 
     trymkdir(f"{base_path}/templates/{modulename}/blocks")
-    trymkfile(f"{base_path}/templates/{modulename}/blocks/sidebar.html","")
+    trymkfile(f"{base_path}/templates/{modulename}/blocks/sidebar.html", "")
     dashboard_file_content = '''
 {% extends "base/module_base.html" %}
 {% set active_page = info['display_string']+' dashboard' %}
@@ -247,10 +254,13 @@ def index():
  </div>
 {% endblock %}
 '''
-    trymkfile(f"{base_path}/templates/{modulename}/dashboard.html", dashboard_file_content)
+    trymkfile(
+        f"{base_path}/templates/{modulename}/dashboard.html",
+        dashboard_file_content
+    )
     global_file_content = """
 available_everywhere = {
-    
+
 }
 """
     trymkfile(f"{base_path}/global.py", global_file_content)
