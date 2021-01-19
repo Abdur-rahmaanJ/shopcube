@@ -116,7 +116,7 @@ def admin_delete(id):
     """
     user = User.query.get(id)
 
-    if not user:
+    if user is None:
         flash(notify_warning("Unable to delete. Invalid user id"))
         return redirect("/admin")
 
@@ -138,6 +138,11 @@ def admin_edit(id):
     """
     context = {}
     user = User.query.get(id)
+
+    if user is None:
+        flash(notify_warning("Unable to edit. Invalid user id"))
+        return redirect("/admin")
+
     context["user"] = user
     context["user_roles"] = [r.name for r in user.roles]
     context["roles"] = Role.query.all()
@@ -158,19 +163,27 @@ def admin_update():
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
     is_admin = request.form.get("is_admin")
+
     if is_admin:
         is_admin = True
     else:
         is_admin = False
+
     user = User.query.get(id)
-    user.set_hash(password)
+
+    if user is None:
+        flash(notify_warning("Unable to update. User does not exist."))
+        return redirect("/admin")
+
     user.is_admin = is_admin
     user.email = email
     user.first_name = first_name
     user.last_name = last_name
+    user.roles[:] = []
+
     if password.strip():
         user.set_hash(password)
-    user.roles[:] = []
+
     for key in request.form:
         if key.startswith("role_"):
             role_id = key.split("_")[1]
@@ -178,6 +191,7 @@ def admin_update():
             user.roles.append(role)
 
     user.update()
+    flash(notify_success("User successfully updated"))
     return redirect("/admin")
 
 
@@ -198,7 +212,10 @@ def roles_add():
         if not Role.query.filter(Role.name == request.form["name"]).first():
             role = Role(name=request.form["name"])
             role.save()
-    return redirect(url_for("admin.roles"))
+            flash(notify_success("Role successfully added"))
+            return redirect(url_for("admin.roles"))
+        flash(notify_warning("Role already exists"))
+        return redirect(url_for("admin.roles"))
 
 
 @admin_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
@@ -206,7 +223,13 @@ def roles_add():
 @admin_required
 def roles_delete(role_id):
     role = Role.get_by_id(role_id)
+
+    if role is None:
+        flash(notify_warning("Unable to delete. Invalid role id"))
+        return redirect(url_for("admin.roles"))
+
     role.delete()
+    flash(notify_success("Role successfully deleted"))
     return redirect(url_for("admin.roles"))
 
 
@@ -216,6 +239,13 @@ def roles_delete(role_id):
 def roles_update():
     if request.method == "POST":
         role = Role.get_by_id(request.form["role_id"])
+
+        if role is None:
+            flash(notify_warning("Unable to update. Role does not exist"))
+            return redirect(url_for("admin.roles"))
+
         role.name = request.form["role_name"]
         role.update()
+        flash(notify_success("Role successfully updated"))
+
     return redirect(url_for("admin.roles"))

@@ -5,7 +5,6 @@
 """
 
 import datetime
-from uuid import uuid4
 
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
@@ -16,7 +15,6 @@ from werkzeug.security import generate_password_hash
 
 from shopyoapi.init import db
 from shopyoapi.models import PkModel
-from shopyoapi.models import YoModel
 
 role_user_link = db.Table(
 
@@ -59,11 +57,11 @@ class AnonymousUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymousUser
 
 
-class User(UserMixin, YoModel):
+class User(UserMixin, PkModel):
     """The user of the app"""
 
     __tablename__ = "users"
-    id = db.Column(db.String(10), primary_key=True)
+
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(128), nullable=False)
     first_name = db.Column(db.String(128))
@@ -80,10 +78,6 @@ class User(UserMixin, YoModel):
     roles = db.relationship(
         "Role", secondary=role_user_link, backref="users",
     )
-
-    def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
-        self.id = str(uuid4())
 
     def set_hash(self, password):
         self.password = generate_password_hash(password, method="sha256")
