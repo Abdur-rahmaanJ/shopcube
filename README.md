@@ -16,6 +16,23 @@ Your back office. Use it with any front you like. Headless support coming soon.
 
 Use it for your next web project.
 
+# Have a go!
+
+Create a virtual environment and activate it (not needed when installing [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)).
+
+`pip install shopyo`
+
+then
+```
+shopyo new . shopyotest
+cd shopyotest
+python -m pip install -r requirements.txt
+python manage.py initialise  # or `shopyo initialise`
+python manage.py rundebug # or `shopyo runserver` or rundebug
+```
+
+go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
+
 # Big??
 
 Powered by apps / modules. Add as many as you like. 
@@ -88,32 +105,6 @@ We include some custom apps to get started and act as a demo:
 |---|---|
 | Link | [shopyo.pythonanywhere.com/dashboard](http://shopyo.pythonanywhere.com/dashboard) |
 | Credentials | User: admin@domain.com - password: pass |
-
-**By code**
-
-[Important] Create a virtual environment and activate it (not needed when installing [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)).
-
-`pip install shopyo`
-
-then
-```
-shopyo new . shopyotest
-cd shopyotest
-python -m pip install -r requirements.txt
-python manage.py initialise  # or `shopyo initialise`
-python manage.py rundebug # or `shopyo runserver` or rundebug
-```
-
-go to url ^^
-
-_Note: If the command does not get recognised, close and reopen your cmd_
-
-```
-default login
-  mail: admin@domain.com
-  password: pass
-```
-
 
 # Who uses Shopyo?
 
