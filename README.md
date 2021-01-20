@@ -27,8 +27,8 @@ then
 shopyo new . shopyotest
 cd shopyotest
 python -m pip install -r requirements.txt
-python manage.py initialise  # or `shopyo initialise`
-python manage.py rundebug # or `shopyo runserver` or rundebug
+python manage.py initialise
+python manage.py rundebug
 ```
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
