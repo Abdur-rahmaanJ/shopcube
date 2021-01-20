@@ -96,22 +96,12 @@ We include some custom apps to get started and act as a demo:
 `pip install shopyo`
 
 then
-
-`shopyo new /home/profiles/arj/desktop shopyotest`
-
-then cd into the folder
-
-`cd /home/profiles/arj/desktop/shopyotest`
-
-then install requirements
-
-`pip install -r requirements.txt`
-
-then
-
 ```
+shopyo new . shopyotest
+cd shopyotest
+python -m pip install -r requirements.txt
 python manage.py initialise  # or `shopyo initialise`
-python manage.py runserver  # or `shopyo runserver` or rundebug
+python manage.py rundebug # or `shopyo runserver` or rundebug
 ```
 
 go to url ^^
