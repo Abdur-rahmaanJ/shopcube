@@ -33,7 +33,7 @@ class TestSettingsInvalidAuth:
     ]
 
     routes_post = [
-        "/edit/<settings_name>","/update"
+        "/edit/<settings_name>", "/update"
     ]
 
     @pytest.mark.parametrize('route', routes_get)
@@ -57,7 +57,7 @@ class TestSettingsInvalidAuth:
         assert request.path == url_for("login.login")
 
 
-@pytest.mark.usefixtures("login_admin_user")    
+@pytest.mark.usefixtures("login_admin_user")
 class TestSettingsAPI:
 
     def test_settings_main(self, test_client):
@@ -76,7 +76,9 @@ class TestSettingsAPI:
                               "SECTION_ITEMS", "CURRENCY"])
     def test_settings_edit(self, test_client, setting):
 
-        response = test_client.get(f"{module_info['url_prefix']}/edit/{setting}") 
+        response = test_client.get(
+                    f"{module_info['url_prefix']}/edit/{setting}"
+                    )
         assert response.status_code == 200
 
     def test_settings_update(self, test_client):
