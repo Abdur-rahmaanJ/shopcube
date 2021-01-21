@@ -22,7 +22,7 @@ def runserver():
 @click.argument("args", nargs=-1)
 def process(args):
     printinfo()
-    if args[0] == "initialise":
+    if args[0] == "initialise" or args[0] == "initialize":
         autoload_models()
         initialise()
     elif args[0] == "clean":
