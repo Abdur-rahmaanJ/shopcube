@@ -81,8 +81,12 @@ class TestSettingsAPI:
 
     def test_settings_update(self, test_client):
 
-        response = test_client.post(f"{module_info['url_prefix']}/update", data=dict(settings_name="APP_NAME",
-                                        settings_value="TEST-APP-NAME", follow_redirects=True))
+        response = test_client.post(
+                    f"{module_info['url_prefix']}/update", data=dict
+                    (settings_name="APP_NAME",
+                     settings_value="TEST-APP-NAME",
+                     follow_redirects=True)
+                     )
 
         setting = Settings.query.get('APP_NAME')
         assert response.status_code == 200
