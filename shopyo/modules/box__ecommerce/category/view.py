@@ -108,7 +108,7 @@ def add():
         except flask_uploads.UploadNotAllowed as e:
             pass
 
-        category.insert()
+        category.save()
         flash(notify_success(f'Category "{name}" added successfully'))
         return render_template("category/add.html", **context)
 
@@ -116,12 +116,12 @@ def add():
     return render_template("category/add.html", **context)
 
 
-@module_blueprint.route("<name>/delete", methods=["GET", "POST"])
+@module_blueprint.route("<name>/delete", methods=["GET"])
 @login_required
 def delete(name):
 
     if is_empty_str(name):
-        flash(notify_warning(f"Cannot delete a category with no name"))
+        flash(notify_warning("Cannot delete a category with no name"))
         return redirect(url_for("category.dashboard"))
 
     if name != "uncategorised":
@@ -141,7 +141,7 @@ def delete(name):
             return redirect(url_for("category.dashboard"))
 
         category.delete()
-        flash(notify_success(f'Category "{name}" sucessfully deleted'))
+        flash(notify_success(f'Category "{name}" successfully deleted'))
         return redirect(url_for("category.dashboard"))
 
     flash(notify_warning("Cannot delete category uncategorised"))
@@ -171,9 +171,7 @@ def category_image_delete(category_name, filename):
 def update():
     context = {}
 
-    if (
-        request.method == "POST"
-    ):  # this block is only entered when the form is submitted
+    if request.method == "POST":
         name = request.form["category_name"]
         old_name = request.form["old_category_name"]
         try:
@@ -209,7 +207,7 @@ def update():
 
 @module_blueprint.route(
     "{}/edit/<category_name>".format(module_info["dashboard"]),
-    methods=["GET", "POST"],
+    methods=["GET"],
 )
 @login_required
 def edit_dashboard(category_name):
@@ -235,12 +233,15 @@ def check(category_name):
 
 @module_blueprint.route(
     "{}/<category_name>/sub/".format(module_info["dashboard"]),
-    methods=["GET", "POST"],
+    methods=["GET"],
 )
 @login_required
 def manage_sub(category_name):
     context = {}
     category = Category.query.filter(Category.name == category_name).first()
+
+    if category is None:
+        flash(notify_warning("category name does not exist"))
 
     context.update({"category": category})
     return render_template("category/manage_sub.html", **context)
@@ -253,11 +254,22 @@ def manage_sub(category_name):
 @login_required
 def add_sub(category_name):
     if request.method == "POST":
+
+        category = (
+            Category.query.filter(Category.name == category_name)
+            .scalar()
+        )
+
+        # case 1: do not allow adding subcategory to nonexisting
+        # category
+        if category is None:
+            return 'category does not exist', 400
+
         # convert name to lower case and remove leading
         # and trailing spaces
         name = request.form["name"].lower().strip()
 
-        # case 1: do not allow adding subcategory with
+        # case 2: do not allow adding subcategory with
         # empty name
         if is_empty_str(name):
             flash(notify_warning("Name cannot be empty"))
@@ -268,8 +280,6 @@ def add_sub(category_name):
                 )
             )
 
-        # case 2: do not allow adding existing subcategory
-        # inside a given category
         existing = SubCategory.query.join(Category).filter(
             and_(
                 SubCategory.name == name,
@@ -277,6 +287,8 @@ def add_sub(category_name):
             )
         ).first()
 
+        # case 3: do not allow adding existing subcategory
+        # inside a given category
         if existing:
             flash(notify_warning("Name already exists for category"))
             return redirect(
@@ -286,7 +298,7 @@ def add_sub(category_name):
                 )
             )
 
-        # case 3: sucessfully add subcategory to desired category
+        # case 4: successfully add subcategory to desired category
         category = Category.query.filter(
             Category.name == category_name
         ).first()
@@ -318,7 +330,7 @@ def add_sub(category_name):
 
 @module_blueprint.route(
     "{}/sub/<subcategory_id>/img/edit".format(module_info["dashboard"]),
-    methods=["GET", "POST"],
+    methods=["GET"],
 )
 @login_required
 def edit_sub_img_dashboard(subcategory_id):
@@ -421,7 +433,7 @@ def subcategory_image_delete(subcategory_id, filename):
 
 
 @module_blueprint.route(
-    "/sub/<subcategory_id>/delete", methods=["GET", "POST"]
+    "/sub/<subcategory_id>/delete", methods=["GET"]
 )
 @login_required
 def sub_delete(subcategory_id):
@@ -433,7 +445,7 @@ def sub_delete(subcategory_id):
     ):
         flash(
             notify_warning("Cannot delete subcategory uncategorised "
-                           + "of catgeory uncategorised")
+                           + "of category uncategorised")
         )
         return redirect(
             url_for("category.manage_sub", category_name=category_name)
@@ -474,7 +486,7 @@ def sub_delete(subcategory_id):
 
 @module_blueprint.route(
     "<category_id>/{}/sub".format(module_info["dashboard"]),
-    methods=["GET", "POST"],
+    methods=["GET"],
 )
 @login_required
 def choose_sub_dashboard(category_id):
@@ -491,6 +503,7 @@ def choose_sub_dashboard(category_id):
 
 
 @module_blueprint.route("/sub/file/<filename>", methods=["GET"])
+@login_required
 def subcategory_image(filename):
     if filename == "default":
         return send_from_directory(
@@ -503,6 +516,7 @@ def subcategory_image(filename):
 
 
 @module_blueprint.route("/file/<filename>", methods=["GET"])
+@login_required
 def category_image(filename):
 
     return send_from_directory(

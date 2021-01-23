@@ -7,9 +7,9 @@ for the proper behavior of the `admin` blueprint.
 """
 import os
 import json
+import pytest
 from flask import request
 from flask import url_for
-import pytest
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
 from modules.box__default.admin.models import role_user_link
@@ -199,7 +199,7 @@ class TestAdminAPI:
 
         assert response.status_code == 200
         assert b"test@gmail.com" in response.data
-        assert b"Edit User"
+        assert b"Edit User" in response.data
 
     def test_admin_edit_nonexisting_user_get(self, test_client):
         response = test_client.get(
@@ -208,7 +208,7 @@ class TestAdminAPI:
         )
 
         assert response.status_code == 200
-        assert b"Invalid user id"
+        assert b"Invalid user id" in response.data
         assert request.path == f"{module_info['url_prefix']}/"
 
     def test_admin_update_user_adding_new_roles_to_user(self, test_client):

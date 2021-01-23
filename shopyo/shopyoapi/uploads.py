@@ -69,4 +69,4 @@ def add_uncategorised_category():
 
         subcategory.products.extend([p1, p2, p3])
         category.subcategories.append(subcategory)
-        category.insert()
+        category.save()
