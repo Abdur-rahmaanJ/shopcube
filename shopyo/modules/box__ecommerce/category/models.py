@@ -6,11 +6,11 @@ from sqlalchemy import exists
 from sqlalchemy.orm import validates
 
 from shopyoapi.init import db
+from shopyoapi.models import PkModel
 
 
-class Category(db.Model):
+class Category(PkModel):
     __tablename__ = "categories"
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     subcategories = db.relationship(
         "SubCategory", backref="category", lazy=True
@@ -19,19 +19,8 @@ class Category(db.Model):
         "Resource", backref="resource_category", lazy=True,
     )
 
-    def insert(self):
-        """Save category to the database"""
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        """Update category"""
-        db.session.commit()
-
-    def delete(self):
-        """delete category"""
-        db.session.delete(self)
-        db.session.commit()
+    def __repr__(self):
+        return f"Category: {self.name}"
 
     @classmethod
     def category_exists(cls, name):
@@ -44,32 +33,14 @@ class Category(db.Model):
         return value.lower()
 
 
-class SubCategory(db.Model):
+class SubCategory(PkModel):
     __tablename__ = "subcategories"
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    # products = db.relationship(
-    #     "Product", backref="subcategory", lazy=True, cascade="all, delete"
-    # )
     products = db.relationship("Product", backref="subcategory", lazy=True)
     resources = db.relationship(
         "Resource", backref="resource_subcategory", lazy=True
     )
-
-    def insert(self):
-        """Save category to the database"""
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        """Update category"""
-        db.session.commit()
-
-    def delete(self):
-        """delete category"""
-        db.session.delete(self)
-        db.session.commit()
 
     @classmethod
     def category_exists(cls, name):
