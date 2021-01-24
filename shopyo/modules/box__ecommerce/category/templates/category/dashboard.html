@@ -21,7 +21,7 @@ $(function() {
     $('.delete_me').click(function() {
         var id = $(this).attr('id');
         console.log(id);
-        var name = id.split('-')[1];
+        var name = id.split('-').slice(1).join('-');
         console.log(name);
         var ask = confirm("Do you want to delete ?");
         if (ask === true) {
