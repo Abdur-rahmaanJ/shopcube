@@ -33,6 +33,10 @@ python manage.py rundebug
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
+# First time contributing?
+
+We have a 100% first-timers friendly policy. Check out the [testimonials](https://github.com/Abdur-rahmaanJ/shopyo/discussions/307).
+
 # Big??
 
 Powered by apps / modules. Add as many as you like. 
