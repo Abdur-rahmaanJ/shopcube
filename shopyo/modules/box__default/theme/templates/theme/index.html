@@ -32,13 +32,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {%for key in all_info%}
+                    {%for key in all_front_info%}
                         <tr>
                             <td>{{key}}</td>
-                            <td>{{all_info[key]['author']}}</td>
+                            <td>{{all_front_info[key]['author']}}</td>
                             <td>
-                                {%if active_theme != key%}
-                                    <a class="btn btn-info" href="{{url_for('theme.activate', theme_name=key)}}">activate</a>
+                                {%if active_front_theme != key%}
+                                    <a class="btn btn-info" href="{{url_for('theme.activate_front_theme', theme_name=key)}}">activate</a>
                                 {%else%}
                                 active
                                 {%endif%}

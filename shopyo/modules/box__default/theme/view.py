@@ -46,17 +46,20 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 def index():
 
     context = {}
-    themes_path = os.path.join(current_app.config["BASE_DIR"], "themes")
-    all_info = {}
-    theme_folders = get_folders(themes_path)
-    for folder in theme_folders:
-        theme_path = os.path.join(themes_path, folder)
+
+    front_themes_path = os.path.join(current_app.config["BASE_DIR"], "themes", "front")
+    all_front_info = {}
+    front_theme_folders = get_folders(front_themes_path)
+    for folder in front_theme_folders:
+        theme_path = os.path.join(front_themes_path, folder)
         info_path = os.path.join(theme_path, "info.json")
         with open(info_path) as f:
-            all_info[folder] = json.load(f)
+            all_front_info[folder] = json.load(f)
 
-    active_theme = get_setting("ACTIVE_FRONT_THEME")
-    context.update({"all_info": all_info, "active_theme": active_theme})
+    active_front_theme = get_setting("ACTIVE_FRONT_THEME")
+
+    
+    context.update({"all_front_info": all_front_info, "active_front_theme": active_front_theme})
     context.update(module_settings)
 
     return render_template(
@@ -64,9 +67,9 @@ def index():
     )
 
 
-@module_blueprint.route("/activate/<theme_name>")
+@module_blueprint.route("/activate/front/<theme_name>")
 @login_required
-def activate(theme_name):
+def activate_front_theme(theme_name):
     set_setting("ACTIVE_FRONT_THEME", theme_name)
 
     # with app.app_context():
