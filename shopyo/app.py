@@ -109,7 +109,7 @@ def create_app(config_name):
     @app.context_processor
     def inject_global_vars():
         # theme_dir = os.path.join(
-        #     app.config["BASE_DIR"], "themes", get_setting("ACTIVE_THEME")
+        #     app.config["BASE_DIR"], "themes", get_setting("ACTIVE_FRONT_THEME")
         # )
         # info_path = os.path.join(theme_dir, "info.json")
         # with open(info_path) as f:
@@ -118,12 +118,12 @@ def create_app(config_name):
         APP_NAME = get_setting("APP_NAME")
         SECTION_NAME = get_setting("SECTION_NAME")
         SECTION_ITEMS = get_setting("SECTION_ITEMS")
-        # ACTIVE_THEME = get_setting("ACTIVE_THEME")
-        # ACTIVE_THEME_VERSION = info_data["version"]
-        # ACTIVE_THEME_STYLES_URL = url_for(
+        # ACTIVE_FRONT_THEME = get_setting("ACTIVE_FRONT_THEME")
+        # ACTIVE_FRONT_THEME_VERSION = info_data["version"]
+        # ACTIVE_FRONT_THEME_STYLES_URL = url_for(
         #     "resource.active_theme_css",
-        #     active_theme=ACTIVE_THEME,
-        #     v=ACTIVE_THEME_VERSION,
+        #     active_theme=ACTIVE_FRONT_THEME,
+        #     v=ACTIVE_FRONT_THEME_VERSION,
         # )
         CONTACT_URL = url_for("contact.index")
 
@@ -131,9 +131,9 @@ def create_app(config_name):
             "APP_NAME": APP_NAME,
             "SECTION_NAME": SECTION_NAME,
             "SECTION_ITEMS": SECTION_ITEMS,
-            # "ACTIVE_THEME": ACTIVE_THEME,
-            # "ACTIVE_THEME_VERSION": ACTIVE_THEME_VERSION,
-            # "ACTIVE_THEME_STYLES_URL": ACTIVE_THEME_STYLES_URL,
+            # "ACTIVE_FRONT_THEME": ACTIVE_FRONT_THEME,
+            # "ACTIVE_FRONT_THEME_VERSION": ACTIVE_FRONT_THEME_VERSION,
+            # "ACTIVE_FRONT_THEME_STYLES_URL": ACTIVE_FRONT_THEME_STYLES_URL,
             "CONTACT_URL": CONTACT_URL,
             "len": len,
             "current_user": current_user,

@@ -55,7 +55,7 @@ def index():
         with open(info_path) as f:
             all_info[folder] = json.load(f)
 
-    active_theme = get_setting("ACTIVE_THEME")
+    active_theme = get_setting("ACTIVE_FRONT_THEME")
     context.update({"all_info": all_info, "active_theme": active_theme})
     context.update(module_settings)
 
@@ -67,7 +67,7 @@ def index():
 @module_blueprint.route("/activate/<theme_name>")
 @login_required
 def activate(theme_name):
-    set_setting("ACTIVE_THEME", theme_name)
+    set_setting("ACTIVE_FRONT_THEME", theme_name)
 
     # with app.app_context():
 

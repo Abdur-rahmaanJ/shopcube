@@ -8,7 +8,7 @@
       "APP_NAME": "Demo",
       "SECTION_NAME": "Category",
       "SECTION_ITEMS": "Products",
-      "ACTIVE_THEME": "boogle",
+      "ACTIVE_FRONT_THEME": "boogle",
       "CURRENCY": "MUR"
     }
 }

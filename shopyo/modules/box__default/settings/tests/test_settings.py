@@ -66,13 +66,13 @@ class TestSettingsAPI:
         assert response.status_code == 200
         assert b"APP_NAME" in response.data
         assert b"SECTION_NAME" in response.data
-        assert b"ACTIVE_THEME" in response.data
+        assert b"ACTIVE_FRONT_THEME" in response.data
         assert b"SECTION_ITEMS" in response.data
         assert b"CURRENCY" in response.data
 
     @pytest.mark.parametrize('setting',
                              ["APP_NAME", "SECTION_NAME",
-                              "SECTION_ITEMS", "ACTIVE_THEME",
+                              "SECTION_ITEMS", "ACTIVE_FRONT_THEME",
                               "SECTION_ITEMS", "CURRENCY"])
     def test_settings_edit(self, test_client, setting):
 

@@ -50,7 +50,7 @@ def get_product(product_id):
 def homepage():
     # cant be defined above but must be manually set each time
     # active_theme_dir = os.path.join(
-    #     dirpath, "..", "..", "themes", get_setting("ACTIVE_THEME")
+    #     dirpath, "..", "..", "themes", get_setting("ACTIVE_FRONT_THEME")
     # )
     # module_blueprint.template_folder = active_theme_dir
 
@@ -59,7 +59,7 @@ def homepage():
     cart_info = get_cart_data()
     context.update(cart_info)
     return render_template(
-        get_setting("ACTIVE_THEME") + "/index.html", **context
+        get_setting("ACTIVE_FRONT_THEME") + "/index.html", **context
     )
 
 
