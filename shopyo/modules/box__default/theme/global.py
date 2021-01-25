@@ -9,7 +9,7 @@ from shopyoapi.enhance import get_setting
 
 def get_front_theme_dir():
     theme_dir = os.path.join(
-        root_path, "themes", get_setting("ACTIVE_FRONT_THEME")
+        root_path, "themes", "front", get_setting("ACTIVE_FRONT_THEME")
     )
     return theme_dir
 

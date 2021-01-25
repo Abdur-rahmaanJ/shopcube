@@ -97,7 +97,7 @@ def create_app(config_name):
     # custom templates folder
     #
     with app.app_context():
-        theme_dir = os.path.join(app.config["BASE_DIR"], "themes")
+        theme_dir = os.path.join(app.config["BASE_DIR"], "themes", "front")
         my_loader = jinja2.ChoiceLoader(
             [app.jinja_loader, jinja2.FileSystemLoader([theme_dir]),]
         )
