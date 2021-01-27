@@ -1,64 +1,28 @@
-'''
+"""
 commandline utilities functions
-
-
-# Past view.py code
-
-import os
-import json
-
-from flask import Blueprint
-# from flask import render_template
-# from flask import url_for
-# from flask import redirect
-# from flask import flash
-# from flask import request
-
-# #
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
-
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
-
-
-module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
-
-@module_blueprint.route("/")
-def index():
-    return module_info['display_string']
-'''
-
+"""
 import json
 import os
 import re
-import shutil
 import subprocess
 import sys
 
+from app import app
+from shopyoapi.init import db
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
 from shopyoapi.uploads import add_uncategorised_category
-
-# from .file import trycopytree
-# from .file import trycopy
+from shopyoapi.cmd_helper import remove_pycache
+from shopyoapi.cmd_helper import remove_file_or_dir
 from .file import trymkdir
 from .file import trymkfile
 
 
 def clean():
     """
-    cleans shopyo.db __pycache__ and migrations/
+    Deletes shopyo.db and migrations/ if present in current working directory.
+    Deletes all __pycache__ folders starting from current working directory
+    all the way to leaf directory.
 
     Parameters
     ----------
@@ -70,21 +34,15 @@ def clean():
         ...
 
     """
-    if os.path.exists("shopyo.db"):
-        os.remove("shopyo.db")
-        print("shopyo.db successfully deleted")
-    else:
-        print("shopyo.db doesn't exist")
-    if os.path.exists("__pycache__"):
-        shutil.rmtree("__pycache__")
-        print("__pycache__ successfully deleted")
-    else:
-        print("__pycache__ doesn't exist")
-    if os.path.exists("migrations"):
-        shutil.rmtree("migrations")
-        print("migrations successfully deleted")
-    else:
-        print("migrations folder doesn't exist")
+    # getting app context creates the shopyo.db file even if it is not present
+    with app.test_request_context():
+        db.drop_all()
+        db.engine.execute('DROP TABLE IF EXISTS alembic_version;')
+        print("[x] all tables dropped")
+
+    remove_pycache(os.getcwd())
+    remove_file_or_dir("shopyo.db")
+    remove_file_or_dir("migrations")
 
 
 def initialise():
