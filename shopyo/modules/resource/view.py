@@ -46,10 +46,19 @@ def index():
     return module_info["display_string"]
 
 
-@module_blueprint.route("/theme/<active_theme>/styles.css", methods=["GET"])
-def active_theme_css(active_theme):
+@module_blueprint.route("/theme/front/<active_theme>/styles.css", methods=["GET"])
+def active_front_theme_css(active_theme):
     theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "themes", active_theme
+        current_app.config["BASE_DIR"], "themes", "front", active_theme
+    )
+    # return theme_dir
+    return send_from_directory(theme_dir, "styles.css")
+
+
+@module_blueprint.route("/theme/back/<active_theme>/styles.css", methods=["GET"])
+def active_back_theme_css(active_theme):
+    theme_dir = os.path.join(
+        current_app.config["BASE_DIR"], "themes", "back", active_theme
     )
     # return theme_dir
     return send_from_directory(theme_dir, "styles.css")

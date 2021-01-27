@@ -44,7 +44,7 @@
         box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
     }
     </style>
-    {% include ACTIVE_THEME+'/sections/resources.html'%}
+    {% include get_active_front_theme()+'/sections/resources.html'%}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
@@ -67,7 +67,7 @@
 </head>
 
 <body>
-    {% include ACTIVE_THEME+'/sections/nav.html'%}
+    {% include get_active_front_theme()+'/sections/nav.html'%}
     <div class="shop-spacer-1">
     </div>
     <nav aria-label="breadcrumb ">
@@ -125,7 +125,7 @@
             </div>
         </div>
     </div>
-    {% include ACTIVE_THEME+'/sections/footer.html'%}
+    {% include get_active_front_theme()+'/sections/footer.html'%}
 </body>
 
 </html>

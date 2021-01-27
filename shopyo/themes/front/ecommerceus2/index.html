@@ -75,7 +75,7 @@
   width: 100%;
 }
 		</style>
-		{% include ACTIVE_THEME+'/sections/resources.html'%}
+		{% include get_active_front_theme()+'/sections/resources.html'%}
 
 		<script type="text/javascript">
 $(function () {
@@ -88,13 +88,13 @@ $(function () {
 	</head>
 <body>
 
-	{% include ACTIVE_THEME+'/sections/nav.html'%}
+	{% include get_active_front_theme()+'/sections/nav.html'%}
 	<header style=""> <!--https://startbootstrap.com/snippets/full-slider-->
 
-  		{% include ACTIVE_THEME+'/sections/carousel.html'%}
+  		{% include get_active_front_theme()+'/sections/carousel.html'%}
 	</header>
 
-	{% include ACTIVE_THEME+'/sections/image_row.html'%}
+	{% include get_active_front_theme()+'/sections/image_row.html'%}
 
 <div class="container p-5">
 	<div class="text-center">
@@ -211,6 +211,6 @@ $(function () {
 
 
 
-	{% include ACTIVE_THEME+'/sections/footer.html'%}
+	{% include get_active_front_theme()+'/sections/footer.html'%}
 </body>
 </html>
