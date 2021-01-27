@@ -1,11 +1,8 @@
 import subprocess
-
 import click
 
 from app import app
-
 from shopyoapi.cmd import clean
-
 from shopyoapi.cmd import create_box
 from shopyoapi.cmd import create_module
 from shopyoapi.cmd import create_module_in_box
@@ -40,13 +37,11 @@ def process(args):
         print("test ok")
     elif args[0] == "startapp" and args[1]:
         create_module(args[1])
-
     elif args[0] == "startbox" and args[1]:
         create_box(args[1])
     elif args[0] == "startsubapp" and args[1] and args[3]:
         if args[2].lower() == "in":
             create_module_in_box(args[1], args[3])
-
     elif args[0] == "db":
         try:
             autoload_models()
