@@ -13,6 +13,6 @@ script:
     - sphinx-build -b html sphinx_source docs
     - cd shopyo
     - echo 'Running Tests....'
-    - coverage run --source . -m pytest
+    - coverage run --branch --source . -m pytest
 after_success:
     - codecov   # submit coverage
