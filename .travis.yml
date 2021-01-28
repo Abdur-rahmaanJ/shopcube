@@ -8,13 +8,11 @@ before_install:
     - python --version
     - pip install -U pip
 install:
-    # Install remaining dev requirements
     - pip install -r dev_requirements.txt
 script:
     - sphinx-build -b html sphinx_source docs
     - cd shopyo
     - echo 'Running Tests....'
     - coverage run --source . -m pytest
-    - coverage report
 after_success:
     - codecov   # submit coverage
