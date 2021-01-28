@@ -4,13 +4,13 @@ from flask import current_app
 import os
 import json
 
-from shopyoapi.path import root_path
+from shopyoapi.path import themes_path
 from shopyoapi.enhance import get_setting
 
 
 def get_front_theme_dir():
     theme_dir = os.path.join(
-        root_path, "themes", "front", get_setting("ACTIVE_FRONT_THEME")
+        themes_path, "front", get_setting("ACTIVE_FRONT_THEME")
     )
     return theme_dir
 
@@ -40,7 +40,7 @@ def get_active_front_theme_styles_url():
 
 def get_back_theme_dir():
     theme_dir = os.path.join(
-        root_path, "themes", "back", get_setting("ACTIVE_BACK_THEME")
+        themes_path, "back", get_setting("ACTIVE_BACK_THEME")
     )
     return theme_dir
 
