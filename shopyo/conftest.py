@@ -147,14 +147,14 @@ class AuthActions:
 
     def login(self, user, password="pass"):
         return self._client.post(
-            url_for("login.login"),
+            url_for("auth.login"),
             data=dict(email=user.email, password=password),
             follow_redirects=True,
         )
 
     def logout(self):
         return self._client.get(
-            url_for("login.logout"), follow_redirects=True)
+            url_for("auth.logout"), follow_redirects=True)
 
 
 # Want TO USE THE BELOW 2 FIXTURES TO DYNAMICALLY

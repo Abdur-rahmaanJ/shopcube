@@ -17,7 +17,7 @@ def test_valid_login_logout(test_client):
     """
     # Login to the app
     response = test_client.post(
-        url_for("login.login"),
+        url_for("auth.login"),
         data=dict(email="admin1@domain.com", password="pass"),
         follow_redirects=True,
     )
@@ -28,7 +28,7 @@ def test_valid_login_logout(test_client):
     assert b"Notif test" in response.data
 
     # Check response is redirect to login page
-    response = test_client.get(url_for("login.logout"), follow_redirects=True)
+    response = test_client.get(url_for("auth.logout"), follow_redirects=True)
     assert response.status_code == 200
-    assert request.path == url_for("login.login")
+    assert request.path == url_for("auth.login")
     assert b"Successfully logged out" in response.data

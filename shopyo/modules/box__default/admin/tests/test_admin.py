@@ -46,7 +46,7 @@ class TestAdminInvalidAuth:
         )
 
         assert response.status_code == 200
-        assert request.path == url_for("login.login")
+        assert request.path == url_for("auth.login")
 
     @pytest.mark.parametrize('route', routes_post)
     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
@@ -56,7 +56,7 @@ class TestAdminInvalidAuth:
         )
 
         assert response.status_code == 200
-        assert request.path == url_for("login.login")
+        assert request.path == url_for("auth.login")
 
     @pytest.mark.usefixtures("login_non_admin_user")
     @pytest.mark.parametrize('route', routes_get)
