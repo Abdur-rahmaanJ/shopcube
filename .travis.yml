@@ -7,20 +7,12 @@ python:
 before_install:
     - python --version
     - pip install -U pip
-    - pip install codecov
-    - pip install Werkzeug
-    - pip install coverage
-    - pip install Flask-Script
-    - pip install Flask-Testing
-    - pip install selenium
 install:
-    # Install remaining dev requirements
     - pip install -r dev_requirements.txt
-    - pip install -U pytest
 script:
     - sphinx-build -b html sphinx_source docs
     - cd shopyo
     - echo 'Running Tests....'
-    - python -m pytest .
+    - coverage run --branch --source . -m pytest
 after_success:
     - codecov   # submit coverage
