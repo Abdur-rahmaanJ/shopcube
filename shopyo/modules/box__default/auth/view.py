@@ -16,7 +16,7 @@ from shopyoapi.html import notify_danger
 from shopyoapi.html import notify_success
 
 from modules.box__default.admin.models import User
-from modules.box__default.login.forms import LoginForm
+from modules.box__default.auth.forms import LoginForm
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -24,15 +24,15 @@ module_info = {}
 with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-login_blueprint = Blueprint(
-    "login",
+auth_blueprint = Blueprint(
+    "auth",
     __name__,
     url_prefix=module_info["url_prefix"],
     template_folder="templates",
 )
 
 
-@login_blueprint.route("/", methods=["GET", "POST"])
+@auth_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     context = {}
     login_form = LoginForm()
@@ -43,13 +43,13 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user is None or not user.check_hash(password):
             flash(notify_danger("please check your user id and password"))
-            return redirect(url_for("login.login"))
+            return redirect(url_for("auth.login"))
         login_user(user)
         return redirect(url_for("dashboard.index"))
-    return render_template("login/login.html", **context)
+    return render_template("auth/login.html", **context)
 
 
-@login_blueprint.route("/shop", methods=["GET", "POST"])
+@auth_blueprint.route("/shop", methods=["GET", "POST"])
 def shop_login():
     context = {}
     login_form = LoginForm()
@@ -64,12 +64,12 @@ def shop_login():
                 return redirect(url_for("shop.checkout"))
             login_user(user)
             return redirect(url_for("shop.checkout"))
-    return render_template("login/shop_login.html", **context)
+    return render_template("auth/shop_login.html", **context)
 
 
-@login_blueprint.route("/logout")
+@auth_blueprint.route("/logout")
 @login_required
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    return redirect(url_for("login.login"))
+    return redirect(url_for("auth.login"))
