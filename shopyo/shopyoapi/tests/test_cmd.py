@@ -23,7 +23,7 @@ class TestCommandlineClean:
         )
 
         assert os.path.exists("__pycache__") is False
-        assert captured.out == expected
+        assert expected in captured.out
 
     def test_clean_pycache_in_one_level_below_cwd(self, tmpdir, capfd):
         path = tmpdir.mkdir("shopyo")
@@ -39,7 +39,7 @@ class TestCommandlineClean:
         )
 
         assert os.path.exists(pycache_path) is False
-        assert captured.out == expected
+        assert expected in captured.out
 
     def test_clean_pycache_in_multiple_levels_below_cwd(self, tmpdir, capfd):
         path = tmpdir.mkdir("shopyo").mkdir("shopyo").mkdir("mod").mkdir("box")
@@ -55,7 +55,7 @@ class TestCommandlineClean:
         )
 
         assert os.path.exists(pycache_path) is False
-        assert captured.out == expected
+        assert expected in captured.out
 
     def test_clean_multiple_pycache_in_nested_directories(self, tmpdir, capfd):
         path1 = tmpdir.mkdir("__pycache__")
@@ -74,7 +74,7 @@ class TestCommandlineClean:
         assert os.path.exists(path1) is False
         assert os.path.exists(path2) is False
         assert os.path.exists(path3) is False
-        assert captured.out == expected
+        assert expected in captured.out
 
     def test_no_clean_applied_on_multiple_pycache(self, tmpdir, capfd):
         path1 = tmpdir.mkdir("__pycache__")
@@ -99,7 +99,7 @@ class TestCommandlineClean:
         )
 
         assert os.path.exists(shopyo_db) is False
-        assert captured.out == expected
+        assert expected in captured.out
 
     def test_clean_on_migration_folder(self, tmpdir, capfd):
         migrations_path = tmpdir.mkdir("migrations")
@@ -114,7 +114,7 @@ class TestCommandlineClean:
         )
 
         assert os.path.exists(migrations_path) is False
-        assert captured.out == expected
+        assert expected in captured.out
 
     def test_no_clean_on_shopyo_and_migrations(self, tmpdir):
         migrations_path = tmpdir.mkdir("migrations")
@@ -135,6 +135,6 @@ class TestCommandlineClean:
             "[ ] file/folder 'migrations' doesn't exist\n"
         )
 
-        assert captured.out == expected
+        assert expected in captured.out
 
     # TODO: add test_clean for postgresSQL to see if tables dropped @rehmanis

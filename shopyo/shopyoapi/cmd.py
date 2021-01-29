@@ -17,6 +17,10 @@ from shopyoapi.cmd_helper import remove_file_or_dir
 from .file import trymkdir
 from .file import trymkfile
 
+# Move this to some where else. Placed here more now
+SEP_CHAR = "#"
+SEP_NUM = 23
+
 
 def clean():
     """
@@ -35,6 +39,9 @@ def clean():
 
     """
     # getting app context creates the shopyo.db file even if it is not present
+    print("Cleaning")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+
     with app.test_request_context():
         db.drop_all()
         db.engine.execute('DROP TABLE IF EXISTS alembic_version;')
@@ -59,13 +66,10 @@ def initialise():
 
 
     """
-    SEP_CHAR = "#"
-    SEP_NUM = 23
-
     with open("config.json", "r") as config:
         config = json.load(config)
 
-    print("Creating Db")
+    print("\nCreating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
     subprocess.run(
         [sys.executable, "manage.py", "db", "init"], stdout=subprocess.PIPE
@@ -80,7 +84,7 @@ def initialise():
         [sys.executable, "manage.py", "db", "upgrade"], stdout=subprocess.PIPE
     )
 
-    print("Initialising User")
+    print("\nInitialising User")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
     add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
 

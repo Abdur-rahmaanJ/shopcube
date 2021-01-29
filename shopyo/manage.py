@@ -20,6 +20,7 @@ def runserver():
 def process(args):
     printinfo()
     if args[0] == "initialise" or args[0] == "initialize":
+        clean()
         autoload_models()
         initialise()
     elif args[0] == "clean":

@@ -11,7 +11,8 @@ def autoload_models():
     -------
     None
     """
-    print("Auto importing models")
+    print("\nAuto importing models")
+    print("#" * 23, end="\n\n")
     for folder in os.listdir("modules"):
         if folder.startswith("__"):
             continue
