@@ -3,8 +3,11 @@
 <h1 align="center">
   <br>
   <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/dev/github_banner.png" alt="shopyo" width="" height=""></a>
+  
+  
 </h1>
 
+<img src="https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS">
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
