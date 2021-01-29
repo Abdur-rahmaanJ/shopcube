@@ -411,11 +411,13 @@ def checkout_process():
                 order.logged_in_customer_email = current_user.email
 
             if form.applyCoupon.data:
-                coupon = Coupon.query.filter(Coupon.string == form.coupon.data).first()
+                coupon = Coupon.query.filter(
+                    Coupon.string == form.coupon.data
+                ).first()
                 if coupon:
                     order.coupon = coupon
                 else:
-                    flash(notify_warning('Invalid Coupon'))
+                    flash(notify_warning("Invalid Coupon"))
 
             cart_info = get_cart_data()
             cart_data = cart_info["cart_data"]

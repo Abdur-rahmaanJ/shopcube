@@ -42,12 +42,12 @@ class ModuleHelp:
         return copy.deepcopy(self._context)
 
     def method(self, methodname):
-        return '{}.{}'.format(self.info['module_name'], methodname)
+        return "{}.{}".format(self.info["module_name"], methodname)
 
     def get_asset(self, assetname):
         """returns url for static, filename=assetname"""
-        return url_for('static', filename=assetname)
+        return url_for("static", filename=assetname)
 
     def get_static(self, filename):
-        '''Django inspired, returns get asset for modules/filename'''
-        return self.get_asset('modules/{}'.format(filename))
+        """Django inspired, returns get asset for modules/filename"""
+        return self.get_asset("modules/{}".format(filename))

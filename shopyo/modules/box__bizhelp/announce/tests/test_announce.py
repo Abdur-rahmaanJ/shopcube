@@ -70,6 +70,7 @@ def test_announce_add_check(test_client):
     assert b"abc" in response.data
     assert b"def" in response.data
 
+
 def test_announce_add_check_wrong(test_client):
     """"""
     response = test_client.post(
@@ -77,16 +78,19 @@ def test_announce_add_check_wrong(test_client):
         data=dict(title="", content="abc_wrong"),
         follow_redirects=True,
     )
-    
-    announcement = Announcement.query.filter(Announcement.content == 'abc_wrong').first()
+
+    announcement = Announcement.query.filter(
+        Announcement.content == "abc_wrong"
+    ).first()
     assert announcement is None
+
 
 def test_announce_edit_check(test_client):
     """"""
-    announcement = Announcement(title='abcx', content='def')
+    announcement = Announcement(title="abcx", content="def")
     announcement.save()
 
-    assert Announcement.query.get(1).title == 'abcx'
+    assert Announcement.query.get(1).title == "abcx"
 
     response = test_client.post(
         url_for(module_info["module_name"] + ".edit_check", announce_id=1),

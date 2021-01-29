@@ -4,8 +4,10 @@ import os
 # from flask import render_template
 from flask import Blueprint
 from flask import current_app
+
 # from flask import redirect
 from flask import send_from_directory
+
 # from flask import url_for
 
 from flask_login import login_required
@@ -16,6 +18,7 @@ from PIL import Image as PILimage
 
 # from modules.box__ecommerce.product.models import Product
 from modules.resource.models import Image
+
 # from modules.resource.models import Resource
 
 # from flask import flash
@@ -46,19 +49,31 @@ def index():
     return module_info["display_string"]
 
 
-@module_blueprint.route("/theme/front/<active_theme>/styles.css", methods=["GET"])
+@module_blueprint.route(
+    "/theme/front/<active_theme>/styles.css", methods=["GET"]
+)
 def active_front_theme_css(active_theme):
     theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "static", "themes", "front", active_theme
+        current_app.config["BASE_DIR"],
+        "static",
+        "themes",
+        "front",
+        active_theme,
     )
     # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
 
 
-@module_blueprint.route("/theme/back/<active_theme>/styles.css", methods=["GET"])
+@module_blueprint.route(
+    "/theme/back/<active_theme>/styles.css", methods=["GET"]
+)
 def active_back_theme_css(active_theme):
     theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "static", "themes", "back", active_theme
+        current_app.config["BASE_DIR"],
+        "static",
+        "themes",
+        "back",
+        active_theme,
     )
     # return theme_dir
     return send_from_directory(theme_dir, "styles.css")

@@ -42,7 +42,7 @@ def clean():
     # getting app context creates the shopyo.db file even if it is not present
     with app.test_request_context():
         db.drop_all()
-        db.engine.execute('DROP TABLE IF EXISTS alembic_version;')
+        db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
         print("[x] all tables dropped")
 
     remove_pycache(os.getcwd())
@@ -138,12 +138,10 @@ Please add your functional tests to this file.
 Please add your models tests to this file.
 """
     trymkfile(
-        f"{base_path}/tests/test_{modulename}_functional.py",
-        test_func_content
+        f"{base_path}/tests/test_{modulename}_functional.py", test_func_content
     )
     trymkfile(
-        f"{base_path}/tests/test_{modulename}_models.py",
-        test_model_content
+        f"{base_path}/tests/test_{modulename}_models.py", test_model_content
     )
     view_content = """
 from shopyoapi.module import ModuleHelp
@@ -197,7 +195,7 @@ def index():
 
     trymkdir(f"{base_path}/templates/{modulename}/blocks")
     trymkfile(f"{base_path}/templates/{modulename}/blocks/sidebar.html", "")
-    dashboard_file_content = '''
+    dashboard_file_content = """
 {% extends "base/module_base.html" %}
 {% set active_page = info['display_string']+' dashboard' %}
 {% block pagehead %}
@@ -217,10 +215,10 @@ def index():
     </div>
  </div>
 {% endblock %}
-'''
+"""
     trymkfile(
         f"{base_path}/templates/{modulename}/dashboard.html",
-        dashboard_file_content
+        dashboard_file_content,
     )
     global_file_content = """
 available_everywhere = {
@@ -320,8 +318,7 @@ def collectstatic(target_module=None):
 
 
     """
-    modules_path_in_static = os.path.join(static_path, 'modules')
-
+    modules_path_in_static = os.path.join(static_path, "modules")
 
     if target_module is None:
         # clear modules dir
@@ -331,37 +328,49 @@ def collectstatic(target_module=None):
             trymkdir(modules_path_in_static)
         # look for static folders in all project
         for folder in get_folders(modules_path):
-            if folder.startswith('box__'):
+            if folder.startswith("box__"):
                 box_path = os.path.join(modules_path, folder)
                 for subfolder in get_folders(box_path):
                     module_name = subfolder
-                    module_static_folder = os.path.join(box_path, subfolder, 'static')
+                    module_static_folder = os.path.join(
+                        box_path, subfolder, "static"
+                    )
                     if not os.path.exists(module_static_folder):
                         continue
-                    module_in_static_dir = os.path.join(modules_path_in_static, module_name)
+                    module_in_static_dir = os.path.join(
+                        modules_path_in_static, module_name
+                    )
                     trycopytree(module_static_folder, module_in_static_dir)
             else:
                 module_name = folder
-                module_static_folder = os.path.join(modules_path, folder, 'static')
+                module_static_folder = os.path.join(
+                    modules_path, folder, "static"
+                )
                 if not os.path.exists(module_static_folder):
                     continue
-                module_in_static_dir = os.path.join(modules_path_in_static, module_name)
+                module_in_static_dir = os.path.join(
+                    modules_path_in_static, module_name
+                )
                 trycopytree(module_static_folder, module_in_static_dir)
     else:
         # copy only module's static folder
-        module_static_folder = os.path.join(modules_path, target_module, 'static')
+        module_static_folder = os.path.join(
+            modules_path, target_module, "static"
+        )
         if os.path.exists(module_static_folder):
-            if target_module.startswith('box__'):
-                if '/' in target_module:
-                    module_name = target_module.split('/')[1]
+            if target_module.startswith("box__"):
+                if "/" in target_module:
+                    module_name = target_module.split("/")[1]
                 else:
-                    print('Could not understand module name')
+                    print("Could not understand module name")
                     sys.exit()
             else:
                 module_name = target_module
-            module_in_static_dir = os.path.join(modules_path_in_static, module_name)
+            module_in_static_dir = os.path.join(
+                modules_path_in_static, module_name
+            )
             if os.path.exists(module_in_static_dir):
                 remove_file_or_dir(module_in_static_dir)
             trycopytree(module_static_folder, module_in_static_dir)
         else:
-            print('Module does not exist')
+            print("Module does not exist")

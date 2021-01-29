@@ -10,7 +10,9 @@ from modules.box__default.settings.models import Settings
 
 def get_active_theme_dir():
     active_theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "themes", get_setting("ACTIVE_FRONT_THEME")
+        current_app.config["BASE_DIR"],
+        "themes",
+        get_setting("ACTIVE_FRONT_THEME"),
     )
     return active_theme_dir
 
@@ -52,7 +54,9 @@ def base_context():
     """
 
     theme_dir = os.path.join(
-        current_app.config["BASE_DIR"], "themes", get_setting("ACTIVE_FRONT_THEME")
+        current_app.config["BASE_DIR"],
+        "themes",
+        get_setting("ACTIVE_FRONT_THEME"),
     )
     info_path = os.path.join(theme_dir, "info.json")
     with open(info_path) as f:

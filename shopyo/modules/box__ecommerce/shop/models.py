@@ -11,7 +11,9 @@ class Order(db.Model):
 
     logged_in_customer_email = db.Column(db.String(120), default="")
 
-    coupon = db.relationship('Coupon', backref='coupon_order', lazy=True, uselist=False)
+    coupon = db.relationship(
+        "Coupon", backref="coupon_order", lazy=True, uselist=False
+    )
 
     order_items = db.relationship(
         "OrderItem",
@@ -34,16 +36,18 @@ class Order(db.Model):
     payment_option_text = db.Column(db.String(120))
 
     shipment_option = db.relationship(
-        'DeliveryOption', 
-        backref='shipment_option_order', 
-        lazy=True, 
-        uselist=False)
+        "DeliveryOption",
+        backref="shipment_option_order",
+        lazy=True,
+        uselist=False,
+    )
 
     payment_option = db.relationship(
-        'PaymentOption', 
-        backref='payment_option_order', 
-        lazy=True, 
-        uselist=False)
+        "PaymentOption",
+        backref="payment_option_order",
+        lazy=True,
+        uselist=False,
+    )
 
     def add(self):
         db.session.add(self)

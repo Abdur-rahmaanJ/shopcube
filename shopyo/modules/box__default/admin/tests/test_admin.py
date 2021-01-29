@@ -20,7 +20,7 @@ module_path = os.path.dirname(dirpath)
 
 module_info = None
 
-with open(os.path.join(module_path, 'info.json')) as f:
+with open(os.path.join(module_path, "info.json")) as f:
     module_info = json.load(f)
 
 
@@ -30,15 +30,17 @@ class TestAdminInvalidAuth:
     """
 
     routes_get = [
-        "/", "/add", "/delete/<id>", "/edit/<id>",
-        "/roles", "/roles/<role_id>/delete",
+        "/",
+        "/add",
+        "/delete/<id>",
+        "/edit/<id>",
+        "/roles",
+        "/roles/<role_id>/delete",
     ]
 
-    routes_post = [
-        "/update", "/roles/update", "/roles/add", "/add"
-    ]
+    routes_post = ["/update", "/roles/update", "/roles/add", "/add"]
 
-    @pytest.mark.parametrize('route', routes_get)
+    @pytest.mark.parametrize("route", routes_get)
     def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
         auth.logout()
         response = test_client.get(
@@ -48,7 +50,7 @@ class TestAdminInvalidAuth:
         assert response.status_code == 200
         assert request.path == url_for("auth.login")
 
-    @pytest.mark.parametrize('route', routes_post)
+    @pytest.mark.parametrize("route", routes_post)
     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
         auth.logout()
         response = test_client.post(
@@ -59,7 +61,7 @@ class TestAdminInvalidAuth:
         assert request.path == url_for("auth.login")
 
     @pytest.mark.usefixtures("login_non_admin_user")
-    @pytest.mark.parametrize('route', routes_get)
+    @pytest.mark.parametrize("route", routes_get)
     def test_no_admin_access_if_not_admin_get(self, test_client, route):
         response = test_client.get(
             f"{module_info['url_prefix']}{route}", follow_redirects=True
@@ -70,7 +72,7 @@ class TestAdminInvalidAuth:
         assert b"You need to be an admin to view this page" in response.data
 
     @pytest.mark.usefixtures("login_non_admin_user")
-    @pytest.mark.parametrize('route', routes_post)
+    @pytest.mark.parametrize("route", routes_post)
     def test_no_admin_access_if_not_admin_post(self, test_client, route):
         response = test_client.post(
             f"{module_info['url_prefix']}{route}", follow_redirects=True
@@ -117,13 +119,13 @@ class TestAdminAPI:
             "last_name": "User",
             "is_admin": "",
             f"role_{role1.id}": "",
-            f"role_{role2.id}": ""
+            f"role_{role2.id}": "",
         }
 
         test_client.post(
             f"{module_info['url_prefix']}/add",
             data=data,
-            follow_redirects=True
+            follow_redirects=True,
         )
         test_user = User.query.filter(User.email == "test@gmail.com").scalar()
 
@@ -149,7 +151,7 @@ class TestAdminAPI:
         response = test_client.post(
             f"{module_info['url_prefix']}/add",
             data=data,
-            follow_redirects=True
+            follow_redirects=True,
         )
         test_users = User.query.filter(User.email == "test@gmail.com").count()
 
@@ -166,12 +168,13 @@ class TestAdminAPI:
 
         response = test_client.get(
             f"{module_info['url_prefix']}/delete/{user.id}",
-            follow_redirects=True
+            follow_redirects=True,
         )
         test_user = User.query.filter(User.email == user.email).scalar()
         test_roles = Role.query.count()
         user_role = (
-            User.query.join(role_user_link).join(Role)
+            User.query.join(role_user_link)
+            .join(Role)
             .filter(User.id == user.id)
             .scalar()
         )
@@ -184,7 +187,7 @@ class TestAdminAPI:
     def test_admin_delete_nonexisting_user_get(self, test_client):
         response = test_client.get(
             f"{module_info['url_prefix']}/delete/some_id",
-            follow_redirects=True
+            follow_redirects=True,
         )
 
         assert response.status_code == 200
@@ -203,8 +206,7 @@ class TestAdminAPI:
 
     def test_admin_edit_nonexisting_user_get(self, test_client):
         response = test_client.get(
-            f"{module_info['url_prefix']}/edit/some-id",
-            follow_redirects=True
+            f"{module_info['url_prefix']}/edit/some-id", follow_redirects=True
         )
 
         assert response.status_code == 200
@@ -223,13 +225,13 @@ class TestAdminAPI:
             "last_name": "User",
             "is_admin": "",
             f"role_{role1.id}": "",
-            f"role_{role2.id}": ""
+            f"role_{role2.id}": "",
         }
 
         response = test_client.post(
             f"{module_info['url_prefix']}/update",
             data=data,
-            follow_redirects=True
+            follow_redirects=True,
         )
 
         assert response.status_code == 200
@@ -261,7 +263,7 @@ class TestAdminAPI:
         response = test_client.post(
             f"{module_info['url_prefix']}/update",
             data=data,
-            follow_redirects=True
+            follow_redirects=True,
         )
 
         assert response.status_code == 200
@@ -284,11 +286,7 @@ class TestAdminAPI:
             follow_redirects=True,
         )
 
-        role = (
-            Role.query
-            .filter(Role.name == "new-role")
-            .scalar()
-        )
+        role = Role.query.filter(Role.name == "new-role").scalar()
         role_count = Role.query.count()
 
         assert response.status_code == 200
@@ -304,11 +302,7 @@ class TestAdminAPI:
             follow_redirects=True,
         )
         role_count = Role.query.count()
-        role = (
-            Role.query
-            .filter(Role.name == "new-role")
-            .scalar()
-        )
+        role = Role.query.filter(Role.name == "new-role").scalar()
 
         assert response.status_code == 200
         assert b"Role already exists" in response.data

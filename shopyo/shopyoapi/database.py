@@ -15,16 +15,16 @@ def autoload_models():
     for folder in os.listdir("modules"):
         if folder.startswith("__"):
             continue
-        elif folder.startswith('box__'):
-            for sub_folder in os.listdir(
-                os.path.join("modules", folder)
-            ):
+        elif folder.startswith("box__"):
+            for sub_folder in os.listdir(os.path.join("modules", folder)):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
                 try:
-                    to_load_submodel = "modules.{}.{}.models".format(folder, sub_folder)
+                    to_load_submodel = "modules.{}.{}.models".format(
+                        folder, sub_folder
+                    )
                     importlib.import_module(to_load_submodel)
                     print("[x]", "imported", to_load_submodel)
                 except Exception as e:

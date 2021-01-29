@@ -153,8 +153,7 @@ class AuthActions:
         )
 
     def logout(self):
-        return self._client.get(
-            url_for("auth.logout"), follow_redirects=True)
+        return self._client.get(url_for("auth.logout"), follow_redirects=True)
 
 
 # Want TO USE THE BELOW 2 FIXTURES TO DYNAMICALLY

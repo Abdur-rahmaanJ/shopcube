@@ -17,22 +17,19 @@ from shopyoapi.init import db
 from shopyoapi.models import PkModel
 
 role_user_link = db.Table(
-
     "role_user_link",
-
     db.Column(
         "user_id",
         db.Integer,
-        db.ForeignKey("users.id", ondelete='CASCADE'),
-        primary_key=True
+        db.ForeignKey("users.id", ondelete="CASCADE"),
+        primary_key=True,
     ),
-
     db.Column(
         "role_id",
         db.Integer,
-        db.ForeignKey("roles.id", ondelete='CASCADE'),
-        primary_key=True
-    )
+        db.ForeignKey("roles.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -75,9 +72,7 @@ class User(UserMixin, PkModel):
     email_confirm_date = db.Column(db.DateTime)
 
     # A user can have many roles and a role can have many users
-    roles = db.relationship(
-        "Role", secondary=role_user_link, backref="users",
-    )
+    roles = db.relationship("Role", secondary=role_user_link, backref="users",)
 
     def set_hash(self, password):
         self.password = generate_password_hash(password, method="sha256")
@@ -106,5 +101,6 @@ class User(UserMixin, PkModel):
 
 class Role(PkModel):
     """A role for a user."""
+
     __tablename__ = "roles"
     name = db.Column(db.String(100), nullable=False)

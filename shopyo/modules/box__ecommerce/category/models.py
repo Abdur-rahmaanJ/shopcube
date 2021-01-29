@@ -28,7 +28,7 @@ class Category(PkModel):
             exists().where(cls.name == name.lower())
         ).scalar()
 
-    @validates('name')
+    @validates("name")
     def convert_lower(self, key, value):
         return value.lower()
 
@@ -48,6 +48,6 @@ class SubCategory(PkModel):
             exists().where(cls.name == name.lower())
         ).scalar()
 
-    @validates('name')
+    @validates("name")
     def convert_lower(self, key, value):
         return value.lower()
