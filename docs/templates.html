@@ -259,9 +259,9 @@ notification mechanism used for shopyo api</p>
 
 <span class="k">def</span> <span class="nf">get_active_theme_dir</span><span class="p">():</span>
     <span class="n">active_theme_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span> <span class="s2">&quot;themes&quot;</span><span class="p">,</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">active_theme_dir</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;themes&quot;</span><span class="p">,</span>
+        <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">),</span>
 </pre></div>
 </td></tr></table></div>
 </div>
