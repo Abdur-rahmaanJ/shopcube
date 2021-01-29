@@ -35,6 +35,8 @@ name. The EuroPython talk under the `Education Section <education.html>`_ might 
 .. code:: none
 
     product/
+        tests/
+        static/
         templates/
             product/
                 templatefile.html

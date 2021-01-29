@@ -1,0 +1,12 @@
+{
+        "display_string": "Demo",
+        "module_name":"demo",
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": "/demo",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

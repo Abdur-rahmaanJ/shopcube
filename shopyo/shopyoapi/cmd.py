@@ -14,8 +14,13 @@ from shopyoapi.uploads import add_setting
 from shopyoapi.uploads import add_uncategorised_category
 from shopyoapi.cmd_helper import remove_pycache
 from shopyoapi.cmd_helper import remove_file_or_dir
-from .file import trymkdir
-from .file import trymkfile
+from shopyoapi.path import root_path
+from shopyoapi.path import static_path
+from shopyoapi.path import modules_path
+from shopyoapi.file import trymkdir
+from shopyoapi.file import trymkfile
+from shopyoapi.file import get_folders
+from shopyoapi.file import trycopytree
 
 
 def clean():
@@ -125,6 +130,7 @@ def create_module(modulename, base_path=None):
     trymkdir(f"{base_path}/templates")
     trymkdir(f"{base_path}/templates/{modulename}")
     trymkdir(f"{base_path}/tests")
+    trymkdir(f"{base_path}/static")
     test_func_content = """
 Please add your functional tests to this file.
 """
@@ -296,3 +302,66 @@ def create_module_in_box(modulename, boxname):
     else:
         print(f"Creating module {module_path}")
         create_module(modulename, base_path=module_path)
+
+
+def collectstatic(target_module=None):
+    """
+    Copies module/static into /static/modules/module
+
+    Parameters
+    ----------
+    target_module: str
+        name of module, in alphanumeric-underscore,
+        supports module or box__name/module
+
+    Returns
+    -------
+    None
+
+
+    """
+    modules_path_in_static = os.path.join(static_path, 'modules')
+
+
+    if target_module is None:
+        # clear modules dir
+        if os.path.exists(modules_path_in_static):
+            remove_file_or_dir(modules_path_in_static)
+        else:
+            trymkdir(modules_path_in_static)
+        # look for static folders in all project
+        for folder in get_folders(modules_path):
+            if folder.startswith('box__'):
+                box_path = os.path.join(modules_path, folder)
+                for subfolder in get_folders(box_path):
+                    module_name = subfolder
+                    module_static_folder = os.path.join(box_path, subfolder, 'static')
+                    if not os.path.exists(module_static_folder):
+                        continue
+                    module_in_static_dir = os.path.join(modules_path_in_static, module_name)
+                    trycopytree(module_static_folder, module_in_static_dir)
+            else:
+                module_name = folder
+                module_static_folder = os.path.join(modules_path, folder, 'static')
+                if not os.path.exists(module_static_folder):
+                    continue
+                module_in_static_dir = os.path.join(modules_path_in_static, module_name)
+                trycopytree(module_static_folder, module_in_static_dir)
+    else:
+        # copy only module's static folder
+        module_static_folder = os.path.join(modules_path, target_module, 'static')
+        if os.path.exists(module_static_folder):
+            if target_module.startswith('box__'):
+                if '/' in target_module:
+                    module_name = target_module.split('/')[1]
+                else:
+                    print('Could not understand module name')
+                    sys.exit()
+            else:
+                module_name = target_module
+            module_in_static_dir = os.path.join(modules_path_in_static, module_name)
+            if os.path.exists(module_in_static_dir):
+                remove_file_or_dir(module_in_static_dir)
+            trycopytree(module_static_folder, module_in_static_dir)
+        else:
+            print('Module does not exist')

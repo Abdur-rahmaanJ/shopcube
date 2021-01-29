@@ -193,11 +193,11 @@
 51</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-        {% include ACTIVE_THEME+&#39;/sections/resources.html&#39;%}
+        {% include get_active_front_theme()+&#39;/sections/resources.html&#39;%}
         {% include &#39;base/blocks/flashed_messages.html&#39;%}
     <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">body</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">&gt;</span>
-    {% include ACTIVE_THEME+&#39;/sections/nav.html&#39;%}
+    {% include get_active_front_theme()+&#39;/sections/nav.html&#39;%}
 
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;{{url_for(&#39;contact.validate_message&#39;)}}&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span><span class="p">&gt;</span>
@@ -238,7 +238,7 @@
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
 
-    {% include ACTIVE_THEME+&#39;/sections/footer.html&#39;%}
+    {% include get_active_front_theme()+&#39;/sections/footer.html&#39;%}
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
@@ -259,7 +259,7 @@ notification mechanism used for shopyo api</p>
 
 <span class="k">def</span> <span class="nf">get_active_theme_dir</span><span class="p">():</span>
     <span class="n">active_theme_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span> <span class="s2">&quot;themes&quot;</span><span class="p">,</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_THEME&quot;</span><span class="p">)</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span> <span class="s2">&quot;themes&quot;</span><span class="p">,</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">active_theme_dir</span>
 </pre></div>

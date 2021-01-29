@@ -116,6 +116,8 @@ are modules/apps.</p>
 <p>Modules have the following structure, where product is the module
 name. The EuroPython talk under the <a class="reference external" href="education.html">Education Section</a> might be insightful</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>product/
+    tests/
+    static/
     templates/
         product/
             templatefile.html
@@ -201,7 +203,7 @@ specify the module url and panel icon.</p>
 </div>
 <p>This will be created as box__demo in modules/</p>
 <p>Then create the submodule:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp in box__demo
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp <span class="k">in</span> box__demo
 </pre></div>
 </div>
 <p>If you go to url <cite>/demoapp</cite>, you will get Demoapp returned</p>

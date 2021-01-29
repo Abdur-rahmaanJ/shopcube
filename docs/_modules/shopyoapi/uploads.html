@@ -88,10 +88,7 @@
 <span class="kn">from</span> <span class="nn">werkzeug.security</span> <span class="kn">import</span> <span class="n">generate_password_hash</span>
 
 <span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span>
-
 <span class="kn">from</span> <span class="nn">shopyoapi.init</span> <span class="kn">import</span> <span class="n">db</span>
-
-<span class="kn">from</span> <span class="nn">modules.box__default.admin.models</span> <span class="kn">import</span> <span class="n">Role</span>
 <span class="kn">from</span> <span class="nn">modules.box__default.admin.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">modules.box__ecommerce.category.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modules.box__ecommerce.category.models</span> <span class="kn">import</span> <span class="n">SubCategory</span>
@@ -107,7 +104,7 @@
         <span class="n">user</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">user</span><span class="o">.</span><span class="n">email_confirm_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span></div>
+        <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="add_setting"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.uploads.add_setting">[docs]</a><span class="k">def</span> <span class="nf">add_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -156,7 +153,7 @@
 
         <span class="n">subcategory</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">])</span>
         <span class="n">category</span><span class="o">.</span><span class="n">subcategories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subcategory</span><span class="p">)</span>
-        <span class="n">category</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span></div>
+        <span class="n">category</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 </pre></div>
 
           </div>
