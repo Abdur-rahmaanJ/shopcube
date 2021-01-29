@@ -273,7 +273,10 @@ def add_sub(category_name):
         if is_empty_str(name):
             flash(notify_warning("Name cannot be empty"))
             return redirect(
-                url_for("category.manage_sub", category_name=category_name,)
+                url_for(
+                    "category.manage_sub",
+                    category_name=category_name,
+                )
             )
 
         existing = (
@@ -289,7 +292,10 @@ def add_sub(category_name):
         if existing:
             flash(notify_warning("Name already exists for category"))
             return redirect(
-                url_for("category.manage_sub", category_name=category_name,)
+                url_for(
+                    "category.manage_sub",
+                    category_name=category_name,
+                )
             )
 
         # case 4: successfully add subcategory to desired category
@@ -483,7 +489,8 @@ def sub_delete(subcategory_id):
 
 
 @module_blueprint.route(
-    "<category_id>/{}/sub".format(module_info["dashboard"]), methods=["GET"],
+    "<category_id>/{}/sub".format(module_info["dashboard"]),
+    methods=["GET"],
 )
 @login_required
 def choose_sub_dashboard(category_id):

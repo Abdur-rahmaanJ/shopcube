@@ -6,12 +6,13 @@ import os
 import re
 import subprocess
 import sys
+import importlib
 
 from app import app
 from shopyoapi.init import db
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
-from shopyoapi.uploads import add_uncategorised_category
+
 from shopyoapi.cmd_helper import remove_pycache
 from shopyoapi.cmd_helper import remove_file_or_dir
 from shopyoapi.path import root_path
@@ -85,6 +86,12 @@ def initialise():
         [sys.executable, "manage.py", "db", "upgrade"], stdout=subprocess.PIPE
     )
 
+    print("Collecting static")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+    subprocess.run(
+        [sys.executable, "manage.py", "collectstatic"], stdout=subprocess.PIPE
+    )
+
     print("Initialising User")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
     add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
@@ -94,9 +101,38 @@ def initialise():
     for name, value in config["settings"].items():
         add_setting(name, value)
 
-    print("Adding category and subcategory: uncategorised")
-    print(SEP_CHAR * SEP_NUM, end="\n\n")
-    add_uncategorised_category()
+    # Uploads
+    for folder in os.listdir(os.path.join(root_path, "modules")):
+        if folder.startswith("__"):  # ignore __pycache__
+            continue
+        if folder.startswith("box__"):
+            # boxes
+            for sub_folder in os.listdir(
+                os.path.join(root_path, "modules", folder)
+            ):
+                if sub_folder.startswith("__"):  # ignore __pycache__
+                    continue
+                elif sub_folder.endswith(".json"):  # box_info.json
+                    continue
+
+                try:
+                    upload = importlib.import_module(
+                        "modules.{}.{}.upload".format(folder, sub_folder)
+                    )
+                    upload.upload()
+                except ImportError as e:
+                    # print(e)
+                    pass
+        else:
+            # apps
+            try:
+                upload = importlib.import_module(
+                    "modules.{}.upload".format(folder)
+                )
+                upload.upload()
+            except ImportError as e:
+                # print(e)
+                pass
 
     print("Done!")
 

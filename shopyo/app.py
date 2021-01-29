@@ -134,7 +134,6 @@ def create_app(config_name):
         #     active_theme=ACTIVE_FRONT_THEME,
         #     v=ACTIVE_FRONT_THEME_VERSION,
         # )
-        CONTACT_URL = url_for("contact.index")
 
         base_context = {
             "APP_NAME": APP_NAME,
@@ -143,7 +142,6 @@ def create_app(config_name):
             # "ACTIVE_FRONT_THEME": ACTIVE_FRONT_THEME,
             # "ACTIVE_FRONT_THEME_VERSION": ACTIVE_FRONT_THEME_VERSION,
             # "ACTIVE_FRONT_THEME_STYLES_URL": ACTIVE_FRONT_THEME_STYLES_URL,
-            "CONTACT_URL": CONTACT_URL,
             "len": len,
             "current_user": current_user,
         }

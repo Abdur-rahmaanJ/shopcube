@@ -72,7 +72,11 @@ class User(UserMixin, PkModel):
     email_confirm_date = db.Column(db.DateTime)
 
     # A user can have many roles and a role can have many users
-    roles = db.relationship("Role", secondary=role_user_link, backref="users",)
+    roles = db.relationship(
+        "Role",
+        secondary=role_user_link,
+        backref="users",
+    )
 
     def set_hash(self, password):
         self.password = generate_password_hash(password, method="sha256")

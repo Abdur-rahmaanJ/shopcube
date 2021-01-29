@@ -178,7 +178,8 @@ class TestCategoryApi:
     def test_category_delete_existing_category_get(self, test_client):
         Category.create(name="category")
         response = test_client.get(
-            url_for("category.delete", name="category"), follow_redirects=True,
+            url_for("category.delete", name="category"),
+            follow_redirects=True,
         )
         query = Category.query.filter(Category.name == "category").scalar()
 
@@ -188,7 +189,8 @@ class TestCategoryApi:
 
     def test_category_delete_nonexisting_category_get(self, test_client):
         response = test_client.get(
-            url_for("category.delete", name="category"), follow_redirects=True,
+            url_for("category.delete", name="category"),
+            follow_redirects=True,
         )
 
         assert response.status_code == 200
@@ -203,7 +205,8 @@ class TestCategoryApi:
         category.save()
 
         response = test_client.get(
-            url_for("category.delete", name="category"), follow_redirects=True,
+            url_for("category.delete", name="category"),
+            follow_redirects=True,
         )
 
         assert response.status_code == 200

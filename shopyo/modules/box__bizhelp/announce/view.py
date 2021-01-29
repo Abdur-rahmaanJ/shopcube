@@ -45,7 +45,8 @@ def add_check():
                 "{}.dashboard".format(mhelp.info["module_name"])
             )
         toadd_announce = Announcement(
-            content=form.content.data, title=form.title.data,
+            content=form.content.data,
+            title=form.title.data,
         )
         toadd_announce.save()
     return mhelp.redirect_url("{}.dashboard".format(mhelp.info["module_name"]))

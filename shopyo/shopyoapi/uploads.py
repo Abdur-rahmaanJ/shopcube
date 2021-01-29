@@ -6,9 +6,6 @@ from werkzeug.security import generate_password_hash
 from app import app
 from shopyoapi.init import db
 from modules.box__default.admin.models import User
-from modules.box__ecommerce.category.models import Category
-from modules.box__ecommerce.category.models import SubCategory
-from modules.box__ecommerce.product.models import Product
 from modules.box__default.settings.models import Settings
 
 
@@ -33,40 +30,3 @@ def add_setting(name, value):
             s = Settings(setting=name, value=value)
             db.session.add(s)
             db.session.commit()
-
-
-def add_uncategorised_category():
-    with app.app_context():
-        category = Category(name="uncategorised")
-        subcategory = SubCategory(name="uncategorised")
-        p1 = Product(
-            barcode=str(uuid.uuid1()),
-            price=10.0,
-            name="Apple",
-            in_stock=50,
-            selling_price=15.0,
-            discontinued=False,
-            description="",
-        )
-        p2 = Product(
-            barcode=str(uuid.uuid1()),
-            price=10.0,
-            name="Pear",
-            in_stock=50,
-            selling_price=15.0,
-            discontinued=False,
-            description="",
-        )
-        p3 = Product(
-            barcode=str(uuid.uuid1()),
-            price=10.0,
-            name="Peach",
-            in_stock=50,
-            selling_price=15.0,
-            discontinued=False,
-            description="",
-        )
-
-        subcategory.products.extend([p1, p2, p3])
-        category.subcategories.append(subcategory)
-        category.save()
