@@ -14,6 +14,11 @@ parsers:
       method: no
       macro: no
 base: "parent"
+
+ignore:
+  - "manage.py"  # ignore folders and all its contents
+  - "__init__.py"
+
 comment:
   layout: "reach,diff,flags,files,footer"
   behavior: default
