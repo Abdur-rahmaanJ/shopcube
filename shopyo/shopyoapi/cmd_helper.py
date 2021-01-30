@@ -1,6 +1,7 @@
 """
 Helper utility functions for commandline api
 """
+import sys
 import os
 from shutil import rmtree
 
@@ -24,7 +25,7 @@ def remove_pycache(dir_name):
     if is_removed:
         print("[x] __pycache__ successfully deleted")
     else:
-        print("[ ] __pycache__ doesn't exist")
+        print("[ ] __pycache__ doesn't exist", file=sys.stderr)
 
 
 def remove_file_or_dir(name):
@@ -41,3 +42,25 @@ def remove_file_or_dir(name):
         print(f"[x] file '{name}' successfully deleted")
     else:
         print(f"[ ] file/folder '{name}' doesn't exist")
+
+
+def remove_file(path, filename):
+    try:
+        os.remove(os.path.join(path, filename))
+        print(f"[x] file '{filename}' successfully deleted")
+    except OSError as e:
+        print(
+            "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
+            file=sys.stderr
+        )
+
+
+def remove_directory(path, directory):
+    try:
+        rmtree(os.path.join(path, directory))
+        print(f"[x] folder '{directory}' successfully deleted")
+    except OSError as e:
+        print(
+            "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
+            file=sys.stderr
+        )
