@@ -28,22 +28,6 @@ def remove_pycache(dir_name):
         print("[ ] __pycache__ doesn't exist", file=sys.stderr)
 
 
-def remove_file_or_dir(name):
-    """removes the file or directory
-
-    Args:
-        name (string): file path or directory path to be removed
-    """
-    if os.path.exists(name) and os.path.isdir(name):
-        rmtree(name)
-        print(f"[x] folder '{name}' successfully deleted")
-    elif os.path.exists(name) and not os.path.isdir(name):
-        os.remove(name)
-        print(f"[x] file '{name}' successfully deleted")
-    else:
-        print(f"[ ] file/folder '{name}' doesn't exist")
-
-
 def remove_file(path, filename):
     try:
         os.remove(os.path.join(path, filename))
