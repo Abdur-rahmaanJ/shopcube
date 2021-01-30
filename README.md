@@ -7,7 +7,7 @@
   
 </h1>
 
-<img src="https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS">
+[![codecov](https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/Abdur-rahmaanJ/shopyo)
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
