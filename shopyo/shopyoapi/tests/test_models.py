@@ -19,7 +19,6 @@ class ExampleUserModel(PkModel, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
 
 
-@pytest.mark.usefixtures("db_session")
 class TestPKModel:
     """Tests all functions of PKModel"""
     def test_get_by_id(self):
@@ -46,7 +45,6 @@ class TestPKModel:
         assert result_str.username == expected.username
 
 
-@pytest.mark.usefixtures("db_session")
 class TestCRUDMixin:
     """Test class for testing all CRUD functions"""
 

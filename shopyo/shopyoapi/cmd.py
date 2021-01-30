@@ -7,18 +7,18 @@ import re
 import subprocess
 import sys
 
-from app import app
 from shopyoapi.init import db
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
 from shopyoapi.uploads import add_uncategorised_category
 from shopyoapi.cmd_helper import remove_pycache
-from shopyoapi.cmd_helper import remove_file_or_dir
+from shopyoapi.cmd_helper import remove_file
+from shopyoapi.cmd_helper import remove_directory
 from .file import trymkdir
 from .file import trymkfile
 
 
-def clean():
+def clean(app):
     """
     Deletes shopyo.db and migrations/ if present in current working directory.
     Deletes all __pycache__ folders starting from current working directory
@@ -26,7 +26,7 @@ def clean():
 
     Parameters
     ----------
-
+        - app: flask app that that need to be cleaned
 
     Returns
     -------
@@ -41,8 +41,8 @@ def clean():
         print("[x] all tables dropped")
 
     remove_pycache(os.getcwd())
-    remove_file_or_dir("shopyo.db")
-    remove_file_or_dir("migrations")
+    remove_file(os.getcwd(), "shopyo.db")
+    remove_directory(os.getcwd(), "migrations")
 
 
 def initialise():

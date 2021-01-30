@@ -14,5 +14,6 @@ script:
     - cd shopyo
     - echo 'Running Tests....'
     - coverage run --branch --source . -m pytest
+    - coverage report
 after_success:
     - codecov   # submit coverage
