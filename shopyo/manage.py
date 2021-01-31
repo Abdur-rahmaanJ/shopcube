@@ -24,7 +24,7 @@ def process(args):
         autoload_models()
         initialise()
     elif args[0] == "clean":
-        clean()
+        clean(app)
     elif args[0] == "runserver":
         runserver()
     elif args[0] == "rundebug":
