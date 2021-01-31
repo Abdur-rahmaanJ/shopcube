@@ -19,7 +19,6 @@ from werkzeug.utils import secure_filename
 
 from shopyoapi.file import delete_file
 from shopyoapi.file import unique_filename
-from shopyoapi.html import notify_warning
 from shopyoapi.init import db
 from shopyoapi.init import ma
 from shopyoapi.init import productphotos

@@ -1,7 +1,6 @@
 import json
 import os
 
-from flask import current_app
 from flask import session
 
 from shopyoapi.enhance import get_setting

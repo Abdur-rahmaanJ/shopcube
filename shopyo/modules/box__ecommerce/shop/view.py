@@ -2,7 +2,6 @@ import json
 import os
 from datetime import datetime
 
-from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import jsonify
@@ -15,7 +14,6 @@ from flask import url_for
 from flask_login import current_user
 
 from shopyoapi.enhance import get_setting
-from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning

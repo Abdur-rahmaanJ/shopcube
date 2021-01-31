@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField
 from wtforms import StringField
-from wtforms import SubmitField
 from wtforms import TextAreaField
 from wtforms.fields import BooleanField
 from wtforms.fields import SelectField
