@@ -11,10 +11,9 @@ import importlib
 from shopyoapi.init import db
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
-
 from shopyoapi.cmd_helper import remove_pycache
-
-from shopyoapi.cmd_helper import remove_file_or_dir
+from shopyoapi.cmd_helper import remove_file
+from shopyoapi.cmd_helper import remove_directory
 from shopyoapi.path import root_path
 from shopyoapi.path import static_path
 from shopyoapi.path import modules_path
