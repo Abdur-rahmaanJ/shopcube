@@ -87,3 +87,13 @@ shopyoapi.uploads
     :undoc-members:
     :inherited-members:
     :show-inheritance:
+
+
+shopyoapi.module
+-----------------
+
+.. automodule:: shopyoapi.module
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

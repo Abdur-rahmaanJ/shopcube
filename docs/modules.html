@@ -61,6 +61,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#using-shopyo-as-a-flask-base">Using Shopyo as a Flask base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#importing-modules">Importing modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#global-py">global.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upload-py">upload.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#boxes-or-many-apps-together">Boxes or many apps together</a></li>
 </ul>
 </li>
@@ -116,6 +117,8 @@ are modules/apps.</p>
 <p>Modules have the following structure, where product is the module
 name. The EuroPython talk under the <a class="reference external" href="education.html">Education Section</a> might be insightful</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>product/
+    tests/
+    static/
     templates/
         product/
             templatefile.html
@@ -123,7 +126,8 @@ name. The EuroPython talk under the <a class="reference external" href="educatio
     info.json
     models.py
     view.py
-    global.py
+    global.py # optional
+    upload.py # optional
 </pre></div>
 </div>
 <p>The command in the last section auto creates it for you!</p>
@@ -193,6 +197,12 @@ specify the module url and panel icon.</p>
 </div>
 <p>Where you pass functions or vars or classes you want to makle available in all templates! Try ‘x’: 1</p>
 </div>
+<div class="section" id="upload-py">
+<h2>upload.py<a class="headerlink" href="#upload-py" title="Permalink to this headline">¶</a></h2>
+<p>upload.py has a def upload(): function where uploads should be done.
+put upload codes in the function using app.app_context()</p>
+<p>Here is a demo:</p>
+</div>
 <div class="section" id="boxes-or-many-apps-together">
 <h2>Boxes or many apps together<a class="headerlink" href="#boxes-or-many-apps-together" title="Permalink to this headline">¶</a></h2>
 <p>If you want to create submodules, first create a box:</p>
@@ -201,7 +211,7 @@ specify the module url and panel icon.</p>
 </div>
 <p>This will be created as box__demo in modules/</p>
 <p>Then create the submodule:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp in box__demo
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp <span class="k">in</span> box__demo
 </pre></div>
 </div>
 <p>If you go to url <cite>/demoapp</cite>, you will get Demoapp returned</p>

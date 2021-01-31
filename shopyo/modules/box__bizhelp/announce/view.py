@@ -41,7 +41,9 @@ def add_check():
         form = AnnounceForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return mhelp.redirect_url("{}.dashboard".format(mhelp.info["module_name"]))
+            return mhelp.redirect_url(
+                "{}.dashboard".format(mhelp.info["module_name"])
+            )
         toadd_announce = Announcement(
             content=form.content.data,
             title=form.title.data,
@@ -64,7 +66,7 @@ def list():
 def delete_check(announce_id):
     announcement = Announcement.query.get(announce_id)
     if announcement is None:
-        flash(notify_warning('Wrong announcement id'))
+        flash(notify_warning("Wrong announcement id"))
         return mhelp.redirect_url(mhelp.method("list"))
     announcement.delete()
     return mhelp.redirect_url(mhelp.method("list"))
@@ -76,7 +78,7 @@ def edit(announce_id):
     context = mhelp.context()
     announcement = Announcement.query.get(announce_id)
     if announcement is None:
-        flash(notify_warning('Cannot find announcement id'))
+        flash(notify_warning("Cannot find announcement id"))
         return mhelp.redirect_url(mhelp.method("list"))
     form = AnnounceForm(obj=announcement)
 
@@ -93,7 +95,9 @@ def edit_check(announce_id):
         form = AnnounceForm(obj=announcement)
         if not form.validate_on_submit():
             flash_errors(form)
-            return mhelp.redirect_url(mhelp.method("edit"), announce_id=announce_id)
+            return mhelp.redirect_url(
+                mhelp.method("edit"), announce_id=announce_id
+            )
         form.populate_obj(announcement)
         announcement.update()
         flash(notify_success("Announcement updated!"))

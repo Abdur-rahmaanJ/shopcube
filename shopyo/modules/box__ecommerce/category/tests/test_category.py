@@ -17,7 +17,7 @@ module_path = os.path.dirname(dirpath)
 
 module_info = None
 
-with open(os.path.join(module_path, 'info.json')) as f:
+with open(os.path.join(module_path, "info.json")) as f:
     module_info = json.load(f)
 
 
@@ -27,27 +27,34 @@ class TestCategoryInvalidAuth:
     """
 
     routes_get = [
-        module_info['dashboard'], "/add", "/<name>/delete",
-        "/<category_name>/img/<filename>/delete", "/update",
+        module_info["dashboard"],
+        "/add",
+        "/<name>/delete",
+        "/<category_name>/img/<filename>/delete",
+        "/update",
         f"{module_info['dashboard']}/edit/<category_name>",
-        "/check/<category_name>", "/file/<filename>",
+        "/check/<category_name>",
+        "/file/<filename>",
         f"{module_info['dashboard']}/<category_name>/sub/",
         f"{module_info['dashboard']}/<category_name>/sub/add",
         f"{module_info['dashboard']}/sub/<subcategory_id>/img/edit",
-        "/sub/<subcategory_id>/name/edit", "/sub/<subcategory_id>/img/edit",
+        "/sub/<subcategory_id>/name/edit",
+        "/sub/<subcategory_id>/img/edit",
         "/sub/<subcategory_id>/img/<filename>/delete",
-        "/sub/<subcategory_id>/delete", "/sub/file/<filename>",
+        "/sub/<subcategory_id>/delete",
+        "/sub/file/<filename>",
         f"/<category_id>{module_info['dashboard']}/sub",
-
     ]
 
     routes_post = [
-        "/add", "/update",
+        "/add",
+        "/update",
         f"{module_info['dashboard']}/<category_name>/sub/add",
-        "/sub/<subcategory_id>/name/edit", "/sub/<subcategory_id>/img/edit",
+        "/sub/<subcategory_id>/name/edit",
+        "/sub/<subcategory_id>/img/edit",
     ]
 
-    @pytest.mark.parametrize('route', routes_get)
+    @pytest.mark.parametrize("route", routes_get)
     def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
         auth.logout()
         response = test_client.get(
@@ -57,7 +64,7 @@ class TestCategoryInvalidAuth:
         assert response.status_code == 200
         assert request.path == url_for("auth.login")
 
-    @pytest.mark.parametrize('route', routes_post)
+    @pytest.mark.parametrize("route", routes_post)
     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
         auth.logout()
         response = test_client.post(
@@ -70,7 +77,6 @@ class TestCategoryInvalidAuth:
 
 @pytest.mark.usefixtures("login_non_admin_user")
 class TestCategoryApi:
-
     def test_category_dashboard_page_get(self, test_client):
         response = test_client.get(url_for("category.dashboard"))
 
@@ -86,7 +92,8 @@ class TestCategoryApi:
 
     def test_category_add_empty_name_post(self, test_client):
         response = test_client.post(
-            url_for("category.add"), data=dict(name="   "),
+            url_for("category.add"),
+            data=dict(name="   "),
             follow_redirects=True,
         )
 
@@ -132,10 +139,9 @@ class TestCategoryApi:
             data=dict(name="category"),
             follow_redirects=True,
         )
-        added_category = (
-            Category.query.filter(Category.name == "category")
-            .all()
-        )
+        added_category = Category.query.filter(
+            Category.name == "category"
+        ).all()
 
         assert response.status_code == 200
         assert b'Category "category" added successfully' in response.data
@@ -147,10 +153,9 @@ class TestCategoryApi:
             data=dict(name="CatEgorY"),
             follow_redirects=True,
         )
-        added_category = (
-            Category.query.filter(Category.name == "category")
-            .all()
-        )
+        added_category = Category.query.filter(
+            Category.name == "category"
+        ).all()
 
         assert response.status_code == 200
         assert b'Category "category" added successfully' in response.data
@@ -162,10 +167,9 @@ class TestCategoryApi:
             data=dict(name="   category   "),
             follow_redirects=True,
         )
-        added_category = (
-            Category.query.filter(Category.name == "category")
-            .all()
-        )
+        added_category = Category.query.filter(
+            Category.name == "category"
+        ).all()
 
         assert response.status_code == 200
         assert b'Category "category" added successfully' in response.data
@@ -177,10 +181,7 @@ class TestCategoryApi:
             url_for("category.delete", name="category"),
             follow_redirects=True,
         )
-        query = (
-            Category.query.filter(Category.name == "category")
-            .scalar()
-        )
+        query = Category.query.filter(Category.name == "category").scalar()
 
         assert b'Category "category" successfully deleted' in response.data
         assert request.path == url_for("category.dashboard")
@@ -218,7 +219,7 @@ class TestCategoryApi:
     def test_category_delete_cat_named_uncategorised_get(self, test_client):
         response = test_client.get(
             url_for("category.delete", name="uncategorised"),
-            follow_redirects=True
+            follow_redirects=True,
         )
 
         assert response.status_code == 200
@@ -241,16 +242,13 @@ class TestCategoryApi:
             data=dict(name="subcategory"),
             follow_redirects=True,
         )
-        subcat = (
-            SubCategory.query
-            .filter(SubCategory.name == "subcategory")
-            .scalar()
-        )
+        subcat = SubCategory.query.filter(
+            SubCategory.name == "subcategory"
+        ).scalar()
 
         assert response.status_code == 200
         assert request.path == url_for(
-            "category.manage_sub",
-            category_name="category"
+            "category.manage_sub", category_name="category"
         )
         assert subcat is not None
         assert subcat.category is not None

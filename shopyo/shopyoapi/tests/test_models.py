@@ -21,6 +21,7 @@ class ExampleUserModel(PkModel, UserMixin):
 
 class TestPKModel:
     """Tests all functions of PKModel"""
+
     def test_get_by_id(self):
         result = ExampleUserModel.get_by_id("myId")
 
@@ -49,9 +50,7 @@ class TestCRUDMixin:
     """Test class for testing all CRUD functions"""
 
     def test_create(self, db_session):
-        user = ExampleUserModel.create(
-            username="bar", email="bar@domain.com"
-        )
+        user = ExampleUserModel.create(username="bar", email="bar@domain.com")
         result_raw = db_session.execute(
             """select * from testusers"""
         ).fetchone()
@@ -66,41 +65,36 @@ class TestCRUDMixin:
         assert result_raw.username == "bar"
         assert result_orm.username == "bar"
 
-    @pytest.mark.parametrize("commit,expected", [
-        (True, "foo"),
-        (False, "bar")
-    ])
+    @pytest.mark.parametrize(
+        "commit,expected", [(True, "foo"), (False, "bar")]
+    )
     def test_update_single(self, db_session, commit, expected):
         user = ExampleUserModel(username="bar", email="bar@domain.com")
         user.save()
         user.update(commit=commit, username="foo")
-        result = db_session.execute(
-            """select * from testusers"""
-        ).fetchone()
+        result = db_session.execute("""select * from testusers""").fetchone()
 
         assert result
         assert result.username == expected
 
-    @pytest.mark.parametrize("commit,expected", [
-        (True, {"username": "foo", "email": "foo@domain.com"}),
-        (False, {"username": "bar", "email": "bar@domain.com"})
-    ])
+    @pytest.mark.parametrize(
+        "commit,expected",
+        [
+            (True, {"username": "foo", "email": "foo@domain.com"}),
+            (False, {"username": "bar", "email": "bar@domain.com"}),
+        ],
+    )
     def test_update_multiple(self, db_session, commit, expected):
         user = ExampleUserModel(username="bar", email="bar@domain.com")
         user.save()
         user.update(commit=commit, username="foo", email="foo@domain.com")
-        result = db_session.execute(
-            """select * from testusers"""
-        ).fetchone()
+        result = db_session.execute("""select * from testusers""").fetchone()
 
         assert result
         assert result.username == expected["username"]
         assert result.email == expected["email"]
 
-    @pytest.mark.parametrize("commit,expected", [
-        (True, None),
-        (False, 'bar')
-    ])
+    @pytest.mark.parametrize("commit,expected", [(True, None), (False, "bar")])
     def test_delete(self, commit, expected):
         user = ExampleUserModel(username="bar", email="bar@domain.com")
         user.save()

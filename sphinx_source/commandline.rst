@@ -63,3 +63,20 @@ removes ``__pycache__/``, ``shopyo.db`` and ``migrations``.
 .. code-block:: bash
 
    shopyo runserver
+
+
+**Collect static**
+
+
+.. code-block:: bash
+
+   python manage.py collectstatic
+
+.. code-block:: bash
+
+   python manage.py collectstatic demoapp
+
+
+.. code-block:: bash
+
+   python manage.py collectstatic box__somebox/demoapp

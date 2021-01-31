@@ -78,7 +78,7 @@ def add():
         # not sure if this is needed since if we add this
         # during initialization then this check will be covered
         # by case 3
-        if (name == "uncategorised" or name == "uncategorized"):
+        if name == "uncategorised" or name == "uncategorized":
             flash(notify_warning("Category cannot be named as uncategorised"))
             return redirect(url_for("category.add"))
 
@@ -255,15 +255,14 @@ def manage_sub(category_name):
 def add_sub(category_name):
     if request.method == "POST":
 
-        category = (
-            Category.query.filter(Category.name == category_name)
-            .scalar()
-        )
+        category = Category.query.filter(
+            Category.name == category_name
+        ).scalar()
 
         # case 1: do not allow adding subcategory to nonexisting
         # category
         if category is None:
-            return 'category does not exist', 400
+            return "category does not exist", 400
 
         # convert name to lower case and remove leading
         # and trailing spaces
@@ -280,12 +279,13 @@ def add_sub(category_name):
                 )
             )
 
-        existing = SubCategory.query.join(Category).filter(
-            and_(
-                SubCategory.name == name,
-                Category.name == category_name
+        existing = (
+            SubCategory.query.join(Category)
+            .filter(
+                and_(SubCategory.name == name, Category.name == category_name)
             )
-        ).first()
+            .first()
+        )
 
         # case 3: do not allow adding existing subcategory
         # inside a given category
@@ -432,9 +432,7 @@ def subcategory_image_delete(subcategory_id, filename):
     )
 
 
-@module_blueprint.route(
-    "/sub/<subcategory_id>/delete", methods=["GET"]
-)
+@module_blueprint.route("/sub/<subcategory_id>/delete", methods=["GET"])
 @login_required
 def sub_delete(subcategory_id):
     subcategory = SubCategory.query.get(subcategory_id)
@@ -444,19 +442,25 @@ def sub_delete(subcategory_id):
         and subcategory.category.name == "uncategorised"
     ):
         flash(
-            notify_warning("Cannot delete subcategory uncategorised "
-                           + "of category uncategorised")
+            notify_warning(
+                "Cannot delete subcategory uncategorised "
+                + "of category uncategorised"
+            )
         )
         return redirect(
             url_for("category.manage_sub", category_name=category_name)
         )
 
-    uncategorised_sub = SubCategory.query.join(Category).filter(
-        and_(
-            SubCategory.name == "uncategorised",
-            Category.name == "uncategorised"
+    uncategorised_sub = (
+        SubCategory.query.join(Category)
+        .filter(
+            and_(
+                SubCategory.name == "uncategorised",
+                Category.name == "uncategorised",
+            )
         )
-    ).first()
+        .first()
+    )
 
     # before removing the subcategory, move the products
     # in this subcategory to uncategorised subcategory

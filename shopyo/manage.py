@@ -7,6 +7,7 @@ from shopyoapi.cmd import create_box
 from shopyoapi.cmd import create_module
 from shopyoapi.cmd import create_module_in_box
 from shopyoapi.cmd import initialise
+from shopyoapi.cmd import collectstatic
 from shopyoapi.database import autoload_models
 from shopyoapi.info import printinfo
 
@@ -33,6 +34,11 @@ def process(args):
                 app.run(debug=True, host="0.0.0.0", port=int(args[1]))
         except IndexError as e:
             raise e
+    elif args[0] == "collectstatic":
+        if len(args) == 1:
+            collectstatic()
+        elif len(args) == 2:
+            collectstatic(target_module=args[1])
     elif args[0] == "test":
         print("test ok")
     elif args[0] == "startapp" and args[1]:

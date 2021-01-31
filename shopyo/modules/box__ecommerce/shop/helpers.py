@@ -15,7 +15,12 @@ box_path = os.path.dirname(dirpath)
 def get_currency_symbol():
     curr_code = get_setting("CURRENCY")
     with open(
-        os.path.join(box_path, "shopman", "data", "currency.json",)
+        os.path.join(
+            box_path,
+            "shopman",
+            "data",
+            "currency.json",
+        )
     ) as f:
         currencies = json.load(f)
     for curr in currencies:

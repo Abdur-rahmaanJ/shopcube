@@ -43,7 +43,13 @@ def get_product(barcode):
 def dashboard():
     context = mhelp.context()
     form = CurrencyForm()
-    with open(os.path.join(mhelp.dirpath, "data", "currency.json",)) as f:
+    with open(
+        os.path.join(
+            mhelp.dirpath,
+            "data",
+            "currency.json",
+        )
+    ) as f:
         currencies = json.load(f)
     currency_choices = [(c["cc"], c["name"]) for c in currencies]
     form.currency.choices = currency_choices

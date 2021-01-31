@@ -48,7 +48,7 @@ def index():
     context = {}
 
     front_themes_path = os.path.join(
-        current_app.config["BASE_DIR"], "themes", "front"
+        current_app.config["BASE_DIR"], "static", "themes", "front"
     )
     all_front_info = {}
     front_theme_folders = get_folders(front_themes_path)
@@ -59,7 +59,7 @@ def index():
             all_front_info[folder] = json.load(f)
 
     back_themes_path = os.path.join(
-        current_app.config["BASE_DIR"], "themes", "back"
+        current_app.config["BASE_DIR"], "static", "themes", "back"
     )
     all_back_info = {}
     back_theme_folders = get_folders(back_themes_path)

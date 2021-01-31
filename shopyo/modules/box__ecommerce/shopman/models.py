@@ -8,7 +8,7 @@ class DeliveryOption(db.Model):
     option = db.Column(db.String(300))
     price = db.Column(db.Float)
 
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
 
     def insert(self):
         db.session.add(self)
@@ -29,7 +29,7 @@ class PaymentOption(db.Model):
     name = db.Column(db.String(300))
     text = db.Column(db.String(300))
 
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
 
     def insert(self):
         db.session.add(self)
@@ -51,7 +51,7 @@ class Coupon(db.Model):
     type = db.Column(db.String(300))  # percentage, value
     value = db.Column(db.String(300))
 
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
 
     def insert(self):
         db.session.add(self)

@@ -33,7 +33,7 @@ def notify(message, alert_type="primary"):
     """.format(
         message=message, alert_type=alert_type
     )
-    
+
     scriptFade = """ 
     <script>
           setTimeout(function() {
@@ -41,7 +41,7 @@ def notify(message, alert_type="primary"):
         }, 5000); // <-- time in milliseconds (5 secs)
     </script>
     """
-    return alert+scriptFade
+    return alert + scriptFade
 
 
 def notify_success(message):
