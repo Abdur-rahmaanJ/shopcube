@@ -1,5 +1,4 @@
 from flask import url_for
-from flask import current_app
 
 import os
 import json

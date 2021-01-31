@@ -1,9 +1,6 @@
-import datetime
-
 from shopyoapi.init import db
 
 # from modules.box__ecommerce.pos.models import Transaction
-from modules.resource.models import Resource
 
 transaction_helpers = db.Table(
     "transaction_helpers",

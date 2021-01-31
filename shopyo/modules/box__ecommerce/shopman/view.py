@@ -5,7 +5,6 @@
 import json
 import os
 
-from flask import current_app
 from flask import flash
 from flask import request
 

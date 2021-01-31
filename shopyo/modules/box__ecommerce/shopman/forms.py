@@ -1,7 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField
 from wtforms import StringField
-from wtforms import SubmitField
 from wtforms import TextAreaField
 from wtforms.fields import SelectField
 # from wtforms.fields.html5 import EmailField
