@@ -184,7 +184,8 @@ class TestCommandlineClean:
         captured = capfd.readouterr()
         expected_out = (
             "[x] all tables dropped\n"
-            "[x] file 'shopyo.db' successfully deleted\n"
+            f"[x] file '{os.path.join(tmpdir, 'shopyo.db')}' "
+            "successfully deleted\n"
         )
         expected_err_pycache = (
             "[ ] __pycache__ doesn't exist\n"
@@ -217,7 +218,8 @@ class TestCommandlineClean:
         captured = capfd.readouterr()
         expected_out = (
             "[x] all tables dropped\n"
-            "[x] folder 'migrations' successfully deleted\n"
+            f"[x] folder '{os.path.join(tmpdir, 'migrations')}' "
+            "successfully deleted\n"
         )
         expected_err_pycache = (
             "[ ] __pycache__ doesn't exist\n"
@@ -268,8 +270,10 @@ class TestCommandlineClean:
         expected_out = (
             "[x] all tables dropped\n"
             "[x] __pycache__ successfully deleted\n"
-            "[x] file 'shopyo.db' successfully deleted\n"
-            "[x] folder 'migrations' successfully deleted\n"
+            f"[x] file '{os.path.join(shopyo_path, 'shopyo.db')}' "
+            "successfully deleted\n"
+            f"[x] folder '{os.path.join(shopyo_path, 'migrations')}' "
+            "successfully deleted\n"
         )
 
         assert expected_out == captured.out

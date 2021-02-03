@@ -11,9 +11,9 @@ import importlib
 from shopyoapi.init import db
 from shopyoapi.uploads import add_admin
 from shopyoapi.uploads import add_setting
-from shopyoapi.cmd_helper import remove_pycache
-from shopyoapi.cmd_helper import remove_file
-from shopyoapi.cmd_helper import remove_directory
+from shopyoapi.cmd_helper import tryrmcache
+from shopyoapi.cmd_helper import tryrmfile
+from shopyoapi.cmd_helper import tryrmtree
 from shopyoapi.path import root_path
 from shopyoapi.path import static_path
 from shopyoapi.path import modules_path
@@ -21,7 +21,6 @@ from shopyoapi.file import trymkdir
 from shopyoapi.file import trymkfile
 from shopyoapi.file import get_folders
 from shopyoapi.file import trycopytree
-
 
 
 def clean(app):
@@ -46,9 +45,9 @@ def clean(app):
         db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
         print("[x] all tables dropped")
 
-    remove_pycache(os.getcwd())
-    remove_file(os.getcwd(), "shopyo.db")
-    remove_directory(os.getcwd(), "migrations")
+    tryrmcache(os.getcwd())
+    tryrmfile(os.path.join(os.getcwd(), "shopyo.db"))
+    tryrmtree(os.path.join(os.getcwd(), "migrations"))
 
 
 def initialise():
@@ -357,11 +356,8 @@ def collectstatic(target_module=None):
     modules_path_in_static = os.path.join(static_path, "modules")
 
     if target_module is None:
-        # clear modules dir
-        if os.path.exists(modules_path_in_static):
-            remove_file_or_dir(modules_path_in_static)
-        else:
-            trymkdir(modules_path_in_static)
+        # clear modules dir if exists.
+        tryrmtree(modules_path_in_static)
         # look for static folders in all project
         for folder in get_folders(modules_path):
             if folder.startswith("box__"):
@@ -405,8 +401,7 @@ def collectstatic(target_module=None):
             module_in_static_dir = os.path.join(
                 modules_path_in_static, module_name
             )
-            if os.path.exists(module_in_static_dir):
-                remove_file_or_dir(module_in_static_dir)
+            tryrmtree(module_in_static_dir)
             trycopytree(module_static_folder, module_in_static_dir)
         else:
             print("Module does not exist")
