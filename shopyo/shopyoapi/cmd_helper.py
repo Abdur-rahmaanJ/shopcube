@@ -6,9 +6,10 @@ import os
 from shutil import rmtree
 
 
-def remove_pycache(dir_name):
-    """removes all __pycache__ starting from directory dir_name
-       all the way to leaf directory
+def tryrmcache(dir_name):
+    """
+    removes all __pycache__ starting from directory dir_name
+    all the way to leaf directory
 
     Args:
         dir_name(string) : path from where to start removing pycache
@@ -27,24 +28,50 @@ def remove_pycache(dir_name):
     else:
         print("[ ] __pycache__ doesn't exist", file=sys.stderr)
 
+    return is_removed
 
-def remove_file(path, filename):
+
+def tryrmfile(path):
+    """
+    tries to remove file path and output message to stdin or stderr.
+    Path must point to a file
+
+    Args:
+        path (string): path of the file to remove
+
+    Returns:
+        bool: returns true upon successful removal false otherwise
+    """
     try:
-        os.remove(os.path.join(path, filename))
-        print(f"[x] file '{filename}' successfully deleted")
+        os.remove(path)
+        print(f"[x] file '{path}' successfully deleted")
+        return True
     except OSError as e:
         print(
             "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
             file=sys.stderr
         )
+        return False
 
 
-def remove_directory(path, directory):
+def tryrmtree(path):
+    """
+    Tries to removes an entire directory tree. Path must point to
+    a directory. Outputs message to stdin or stderr
+
+    Args:
+        path (string): directory path to be removed
+
+    Returns:
+        bool: returns true upon successful return false otherwise
+    """
     try:
-        rmtree(os.path.join(path, directory))
-        print(f"[x] folder '{directory}' successfully deleted")
+        rmtree(path)
+        print(f"[x] folder '{path}' successfully deleted")
+        return True
     except OSError as e:
         print(
             "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
             file=sys.stderr
         )
+        return False
