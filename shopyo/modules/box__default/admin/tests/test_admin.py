@@ -245,7 +245,6 @@ class TestAdminAPI:
 
     def test_admin_update_user_remove_old_roles_from_user(self, test_client):
         user = User(email="foo@gmail.com", password="pass", is_admin=True)
-        user.set_hash("pass")
         user.is_admin = True
         role1 = Role(name="test1-role")
         role2 = Role(name="test2-role")
