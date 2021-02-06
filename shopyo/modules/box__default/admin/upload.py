@@ -1,12 +1,7 @@
 import datetime
-import uuid
-
 from werkzeug.security import generate_password_hash
-
 from app import app
-from shopyoapi.init import db
 from modules.box__default.admin.models import User
-from modules.box__default.settings.models import Settings
 
 
 def add_admin(email, password):
