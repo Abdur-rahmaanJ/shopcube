@@ -15,6 +15,7 @@ def add_setting(name, value):
             db.session.add(s)
             db.session.commit()
 
+
 def upload():
     with open("config.json", "r") as config:
         config = json.load(config)
@@ -22,4 +23,3 @@ def upload():
         print("Adding Settings ...")
         for name, value in config["settings"].items():
             add_setting(name, value)
-
