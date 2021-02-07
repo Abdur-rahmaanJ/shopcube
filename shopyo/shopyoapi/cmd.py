@@ -9,8 +9,8 @@ import sys
 import importlib
 
 from shopyoapi.init import db
-from shopyoapi.uploads import add_admin
-from shopyoapi.uploads import add_setting
+# from shopyoapi.uploads import add_admin
+# from shopyoapi.uploads import add_setting
 from shopyoapi.cmd_helper import tryrmcache
 from shopyoapi.cmd_helper import tryrmfile
 from shopyoapi.cmd_helper import tryrmtree
@@ -91,14 +91,14 @@ def initialise():
         [sys.executable, "manage.py", "collectstatic"], stdout=subprocess.PIPE
     )
 
-    print("Initialising User")
-    print(SEP_CHAR * SEP_NUM, end="\n\n")
-    add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
+    # print("Initialising User")
+    # print(SEP_CHAR * SEP_NUM, end="\n\n")
+    # add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
 
-    print("Initialising Settings")
-    print(SEP_CHAR * SEP_NUM, end="\n\n")
-    for name, value in config["settings"].items():
-        add_setting(name, value)
+    # print("Initialising Settings")
+    # print(SEP_CHAR * SEP_NUM, end="\n\n")
+    # for name, value in config["settings"].items():
+    #     add_setting(name, value)
 
     # Uploads
     for folder in os.listdir(os.path.join(root_path, "modules")):
