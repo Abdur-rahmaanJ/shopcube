@@ -1,30 +1,34 @@
-
 {% set active_page = active_page|default('none') %}
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <!-- Brand/logo -->
-  <a class="navbar-brand" href="#">
-    <img src="/static/shopyo.svg" width="35" height="30">
-    {{OUR_APP_NAME}} | {{active_page.capitalize()}}
-  </a>
-
-  <!-- Links -->
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="{{url_for('dashboard.index')}}" title="Main Page"><i class="yo-admin-nav-icon fas fa-home"></i></a>
-    </li>
-
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">
+        <img src="/static/shopyo.svg" width="35" height="30">
+        {{OUR_APP_NAME}} | {{active_page.capitalize()}}
+    </a>
+    <!-- Nav Links Left Aligned -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('dashboard.index')}}" title="Main Page">
+                <i class="yo-admin-nav-icon fas fa-home"></i>
+            </a>
+        </li>
     </ul>
-
-
-    <ul class="navbar-nav ml-auto">
-    
-    
-    {% if not active_page == 'login' %}
-    <li class="nav-item">
-      <a class="nav-link" href="{{url_for('auth.logout')}}" title="Logout"><i class="yo-admin-nav-icon fas fa-sign-out-alt"></i></a>
-    </li>
-    {% endif %}
-
-  </ul>
+    <!-- Nav Links Right Aligned -->
+    <ul class="navbar-nav ml-auto">    
+        {% if (active_page != 'login') and (active_page != 'register') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.logout')}}" title="Logout">
+                    <i class="yo-admin-nav-icon fas fa-sign-out-alt"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.login')}}" title="Login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.register')}}" title="Register">Register</a>
+            </li>
+      {% endif %}
+    </ul>
 </nav>

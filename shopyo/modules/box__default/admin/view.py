@@ -87,7 +87,7 @@ def user_add():
             new_user.is_admin = is_admin
             new_user.first_name = first_name
             new_user.last_name = last_name
-            new_user.set_hash(password)
+            new_user.password = password
 
             for key in request.form:
                 if key.startswith("role_"):
@@ -182,7 +182,7 @@ def admin_update():
     user.roles[:] = []
 
     if password.strip():
-        user.set_hash(password)
+        user.password = password
 
     for key in request.form:
         if key.startswith("role_"):

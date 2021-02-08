@@ -16,7 +16,7 @@ from shopyoapi.html import notify_danger
 from shopyoapi.html import notify_success
 
 from modules.box__default.admin.models import User
-from modules.box__default.auth.forms import LoginForm
+from modules.box__default.auth.forms import LoginForm, RegistrationForm
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -30,6 +30,29 @@ auth_blueprint = Blueprint(
     url_prefix=module_info["url_prefix"],
     template_folder="templates",
 )
+
+
+@auth_blueprint.route("/register", methods=["GET", "POST"])
+def register():
+
+    context = {}
+    reg_form = RegistrationForm()
+    context["form"] = reg_form
+
+    if request.method == "POST":
+
+        if reg_form.validate_on_submit():
+
+            email = reg_form.email.data
+            password = reg_form.password.data
+
+            # add the user to the db
+            User.create(email=email, password=password)
+
+            flash(notify_success("Registered successfully! Please Log In"))
+            return redirect(url_for("auth.login"))
+
+    return render_template("auth/register.html", **context)
 
 
 @auth_blueprint.route("/login", methods=["GET", "POST"])
