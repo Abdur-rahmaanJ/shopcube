@@ -1,7 +1,6 @@
 """
 commandline utilities functions
 """
-import json
 import os
 import re
 import subprocess
