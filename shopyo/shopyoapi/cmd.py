@@ -65,9 +65,6 @@ def initialise():
     SEP_CHAR = "#"
     SEP_NUM = 23
 
-    with open("config.json", "r") as config:
-        config = json.load(config)
-
     print("Creating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
     subprocess.run(
