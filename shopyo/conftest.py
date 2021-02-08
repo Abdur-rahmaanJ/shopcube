@@ -25,8 +25,7 @@ def new_user():
     """
     A pytest fixture that returns a user model object
     """
-    user = User(email="newuser@domain.com")
-    user.set_hash("pass")
+    user = User(email="newuser@domain.com", password="pass")
     user.first_name = "New"
     user.last_name = "User"
     return user
@@ -37,8 +36,7 @@ def non_admin_user():
     """
     A pytest fixture that returns a non admin user
     """
-    user = User(email="admin1@domain.com")
-    user.set_hash("pass")
+    user = User(email="admin1@domain.com", password="pass")
     return user
 
 
@@ -47,8 +45,7 @@ def admin_user():
     """
     A pytest fixture that returns an admin user
     """
-    user = User(email="admin2@domain.com", is_admin=True)
-    user.set_hash("pass")
+    user = User(email="admin2@domain.com", is_admin=True, password="pass")
     return user
 
 
