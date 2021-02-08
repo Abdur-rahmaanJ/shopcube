@@ -1,19 +1,7 @@
-import datetime
+import json
 from app import app
 from shopyoapi.init import db
-from modules.box__default.admin.models import User
 from modules.box__default.settings.models import Settings
-
-
-def add_admin(email, password):
-    with app.app_context():
-        user = User()
-        user.email = email
-        user.password = password
-        user.is_admin = True
-        user.email_confirmed = True
-        user.email_confirm_date = datetime.datetime.now()
-        user.save()
 
 
 def add_setting(name, value):
@@ -26,3 +14,12 @@ def add_setting(name, value):
             s = Settings(setting=name, value=value)
             db.session.add(s)
             db.session.commit()
+
+
+def upload():
+    with open("config.json", "r") as config:
+        config = json.load(config)
+        print("Initialising Settings")
+        print("Adding Settings ...")
+        for name, value in config["settings"].items():
+            add_setting(name, value)
