@@ -29,7 +29,15 @@ class DevelopmentConfig(Config):
     ENV = "development"
     DEBUG = True
     # EXPLAIN_TEMPLATE_LOADING = True
-    LOGIN_DISABLED = True
+    LOGIN_DISABLED = False
+    # FLASK-MAILMAN CONFIGS
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
 
 
 class TestingConfig(Config):
@@ -43,6 +51,8 @@ class TestingConfig(Config):
     BCRYPT_LOG_ROUNDS = 4
     TESTING = True
     WTF_CSRF_ENABLED = False
+    MAIL_SERVER = "localhost"
+    MAIL_PORT = 8025
 
 
 app_config = {

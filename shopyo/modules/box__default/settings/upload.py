@@ -3,6 +3,9 @@ from app import app
 from shopyoapi.init import db
 from modules.box__default.settings.models import Settings
 
+SEP_CHAR = "#"
+SEP_NUM = 23
+
 
 def add_setting(name, value):
     with app.app_context():
@@ -20,6 +23,7 @@ def upload():
     with open("config.json", "r") as config:
         config = json.load(config)
         print("Initialising Settings")
-        print("Adding Settings ...")
+        print(SEP_CHAR * SEP_NUM, end="\n\n")
+        print("Adding Dummy Settings ...")
         for name, value in config["settings"].items():
             add_setting(name, value)

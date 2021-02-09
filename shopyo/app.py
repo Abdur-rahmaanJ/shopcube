@@ -23,6 +23,7 @@ from shopyoapi.init import db
 from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
+from shopyoapi.init import mail
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
 
@@ -37,6 +38,7 @@ def create_app(config_name):
     migrate.init_app(app, db)
     db.init_app(app)
     ma.init_app(app)
+    mail.init_app(app)
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
 

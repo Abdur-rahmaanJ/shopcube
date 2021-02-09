@@ -10,9 +10,9 @@ import json
 import pytest
 from flask import request
 from flask import url_for
-from modules.box__default.admin.models import Role
-from modules.box__default.admin.models import User
-from modules.box__default.admin.models import role_user_link
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import User
+from modules.box__default.auth.models import role_user_link
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

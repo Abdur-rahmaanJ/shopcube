@@ -21,8 +21,8 @@ from sqlalchemy import exists
 from shopyoapi.init import db
 
 from modules.box__default.admin.admin import admin_required
-from modules.box__default.admin.models import Role
-from modules.box__default.admin.models import User
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import User
 from shopyoapi.html import notify_warning
 from shopyoapi.html import notify_success
 

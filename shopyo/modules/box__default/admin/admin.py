@@ -9,7 +9,7 @@ from flask_login import current_user
 from shopyoapi.init import login_manager
 from shopyoapi.html import notify_warning
 
-from modules.box__default.admin.models import User
+from modules.box__default.auth.models import User
 
 login_manager.login_view = "auth.login"
 login_manager.login_message = notify_warning("Please login for access")
@@ -23,7 +23,7 @@ def load_user(id):
 def admin_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if current_user.is_anonymous or current_user.is_admin:
+        if current_user.is_admin:
             return f(*args, **kwargs)
         else:
             flash(notify_warning("You need to be an admin to view this page."))

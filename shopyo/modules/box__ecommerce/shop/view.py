@@ -19,7 +19,7 @@ from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
 
-from modules.box__default.admin.models import User
+from modules.box__default.auth.models import User
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product
@@ -392,7 +392,7 @@ def checkout_process():
                     user.last_name = last_name
                     user.email = email
                     user.password = form.passoword.data
-                    user.email_confirmed = True
+                    user.is_email_confirmed = True
                     user.email_confirm_date = datetime.now()
 
             order = Order()

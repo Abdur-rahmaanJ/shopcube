@@ -105,7 +105,7 @@ def initialise():
                     )
                     upload.upload()
                 except ImportError as e:
-                    # print(e)
+                    print(e)
                     pass
         else:
             # apps
@@ -115,7 +115,7 @@ def initialise():
                 )
                 upload.upload()
             except ImportError as e:
-                # print(e)
+                print(e)
                 pass
 
     print("Done!")

@@ -6,11 +6,12 @@ for more details on pytest
 import json
 import os
 import pytest
+import datetime
 from flask import url_for
 
 from app import create_app
 from shopyoapi.init import db as _db
-from modules.box__default.admin.models import User
+from modules.box__default.auth.models import User
 from modules.box__default.settings.models import Settings
 
 # run in shopyo/shopyo
@@ -36,7 +37,11 @@ def non_admin_user():
     """
     A pytest fixture that returns a non admin user
     """
-    user = User(email="admin1@domain.com", password="pass")
+    user = User()
+    user.email = "admin1@domain.com"
+    user.password = "pass"
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
     return user
 
 
@@ -45,7 +50,12 @@ def admin_user():
     """
     A pytest fixture that returns an admin user
     """
-    user = User(email="admin2@domain.com", is_admin=True, password="pass")
+    user = User()
+    user.email = "admin2@domain.com"
+    user.password = "pass"
+    user.is_admin = True
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
     return user
 
 
