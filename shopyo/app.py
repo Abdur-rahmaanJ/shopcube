@@ -1,22 +1,13 @@
 import importlib
 import os
 import sys
-
+import jinja2
 from flask import Flask
-
-# from flask import redirect
-from flask import url_for
-
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
-
-sys.path.append(".")
-
-import jinja2
 from flask_uploads import configure_uploads
 
 from config import app_config
-
 from shopyoapi.enhance import get_setting
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
@@ -27,7 +18,7 @@ from shopyoapi.init import mail
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
 
-
+sys.path.append(".")
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 
