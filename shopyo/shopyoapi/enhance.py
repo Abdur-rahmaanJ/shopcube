@@ -4,7 +4,7 @@ from flask import current_app
 from flask import url_for
 
 from modules.box__default.settings.models import Settings
-from modules.box__ecommerce.shop.helpers import get_setting
+from modules.box__default.settings.helpers import get_setting
 
 
 def get_active_theme_dir():

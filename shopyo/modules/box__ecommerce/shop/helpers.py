@@ -2,28 +2,10 @@ import json
 import os
 from flask import session
 from modules.box__ecommerce.product.models import Product
-from modules.box__default.settings.models import Settings
+from modules.box__default.settings.helpers import get_setting
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 box_path = os.path.dirname(dirpath)
-
-
-def get_setting(name):
-    """
-    Used as key-value lookup from Settings table
-
-    Parameters
-    ----------
-    name: str
-        name of key
-
-    Returns
-    -------
-    str
-        value of key
-    """
-    s = Settings.query.get(name)
-    return s.value
 
 
 def get_currency_symbol():
