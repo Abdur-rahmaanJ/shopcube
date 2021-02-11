@@ -7,7 +7,6 @@ from shopyoapi.path import themes_path
 from modules.box__default.settings.helpers import get_setting
 
 
-
 def get_front_theme_dir():
     theme_dir = os.path.join(
         themes_path, "front", get_setting("ACTIVE_FRONT_THEME")
