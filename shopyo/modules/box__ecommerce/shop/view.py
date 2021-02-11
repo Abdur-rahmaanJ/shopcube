@@ -13,13 +13,13 @@ from flask import url_for
 
 from flask_login import current_user
 
-from shopyoapi.enhance import get_setting
 from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
 
 from modules.box__default.admin.models import User
+from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product

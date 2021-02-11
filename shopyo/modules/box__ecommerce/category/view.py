@@ -16,7 +16,6 @@ import flask_uploads
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
 
-from shopyoapi.enhance import get_setting
 from shopyoapi.file import delete_file
 from shopyoapi.file import unique_sec_filename
 from shopyoapi.html import notify_success
@@ -26,6 +25,7 @@ from shopyoapi.init import subcategoryphotos
 from shopyoapi.init import db
 from shopyoapi.validators import is_empty_str
 
+from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.resource.models import Resource

@@ -8,7 +8,7 @@ import os
 from flask import flash
 from flask import request
 
-from shopyoapi.enhance import get_setting
+from modules.box__default.settings.helpers import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
 

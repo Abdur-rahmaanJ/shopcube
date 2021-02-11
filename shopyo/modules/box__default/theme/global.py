@@ -4,7 +4,8 @@ import os
 import json
 
 from shopyoapi.path import themes_path
-from shopyoapi.enhance import get_setting
+from modules.box__default.settings.helpers import get_setting
+
 
 
 def get_front_theme_dir():
