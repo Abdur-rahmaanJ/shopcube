@@ -9,7 +9,7 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.enhance import get_setting
+from modules.box__default.settings.helpers import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.file import get_folders
 

@@ -17,7 +17,7 @@ from flask_uploads import configure_uploads
 
 from config import app_config
 
-from shopyoapi.enhance import get_setting
+from modules.box__default.settings.helpers import get_setting
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
