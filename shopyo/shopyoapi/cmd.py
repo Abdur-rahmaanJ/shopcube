@@ -17,6 +17,7 @@ from shopyoapi.path import modules_path
 from shopyoapi.file import trymkdir
 from shopyoapi.file import trymkfile
 from shopyoapi.file import get_folders
+from shopyoapi.file import trycopy
 from shopyoapi.file import trycopytree
 
 
@@ -86,6 +87,9 @@ def initialise():
     )
 
     # Uploads
+    print("Uploads")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+
     for folder in os.listdir(os.path.join(root_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__
             continue
