@@ -1,11 +1,8 @@
 import json
 import os
-
 from flask import session
-
-from shopyoapi.enhance import get_setting
-
 from modules.box__ecommerce.product.models import Product
+from modules.box__default.settings.helpers import get_setting
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 box_path = os.path.dirname(dirpath)

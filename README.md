@@ -15,9 +15,11 @@ A 45 mins talk was dedicated to it at [EuroPython](https://youtu.be/rkzXQOC1T0Q)
 
 # What?
 
-Your back office. Use it with any front you like. Headless support coming soon. 
+Your next-level modular web framework. Headless support coming soon. 
 
-Use it for your next web project.
+Built on top of Flask, it offers most Django features, sometimes a tidbit more with far more flexibility.
+
+It ships with common business needs and an ecommerce modules by default
 
 # Have a go!
 

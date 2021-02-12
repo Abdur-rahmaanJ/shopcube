@@ -3,12 +3,14 @@ import os
 import sys
 import jinja2
 from flask import Flask
+from flask import send_from_directory
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 from flask_uploads import configure_uploads
 
 from config import app_config
-from shopyoapi.enhance import get_setting
+from modules.box__default.settings.helpers import get_setting
+
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
@@ -17,6 +19,7 @@ from shopyoapi.init import migrate
 from shopyoapi.init import mail
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
+from shopyoapi.path import modules_path
 
 sys.path.append(".")
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +39,12 @@ def create_app(config_name):
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
+
+    @app.route("/devstatic/<path:boxormodule>/f/<path:filename>")
+    def devstatic(boxormodule, filename):
+        if app.config["DEBUG"]:
+            module_static = os.path.join(modules_path, boxormodule, "static")
+            return send_from_directory(module_static, filename=filename)
 
     available_everywhere_entities = {}
 

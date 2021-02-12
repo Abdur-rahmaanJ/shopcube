@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deploy to shared hosting &#8212; Shopyo  documentation</title>
+    <title>Assets Management &#8212; Shopyo  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -15,7 +15,8 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Testing" href="testing.html" />
+    <link rel="next" title="Templating" href="templates.html" />
+    <link rel="prev" title="Modules/Apps" href="modules.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -43,7 +44,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="testing.html" title="previous chapter">Testing</a></li>
+      <li>Previous: <a href="modules.html" title="previous chapter">Modules/Apps</a></li>
+      <li>Next: <a href="templates.html" title="next chapter">Templating</a></li>
   </ul></li>
 </ul>
 </div><h3>Navigation</h3>
@@ -52,7 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Assets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
@@ -60,10 +62,7 @@
 <li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs.html">Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Deploy on shared hosting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#all-steps">All steps</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="shared_hosting.html">Deploy on shared hosting</a></li>
 </ul>
 
 
@@ -85,45 +84,39 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="deploy-to-shared-hosting">
-<h1>Deploy to shared hosting<a class="headerlink" href="#deploy-to-shared-hosting" title="Permalink to this headline">¶</a></h1>
-<p>Describes the process to deploy to shared hosting like namecheap</p>
-<div class="section" id="all-steps">
-<h2>All steps<a class="headerlink" href="#all-steps" title="Permalink to this headline">¶</a></h2>
-<p>Go to CPanel</p>
-<p>Choose Terminal</p>
-<p>Navigate to the folder you will clone shopyo (typically at domain.com folder or subdomain.domain.com folder).
-See File manager for that</p>
-<p>Clone shopyo</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Abdur-rahmaanJ/shopyo.git
+  <div class="section" id="assets-management">
+<h1>Assets Management<a class="headerlink" href="#assets-management" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">shopyoapi.assets</span> <span class="kn">import</span> <span class="n">get_static</span>
 </pre></div>
 </div>
-<p>Now on control panel open setup python app</p>
-<p>Set the following values</p>
-<ul class="simple">
-<li><p>Python version: 3.7 works well</p></li>
-<li><p>Application root: folder/shopyo/shopyo</p></li>
-<li><p>Application URL: choose subdomain or adjust ad needed</p></li>
-<li><p>Application startup file: wsgi.py</p></li>
-<li><p>Application Entry point: application</p></li>
-</ul>
-<p>Now it will override your wsgi.py, edit the file and add the initial info on github</p>
-<p>Set path = ‘’ in wsgi.py to what you get when on terminal you navigate to folder/shopyo/shopyo and type pwd
-It needs the absolute file</p>
-<p>You also get the path when editing wsgi.py, add everything except /wsgi.py</p>
-<p>Now initialise app. On the python app page it will give you an instruction to copy to activate virtual env</p>
-<p>paste in terminal and press enter</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install requirements.txt
-
-<span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py
-
-python3 manage.py initialise
+<p>In the case of a module in box:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@module_blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/img_test&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">img_test_box</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;img src=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_static</span><span class="p">(</span><span class="s1">&#39;box__qwerty/modulez&#39;</span><span class="p">,</span> <span class="s1">&#39;shop.png&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>go to setup python app then restart app</p>
-<p>go to your url</p>
-<p>go to url/dashboard for login</p>
+<p>In the case of a module outside box</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@module_blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/img_test2&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">img_test_module</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;img src=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_static</span><span class="p">(</span><span class="s1">&#39;modulez&#39;</span><span class="p">,</span> <span class="s1">&#39;shop.png&#39;</span><span class="p">))</span>
+</pre></div>
 </div>
+<p>If DEBUG True, it will be served from the module’s static folder.</p>
+<p>If DEBUG False, it will be served from main static folder. Make sure to run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py collectstatic
+</pre></div>
+</div>
+<p>before</p>
+<p>You can test the difference by running</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py rundebug
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
+</pre></div>
+</div>
+<p>Your code remains the same. Just the location changes.</p>
+<p>Just if using apache, alias /static to server from main static folder</p>
 </div>
 
 
@@ -141,7 +134,7 @@ python3 manage.py initialise
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/shared_hosting.rst.txt"
+      <a href="_sources/assets.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

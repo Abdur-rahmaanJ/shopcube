@@ -1,11 +1,10 @@
 import json
 import os
-import random
-
 from flask import current_app
 from flask import url_for
 
 from modules.box__default.settings.models import Settings
+from modules.box__default.settings.helpers import get_setting
 
 
 def get_active_theme_dir():
@@ -15,24 +14,6 @@ def get_active_theme_dir():
         get_setting("ACTIVE_FRONT_THEME"),
     )
     return active_theme_dir
-
-
-def get_setting(name):
-    """
-    Used as key-value lookup from Settings table
-
-    Parameters
-    ----------
-    name: str
-        name of key
-
-    Returns
-    -------
-    str
-        value of key
-    """
-    s = Settings.query.get(name)
-    return s.value
 
 
 def set_setting(key, value):

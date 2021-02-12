@@ -7,6 +7,8 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 
+from shopyoapi.assets import get_static
+
 
 class ModuleHelp:
     def __init__(self, dunderfile, dundername):
@@ -44,10 +46,19 @@ class ModuleHelp:
     def method(self, methodname):
         return "{}.{}".format(self.info["module_name"], methodname)
 
-    def get_asset(self, assetname):
-        """returns url for static, filename=assetname"""
-        return url_for("static", filename=assetname)
+    def get_self_static(self, filename):
+        module_parent = os.path.dirname(self.dirpath)
+        module_folder = self.dirpath
 
-    def get_static(self, filename):
-        """Django inspired, returns get asset for modules/filename"""
-        return self.get_asset("modules/{}".format(filename))
+        module_parent = os.path.normpath(module_parent)
+        module_parent = os.path.basename(module_parent)
+
+        module_folder = os.path.normpath(module_folder)
+        module_folder = os.path.basename(module_folder)
+
+        print(module_parent, module_parent)
+        if module_parent.startswith('box__'):
+            boxormodule = '{}/{}'.format(module_parent, module_folder)
+        else:
+            boxormodule = module_folder
+        return get_static(boxormodule=boxormodule, filename=filename)
