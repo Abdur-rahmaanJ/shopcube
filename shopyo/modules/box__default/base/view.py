@@ -2,7 +2,6 @@ import json
 import os
 
 from flask import Blueprint
-from shopyoapi.assets import get_static
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
