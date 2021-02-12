@@ -16,8 +16,8 @@ from flask import current_app
 from shopyoapi.init import db
 from shopyoapi.models import PkModel
 
-role_user_link = db.Table(
-    "role_user_link",
+role_user_bridge = db.Table(
+    "role_user_bridge",
     db.Column(
         "user_id",
         db.Integer,
@@ -34,10 +34,13 @@ role_user_link = db.Table(
 
 
 class AnonymousUser(AnonymousUserMixin):
+    """ Anonymous user class """
     def __init__(self):
         self.username = "guest"
         self.email = "<anonymous-user-no-email>"
 
+    # ALL PROPERTIES SET TO TRUE TO MAKE TESTING EASIER
+    # UPDATE THIS IN PRODUCTION
     @property
     def is_email_confirmed(self):
         return True
@@ -70,12 +73,12 @@ class User(UserMixin, PkModel):
     # A user can have many roles and a role can have many users
     roles = db.relationship(
         "Role",
-        secondary=role_user_link,
+        secondary=role_user_bridge,
         backref="users",
     )
 
     def __repr__(self):
-        return f"User: {self.email}"
+        return f"<User-id: {self.id}, User-email: {self.email}>"
 
     @hybrid_property
     def password(self):
@@ -85,12 +88,11 @@ class User(UserMixin, PkModel):
     def password(self, plaintext):
         self._password = generate_password_hash(plaintext, method="sha256")
 
-    def check_hash(self, password):
+    def check_password(self, password):
         return check_password_hash(self._password, password)
 
     def generate_confirmation_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        print(f"current user: {self.email}")
         return serializer.dumps(
             self.email, salt=current_app.config["PASSWORD_SALT"]
         )
@@ -122,3 +124,6 @@ class Role(PkModel):
 
     __tablename__ = "roles"
     name = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<Role-id: {self.id}, Role-name: {self.name}>"

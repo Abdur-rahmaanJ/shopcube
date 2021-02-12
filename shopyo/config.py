@@ -42,7 +42,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     """Configurations for testsing"""
-
+    ENV = "testing"
     SQLALCHEMY_DATABASE_URI = "sqlite:///testing.db"
     DEBUG = True
     LIVESERVER_PORT = 8943

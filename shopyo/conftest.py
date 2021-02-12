@@ -22,17 +22,6 @@ if os.path.exists("testing.db"):
 
 
 @pytest.fixture(scope="session")
-def new_user():
-    """
-    A pytest fixture that returns a user model object
-    """
-    user = User(email="newuser@domain.com", password="pass")
-    user.first_name = "New"
-    user.last_name = "User"
-    return user
-
-
-@pytest.fixture(scope="session")
 def non_admin_user():
     """
     A pytest fixture that returns a non admin user
@@ -74,6 +63,7 @@ def test_client(flask_app):
     with flask_app.test_client() as testing_client:
         # Establish an application context
         with flask_app.app_context():
+            print("\nhere\n")
             yield testing_client  # this is where the testing happens!
 
 

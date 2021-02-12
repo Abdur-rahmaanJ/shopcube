@@ -106,7 +106,7 @@ def login():
         email = login_form.email.data
         password = login_form.password.data
         user = User.query.filter_by(email=email).first()
-        if user is None or not user.check_hash(password):
+        if user is None or not user.check_password(password):
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))
         login_user(user)
@@ -124,7 +124,7 @@ def shop_login():
             email = login_form.email.data
             password = login_form.password.data
             user = User.query.filter_by(email=email).first()
-            if user is None or not user.check_hash(password):
+            if user is None or not user.check_password(password):
                 flash(notify_danger("please check your user id and password"))
                 return redirect(url_for("shop.checkout"))
             login_user(user)
