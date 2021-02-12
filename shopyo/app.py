@@ -1,5 +1,6 @@
 import importlib
 import os
+import json
 import sys
 
 from flask import Flask
@@ -171,7 +172,10 @@ def create_app(config_name):
     # return response
 
 
-app = create_app("development")
+with open(os.path.join(base_path, 'config.json')) as f:
+    config_json = json.load(f)
+environment = config_json['environment']
+app = create_app(environment)
 
 
 if __name__ == "__main__":
