@@ -6,8 +6,10 @@ from urllib.parse import urlparse, urljoin
 def is_safe_redirect_url(target):
     host_url = urlparse(request.host_url)
     redirect_url = urlparse(urljoin(request.host_url, target))
-    return redirect_url.scheme in ('http', 'https') and \
-        host_url.netloc == redirect_url.netloc
+    return (
+        redirect_url.scheme in ("http", "https")
+        and host_url.netloc == redirect_url.netloc
+    )
 
 
 def get_safe_redirect(url):
@@ -19,4 +21,4 @@ def get_safe_redirect(url):
     if url and is_safe_redirect_url(url):
         return url
 
-    return '/'
+    return "/"

@@ -325,6 +325,12 @@ def create_module_in_box(modulename, boxname):
 def collectstatic(target_module=None):
     """
     Copies module/static into /static/modules/module
+    in static it becomes like
+    static/
+        modules/
+            box_something/
+                modulename
+            modulename2
 
     Parameters
     ----------
@@ -355,7 +361,7 @@ def collectstatic(target_module=None):
                     if not os.path.exists(module_static_folder):
                         continue
                     module_in_static_dir = os.path.join(
-                        modules_path_in_static, module_name
+                        modules_path_in_static, folder, module_name
                     )
                     trycopytree(module_static_folder, module_in_static_dir)
             else:

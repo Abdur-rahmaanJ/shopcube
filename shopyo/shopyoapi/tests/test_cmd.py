@@ -26,8 +26,7 @@ class TestCommandlineClean:
         clean(flask_app)
         captured = capfd.readouterr()
         expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
+            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
         )
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
@@ -58,8 +57,7 @@ class TestCommandlineClean:
         clean(flask_app)
         captured = capfd.readouterr()
         expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
+            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
         )
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
@@ -94,8 +92,7 @@ class TestCommandlineClean:
         clean(flask_app)
         captured = capfd.readouterr()
         expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
+            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
         )
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
@@ -137,8 +134,7 @@ class TestCommandlineClean:
         clean(flask_app)
         captured = capfd.readouterr()
         expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
+            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
         )
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
@@ -187,9 +183,7 @@ class TestCommandlineClean:
             f"[x] file '{os.path.join(tmpdir, 'shopyo.db')}' "
             "successfully deleted\n"
         )
-        expected_err_pycache = (
-            "[ ] __pycache__ doesn't exist\n"
-        )
+        expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
         expected_err_migrations = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
         )
@@ -221,9 +215,7 @@ class TestCommandlineClean:
             f"[x] folder '{os.path.join(tmpdir, 'migrations')}' "
             "successfully deleted\n"
         )
-        expected_err_pycache = (
-            "[ ] __pycache__ doesn't exist\n"
-        )
+        expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
         )
@@ -301,12 +293,8 @@ class TestCommandlineClean:
         os.chdir(tmpdir)
         clean(flask_app)
         captured = capfd.readouterr()
-        expected_out = (
-            "[x] all tables dropped\n"
-        )
-        expected_err_pycache = (
-            "[ ] __pycache__ doesn't exist\n"
-        )
+        expected_out = "[x] all tables dropped\n"
+        expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
         )
