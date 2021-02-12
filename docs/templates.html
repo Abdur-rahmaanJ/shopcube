@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Models" href="models.html" />
-    <link rel="prev" title="Modules/Apps" href="modules.html" />
+    <link rel="prev" title="Assets Management" href="assets.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -44,7 +44,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="modules.html" title="previous chapter">Modules/Apps</a></li>
+      <li>Previous: <a href="assets.html" title="previous chapter">Assets Management</a></li>
       <li>Next: <a href="models.html" title="next chapter">Models</a></li>
   </ul></li>
 </ul>
@@ -54,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Templates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#developing-a-template">Developing a template</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#global-values-for-templates">Global values for templates</a></li>
@@ -256,12 +257,12 @@ notification mechanism used for shopyo api</p>
 5
 6
 7</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
-
 <span class="k">def</span> <span class="nf">get_active_theme_dir</span><span class="p">():</span>
     <span class="n">active_theme_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
         <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span>
         <span class="s2">&quot;themes&quot;</span><span class="p">,</span>
         <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
 </div>

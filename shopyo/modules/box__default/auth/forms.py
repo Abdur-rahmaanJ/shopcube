@@ -32,19 +32,19 @@ class RegistrationForm(FlaskForm):
     )
 
     password = PasswordField(
-        'New Password',
+        "New Password",
         validators=[
             InputRequired("Password is required"),
             Length(
                 min=6,
                 max=25,
-                message="Password must be between 6 and 25 characters"
+                message="Password must be between 6 and 25 characters",
             ),
-            EqualTo('confirm', message='Passwords must match')
+            EqualTo("confirm", message="Passwords must match"),
         ],
     )
     confirm = PasswordField(
-        'Repeat Password',
+        "Repeat Password",
     )
 
     def validate_email(self, field):

@@ -3,6 +3,7 @@ import os
 import sys
 
 from flask import Flask
+
 # from flask import redirect
 from flask import url_for
 from flask import send_from_directory
@@ -45,10 +46,10 @@ def create_app(config_name):
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
 
-    @app.route('/devstatic/<path:boxormodule>/f/<path:filename>')
+    @app.route("/devstatic/<path:boxormodule>/f/<path:filename>")
     def devstatic(boxormodule, filename):
-        if app.config['DEBUG']:
-            module_static = os.path.join(modules_path, boxormodule, 'static')
+        if app.config["DEBUG"]:
+            module_static = os.path.join(modules_path, boxormodule, "static")
             return send_from_directory(module_static, filename=filename)
 
     available_everywhere_entities = {}

@@ -52,7 +52,7 @@ paste in terminal and press enter
 
     python3 -m pip install requirements.txt
 
-    export FLASK_APP = app.py
+    export FLASK_APP=app.py
 
     python3 manage.py initialise
 

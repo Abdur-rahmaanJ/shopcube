@@ -20,6 +20,7 @@ It also makes a great, Django-like flask base
    Education section <education>
    Contributing to Shopyo <contrib>
    Modules/Apps <modules>
+   Assets <assets>
    Templates <templates>
    Models <models>
    Views <views>

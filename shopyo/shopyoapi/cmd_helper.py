@@ -49,7 +49,7 @@ def tryrmfile(path):
     except OSError as e:
         print(
             "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
-            file=sys.stderr
+            file=sys.stderr,
         )
         return False
 
@@ -72,6 +72,6 @@ def tryrmtree(path):
     except OSError as e:
         print(
             "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
-            file=sys.stderr
+            file=sys.stderr,
         )
         return False
