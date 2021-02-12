@@ -124,9 +124,12 @@ migrations/
 .vscode
 workspace.code-workspace
 
-#uploads
+#uploads 
 shopyo/static/uploads/products/
 shopyo/static/uploads/images/
 shopyo/static/uploads/thumbs/
 shopyo/static/uploads/category/
 shopyo/static/uploads/subcategory/
+
+# modules in static since present in modules
+shopyo/static/modules/
