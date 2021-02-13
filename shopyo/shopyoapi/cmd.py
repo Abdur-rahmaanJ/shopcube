@@ -7,7 +7,6 @@ import subprocess
 import sys
 import importlib
 
-from app import app
 from shopyoapi.init import db
 from shopyoapi.cmd_helper import tryrmcache
 from shopyoapi.cmd_helper import tryrmfile
@@ -64,10 +63,6 @@ def initialise():
     """
     SEP_CHAR = "#"
     SEP_NUM = 23
-
-    print("Cleaning Db before Initialization")
-    print(SEP_CHAR * SEP_NUM, end="\n\n")
-    clean(app)
 
     print("Creating Db")
     print(SEP_CHAR * SEP_NUM, end="\n\n")
