@@ -30,9 +30,7 @@ def notify(message, alert_type="primary"):
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    """.format(
-        message=message, alert_type=alert_type
-    )   
+    """.format(message=message, alert_type=alert_type)
     scriptFade ="""<script>setTimeout(function() {$('#success').fadeOut('fast');}, 2000);
     </script><script>setTimeout(function() {$('#danger').fadeOut(7000);}, 7000);</script>
     <script>setTimeout(function() {$('#warning').fadeOut(8500);}, 8500);</script>
