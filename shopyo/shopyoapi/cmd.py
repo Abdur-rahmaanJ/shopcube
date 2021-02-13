@@ -36,6 +36,12 @@ def clean(app):
         ...
 
     """
+    SEP_CHAR = "#"
+    SEP_NUM = 23
+
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+    print("Cleaning...")
+
     # getting app context creates the shopyo.db file even if it is not present
     with app.test_request_context():
         db.drop_all()
