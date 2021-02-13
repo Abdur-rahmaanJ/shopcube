@@ -20,9 +20,9 @@ def notify(message, alert_type="primary"):
     Returns
     -------
     None
-    """
+    """   
     alert = """
-    <div class="shopyo-alert alert alert-{alert_type} alert-dismissible fade show" role="alert"
+    <div id={alert_type} class="shopyo-alert alert alert-{alert_type} alert-dismissible fade show" role="alert"
         style="opacity: 0.98;">
       {message}
 
@@ -32,15 +32,12 @@ def notify(message, alert_type="primary"):
     </div>
     """.format(
         message=message, alert_type=alert_type
-    )
+    )    
+    scriptFade ="""<script>setTimeout(function() {$('#success').fadeOut('fast');}, 2000);</script>
+    <script>setTimeout(function() {$('#danger').fadeOut(7000);}, 7000);</script>
+    <script>setTimeout(function() {$('#warning').fadeOut(8500);}, 8500);</script>
+    <script>setTimeout(function() {$('#info').fadeOut(8500);}, 8500);</script>"""
     
-    scriptFade = """ 
-    <script>
-          setTimeout(function() {
-            $('#flashed-messages').fadeOut('fast');
-        }, 5000); // <-- time in milliseconds (5 secs)
-    </script>
-    """
     return alert+scriptFade
 
 
