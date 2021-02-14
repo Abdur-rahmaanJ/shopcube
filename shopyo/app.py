@@ -34,11 +34,11 @@ try:
     if not os.path.exists('config.json'):
         trycopy('config_demo.json', 'config.json')
 except PermissionError as e:
-    raise e
     print('Cannot continue, permission error'
         'initialising config.py and config.json, '
         'copy and rename them yourself!')
-    sys.exit()
+    raise e
+    
 
 from config import app_config
 
