@@ -17,7 +17,6 @@ from shopyoapi.path import modules_path
 from shopyoapi.file import trymkdir
 from shopyoapi.file import trymkfile
 from shopyoapi.file import get_folders
-from shopyoapi.file import trycopy
 from shopyoapi.file import trycopytree
 
 
