@@ -268,7 +268,7 @@ class TestCommandlineClean:
             "successfully deleted\n"
         )
 
-        assert expected_out == captured.out
+        assert expected_out in captured.out
         assert os.path.exists(migrations_path) is False
         assert os.path.exists(pycache_path1) is False
         assert os.path.exists(pycache_path2) is False
