@@ -38,6 +38,7 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="col-md-7 col-xs-5">
                             <form method="POST" action="{{ url_for('shop.cart_update') }}">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <span style="font-size: 15px;"><- scroll -></span>
                             <table class="table table-responsive" id="cart-items">
                                 <thead>
                                     <th></th>
@@ -59,11 +60,11 @@ input[type=number]::-webkit-outer-spin-button {
                                             <td>{{product.name}}</td>
                                             <td>
                                             
-                                            <div class="input-group mb-3">
+                                            <div class="input-group mb-3" style="width: 150px;">
                                         <div class="input-group-prepend" >
                                             <button type="button" class="btn btn-primary input-group-text minus-btn">-</button>
                                         </div>
-                                        <input class="form-control quantity" aria-label="Amount (to the nearest )" min="0" max="{{ product.in_stock }}" name="quantity_{{ loop.index }}" value="{{cart_data[item]}}" type="number" >
+                                        <input style="width: 20px;" class="form-control quantity" aria-label="Amount (to the nearest )" min="0" max="{{ product.in_stock }}" name="quantity_{{ loop.index }}" value="{{cart_data[item]}}" type="number" >
                                         <div class="input-group-append" >
                                             <button type="button" class="btn btn-primary input-group-text plus-btn">+</button>
                                         </div>
