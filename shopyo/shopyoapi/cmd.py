@@ -92,6 +92,9 @@ def initialise():
     )
 
     # Uploads
+    print("Uploads")
+    print(SEP_CHAR * SEP_NUM, end="\n\n")
+
     for folder in os.listdir(os.path.join(root_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__
             continue
