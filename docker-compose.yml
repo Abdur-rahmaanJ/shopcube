@@ -1,0 +1,8 @@
+version: '2.4'
+services:
+  web:
+    build:
+         context: .
+    image: shopyo
+    ports:
+      - 0.0.0.0:5000:5000

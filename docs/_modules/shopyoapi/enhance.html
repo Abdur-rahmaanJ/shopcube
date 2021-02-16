@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shopyoapi.enhance &#8212; Shopyo  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/shopyo.ico" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Shopyo</a></h1>
+
+
+
+
+
+
+
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../education.html">Education section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing to Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs.html">Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../shared_hosting.html">Deploy on shared hosting</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for shopyoapi.enhance</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">current_app</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">url_for</span>
+
+<span class="kn">from</span> <span class="nn">modules.box__default.settings.models</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">modules.box__default.settings.helpers</span> <span class="kn">import</span> <span class="n">get_setting</span>
+
+
+<div class="viewcode-block" id="get_active_theme_dir"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.enhance.get_active_theme_dir">[docs]</a><span class="k">def</span> <span class="nf">get_active_theme_dir</span><span class="p">():</span>
+    <span class="n">active_theme_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;themes&quot;</span><span class="p">,</span>
+        <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">active_theme_dir</span></div>
+
+
+<div class="viewcode-block" id="set_setting"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.enhance.set_setting">[docs]</a><span class="k">def</span> <span class="nf">set_setting</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">setting</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Settings</span><span class="o">.</span><span class="n">setting</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">setting</span><span class="p">:</span>
+        <span class="n">setting</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">setting</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="base_context"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.enhance.base_context">[docs]</a><span class="k">def</span> <span class="nf">base_context</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used to define global template values</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        copy of dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">theme_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;BASE_DIR&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;themes&quot;</span><span class="p">,</span>
+        <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">info_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">theme_dir</span><span class="p">,</span> <span class="s2">&quot;info.json&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">info_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">APP_NAME</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">)</span>
+    <span class="n">SECTION_NAME</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;SECTION_NAME&quot;</span><span class="p">)</span>
+    <span class="n">SECTION_ITEMS</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;SECTION_ITEMS&quot;</span><span class="p">)</span>
+    <span class="n">ACTIVE_FRONT_THEME</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">)</span>
+    <span class="n">ACTIVE_FRONT_THEME_VERSION</span> <span class="o">=</span> <span class="n">info_data</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+    <span class="n">ACTIVE_FRONT_THEME_STYLES_URL</span> <span class="o">=</span> <span class="n">url_for</span><span class="p">(</span>
+        <span class="s2">&quot;resource.active_theme_css&quot;</span><span class="p">,</span>
+        <span class="n">active_theme</span><span class="o">=</span><span class="n">ACTIVE_FRONT_THEME</span><span class="p">,</span>
+        <span class="n">v</span><span class="o">=</span><span class="n">ACTIVE_FRONT_THEME_VERSION</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">base_context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;APP_NAME&quot;</span><span class="p">:</span> <span class="n">APP_NAME</span><span class="p">,</span>
+        <span class="s2">&quot;SECTION_NAME&quot;</span><span class="p">:</span> <span class="n">SECTION_NAME</span><span class="p">,</span>
+        <span class="s2">&quot;SECTION_ITEMS&quot;</span><span class="p">:</span> <span class="n">SECTION_ITEMS</span><span class="p">,</span>
+        <span class="s2">&quot;ACTIVE_FRONT_THEME&quot;</span><span class="p">:</span> <span class="n">ACTIVE_FRONT_THEME</span><span class="p">,</span>
+        <span class="s2">&quot;ACTIVE_FRONT_THEME_VERSION&quot;</span><span class="p">:</span> <span class="n">ACTIVE_FRONT_THEME_VERSION</span><span class="p">,</span>
+        <span class="s2">&quot;ACTIVE_FRONT_THEME_STYLES_URL&quot;</span><span class="p">:</span> <span class="n">ACTIVE_FRONT_THEME_STYLES_URL</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">base_context</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

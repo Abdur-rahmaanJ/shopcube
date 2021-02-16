@@ -1,0 +1,126 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card" style="padding: 10px;">
+    <div class="card-body">
+        <table class="table table-responsive">
+            <thead>
+                <th>time</th>
+                <th>status</th>
+                <th>logged in mail</th>
+                <th>shipping option</th>
+                <th>shipping option price</th>
+                <th>payment option name</th>
+                <th>payment option price</th>
+                <th>coupon string</th>
+                <th>customer name</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {%for order in orders%}
+
+                <tr>
+                    <td>{{order.time}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.logged_in_customer_email}}</td>
+                    <td>{{order.shipping_option_name}}</td>
+                    <td>{{order.shipping_option_price}}</td>
+                    <td>{{order.payment_option_name}}</td>
+                    <td>{{order.payment_option_text}}</td>
+                    <td>{{order.coupon_string}}</td>
+                    <td>{{order.billing_detail.first_name}} {{order.billing_detail.last_name}}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#order-items-{{loop.index}}">
+                                items
+                            </button>
+                            <button class="btn btn-info" type="button" data-toggle="modal" data-target="#billing-detail-{{loop.index}}">
+                                billing details
+                            </button>
+                            <a href="{{ url_for('shopman.order_delete', order_id=order.id) }}" class="btn btn-danger">delete</a>
+                        </div>
+                    </td>
+                    <!-- Modal -->
+	                <div class="modal fade" id="order-items-{{loop.index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                    <div class="modal-dialog" role="document">
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+	                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                                    <span aria-hidden="true">&times;</span>
+	                                </button>
+	                            </div>
+	                            <div class="modal-body">
+
+	                            			
+	                            	Name  - Quantity - Price - barcode <hr>
+	                                        {%for item in order.order_items%}
+
+	                                        {%set product = get_product(item.barcode)%}
+	                                        {{product.name}} -
+	                                        {{item.quantity}} X
+	                                       Rs {{item.price}} -
+	                                       {{item.barcode}} 
+	                                       <hr>
+	                                        {%endfor%}
+
+
+
+
+	                            </div>
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div><!-- modal end-->
+
+	                <!-- Modal -->
+	                <div class="modal fade" id="billing-detail-{{loop.index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                    <div class="modal-dialog" role="document">
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+	                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                                    <span aria-hidden="true">&times;</span>
+	                                </button>
+	                            </div>
+	                            <div class="modal-body">
+
+	                            	First Name: {{ order.billing_detail.first_name }} <br>
+	                            	Last Name: {{ order.billing_detail.last_name }} <br>
+	                            	Country: {{ order.billing_detail.country }} <br>
+	                            	Street: {{ order.billing_detail.street }} <br>
+	                            	Town/City: {{ order.billing_detail.town_city }} <br>
+	                            	Phone: {{ order.billing_detail.phone }} <br>
+	                            	Email: {{ order.billing_detail.email }} <br>
+	                            	Ordr Notes: {{ order.billing_detail.order_notes }} <br>
+	                            </div>
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div><!-- modal end-->
+                </tr>
+                
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+
+
+{% endblock %}
+
+

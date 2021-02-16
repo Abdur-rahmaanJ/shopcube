@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contributing to Shopyo &#8212; Shopyo  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules/Apps" href="modules.html" />
+    <link rel="prev" title="Education" href="education.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/shopyo.ico" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Shopyo</a></h1>
+
+
+
+
+
+
+
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="education.html" title="previous chapter">Education</a></li>
+      <li>Next: <a href="modules.html" title="next chapter">Modules/Apps</a></li>
+  </ul></li>
+</ul>
+</div><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to Shopyo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-instructions">Setup Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-a-pull-request">Making a Pull Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-to-package">Contributing to package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maintainers-notes">Maintainers notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#community-discord">💬 Community: Discord</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs.html">Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_hosting.html">Deploy on shared hosting</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="contributing-to-shopyo">
+<h1>Contributing to Shopyo<a class="headerlink" href="#contributing-to-shopyo" title="Permalink to this headline">¶</a></h1>
+<p>Shopyo is built using Flask but mimicks Django so that you get to use plug and play modules,
+to contribute, it’s nice to know Flask well. Here are some resources which might help you:</p>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<p>Please see the <a class="reference external" href="education.html">Education</a> section to see what you need to learn before contributing.</p>
+</div>
+<div class="section" id="setup-instructions">
+<span id="setup"></span><h2>Setup Instructions<a class="headerlink" href="#setup-instructions" title="Permalink to this headline">¶</a></h2>
+<p>If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.</p>
+<ol class="arabic">
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">git</span></code> is installed on your computer and <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">version</span> <span class="pre">3.6</span></code> or higher is installed. You can run the following command to check if git is installed and which python version you have. If either commands gives error then it means you need to install that software</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git --version
+python --version
+</pre></div>
+</div>
+</li>
+<li><p>Fork repo. To do so go to the <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo">shopyo repo</a> and press the fork button</p></li>
+<li><p>Clone the repo by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/&lt;replace with your github username&gt;/shopyo.git.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also get the clone link by clicking the green <code class="docutils literal notranslate"><span class="pre">code</span></code> button on your cloned shopyo repo page.</p>
+</div>
+</li>
+<li><p>Next run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above command should be <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">shopyo</span></code> if you cloned using the git command above</p>
+</div>
+</li>
+<li><p>Setup the python <a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">virtual environment</a> based on your Operating System</p></li>
+<li><p>Activate the <a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">virtual environment</a>. Now you should see something like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>env<span class="o">)</span> &lt;/my/path/to/shopyo&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">env</span></code> is the name of virtual environment that you setup in step above.
+Make sure to always activate this <code class="docutils literal notranslate"><span class="pre">env</span></code> when working on <code class="docutils literal notranslate"><span class="pre">shopyo</span></code>. If you are using
+<a class="reference external" href="https://code.visualstudio.com/">VS Code</a>  then you can also add the <code class="docutils literal notranslate"><span class="pre">&quot;python.pythonPath&quot;</span></code> by creating a <code class="docutils literal notranslate"><span class="pre">.vscode</span></code>
+folder at the root level and adding <code class="docutils literal notranslate"><span class="pre">setting.json</span></code> file to it with the content below.
+You need to replace the path with your own path to the virtual environment’s <code class="docutils literal notranslate"><span class="pre">python.exe</span></code>
+file and the example below is for a path in Windows OS hence the double backward slash.
+Now you can create a new terminal with virtual environment activated in VS Code using <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code> + <code class="docutils literal notranslate"><span class="pre">Shift</span></code> + <code class="docutils literal notranslate"><span class="pre">`</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -r dev_requirements.txt
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find <code class="docutils literal notranslate"><span class="pre">dev_requirements.txt</span></code> make sure you are in the cloned <code class="docutils literal notranslate"><span class="pre">shopyo</span></code> directory and try again</p>
+</div>
+</li>
+<li><p>Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner’s shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt; <span class="c1"># not needed if you are already inside your cloned shopyo directory</span>
+git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+</pre></div>
+</div>
+</li>
+<li><p>Once upstream is setup, you can fetch the latest changes made to shopyo repo. Make sure to do this every time before you make branch to work on a feature. Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git fetch upstream
+git pull upstream dev
+</pre></div>
+</div>
+</li>
+<li><p>Do another:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo
+<span class="c1"># so now your path should be something likes &lt;your path&gt;/shopyo/shopyo</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now initialize the app by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py initialise
+</pre></div>
+</div>
+</li>
+<li><p>To start the app, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
+</pre></div>
+</div>
+</li>
+<li><p>The app should now be running on IP <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> at port# <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can go to <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a> or <a class="reference external" href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> (127.0.0.1 is another name for localhost). You can click the login nav link or go directly to <a class="reference external" href="http://localhost:5000/login/">http://localhost:5000/login/</a>. Login with email <code class="docutils literal notranslate"><span class="pre">admin&#64;domain.com</span></code> and password <code class="docutils literal notranslate"><span class="pre">pass</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="making-a-pull-request">
+<h2>Making a Pull Request<a class="headerlink" href="#making-a-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you have setup the repo as explained in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> before making Pull Request (PR)</p>
+<ol class="arabic">
+<li><p>Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code>. Most likely you will see <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch colored green or marked to tell you that you are on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch. Before creating a new branch from <code class="docutils literal notranslate"><span class="pre">dev</span></code> make sure you have fetched latest changes as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 9</p></li>
+<li><p>To create a branch and switch to that branch you run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout -b &lt;name of branch&gt;
+<span class="c1"># example: git checkout -b add-form-validation</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can do the above using 2 separate commands if that makes it easier:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># First create a new branch from current branch</span>
+git branch &lt;name of branch&gt;
+
+<span class="c1"># Next switch to this new branch</span>
+git checkout &lt;name of branch to switch to&gt;
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>After git checkout command above, run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code> to make sure you are not working on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch but are on the newly created branch.</p></li>
+<li><p>Now you can start working on the feature for which you want to make PR</p></li>
+<li><p>Add tests for any new features that you add.</p></li>
+<li><p>Run the following to make sure all the existing and new tests pass. Check the <a class="reference external" href="testing.html">Testing</a> section for more details</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pytest .
+</pre></div>
+</div>
+</li>
+<li><dl class="simple">
+<dt>Make sure to bump the version number in file <code class="docutils literal notranslate"><span class="pre">shopyo/__init__.py</span></code> as follows:</dt><dd><ul class="simple">
+<li><p>small fixes: <code class="docutils literal notranslate"><span class="pre">_._.x</span></code>, (example <code class="docutils literal notranslate"><span class="pre">3.4.6</span></code> to <code class="docutils literal notranslate"><span class="pre">3.4.7</span></code>)</p></li>
+<li><p>feature, many fixes etc: <code class="docutils literal notranslate"><span class="pre">_.x.0</span></code>, (example <code class="docutils literal notranslate"><span class="pre">3.4.6</span></code> to <code class="docutils literal notranslate"><span class="pre">3.5.0</span></code>)</p></li>
+<li><p>big feature, breaking change etc <code class="docutils literal notranslate"><span class="pre">x.0.0</span></code> (example <code class="docutils literal notranslate"><span class="pre">3.4.6</span></code> to <code class="docutils literal notranslate"><span class="pre">4.0.0</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Check that there are no linting errors according to <code class="docutils literal notranslate"><span class="pre">flake8</span></code>. To do so you can run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flake8 &lt;path of file that you want to check&gt;
+
+<span class="c1"># example to check the linting error for test_dashboard.py file</span>
+<span class="c1"># assuming you are in shopyo/shopyo directory, run</span>
+flake8 ./modules/box__default/dashboard/tests/test_dashboard.py
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the command above returns without any output, then there are no
+linting errors, otherwise it will tell you the line number and type
+of linting error.
+If typing <code class="docutils literal notranslate"><span class="pre">flake8</span></code> gives error related to command not found, then you
+do not have <code class="docutils literal notranslate"><span class="pre">flake8</span></code> installed and it can be installed as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install flake8
+</pre></div>
+</div>
+<p>In addition, if you are using <a class="reference external" href="https://code.visualstudio.com/">VS Code</a>
+then you can create a <code class="docutils literal notranslate"><span class="pre">.vscode</span></code> folder at the root level and add <code class="docutils literal notranslate"><span class="pre">setting.json</span></code>
+file to it with the following content. This way it auto detects the
+linting errors for you</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you have already created the <code class="docutils literal notranslate"><span class="pre">setting.json</span></code> file as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 6,
+then your json file will look similar to one below</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>Once you are happy with the changes you made you can double check the changed files by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git status
+</pre></div>
+</div>
+</li>
+<li><p>Next add the changes as required</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git add . <span class="c1"># to add all changes</span>
+git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add desired files</span>
+</pre></div>
+</div>
+</li>
+<li><p>Commit the changes. For the commit messages, follow the guidelines <a class="reference external" href="https://udacity.github.io/git-styleguide/">here</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git commit -m <span class="s2">&quot;&lt;put your commit message here&gt;&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Finally push the committed changes from local repository to a remote repository (the one you forked)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git push origin &lt;the current branch name&gt;
+</pre></div>
+</div>
+</li>
+<li><p>You can now make a PR. When you go to your forked repo or the owner’s repo you will see a <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">&amp;</span> <span class="pre">pull</span> <span class="pre">request</span></code> button. Click on it and mention the changes you made. Look at the <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo/pulls?q=is%3Apr+is%3Aclosed">past PRs</a> for examples of what to mention when submitting a PR. If a PR closes an issue, add <code class="docutils literal notranslate"><span class="pre">Fixes</span> <span class="pre">#&lt;issue</span> <span class="pre">number&gt;</span></code>, as seen <a class="reference external" href="https://github.com/Abdur-rahmaanJ/shopyo/pull/95">here</a></p></li>
+<li><p>If you want you can request reviews when submitting PR.</p></li>
+<li><p>Add your country flag in readme after accepted PR</p></li>
+<li><p>At times when you do git status after fetching the latest changes it might say something like: <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">branch</span> <span class="pre">is</span> <span class="pre">ahead</span> <span class="pre">of</span> <span class="pre">'origin/dev</span></code> which mean the forked branch does not have the latest changes. To push the latest changes to your forked repo, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git push origin head
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="contributing-to-package">
+<h2>Contributing to package<a class="headerlink" href="#contributing-to-package" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>clone project</p></li>
+<li><p>cd into project folder</p></li>
+<li><p>create and activate venv</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p></li>
+<li><p>after changes run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">--upgrade</span></code></p></li>
+<li><p>test <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">&lt;your</span> <span class="pre">options&gt;</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="maintainers-notes">
+<h2>Maintainers notes<a class="headerlink" href="#maintainers-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Version is found in shopyo/__init__.py</p></li>
+</ul>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version_info</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li><p>to publish to pypi, run</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup.py publish
+</pre></div>
+</div>
+</div>
+<div class="section" id="community-discord">
+<h2>💬 Community: Discord<a class="headerlink" href="#community-discord" title="Permalink to this headline">¶</a></h2>
+<p>Join the Discord community <a class="reference external" href="https://discord.com/invite/k37Ef6w">Discord Group</a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/contrib.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

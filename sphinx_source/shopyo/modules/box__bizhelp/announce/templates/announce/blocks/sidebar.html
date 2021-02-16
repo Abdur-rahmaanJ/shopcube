@@ -1,0 +1,15 @@
+{{
+sidebar_item(
+'Home', 
+icon=info['fa-icon'], 
+url=url_for('{}.dashboard'.format(info['module_name']))
+)
+}}
+
+{{
+sidebar_item(
+'View', 
+icon='fa fa-list', 
+url=url_for('{}.list'.format(info['module_name']))
+)
+}}

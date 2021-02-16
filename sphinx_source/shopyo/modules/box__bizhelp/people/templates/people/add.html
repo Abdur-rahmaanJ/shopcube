@@ -1,0 +1,141 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='people' %}
+{% block pagehead %}
+<title>add people</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'people/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<script type="text/javascript">
+$(function() {
+    var error = document.getElementById("error");
+    error.style.visibility = "hidden";
+
+    $(".submit").click(function() {
+        var id = document.getElementById("birthday");
+        var enteredDate = new Date(id.value);
+        var currentDate = new Date();
+
+        if (enteredDate > currentDate) {
+            error.innerHTML = 'Date of birth cannot be greater than current date.';
+            error.style.visibility = "visible";
+            return false;
+        }
+
+    });
+});
+
+function toggleDisable(checkbox) {
+    var toggle = document.getElementById("manufacturer_details");
+    if (checkbox.checked == true) {
+        toggle.disabled = false;
+        toggle.hidden = false;
+    } else {
+        toggle.disabled = true;
+        toggle.hidden = true;
+    }
+}
+</script>
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>Add People</h2>
+            <form action="/people/add" method="post">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+                    </div>
+                    <input required autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+                    {{message}}
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                    </div>
+                    <input required autocomplete="off" id="birthday" type="date" class="form-control" name="birthday" placeholder="">
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                    </div>
+                    <input required autocomplete="off" id="phone" type="number" class="form-control" name="phone" placeholder="0111 111 222">
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                    </div>
+                    <input autocomplete="off" id="mobile" type="number" class="form-control" name="mobile" placeholder="0711 111 222">
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                    </div>
+                    <input required autocomplete="off" id="email" type="email" class="form-control" name="email" placeholder="me@somewhere.me">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fab fa-linkedin"></i></span>
+                    </div>
+                    <input autocomplete="off" id="linkedin" type="text" class="form-control" name="linkedin" placeholder="linkedin">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                    </div>
+                    <input autocomplete="off" id="facebook" type="text" class="form-control" name="facebook" placeholder="facebook">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                    </div>
+                    <input autocomplete="off" id="twitter" type="text" class="form-control" name="twitter" placeholder="twitter">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-sticky-note"></i></span>
+                    </div>
+                    <input autocomplete="off" id="notes" type="text" class="form-control" name="notes" placeholder="Notes: ...">
+                </div>
+                <!-- <div class="input-group mb-3"> -->
+                <div class="input-group mb-3">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="is_manufacturer" name="is_manufacturer" onchange="toggleDisable(this);">
+                        <label class="custom-control-label" for="is_manufacturer">Are you a manufacturer?</label>
+                    </div>
+                </div>
+                <fieldset id="manufacturer_details" disabled hidden>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+                        </div>
+                        <input required autocomplete="off" id="manufacturer_name" type="text" class="form-control" name="manufacturer_name" placeholder="Manufacturer Name">
+                        {{message}}
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                        </div>
+                        <input required autocomplete="off" id="manufacturer_phone" type="number" class="form-control" name="manufacturer_phone" placeholder="0111 111 222">
+                        <span id="error" type="text" vissiblity='hidden'></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+                        </div>
+                        <input required autocomplete="off" id="manufacturer_address" type="text" class="form-control" name="manufacturer_address" placeholder="Address">
+                        <span id="error" type="text" vissiblity='hidden'></span>
+                    </div>
+                </fieldset>
+                <input required type="submit" class="submit btn btn-info" value="add">
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

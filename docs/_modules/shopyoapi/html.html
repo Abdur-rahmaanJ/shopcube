@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shopyoapi.html &#8212; Shopyo  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/shopyo.ico" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Shopyo</a></h1>
+
+
+
+
+
+
+
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../education.html">Education section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing to Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules/Apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs.html">Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../shared_hosting.html">Deploy on shared hosting</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for shopyoapi.html</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Used on flash</span>
+<span class="sd">flash(notify_success(&#39;mail sent!&#39;))</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="notify"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify">[docs]</a><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used with flash</span>
+<span class="sd">        flash(notify(&#39;blabla&#39;))</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    message: str</span>
+<span class="sd">        message to be displayed</span>
+
+<span class="sd">    alert_type: str</span>
+<span class="sd">        bootstrap class</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alert</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &lt;div class=&quot;shopyo-alert alert alert-</span><span class="si">{alert_type}</span><span class="s2"> alert-dismissible fade show&quot; role=&quot;alert&quot;</span>
+<span class="s2">        style=&quot;opacity: 0.98;&quot;&gt;</span>
+<span class="s2">      </span><span class="si">{message}</span><span class="s2"></span>
+
+<span class="s2">      &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;</span>
+<span class="s2">        &lt;span aria-hidden=&quot;true&quot;&gt;&amp;times;&lt;/span&gt;</span>
+<span class="s2">      &lt;/button&gt;</span>
+<span class="s2">    &lt;/div&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="n">alert_type</span>
+    <span class="p">)</span>
+
+    <span class="n">scriptFade</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; </span>
+<span class="s2">    &lt;script&gt;</span>
+<span class="s2">          setTimeout(function() {</span>
+<span class="s2">            $(&#39;#flashed-messages&#39;).fadeOut(&#39;fast&#39;);</span>
+<span class="s2">        }, 5000); // &lt;-- time in milliseconds (5 secs)</span>
+<span class="s2">    &lt;/script&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">alert</span> <span class="o">+</span> <span class="n">scriptFade</span></div>
+
+
+<div class="viewcode-block" id="notify_success"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_success">[docs]</a><span class="k">def</span> <span class="nf">notify_success</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="notify_danger"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_danger">[docs]</a><span class="k">def</span> <span class="nf">notify_danger</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;danger&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="notify_warning"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_warning">[docs]</a><span class="k">def</span> <span class="nf">notify_warning</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="notify_info"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.html.notify_info">[docs]</a><span class="k">def</span> <span class="nf">notify_info</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">alert_type</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

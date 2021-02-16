@@ -1,0 +1,59 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='products' %}
+{% block pagehead %}
+<title>SpareParts</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'product/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>products for
+            <span class="badge badge-primary">---</span>
+            <span class="badge badge-secondary">---</span>
+        </h2>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>barcode</th>
+                    <th>name</th>
+                    <th>description</th>
+                    <th>date</th>
+                    <th>price</th>
+                    <th>selling price</th>
+                    <th>discontinued</th>
+                    <th>in stock</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if subcategory.products%}
+                {%for p in subcategory.products%}
+                <tr>
+                    <td>{{p.barcode}}</td>
+                    <td>{{p.name}}</td>
+                    <td>{{p.description}}</td>
+                    <td>{{p.date}}</td>
+                    <td>{{p.price}}</td>
+                    <td>{{p.selling_price}}</td>
+                    <td>{{p.discontinued}}</td>
+                    <td>{{p.in_stock}}</td>
+                    <td style="">
+                        <a href="{{url_for('product.edit_dashboard', barcode=p.barcode)}}" class="btn btn-warning" role="button">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a href="{{url_for('product.delete', barcode=p.barcode)}}" class="btn btn-danger" role="button">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {%endfor%}
+                {%endif%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
