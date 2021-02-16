@@ -21,6 +21,12 @@ class Config:
         STATIC, "uploads", "subcategory"
     )
     PASSWORD_SALT = "abcdefghi"
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
+    #     username='shopyo_user',
+    #     password='pass',
+    #     server_name='localhost',
+    #     db_name='shopyodb'
+    # )
 
 
 class DevelopmentConfig(Config):
