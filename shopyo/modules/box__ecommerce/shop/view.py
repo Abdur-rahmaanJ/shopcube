@@ -291,7 +291,8 @@ def checkout():
     ) as f:
         countries = json.load(f)
     form = CheckoutForm()
-    country_choices = [(c["name"], c["name"]) for c in countries]
+    # country_choices = [(c["name"], c["name"]) for c in countries]
+    country_choices = [('mauritius', 'Mauritius')]
     form.default_country.choices = country_choices
     form.diff_country.choices = country_choices
 
@@ -339,9 +340,14 @@ def checkout_process():
             )
         ) as f:
             countries = json.load(f)
-        country_choices = [(c["name"], c["name"]) for c in countries]
+        # country_choices = [(c["name"], c["name"]) for c in countries]
+        # form.default_country.choices = country_choices
+        # form.diff_country.choices = country_choices
+
+        country_choices = [('mauritius', 'Mauritius')]
         form.default_country.choices = country_choices
         form.diff_country.choices = country_choices
+        
         # print(dir(form))
         # ordered dict print(form._fields[0][0])
 
