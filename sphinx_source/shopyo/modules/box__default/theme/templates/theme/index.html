@@ -1,0 +1,91 @@
+{% extends "base/module_base.html" %}
+
+{% set active_page ='' %}
+
+{% block pagehead %}
+<title></title>
+<style>
+
+</style>
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+  {%include '{}/blocks/sidebar.html'.format(module_info['module_name'])%}
+{%endblock%}
+
+
+
+
+{% block content %}
+<br>
+    <div class="card" style="color: black">
+        <div class="card-header">
+            Front Theme
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key in all_front_info%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{all_front_info[key]['author']}}</td>
+                            <td>
+                                {%if active_front_theme != key%}
+                                    <a class="btn btn-info" href="{{url_for('theme.activate_front_theme', theme_name=key)}}">activate</a>
+                                {%else%}
+                                active
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<br>
+    <div class="card" style="color: black">
+        <div class="card-header">
+            Back Theme
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key in all_back_info%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{all_back_info[key]['author']}}</td>
+                            <td>
+                                {%if active_back_theme != key%}
+                                    <a class="btn btn-info" href="{{url_for('theme.activate_back_theme', theme_name=key)}}">activate</a>
+                                {%else%}
+                                active
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<div>
+
+</div>
+
+{% endblock %}

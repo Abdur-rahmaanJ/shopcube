@@ -1,0 +1,127 @@
+{% extends "base/module_base.html" %}
+{% set active_page ="products" %}
+{% block pagehead %}
+<title>lookup</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'product/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<script type="text/javascript">
+$(function() {
+    // pos
+    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    var global_search = 'False';
+    var field = 'barcode';
+    $('#searchinput').on('input', function() {
+        //$("#results_table tr").remove(); 
+        if ($("#global_search").prop("checked") == true) {
+            global_search = 'True';
+        }
+        field = $("#choose_field input[type='radio']:checked").attr("value");
+
+        $("#results_table tbody").html("<tr></tr>");
+        var api_url = "/product/sub/{{subcategory.id}}/search/" + $("#searchinput").val() + "?" +
+            "global_search=" + global_search + "&" +
+            "field=" + field;
+        $.getJSON(api_url,
+            function(data) {
+                console.log(api_url);
+                for (var i = data.length - 1; i >= 0; i--) {
+                    var result = data[i];
+                    if ((result['discontinued'] === 'True') || (result['discontinued'] == 1)) {
+                        result['discontinued'] = 'Yes'
+                    } else {
+                        result['discontinued'] = 'No'
+                    }
+                    $('#results_table tr:last').after("<tr>" +
+                        "<td>" + result['barcode'] + "</td>" +
+                        "<td>" + result['name'] + "</td>" +
+                        "<td>" + result['description'] + "</td>" +
+                        "<td>" + result['date'] + "</td>" +
+                        "<td>" + result['price'] + "</td>" +
+                        "<td>" + result['selling_price'] + "</td>" +
+                        "<td>" + result['in_stock'] + "</td>" +
+                        "<td>" + result['discontinued'] + "</td>" +
+                        '<td><a href="/product/' + result['barcode'] + '/delete" class="btn btn-danger" role="button">delete</a></td>' +
+                        '<td><a href="/product/' + result['barcode'] + '/edit/dashboard" class="btn btn-info" role="button">edit</a></td>' + "</tr>");
+                    //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
+                }
+            })
+    });
+    $('#searchbtn').click(function() {
+        $.getJSON("http://localhost:5000/search/name" + $(this).val(), function(data) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                var result = data[i];
+                $('#search_results').append("<p>" + result['barcode'] + "</p>");
+            }
+
+        })
+    });
+});
+</script>
+<div class="card">
+    <div class="card-body">
+        <!--
+      <div class="input-group">
+        <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
+        <div class="input-group-btn">
+          <button id="searchbtn" class="btn btn-default" ><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+      </div>-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
+        </div>
+        <div class="form-check">
+            <input name="global_search" class="form-check-input" type="checkbox" value="" id="global_search">
+            <label class="form-check-label" for="defaultCheck1">
+                Global Search
+            </label>
+        </div>
+        <div id="choose_field">
+            {%for field in fields%}
+            <div class="form-check form-check-inline">
+                <input name="field" class="form-check-input" type="radio" id="inlineCheckbox1" value="{{field}}">
+                <label class="form-check-label" for="inlineCheckbox1">{{field}}</label>
+            </div>
+            {%endfor%}
+        </div>
+        <div id="search_results">
+        </div>
+        <br><br>
+        <table id="results_table" class="table">
+            <thead>
+                <tr>
+                    <td>barcode</td>
+                    <td>name</td>
+                    <td>description</td>
+                    <td>date</td>
+                    <td>price</td>
+                    <td>selling price</td>
+                    <td>in stock</td>
+                    <td>discontinued</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

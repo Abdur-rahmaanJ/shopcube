@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modules/Apps &#8212; Shopyo  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Assets Management" href="assets.html" />
+    <link rel="prev" title="Contributing to Shopyo" href="contrib.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/shopyo.ico" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Shopyo</a></h1>
+
+
+
+
+
+
+
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="contrib.html" title="previous chapter">Contributing to Shopyo</a></li>
+      <li>Next: <a href="assets.html" title="next chapter">Assets Management</a></li>
+  </ul></li>
+</ul>
+</div><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setting up Shopyo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules/Apps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#easy-way-to-create-module">Easy way to create module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-make-up-modules">What make up modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#info-json">info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-modules">Default Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-shopyo-as-a-flask-base">Using Shopyo as a Flask base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importing-modules">Importing modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#global-py">global.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upload-py">upload.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boxes-or-many-apps-together">Boxes or many apps together</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs.html">Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_hosting.html">Deploy on shared hosting</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="modules-apps">
+<h1>Modules/Apps<a class="headerlink" href="#modules-apps" title="Permalink to this headline">¶</a></h1>
+<p>Modules allow you to get Django’s plug and play behaviour.
+The are functionally similar to Django apps. Modules are created
+in the modules folder. This makes it easier to comprehend than
+Django as you can see at a glance what is the main script and what
+are modules/apps.</p>
+<div class="section" id="easy-way-to-create-module">
+<h2>Easy way to create module<a class="headerlink" href="#easy-way-to-create-module" title="Permalink to this headline">¶</a></h2>
+<p>Once in a Shopyo project, run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo startapp modulename
+</pre></div>
+</div>
+<p>or you can do</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startapp modulename
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-make-up-modules">
+<h2>What make up modules<a class="headerlink" href="#what-make-up-modules" title="Permalink to this headline">¶</a></h2>
+<p>Modules have the following structure, where product is the module
+name. The EuroPython talk under the <a class="reference external" href="education.html">Education Section</a> might be insightful</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>product/
+    tests/
+    static/
+    templates/
+        product/
+            templatefile.html
+    forms.py
+    info.json
+    models.py
+    view.py
+    global.py # optional
+    upload.py # optional
+</pre></div>
+</div>
+<p>The command in the last section auto creates it for you!</p>
+</div>
+<div class="section" id="info-json">
+<h2>info.json<a class="headerlink" href="#info-json" title="Permalink to this headline">¶</a></h2>
+<p>The info file allows you to specify module config. This allows you to
+specify the module url and panel icon.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="nt">&quot;display_string&quot;</span><span class="p">:</span> <span class="s2">&quot;Page&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;module_name&quot;</span><span class="p">:</span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;fa-icon&quot;</span><span class="p">:</span> <span class="s2">&quot;fa fa-store&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;url_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;/page&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;dashboard&quot;</span><span class="p">:</span> <span class="s2">&quot;/dashboard&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">display_string</span></code>: Display name on control panel. If you decide to use Shopyo as a Flask base, it does not matter then</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">module_name</span></code>: Shopyo uses this to reference the module. Not to be duplicated</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Used to show or hide modules on control panel. If control panel module not present, you can skip it</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fa-icon</span></code>: Used to show fontawesome icon on control panel. If control panel module not present, you can skip it</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">url_prefix</span></code>: Needed to specify module’s base url</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dashboard</span></code>: Used to redirect in control panel. For example the contact module’s url is /contact. But we want it to be public. So we have a panel redirect of /dashboard to direct admin to /contact/dashboard. Dont include if you don’t want redirect</p></li>
+</ul>
+</div>
+<div class="section" id="default-modules">
+<h2>Default Modules<a class="headerlink" href="#default-modules" title="Permalink to this headline">¶</a></h2>
+<p><strong>Admin</strong></p>
+<p><strong>Appointment</strong></p>
+<p><strong>Base</strong></p>
+<p><strong>Category</strong></p>
+<p><strong>Contact</strong></p>
+<p><strong>Control Panel</strong></p>
+<p><strong>Internals</strong></p>
+<p><strong>Login</strong></p>
+<p><strong>Page</strong></p>
+<p><strong>People</strong></p>
+<p><strong>Setting</strong></p>
+</div>
+<div class="section" id="using-shopyo-as-a-flask-base">
+<h2>Using Shopyo as a Flask base<a class="headerlink" href="#using-shopyo-as-a-flask-base" title="Permalink to this headline">¶</a></h2>
+<p>You can customise Shopyo in many ways</p>
+<p>In case you want a partial customisation, keep the following modules:</p>
+<ul class="simple">
+<li><p>Control Panel</p></li>
+<li><p>Admin</p></li>
+<li><p>Base</p></li>
+<li><p>Login</p></li>
+<li><p>Settings</p></li>
+</ul>
+<p>In case you want even more customisation, keep the base module and modify it</p>
+<p>If you want even more customisation,  just delete all modules from modules/ folder then run <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">startapp</span> <span class="pre">your_module</span></code>. In which case, remove models import from shopyoapi/uploads.py</p>
+</div>
+<div class="section" id="importing-modules">
+<h2>Importing modules<a class="headerlink" href="#importing-modules" title="Permalink to this headline">¶</a></h2>
+<p>If you want to import from forms.py in same folder you write <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">.forms</span> <span class="pre">import</span> <span class="pre">...</span></code> . If you want to import from other modules you do: <code class="docutils literal notranslate"><span class="pre">`from</span> <span class="pre">modules.modulename.forms</span> <span class="pre">import</span> <span class="pre">...`</span></code></p>
+</div>
+<div class="section" id="global-py">
+<h2>global.py<a class="headerlink" href="#global-py" title="Permalink to this headline">¶</a></h2>
+<p>Expects</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">available_everywhere</span> <span class="o">=</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where you pass functions or vars or classes you want to makle available in all templates! Try ‘x’: 1</p>
+</div>
+<div class="section" id="upload-py">
+<h2>upload.py<a class="headerlink" href="#upload-py" title="Permalink to this headline">¶</a></h2>
+<p>upload.py has a def upload(): function where uploads should be done.
+put upload codes in the function using app.app_context()</p>
+<p>Here is a demo:</p>
+</div>
+<div class="section" id="boxes-or-many-apps-together">
+<h2>Boxes or many apps together<a class="headerlink" href="#boxes-or-many-apps-together" title="Permalink to this headline">¶</a></h2>
+<p>If you want to create submodules, first create a box:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startbox demo
+</pre></div>
+</div>
+<p>This will be created as box__demo in modules/</p>
+<p>Then create the submodule:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp <span class="k">in</span> box__demo
+</pre></div>
+</div>
+<p>If you go to url <cite>/demoapp</cite>, you will get Demoapp returned</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/modules.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

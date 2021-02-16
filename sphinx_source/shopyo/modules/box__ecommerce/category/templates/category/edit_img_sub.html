@@ -1,0 +1,82 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='subcategory' %}
+{% block pagehead %}
+<style type="text/css">
+.carousel-control-prev,
+.carousel-control-next {
+    height: 100px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    /*height: 50px;*/
+    /*width: 100px;*/
+    /*border-radius: 50%;*/
+    /*border: 1px solid black;*/
+    background-image: none !important;
+    background: none !important;
+    /*font-size: 55px;*/
+    /*color: red;*/
+}
+
+.carousel-control-next-icon:after {
+    content: '>';
+    font-size: 55px;
+    color: red;
+}
+
+.carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: red;
+}
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form action="{{url_for('category.edit_sub_img', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data">
+            {%if len(subcategory.resources) == 0%}
+            <label>add image for {{subcategory.name}}</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input class="form-control" type="file" name="photo" autocomplete="off">
+            </div>
+            <br>
+            {%else%}
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {%for resource in subcategory.resources%}
+                    {%if resource.type == 'image'%}
+                    <div class="carousel-item {{'active' if loop.index == 1 else ''}}">
+                        <img class="d-block" width=300 src="{{url_for('category.subcategory_image', filename=resource.filename)}}" alt="---">
+                        <a style="margin-top: 10px" class="btn btn-danger" href="{{url_for('category.subcategory_image_delete', subcategory_id=subcategory.id, filename=resource.filename)}}">delete</a>
+                    </div>
+                    {%endif%}
+                    {%endfor%}
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <br>
+            </div>
+            <br>
+            Delete image to be able to add new
+            <br>
+            {%endif%}
+            <input required type="submit" class="btn btn-info" value="edit">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        </form>
+    </div>
+</div>
+{% endblock %}
