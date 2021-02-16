@@ -1,0 +1,18 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='category' %}
+
+{% block content %}
+  {% include 'category/nav.html' %}
+  <br>
+ 
+<div class="jumbotron">
+    <h1>{{message}}</h1>
+    <div>
+        <a href="{{redirect_url}}">
+            <button type="button" class="btn btn-success">ok</button>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

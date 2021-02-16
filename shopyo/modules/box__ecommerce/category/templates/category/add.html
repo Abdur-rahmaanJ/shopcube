@@ -1,0 +1,53 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='category' %}
+{% block pagehead %}
+<title>add category</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<script type="text/javascript">
+$(function() {
+    // pos
+    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    $('#name').on('input', function() {
+        $.getJSON("/category/check/" + $("#name").val(), function(data) {
+            $("#check").html("<i class='fa fa-list-alt'></i>");
+            if (data['exists'] === true) {
+                $("#check").html("<i style='color:red;' class='fas fa-exclamation-triangle'></i>");
+            }
+        })
+    });
+});
+</script>
+<div class="card">
+    <div class="card-body">
+        {% if has_category == 'True' %}
+        <div class="alert alert-danger" role="alert">
+            Category alreadly Listed
+        </div>
+        {% endif %}
+        <h2>Add Category</h2>
+        <form action="/category/add" method="post" enctype="multipart/form-data">
+            <label>name</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            </div>
+            <label>image</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input class="form-control" type="file" name="photo" autocomplete="off">
+            </div>
+            <input required type="submit" class="btn btn-info" value="add">
+        </form>
+    </div>
+</div>
+{% endblock %}

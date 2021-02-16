@@ -1,0 +1,47 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page = "login" %}
+{% block pagehead %}
+	<title>{{active_page.capitalize()}}</title>
+	<style>
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width: 6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width: 6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
+        }
+    </style>  
+
+{% endblock %}
+{% block content %}
+
+	<div class="container col-md-6 off-set-2 text-center">
+        
+        <div class="card">
+            <div class="card-body">
+                <img src="/static/shopyo.svg" width="175" height="150">
+                <form action="{{url_for('auth.login')}}" method="POST">
+                    {%include 'auth/blocks/login_form.html'%}
+                </form>
+            </div>
+        </div>
+        
+             
+{% endblock %}

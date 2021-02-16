@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'base/blocks/resources.html'%}
+    {% include 'base/blocks/default_styles.html'%}
+    {% block pagehead %}{% endblock %}
+</head>
+<body class=" shopyo-main-area">
+    {% include "base/nav_base.html" %}
+    {% include 'base/blocks/flashed_messages.html'%}
+
+	<div class="container">
+	    
+	    <br>
+	    {% block content %}{% endblock %}
+	</div>
+</body>
+</html>
+

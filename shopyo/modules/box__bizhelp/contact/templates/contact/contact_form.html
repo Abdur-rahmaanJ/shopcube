@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include get_active_front_theme()+'/sections/resources.html'%}
+        {% include 'base/blocks/flashed_messages.html'%}
+    </head>
+<body class="">
+    {% include get_active_front_theme()+'/sections/nav.html'%}
+
+<div class="container">
+    <form action="{{url_for('contact.validate_message')}}" method="POST">
+
+        <div class="form-field">
+        {{ form.name.label }} <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-info"></i></span>
+            </div>
+            {{ form.name }}
+        </div>
+        </div>
+
+        <div class="form-field">
+        {{ form.email.label }} <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+            </div>
+            {{ form.email }}
+        </div>
+        </div>
+
+        <div class="form-field">
+        {{ form.message.label }} <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-pencil-alt"></i></span>
+            </div>
+            {{ form.message }}
+        </div>
+        </div>
+        <br>
+        <input type="submit" value="Submit" class="btn btn-info">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    </form>
+</div>
+
+
+    {% include get_active_front_theme()+'/sections/footer.html'%}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

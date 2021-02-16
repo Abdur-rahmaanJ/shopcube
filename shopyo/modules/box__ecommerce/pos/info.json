@@ -1,0 +1,12 @@
+{
+        "display_string": "Pos",
+        "module_name":"pos",
+        "type": "show",
+        "fa-icon": "fa fa-cash-register",
+        "url_prefix": "/pos",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}
