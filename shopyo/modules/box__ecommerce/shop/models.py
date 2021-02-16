@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from shopyoapi.init import db
-
+from modules.box__ecommerce.product.models import Product
 
 class Order(db.Model):
     __tablename__ = "orders"
@@ -29,8 +29,8 @@ class Order(db.Model):
     )
 
     status = db.Column(
-        db.String(120), default="created"
-    )  # created, confirmed, shipped, cancelled, return
+        db.String(120), default="pending"
+    )  # pending, confirmed, shipped, cancelled, refunded
 
     payment_option_name = db.Column(db.String(120))
     payment_option_text = db.Column(db.String(120))
@@ -63,6 +63,18 @@ class Order(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def get_std_formatted_time(self):
+        return self.time.strftime("%b %d %Y, %H:%M")
+
+    def get_total_amount(self):
+        prices = []
+        for item in self.order_items:
+            product = item.get_product()
+            price = product.selling_price * item.quantity
+            prices.append(price)
+        total_prices = sum(prices)
+        return total_prices
+
 
 class OrderItem(db.Model):
     __tablename__ = "order_items"
@@ -70,9 +82,12 @@ class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     order_id = db.Column(db.String(100), db.ForeignKey("orders.id"))
-    barcode = db.Column(db.String(100))
+    time = db.Column(db.DateTime, default=datetime.now())
+    barcode = db.Column(db.Integer, db.ForeignKey("product.barcode"))
     quantity = db.Column(db.Integer)
-    price = db.Column(db.Float)
+    status = db.Column(
+        db.String(120), default="pending"
+    )
 
     def add(self):
         db.session.add(self)
@@ -87,6 +102,9 @@ class OrderItem(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def get_product(self):
+        return Product.query.get(self.barcode)
 
 
 class BillingDetail(db.Model):

@@ -1,4 +1,5 @@
 from shopyoapi.init import db
+from flask import url_for
 
 # from modules.box__ecommerce.pos.models import Transaction
 
@@ -35,6 +36,16 @@ class Product(db.Model):
     resources = db.relationship(
         "Resource", backref="resources", lazy=True, cascade="all, delete"
     )
+
+    def get_one_image_url(self):
+        if len(self.resources) == 0:
+            return url_for('static', filename='default/default_product.jpg')
+        else:
+            resource = self.resources[0]
+            return url_for('static', filename='uploads/products/{}'.format(resource.filename))
+
+    def get_page_url(self):
+        return url_for('shop.product', product_barcode=self.barcode)
 
     def add(self):
         db.session.add(self)

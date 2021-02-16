@@ -8,6 +8,8 @@ import os
 from flask import flash
 from flask import request
 
+from flask_login import login_required
+
 from modules.box__default.settings.helpers import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
@@ -39,6 +41,7 @@ def get_product(barcode):
 
 
 @module_blueprint.route(mhelp.info["dashboard"])
+@login_required
 def dashboard():
     context = mhelp.context()
     form = CurrencyForm()
@@ -58,6 +61,7 @@ def dashboard():
 
 
 @module_blueprint.route("currency/set", methods=["GET", "POST"])
+@login_required
 def set_currency():
     if request.method == "POST":
         form = CurrencyForm()
@@ -66,6 +70,7 @@ def set_currency():
 
 
 @module_blueprint.route("/delivery" + mhelp.info["dashboard"])
+@login_required
 def delivery():
     context = mhelp.context()
     form = DeliveryOptionForm()
@@ -76,6 +81,7 @@ def delivery():
 
 
 @module_blueprint.route("/delivery/option/add", methods=["GET", "POST"])
+@login_required
 def delivery_add_option():
     if request.method == "POST":
         form = DeliveryOptionForm()
@@ -92,6 +98,7 @@ def delivery_add_option():
 
 
 @module_blueprint.route("/delivery/option/update", methods=["GET", "POST"])
+@login_required
 def delivery_option_update():
     if request.method == "POST":
 
@@ -109,6 +116,7 @@ def delivery_option_update():
 
 
 @module_blueprint.route("/delivery/option/<option_id>/delete", methods=["GET"])
+@login_required
 def delivery_option_delete(option_id):
     option = DeliveryOption.query.get(option_id)
     option.delete()
@@ -118,6 +126,7 @@ def delivery_option_delete(option_id):
 
 
 @module_blueprint.route("/payment/dashboard", methods=["GET", "POST"])
+@login_required
 def payment():
     context = mhelp.context()
     form = PaymentOptionForm()
@@ -128,6 +137,7 @@ def payment():
 
 
 @module_blueprint.route("/payment/option/add", methods=["GET", "POST"])
+@login_required
 def payment_add_option():
     if request.method == "POST":
         form = PaymentOptionForm()
@@ -144,6 +154,7 @@ def payment_add_option():
 
 
 @module_blueprint.route("/payment/option/update", methods=["GET", "POST"])
+@login_required
 def payment_option_update():
     if request.method == "POST":
 
@@ -161,6 +172,7 @@ def payment_option_update():
 
 
 @module_blueprint.route("/payment/option/<option_id>/delete", methods=["GET"])
+@login_required
 def payment_option_delete(option_id):
     option = PaymentOption.query.get(option_id)
     option.delete()
@@ -170,6 +182,7 @@ def payment_option_delete(option_id):
 
 
 @module_blueprint.route("/coupon/dashboard", methods=["GET", "POST"])
+@login_required
 def coupon():
     form = CouponForm()
     coupons = Coupon.query.all()
@@ -179,6 +192,7 @@ def coupon():
 
 
 @module_blueprint.route("/coupon/add", methods=["GET", "POST"])
+@login_required
 def coupon_add():
     if request.method == "POST":
         form = CouponForm()
@@ -196,6 +210,7 @@ def coupon_add():
 
 
 @module_blueprint.route("/coupon/<coupon_id>/delete", methods=["GET"])
+@login_required
 def coupon_delete(coupon_id):
     coupon = Coupon.query.get(coupon_id)
     coupon.delete()
@@ -205,6 +220,7 @@ def coupon_delete(coupon_id):
 
 
 @module_blueprint.route("/coupon/update", methods=["GET", "POST"])
+@login_required
 def coupon_update():
     if request.method == "POST":
         form = CouponForm()
@@ -224,6 +240,7 @@ def coupon_update():
 
 
 @module_blueprint.route("/order/dashboard", methods=["GET", "POST"])
+@login_required
 def order():
     orders = Order.query.all()
     context = mhelp.context()
@@ -232,7 +249,35 @@ def order():
 
 
 @module_blueprint.route("/order/<order_id>/delete", methods=["GET", "POST"])
+@login_required
 def order_delete(order_id):
     order = Order.query.get(order_id)
     order.delete()
     return mhelp.redirect_url("shopman.order")
+
+
+@module_blueprint.route("/order/<order_id>/view/dashboard", methods=["GET", "POST"])
+@login_required
+def order_view(order_id):
+    order = Order.query.get(order_id)
+    context = mhelp.context()
+    context.update({
+        "dir": dir, 
+        "order": order
+        })
+    return mhelp.render("order_view.html", **context)
+
+
+@module_blueprint.route("/order/<order_id>/status", methods=["POST"])
+@login_required
+def order_status_change(order_id):
+    if request.method == 'POST':
+        order_status = request.form['order_status']
+        order = Order.query.get(order_id)
+        valid_status = ['pending', 'processing', 'shipped', 'cancelled', 'refunded']
+        if order_status not in valid_status:
+            return 'unknown order status'
+        order.status = order_status
+        order.update()
+        flash(notify_success('Order Updated'))
+        return mhelp.redirect_url('shopman.order_view', order_id=order_id)

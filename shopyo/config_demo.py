@@ -7,7 +7,7 @@ class Config:
     """Parent configuration class."""
 
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.urandom(24)
     BASE_DIR = base_path
@@ -21,6 +21,12 @@ class Config:
         STATIC, "uploads", "subcategory"
     )
     PASSWORD_SALT = "abcdefghi"
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
+    #     username='shopyo_user',
+    #     password='pass',
+    #     server_name='localhost',
+    #     db_name='shopyodb'
+    # )
 
 
 class DevelopmentConfig(Config):
@@ -30,6 +36,12 @@ class DevelopmentConfig(Config):
     DEBUG = True
     # EXPLAIN_TEMPLATE_LOADING = True
     LOGIN_DISABLED = True
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
+        username='freaksboutique_user',
+        password='root',
+        server_name='localhost',
+        db_name='freaksboutique'
+    )
 
 
 class TestingConfig(Config):

@@ -7,6 +7,7 @@ from sqlalchemy.orm import validates
 
 from shopyoapi.init import db
 from shopyoapi.models import PkModel
+from flask import url_for
 
 
 class Category(PkModel):
@@ -33,6 +34,16 @@ class Category(PkModel):
     @validates("name")
     def convert_lower(self, key, value):
         return value.lower()
+
+    def get_one_image_url(self):
+        if len(self.resources) == 0:
+            return url_for('static', filename='default/default_subcategory.jpg')
+        else:
+            resource = self.resources[0]
+            return url_for('static', filename='uploads/products/{}'.format(resource.filename))
+
+    def get_page_url(self):
+        return url_for('shop.category', category_name=self.name)
 
 
 class SubCategory(PkModel):
