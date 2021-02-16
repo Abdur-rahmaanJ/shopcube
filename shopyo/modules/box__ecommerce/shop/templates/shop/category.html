@@ -1,0 +1,131 @@
+{%set active_page = 'shop.html'%}
+<!-- public facing landing page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type="text/css">
+    .navbar {
+        background-color: #5d3f3f !important;
+    }
+
+    /* Pulse Grow */
+    @-webkit-keyframes hvr-pulse-grow {
+        to {
+            -webkit-transform: scale(1.01);
+            transform: scale(1.01);
+        }
+    }
+
+    @keyframes hvr-pulse-grow {
+        to {
+            -webkit-transform: scale(1.01);
+            transform: scale(1.01);
+        }
+    }
+
+    
+
+    .hvr-shadow {
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: box-shadow;
+        transition-property: box-shadow;
+    }
+
+    .hvr-shadow:hover,
+    .hvr-shadow:focus,
+    .hvr-shadow:active {
+        box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+    }
+    </style>
+    {% include get_active_front_theme()+'/sections/resources.html'%}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 0,
+      max: 500,
+      values: [ 75, 300 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+  } );
+  </script>
+    {% include 'shop/blocks/common_styles.html'%}
+</head>
+
+<body>
+    {% include get_active_front_theme()+'/sections/nav.html'%}
+    <div class="shop-spacer-1">
+    </div>
+    <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Shop</a></li>
+        <li class="breadcrumb-item active">{{ current_category.name }}</a></li>
+        
+      </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                {%include 'shop/blocks/accordion.html'%}
+                <p>
+                    <label for="amount">Price range:</label>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                </p>
+                <div id="slider-range"></div>
+                <br>
+                <button id="filter_btn" class="btn btn-primary">filter</button>
+            </div>
+            <div class="col-md-8">
+                <div style="height: 100px">
+                </div>
+                <div class="row">
+                    {%for subcategory in current_category.subcategories%}
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-sx-6">
+                        <a href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}">
+                        <div class="card hvr-shadow" style="margin-bottom: 10px;">
+                            {%set filename_ = ''%}
+                            {%if subcategory.resources%}
+                            {%set filename_ = subcategory.resources[0].filename%}
+                            {%set img_url = url_for('category.subcategory_image', filename=filename_) %}
+                            {%else%}
+                            {%set img_url = url_for('category.subcategory_image', filename='default') %}
+                            {%endif%}
+                            <!-- Card image -->
+                            <div style="background-image: url('{{img_url}}'); background-size: cover; height: 200px;">
+                            </div>
+                            <!-- Card content -->
+                            <div class="card-body text-center">
+                                <!-- Title -->
+                                <h4 class="card-title"><a>{{ subcategory.name }}</a></h4>
+                                <!-- Text -->
+                                <p class="card-text">ewef</p>
+                                <!-- Button -->
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    <!-- Card -->
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include get_active_front_theme()+'/sections/footer.html'%}
+</body>
+
+</html>

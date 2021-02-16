@@ -1,0 +1,26 @@
+
+{{
+sidebar_item('Category Home', 
+icon='fa fa-store', 
+url=url_for('category.dashboard')
+)}}
+
+
+
+{%if active_page not in ['manage subcategory', 'subcategory']%}
+{{
+sidebar_item('Add Category', 
+icon='fas fa-plus-circle', 
+url=url_for('category.add')
+)
+}}
+{%endif%}
+
+{%if active_page == 'subcategory'%}
+{{
+sidebar_item('Manage Subcategory', 
+icon='fa fa-wrench', 
+url=url_for('category.manage_sub', category_name=subcategory.category.name)
+)
+}}
+{%endif%}

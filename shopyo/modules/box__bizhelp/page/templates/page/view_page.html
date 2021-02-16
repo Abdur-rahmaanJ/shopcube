@@ -1,0 +1,31 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='page' %}
+
+{% block pagehead %}
+<title>{{active_page.capitalize()}}</title>
+<style>
+  .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="card">
+    <div class="container">
+      <h3>{{page.title}}</h3>
+      <hr>
+      <div>
+        {{page.content | safe}}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

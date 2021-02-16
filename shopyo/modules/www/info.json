@@ -1,0 +1,12 @@
+{
+        "display_string": "Www",
+        "module_name":"www",
+        "type": "show",
+        "fa-icon": "fa fa-globe-asia",
+        "url_prefix": "/",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

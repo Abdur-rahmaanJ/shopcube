@@ -1,0 +1,6 @@
+{
+	"display_string": "Login",
+	"type": "hidden",
+	"fa-icon": "fas fa-clock",
+	"url_prefix": "/auth"
+}

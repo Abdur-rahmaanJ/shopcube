@@ -1,0 +1,60 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+
+<br>
+<div class="card">
+    <div class="card-body">
+        <form action="{{url_for(info['module_name']+'.edit_check', announce_id=announcement.id)}}" method="POST">
+            {%for field in form%}
+                {%if field.id not in ['csrf_token']%}
+                    {{field.label}}
+                {%endif%}
+                {{field}}
+            {%endfor%}
+            <br>
+            <button class="btn btn-primary">
+                submit
+            </button>
+        </form>
+        
+    </div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='tinymce/tinymce.min.js') }}"></script>
+ <script type="text/javascript">
+tinymce.init({
+    selector: '#content',
+    plugins: [
+        'advlist autolink link image imagetools lists charmap print preview hr anchor pagebreak spellchecker',
+        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+        'save table contextmenu directionality template paste textcolor codesample'
+    ],
+    imagetools_toolbar: "rotateleft rotateright | flipv fliph | editimage imageoptions",
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | codesample',
+    relative_urls: false,
+    images_upload_url: "{{url_for('resource.upload_tinymce_image')}}",
+    image_title: true,
+    automatic_uploads: true,
+    images_reuse_filename: false,
+    images_upload_base_path: '/static/uploads/images',
+    codesample_languages: [
+        { text: 'HTML/XML', value: 'markup' },
+        { text: 'JavaScript', value: 'javascript' },
+        { text: 'CSS', value: 'css' },
+        { text: 'Processing', value: 'processing' },
+        { text: 'Python', value: 'python' }
+    ],
+    width: "100%",
+});
+</script>
+{% endblock %}

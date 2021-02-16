@@ -1,0 +1,73 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='manage subcategory' %}
+{% block pagehead %}
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        {%if category.name != 'uncategorised'%}
+        <h2>Add subcategory to {{category.name}}</h2>
+        <form action="{{url_for('category.add_sub', category_name=category.name)}}" method="post" enctype="multipart/form-data">
+            <label>name</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            </div>
+            <label>image</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input class="form-control" type="file" name="photo" autocomplete="off">
+            </div>
+            <input required type="submit" class="btn btn-info" value="add">
+        </form>
+        {%endif%}
+        <br>
+        <br>
+        <h2>Existing subcategories</h2>
+        {%for subcategory in category.subcategories%}
+        <form class="form" action="{{url_for('category.edit_sub_name', subcategory_id=subcategory.id)}}" method="POST">
+            <input class="" type="text" name="name" value="{{subcategory.name}}" autocomplete="off">
+            <input class="btn btn-info" type="submit" value="save">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{subcategory.id}}">view image</button>
+            {%if subcategory.name != 'uncategorised' and subcategory.category.name != 'uncategorised'%}
+            <a href="{{url_for('category.edit_sub_img_dashboard', subcategory_id=subcategory.id)}}" class="btn btn-warning">edit image</a>
+            <a href="{{url_for('category.sub_delete', subcategory_id=subcategory.id)}}" class="btn btn-danger">delete</a>
+            {%endif%}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+        <!-- Image Modal -->
+        <div class="modal fade" id="modal-{{subcategory.id}}" tabindex="-1" role="dialog" aria-labelledby="peopleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <h5 class="modal-title" id="peopleModalLabel">{{subcategory.name}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {%for resource in subcategory.resources%}
+                        <img style="width: 300px" src="{{url_for('category.subcategory_image', filename=resource.filename)}}">
+                        {%endfor%}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Image Modal End -->
+        <hr>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

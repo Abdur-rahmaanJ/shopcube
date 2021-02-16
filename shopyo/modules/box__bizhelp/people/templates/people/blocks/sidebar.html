@@ -1,0 +1,24 @@
+
+{{
+sidebar_item(
+'Home', 
+icon='fas fa-users', 
+url=url_for('people.index')
+)
+}}
+
+{{
+sidebar_item(
+'Add', 
+icon='fas fa-plus-circle', 
+url=url_for('people.people_add')
+)
+}}
+
+{{
+sidebar_item(
+'Search', 
+icon='fas fa-search', 
+url=url_for('people.lookup')
+)
+}}
