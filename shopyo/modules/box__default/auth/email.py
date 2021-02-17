@@ -9,7 +9,7 @@ from threading import Thread
 from flask import current_app
 
 
-def _send_async_email(app, msg):
+def _send_email_helper(app, msg):
     """
     Helper function used for sending email message
 
@@ -34,7 +34,7 @@ def _send_async_email(app, msg):
         msg.send()
 
 
-def send_email(to, subject, template, from_email=None, **kwargs):
+def send_async_email(to, subject, template, from_email=None, **kwargs):
     """
     Sends email anachronously i.e the function is non blocking.
     Assume email template is valid i.e it can be rendered using
@@ -71,5 +71,6 @@ def send_email(to, subject, template, from_email=None, **kwargs):
     )
     msg.attach_alternative(template_html, "text/html")
 
-    thr = Thread(target=_send_async_email, args=[app, msg])
+    thr = Thread(target=_send_email_helper, args=[app, msg])
     thr.start()
+    return thr

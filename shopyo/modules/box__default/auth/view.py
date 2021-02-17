@@ -15,7 +15,7 @@ from shopyoapi.html import notify_danger
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from .models import User
-from .email import send_email
+from .email import send_async_email
 from .forms import LoginForm
 from .forms import RegistrationForm
 
@@ -49,7 +49,7 @@ def register():
         template = "auth/emails/activate_user"
         subject = "Please confirm your email"
         context.update({"token": token, "user": user})
-        send_email(email, subject, template, **context)
+        send_async_email(email, subject, template, **context)
         flash(notify_success("A confirmation email has been sent via email."))
         return redirect(url_for("dashboard.index"))
 
@@ -84,7 +84,7 @@ def resend():
     template = "auth/emails/activate_user"
     subject = "Please confirm your email"
     context = {"token": token, "user": current_user}
-    send_email(current_user.email, subject, template, **context)
+    send_async_email(current_user.email, subject, template, **context)
     flash(notify_success("A new confirmation email has been sent."))
     return redirect(url_for('auth.unconfirmed'))
 

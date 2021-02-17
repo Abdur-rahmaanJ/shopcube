@@ -4,11 +4,10 @@ functions defined in email.py which is used for sending
 user email confirmation
 """
 import pytest
-import threading
 from flask_mailman import EmailMessage
 
-from modules.box__default.auth.email import _send_async_email
-from modules.box__default.auth.email import send_email
+from modules.box__default.auth.email import _send_email_helper
+from modules.box__default.auth.email import send_async_email
 from modules.box__default.auth.models import User
 
 
@@ -23,8 +22,7 @@ def test_send_email_with_no_default_sender(capfd, email_config):
     template = "auth/emails/activate_user"
     subject = "Please confirm your email"
     context = {"token": token, "user": user}
-    send_email(user.email, subject, template, **context)
-
+    send_async_email(user.email, subject, template, **context)
     captured = capfd.readouterr()
 
     assert "Shopyo Error: MAIL_DEFAULT_SENDER not configured" in captured.out
@@ -46,12 +44,9 @@ def test_send_email_with_no_username_or_password_set(capfd, email_config):
     template = "auth/emails/activate_user"
     subject = "Please confirm your email"
     context = {"token": token, "user": user}
-    send_email(user.email, subject, template, **context)
-
-    while threading.activeCount() > 1:
-        pass
-    else:
-        captured = capfd.readouterr()
+    thread = send_async_email(user.email, subject, template, **context)
+    thread.join()
+    captured = capfd.readouterr()
 
     assert (
         "Shopyo Error: MAIL_USERNAME, and/or MAIL_PASSWORD not configured"
@@ -65,12 +60,9 @@ def test_send_email_using_template_on_valid_credentials(capfd):
     template = "auth/emails/activate_user"
     subject = "Please confirm your email"
     context = {"token": token, "user": user}
-    send_email(user.email, subject, template, **context)
-
-    while threading.activeCount() > 1:
-        pass
-    else:
-        captured = capfd.readouterr()
+    thread = send_async_email(user.email, subject, template, **context)
+    thread.join()
+    captured = capfd.readouterr()
 
     assert "Please confirm your email" in captured.out
     assert "sometoken" in captured.out
@@ -87,7 +79,7 @@ def test_send_using_helper_function(test_client, flask_app, capfd):
         to=["to@test.com"],
         from_email="from@test.com"
     )
-    _send_async_email(flask_app, msg)
+    _send_email_helper(flask_app, msg)
     captured = capfd.readouterr()
 
     assert "to@test.com" in captured.out
