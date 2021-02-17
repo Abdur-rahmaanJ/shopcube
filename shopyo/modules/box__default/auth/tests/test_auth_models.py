@@ -1,6 +1,6 @@
 """
-This file (test_model.py) contains the units tests for
-the `admin` models.
+This file (test_auth_models.py) contains the units tests for
+the all `auth` module's models.
 """
 import pytest
 import datetime as dt
@@ -62,7 +62,7 @@ class TestAnonymousUser:
 
 
 class TestUser:
-    """ Contains User models test """
+    """ Test User model """
 
     def test_get_user_by_id(self):
         user = User.create(email="foo@bar.com", password="pass")
@@ -155,6 +155,7 @@ class TestUser:
 
 
 class TestRole:
+    """ Test Role model """
 
     def test_get_role_by_id(self):
         role = Role.create(name="buyer")
@@ -169,6 +170,7 @@ class TestRole:
 
 
 class TestUserRoleRelation:
+    """ Test User and Role model relationship """
 
     def test_user_can_have_many_roles(self):
         user = UserFactory()

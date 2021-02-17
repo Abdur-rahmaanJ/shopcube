@@ -24,7 +24,7 @@ with open(os.path.join(module_path, "info.json")) as f:
     module_info = json.load(f)
 
 
-class TestAdminInvalidAuth:
+class TestAdminInvalidAccess:
     """
     Test all admin routes for correct user authentication
     """
@@ -84,7 +84,7 @@ class TestAdminInvalidAuth:
 
 
 @pytest.mark.usefixtures("login_admin_user")
-class TestAdminAPI:
+class TestAdminEndpoints:
     """
     Test all admin api post and get requests
     """

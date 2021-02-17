@@ -12,7 +12,7 @@
             <div class="card-body">
                 <img src="/static/shopyo.svg" width="175" height="150">
                 <p>You have not confirmed your account. Email confirmation link was sent to <span class="mark">{{ current_user.email }}</span>. Please check your inbox and your spam folder.</p>
-                <p>Didn't get the email?<a href="{{ url_for('auth.resend_confirmation',_external=True) }}"> Resend</a></p>
+                <p>Didn't get the email?<a href="{{ url_for('auth.resend',_external=True) }}"> Resend</a></p>
             </div>
         </div>
     </div>

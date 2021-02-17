@@ -107,7 +107,7 @@ class User(UserMixin, PkModel):
                 max_age=expiration
             )
         except Exception as e:
-            print(f"Shopyo-LOG, Error at confirm_token: {e}")
+            print(f"\nShopyo-LOG, Error at confirm_token: {e}")
             return False
 
         if email != self.email:

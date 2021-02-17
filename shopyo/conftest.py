@@ -22,6 +22,18 @@ if os.path.exists("testing.db"):
 
 
 @pytest.fixture(scope="session")
+def unconfirmed_user():
+    """
+    A pytest fixture that returns a non admin user
+    """
+    user = User()
+    user.email = "unconfirmed@domain.com"
+    user.password = "pass"
+    user.is_email_confirmed = False
+    return user
+
+
+@pytest.fixture(scope="session")
 def non_admin_user():
     """
     A pytest fixture that returns a non admin user
@@ -63,12 +75,11 @@ def test_client(flask_app):
     with flask_app.test_client() as testing_client:
         # Establish an application context
         with flask_app.app_context():
-            print("\nhere\n")
             yield testing_client  # this is where the testing happens!
 
 
 @pytest.fixture(scope="session")
-def db(test_client, non_admin_user, admin_user):
+def db(test_client, non_admin_user, admin_user, unconfirmed_user):
     """
     creates and returns the initial testing database
     """
@@ -76,9 +87,10 @@ def db(test_client, non_admin_user, admin_user):
     _db.app = test_client
     _db.create_all()
 
-    # Insert admin and non admin users
+    # Insert admin, non admin, and unconfirmed
     _db.session.add(non_admin_user)
     _db.session.add(admin_user)
+    _db.session.add(unconfirmed_user)
 
     # add the default settings
     with open("config.json", "r") as config:
@@ -115,6 +127,14 @@ def db_session(db):
     transaction.rollback()
     connection.close()
     session.remove()
+
+
+@pytest.fixture
+def login_unconfirmed_user(auth, unconfirmed_user):
+    """Login with unconfirmed and logout during teadown"""
+    auth.login(unconfirmed_user)
+    yield
+    auth.logout()
 
 
 @pytest.fixture

@@ -15,7 +15,7 @@ from shopyoapi.html import notify_danger
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from .models import User
-from .mail import send_email
+from .email import send_email
 from .forms import LoginForm
 from .forms import RegistrationForm
 
@@ -59,7 +59,7 @@ def register():
 
 @auth_blueprint.route("/confirm/<token>")
 @login_required
-def confirm_email(token):
+def confirm(token):
 
     if current_user.is_email_confirmed:
         flash(notify_warning("Account already confirmed."))
@@ -69,13 +69,13 @@ def confirm_email(token):
         flash(notify_success("You have confirmed your account. Thanks!"))
         return redirect(url_for("dashboard.index"))
 
-    flash(notify_warning("The confirmation link is invalid or has expired."))
+    flash(notify_warning("The confirmation link is invalid/expired."))
     return redirect(url_for("auth.unconfirmed"))
 
 
 @auth_blueprint.route("/resend")
 @login_required
-def resend_confirmation():
+def resend():
 
     if current_user.is_email_confirmed:
         return redirect(url_for("dashboard.index"))
@@ -90,6 +90,7 @@ def resend_confirmation():
 
 
 @auth_blueprint.route('/unconfirmed')
+@login_required
 def unconfirmed():
     if current_user.is_email_confirmed:
         return redirect(url_for("dashboard.index"))

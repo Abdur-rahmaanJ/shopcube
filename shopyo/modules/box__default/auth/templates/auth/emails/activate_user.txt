@@ -4,7 +4,7 @@ Welcome to Shopyo!
 
 To confirm your account please click on the following link:
 
-{{ url_for('auth.confirm_email', token=token, _external=True) }}
+{{ url_for('auth.confirm', token=token, _external=True) }}
 
 Sincerely,
 
