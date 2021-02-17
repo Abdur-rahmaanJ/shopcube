@@ -1,6 +1,6 @@
 import importlib
 import os
-import sys
+import json
 import jinja2
 from flask import Flask
 from flask import send_from_directory
@@ -8,7 +8,6 @@ from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 from flask_uploads import configure_uploads
 
-from config import app_config
 from modules.box__default.settings.helpers import get_setting
 
 from shopyoapi.init import categoryphotos
@@ -20,12 +19,28 @@ from shopyoapi.init import mail
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
 from shopyoapi.path import modules_path
+from shopyoapi.file import trycopy
 
-sys.path.append(".")
+try:
+    if not os.path.exists('config.py'):
+        trycopy('config_demo.py', 'config.py')
+    if not os.path.exists('config.json'):
+        trycopy('config_demo.json', 'config.json')
+except PermissionError as e:
+    print(
+        'Cannot continue, permission error'
+        'initializing config.py and config.json, '
+        'copy and rename them yourself!'
+    )
+    raise e
+
+from config import app_config
+
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 
 def create_app(config_name):
+
     app = Flask(__name__)
     configuration = app_config[config_name]
     app.config.from_object(configuration)
@@ -40,6 +55,10 @@ def create_app(config_name):
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
 
+    #
+    # dev static
+    #
+
     @app.route("/devstatic/<path:boxormodule>/f/<path:filename>")
     def devstatic(boxormodule, filename):
         if app.config["DEBUG"]:
@@ -49,7 +68,7 @@ def create_app(config_name):
     available_everywhere_entities = {}
 
     #
-    #  load blueprints
+    # load blueprints
     #
     for folder in os.listdir(os.path.join(base_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__
@@ -165,7 +184,10 @@ def create_app(config_name):
     # return response
 
 
-app = create_app("development")
+with open(os.path.join(base_path, 'config.json')) as f:
+    config_json = json.load(f)
+environment = config_json['environment']
+app = create_app(environment)
 
 
 if __name__ == "__main__":

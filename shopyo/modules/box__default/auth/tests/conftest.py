@@ -25,11 +25,10 @@ def email_config(request, flask_app):
 
     if config_type == 'remove':
         del flask_app.config[config_name]
-        yield
     elif config_type == 'none':
         flask_app.config[config_name] = None
-        yield
     else:
         raise ValueError('unknown config type')
 
+    yield
     flask_app.config[config_name] = old

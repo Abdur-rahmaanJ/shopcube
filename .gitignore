@@ -133,3 +133,7 @@ shopyo/static/uploads/subcategory/
 
 # modules in static since present in modules
 shopyo/static/modules/
+
+# ignore secrets
+config.py
+config.json
