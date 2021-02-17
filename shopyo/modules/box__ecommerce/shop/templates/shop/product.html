@@ -228,7 +228,7 @@ $(function() {
                                 {%else%}
                                     {%set img_url = url_for('resource.product_image', filename='default') %}
                                 {%endif%}
-                                <div class="xzoom-container card" style="padding-left: 10px; padding-right: 10px; padding-top: 10px;"> 
+                                <div class="xzoom-container card text-center" style="padding-left: 10px; padding-right: 10px; padding-top: 10px;"> 
                                     <img class="xzoom3" id="xzoom-default" src="{{ img_url }}" 
                                     xoriginal="{{ img_url }}">
 
@@ -258,7 +258,7 @@ $(function() {
                         <h2>{{product.name}}</h2>
                     </div>
                     <div class="card-body">
-                        <h3>$ {{ product.selling_price }}</h3><br>
+                        <h3>{{get_currency_symbol()}} {{ product.selling_price }}</h3><br>
                         {{ product.description }}
                         <hr />
                         <p>in stock <span class="badge badge-dark">{{ product.in_stock }}</span></p>

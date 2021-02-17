@@ -29,7 +29,7 @@
 
 
 .fixed-top.scrolled {
-  background-color: #5d3f3f !important;
+  background-color: #000 !important;
   transition: background-color 400ms linear;
 }    
 
@@ -90,7 +90,7 @@ $(function () {
 		{% include get_active_front_theme()+'/sections/drawer_head.html'%}
 	</head>
 <body>
-
+	{% include 'base/blocks/flashed_messages.html' %}
 	{% include get_active_front_theme()+'/sections/nav.html'%}
 	<header style=""> <!--https://startbootstrap.com/snippets/full-slider-->
 

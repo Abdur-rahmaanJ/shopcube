@@ -31,6 +31,7 @@ from modules.box__ecommerce.shop.models import OrderItem
 from modules.box__ecommerce.shopman.models import DeliveryOption
 from modules.box__ecommerce.shopman.models import PaymentOption
 from modules.box__ecommerce.shopman.models import Coupon
+from modules.box__ecommerce.shop.helpers import get_min_max_subcateg
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -72,14 +73,32 @@ def index(page=1):
     total_pages = (len(Product.query.all()) // PAGINATION) + 1
     products = Product.query.all()[::-1][start:end]
 
+    min_price = None
+    max_price = None
+
+    def_min_price = min((p.selling_price for p in products))
+    def_max_price = max((p.selling_price for p in products))
+    filter_min_max = [def_min_price, def_max_price]
+    if request.args.get('min') and request.args.get('max'):
+        if request.args.get('min').isnumeric() and request.args.get('max').isnumeric():
+            min_price = int(request.args.get('min'))
+            max_price = int(request.args.get('max'))
+            print(min_price, max_price)
+            products = list((p for p in products if min_price <= p.selling_price <= max_price))
+            products = products[start:end]
+            filter_min_max = [min_price, max_price]
+
     cart_info = get_cart_data()
 
+    min_max = [def_min_price, def_max_price]
     context.update(
         {
             "current_category_name": "",
             "total_pages": total_pages,
             "page": page,
             "products": products,
+            "min_max": min_max,
+            "filter_min_max": filter_min_max
         }
     )
     context.update(cart_info)
@@ -108,7 +127,7 @@ def category(category_name):
 
 @module_blueprint.route("/sub/<subcategory_name>/page/<int:page>")
 @module_blueprint.route("/sub/<subcategory_name>")
-def subcategory(subcategory_name, page=1):
+def subcategory(subcategory_name, page=1, methods=['GET']):
     context = mhelp.context()
     PAGINATION = 5
     end = page * PAGINATION
@@ -117,13 +136,27 @@ def subcategory(subcategory_name, page=1):
     subcategory = SubCategory.query.filter(
         SubCategory.name == subcategory_name
     ).first()
+
+    min_price = None
+    max_price = None
     products = subcategory.products[start:end]
+    filter_min_max = get_min_max_subcateg(subcategory_name)
+    if request.args.get('min') and request.args.get('max'):
+        if request.args.get('min').isnumeric() and request.args.get('max').isnumeric():
+            min_price = int(request.args.get('min'))
+            max_price = int(request.args.get('max'))
+            print(min_price, max_price)
+            products = list((p for p in subcategory.products if min_price <= p.selling_price <= max_price))
+            products = products[start:end]
+            filter_min_max = [min_price, max_price]
+    
     total_pages = (len(products) // PAGINATION) + 1
     current_category_name = subcategory.category.name
     subcategory_name = subcategory.name
 
     cart_info = get_cart_data()
 
+    
     context.update(
         {
             "subcategory": subcategory,
@@ -132,6 +165,7 @@ def subcategory(subcategory_name, page=1):
             "page": page,
             "products": products,
             "subcategory_name": subcategory_name,
+            "filter_min_max": filter_min_max
         }
     )
     context.update(cart_info)
@@ -399,6 +433,7 @@ def checkout_process():
                     user.email = email
                     user.password = form.passoword.data
                     user.email_confirmed = True
+                    user.is_customer = True
                     user.email_confirm_date = datetime.now()
 
             order = Order()

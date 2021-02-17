@@ -65,10 +65,17 @@ def login():
         password = login_form.password.data
         user = User.query.filter_by(email=email).first()
         if user is None or not user.check_hash(password):
+            flash('')
             flash(notify_danger("please check your user id and password"))
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("www.index"))
         login_user(user)
-        return redirect(url_for("dashboard.index"))
+        if user.is_admin:
+            flash(notify_success('Successfully logged in!'))
+            return redirect(url_for("dashboard.index"))
+        elif user.is_customer:
+            flash(notify_success('Successfully logged in!'))
+            return redirect(url_for("shop.homepage"))
+
     return render_template("auth/login.html", **context)
 
 
@@ -95,4 +102,5 @@ def shop_login():
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    return redirect(url_for("auth.login"))
+    return redirect(url_for('www.index'))
+    # return redirect(url_for("auth.login"))

@@ -2,6 +2,8 @@ import json
 import os
 from flask import session
 from modules.box__ecommerce.product.models import Product
+from modules.box__ecommerce.category.models import Category
+from modules.box__ecommerce.category.models import SubCategory
 from modules.box__default.settings.helpers import get_setting
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -51,3 +53,10 @@ def get_cart_data():
         "cart_items": cart_items,
         "cart_total_price": cart_total_price,
     }
+
+
+def get_min_max_subcateg(subcategory_name):
+    subcateg = SubCategory.query.filter(SubCategory.name == subcategory_name).first()
+    min_price = min((p.selling_price for p in subcateg.products))
+    max_price = max((p.selling_price for p in subcateg.products))
+    return [min_price, max_price]
