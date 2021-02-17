@@ -63,3 +63,23 @@ class RegistrationForm(FlaskForm):
 
         if user is not None:
             raise ValidationError(f"email '{field.data}' is already in use.")
+
+
+
+
+class RegisterCustomerForm(FlaskForm):
+    email = EmailField(
+        "Email",
+        [DataRequired(), Email(message=("Not a valid email address."))],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    password = PasswordField(
+        "Password",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    reconfirm_password = PasswordField(
+        "Password",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )

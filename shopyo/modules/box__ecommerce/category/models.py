@@ -64,3 +64,26 @@ class SubCategory(PkModel):
     @validates("name")
     def convert_lower(self, key, value):
         return value.lower()
+
+    def get_num_products(self):
+        return len(self.products)
+
+    def get_one_image_url(self):
+
+        if len(self.products) > 0:
+            product = self.products[0]
+            if len(product.resources) == 0:
+                if len(self.resources) == 0:
+                    return url_for('static', filename='default/default_subcategory.jpg')
+                else:
+                    resource = self.resources[0]
+                    return url_for('static', filename='uploads/subcategory/{}'.format(resource.filename))
+            else:
+                resource = product.resources[0]
+                return url_for('static', filename='uploads/products/{}'.format(resource.filename))
+        else:
+            if len(self.resources) == 0:
+                return url_for('static', filename='default/default_subcategory.jpg')
+            else:
+                resource = self.resources[0]
+                return url_for('static', filename='uploads/subcategory/{}'.format(resource.filename))

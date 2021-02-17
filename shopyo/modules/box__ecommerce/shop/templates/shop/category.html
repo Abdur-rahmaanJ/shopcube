@@ -24,8 +24,6 @@
         }
     }
 
-    
-
     .hvr-shadow {
         display: inline-block;
         vertical-align: middle;
@@ -45,24 +43,7 @@
     }
     </style>
     {% include get_active_front_theme()+'/sections/resources.html'%}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $( function() {
-    $( "#slider-range" ).slider({
-      range: true,
-      min: 0,
-      max: 500,
-      values: [ 75, 300 ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
 
-  } );
-  </script>
     {% include 'shop/blocks/common_styles.html'%}
     {% include get_active_front_theme()+'/sections/drawer_head.html'%}
 </head>
@@ -83,13 +64,6 @@
         <div class="row">
             <div class="col-md-4">
                 {%include 'shop/blocks/accordion.html'%}
-                <p>
-                    <label for="amount">Price range:</label>
-                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                </p>
-                <div id="slider-range"></div>
-                <br>
-                <button id="filter_btn" class="btn btn-primary">filter</button>
             </div>
             <div class="col-md-8">
                 <div class="row">
@@ -97,24 +71,21 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-sx-6">
                         <a href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}">
                         <div class="card hvr-shadow" style="margin-bottom: 10px;">
-                            {%set filename_ = ''%}
-                            {%if subcategory.resources%}
-                            {%set filename_ = subcategory.resources[0].filename%}
-                            {%set img_url = url_for('category.subcategory_image', filename=filename_) %}
-                            {%else%}
-                            {%set img_url = url_for('category.subcategory_image', filename='default') %}
-                            {%endif%}
                             <!-- Card image -->
-                            <div style="background-image: url('{{img_url}}'); background-size: cover; height: 200px;">
+                            <div style="background-image: url('{{subcategory.get_one_image_url()}}'); background-size: cover; height: 200px;" >
+                                <!-- Card content -->
+                            <div class="" style="height: 120px;">
+                                
                             </div>
-                            <!-- Card content -->
-                            <div class="card-body text-center">
+                            <div class="card-body text-center" style="background-color: white; padding-top: 5px; padding-bottom: 5px;">
                                 <!-- Title -->
-                                <h4 class="card-title"><a>{{ subcategory.name }}</a></h4>
+                                <h5 class="card-title" style="margin:0;"><a>{{ subcategory.name }}</a></h5>
                                 <!-- Text -->
-                                <p class="card-text">ewef</p>
+                                <p class="card-text" style="margin:0; font-size: 10px">{{subcategory.get_num_products()}} products</p>
                                 <!-- Button -->
                             </div>
+                            </div>
+                            
                         </div>
                         </a>
                     </div>

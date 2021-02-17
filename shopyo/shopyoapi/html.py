@@ -4,7 +4,7 @@ flash(notify_success('mail sent!'))
 """
 
 
-def notify(message, alert_type="primary"):
+def notify(message, alert_type="primary", fading=False):
     """
     Used with flash
         flash(notify('blabla'))
@@ -23,7 +23,7 @@ def notify(message, alert_type="primary"):
     """
     alert = """
     <div class="shopyo-alert alert alert-{alert_type} alert-dismissible fade show" role="alert"
-        style="opacity: 0.98;">
+        style="z-index: 1500">
       {message}
 
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -41,7 +41,11 @@ def notify(message, alert_type="primary"):
         }, 5000); // <-- time in milliseconds (5 secs)
     </script>
     """
-    return alert + scriptFade
+
+    if fading:
+        return alert + scriptFade
+    else:
+        return  alert
 
 
 def notify_success(message):

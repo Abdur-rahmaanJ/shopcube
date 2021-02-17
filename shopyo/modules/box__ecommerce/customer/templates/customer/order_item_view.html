@@ -1,0 +1,134 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='products' %}
+{% block pagehead %}
+<title>products</title>
+<style type="text/css">
+.carousel-control-prev,
+.carousel-control-next {
+    height: 100px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    /*height: 50px;*/
+    /*width: 100px;*/
+    /*border-radius: 50%;*/
+    /*border: 1px solid black;*/
+    background-image: none !important;
+    background: none !important;
+    /*font-size: 55px;*/
+    /*color: red;*/
+}
+
+.carousel-control-next-icon:after {
+    content: '>';
+    font-size: 55px;
+    color: red;
+}
+
+.carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: red;
+}
+.yo-carousel-product-image{
+    border-radius: 5px;
+}
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'customer/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<a href="{{ url_for('customer.orders') }}">
+    <button class="btn btn-info">
+        <i class="fa fa-arrow-left"></i>
+    </button>
+</a>
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-responsive table-striped">
+
+            <tbody>
+                <tr>
+                    <td><b>Order date</b></td>
+                    <td>{{order_item.item_order.get_std_formatted_time()}}</td>
+                </tr>
+                <tr>
+                    <td><b>Product Name</b></td>
+                    <td>{{order_item.order_item_product.name}}</td>
+                </tr>
+                <tr>
+                    <td><b>Product Price</b></td>
+                    <td>{{order_item.order_item_product.selling_price}}</td>
+                </tr>
+                <tr>
+                    <td><b>Product In Stock</b></td>
+                    <td>{{order_item.order_item_product.in_stock}}</td>
+                </tr>
+                <tr>
+                    <td><b>Product In Stock</b></td>
+                    <td>{{order_item.order_item_product.in_stock}}</td>
+                </tr>
+                <tr>
+                    <td><b>Quantity Needed</b></td>
+                    <td>{{order_item.quantity}}</td>
+                </tr>
+                <tr>
+                    <td><b>Order Status</b></td>
+                    <td>{{order_item.status}}<br>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Customer First Name</b></td>
+                    <td>{{order_item.item_order.billing_detail.first_name}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Last Name</b></td>
+                    <td>{{order_item.item_order.billing_detail.last_name}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Street</b></td>
+                    <td>{{order_item.item_order.billing_detail.street}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Town /City</b></td>
+                    <td>{{order_item.item_order.billing_detail.town_city}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Phone</b></td>
+                    <td>{{order_item.item_order.billing_detail.phone}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Email</b></td>
+                    <td>{{order_item.item_order.billing_detail.email}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Order Notes</b></td>
+                    <td>{{order_item.item_order.billing_detail.order_notes}}</td>
+                </tr>
+                <tr>
+                    <td><b>Shipment Option</b></td>
+                    <td>{{order_item.item_order.shipment_option.option}}</td>
+                </tr>
+                <tr>
+                    <td><b>Shipment Price</b></td>
+                    <td>{{order_item.item_order.shipment_option.price}}</td>
+                </tr>
+                <tr>
+                    <td><b>Payment Option Name</b></td>
+                    <td>{{order_item.item_order.payment_option.name}}</td>
+                </tr>
+                <tr>
+                    <td><b>Payment Option Text</b></td>
+                    <td>{{order_item.item_order.payment_option.text}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

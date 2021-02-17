@@ -31,18 +31,36 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        {% set min_max = get_min_max_subcateg(subcategory.name) %}
         $( function() {
+        
     $( "#slider-range" ).slider({
       range: true,
-      min: 0,
-      max: 500,
-      values: [ 75, 300 ],
+      min: {{min_max[0]}},
+      max: {{min_max[1]}},
+      values: [ {{filter_min_max[0]}}, {{filter_min_max[1]}} ],
       slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        $( "#amount" ).val( "{{get_currency_symbol()}}" + ui.values[ 0 ] + " - {{get_currency_symbol()}}" + ui.values[ 1 ] );
       }
     });
-    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    $( "#amount" ).val( "{{get_currency_symbol()}}" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - {{get_currency_symbol()}}" + $( "#slider-range" ).slider( "values", 1 ) );
+
+    $( "#filter_btn" ).click(function() {
+        //var pageURL = $(location).attr("href");
+        // window.location.replace($(location).attr("href")+'?min='+$( "#slider-range" ).slider( "values", 0 )+'&max='+$( "#slider-range" ).slider( "values", 1 ));
+        var url_part = $(location).attr("href");
+        
+        if(url_part.includes("?")){
+            url_part = url_part.split('?')[0];
+        };
+
+        var url_to_search = url_part +'?min='+$( "#slider-range" ).slider( "values", 0 )+'&max='+$( "#slider-range" ).slider( "values", 1 );
+
+        window.location.replace(url_to_search);
+        //alert(url_to_search);
+
+    });
 
   } );
   </script>
