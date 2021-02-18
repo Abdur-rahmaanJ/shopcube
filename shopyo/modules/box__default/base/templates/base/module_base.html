@@ -1,7 +1,6 @@
 
 
 {% from "base/blocks/macros.html" import sidebar_item with context %}
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,7 +12,10 @@
     {% include 'base/blocks/resources.html'%}
 </head>
 <body>
-    {% include 'base/nav_base.html'%}
+    {% if not _hide_nav%}
+        {% include 'base/nav_base.html'%}
+    {% endif %}
+
     {% include 'base/blocks/flashed_messages.html'%}
 
   <div class="d-flex bg-white " id="wrapper">
@@ -33,6 +35,10 @@
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <button class="btn btn-primary" id="menu-toggle">Sidebar</button>
+        {% if _logout_url %}
+        &nbsp;
+            <a href="{{_logout_url}}"><button class="btn btn-warning" id="menu-toggle">Logout</button></a>
+        {% endif %}
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

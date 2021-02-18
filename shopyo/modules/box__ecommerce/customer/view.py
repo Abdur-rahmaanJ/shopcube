@@ -75,12 +75,12 @@ def orders():
     return mhelp.render('orders.html', **context)
 
 
-@module_blueprint.route("/order_item/<item_id>/view", methods=["GET", "POST"])
+@module_blueprint.route("/order/<order_id>/view", methods=["GET", "POST"])
 @login_required
-def order_view(item_id):
-    order_item = OrderItem.query.get(item_id)
+def order_view(order_id):
+    order = Order.query.get(order_id)
     context = mhelp.context()
-    context.update({'order_item': order_item})
+    context.update({'order': order})
     context.update({'_hide_nav': True, '_logout_url':url_for('customer.logout')})
     return mhelp.render("order_item_view.html", **context)
 

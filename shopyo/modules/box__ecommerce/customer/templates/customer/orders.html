@@ -17,27 +17,23 @@
     	<h3>Orders (Logged In)</h3>
     	<table class="table table-responsive">
             <thead>
-            	<th>customer</th>
+
                 <th>time</th>
                 <th>status</th>
-                <th>product</th>
-                <th>quantity</th>
+                <th></th>
                 <th></th>
 
             </thead>
             <tbody>
             	{%for order in logged_in_orders%}
-	                {%for order_item in order.order_items%}
 
-	                <tr>
-	                	<td>{{order_item.item_order.billing_detail.email}}</td>
-	                    <td>{{order_item.item_order.get_std_formatted_time()}}</td>
-	                    <td>{{order_item.status}}</td>
-	                    <td>{{order_item.order_item_product.name}}</td>
-	                    <td>{{order_item.quantity}}</td>
-	                    <td><a href="{{ url_for('customer.order_view', item_id=order_item.id) }}"><button class="btn btn-primary">view</button></a></td>
-	                </tr>
-	                {%endfor%}
+                    <tr>
+                        <td>{{order.get_std_formatted_time()}}</td>
+                        <td>{{order.status}}</td>
+                        <td></td>
+                        <td><a href="{{url_for('customer.order_view', order_id=order.id)}}" class="btn btn-primary">view</a></td>
+                    </tr>
+                
                 {%endfor%}
             </tbody>
         </table>
