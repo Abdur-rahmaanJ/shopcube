@@ -60,21 +60,23 @@ def login():
     context = {}
     login_form = LoginForm()
     context["form"] = login_form
-    if login_form.validate_on_submit():
-        email = login_form.email.data
-        password = login_form.password.data
-        user = User.query.filter_by(email=email).first()
-        if user is None or not user.check_hash(password):
-            flash('')
-            flash(notify_danger("please check your user id and password"))
-            return redirect(url_for("www.index"))
-        login_user(user)
-        if user.is_admin:
-            flash(notify_success('Successfully logged in!'))
-            return redirect(url_for("dashboard.index"))
-        elif user.is_customer:
-            flash(notify_success('Successfully logged in!'))
-            return redirect(url_for("shop.homepage"))
+    if request.method == 'POST':
+        if login_form.validate_on_submit():
+            email = login_form.email.data
+            password = login_form.password.data
+            user = User.query.filter(User.email==email).first()
+            print(email, password, user)
+            if user is None or not user.check_hash(password):
+                flash('')
+                flash(notify_danger("please check your user id and password"))
+                return redirect(url_for("www.index"))
+            login_user(user)
+            if user.is_admin:
+                flash(notify_success('Successfully logged in!'))
+                return redirect(url_for("dashboard.index"))
+            elif user.is_customer:
+                flash(notify_success('Successfully logged in!'))
+                return redirect(url_for("shop.homepage"))
 
     return render_template("auth/login.html", **context)
 

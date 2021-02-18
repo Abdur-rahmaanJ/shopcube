@@ -17,6 +17,7 @@ from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
+from shopyoapi.security import get_safe_redirect
 
 from modules.box__default.admin.models import User
 from modules.box__default.settings.helpers import get_setting
@@ -476,3 +477,39 @@ def checkout_process():
         else:
             flash_errors(form)
         return mhelp.redirect_url("shop.checkout")
+
+
+@module_blueprint.route("/wishlist/toggle/<product_barcode>", methods=["GET"])
+def wishlist_toggle(product_barcode):
+
+    # next url hecks
+    next_url = request.args.get("next")
+    if next_url is None:
+        next_url = '/'
+    next_url = get_safe_redirect(next_url)
+
+    # product checks
+    product = Product.query.get(product_barcode)
+    if product is None:
+        return redirect(next_url)
+
+    if 'wishlist' not in session:
+        session['wishlist'] = []
+
+    if product_barcode not in session['wishlist']:
+        session['wishlist'].append(product_barcode)
+        session.modified = True
+    elif product_barcode in session['wishlist']:
+        session['wishlist'].remove(product_barcode)
+        session.modified = True
+
+    return redirect(next_url)
+
+
+@module_blueprint.route("/wishlist", methods=["GET"])
+def wishlist():
+    context = mhelp.context()
+    context.update({
+        'Product': Product
+        })
+    return mhelp.render('wishlist.html', **context)
