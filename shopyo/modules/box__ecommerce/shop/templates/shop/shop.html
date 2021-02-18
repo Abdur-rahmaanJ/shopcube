@@ -93,7 +93,18 @@
                             <!-- Card content -->
                             <div class="card-body text-center">
                                 <!-- Title -->
-                                <h4 class="card-title"><a>{{ product.name }}</a></h4>
+                                <h4 class="card-title">{{ product.name }} 
+
+                                    <a href="{{ url_for('shop.wishlist_toggle', product_barcode=product.barcode, next=url_for('shop.index', page=page)) }}">
+                                        {%if product.barcode in get_wishlist_data() %}
+                                        <i class="fa fa-heart" style="color: #ff4b3b"></i>
+                                        {%else%}
+                                            <i class="fa fa-heart" style="color: gray"></i>
+                                        {%endif%}
+                                    </a>
+                                    
+                                    
+                                </h4>
                                 <!-- Text -->
                                 <p class="card-text">Rs {{product.selling_price}}</p>
                                 <!-- Button -->
@@ -125,7 +136,8 @@
     </div>
 
     {% include get_active_front_theme()+'/sections/footer.html'%}
-    
+
+
 </body>
 
 </html>

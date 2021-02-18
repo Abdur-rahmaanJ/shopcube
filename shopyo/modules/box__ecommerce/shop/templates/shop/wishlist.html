@@ -1,0 +1,80 @@
+{%set active_page = 'shop.html'%}
+<!-- public facing landing page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'shop/blocks/common_styles.html'%}
+    <style type="text/css">
+    .navbar {
+        background-color: #5d3f3f !important;
+    }
+    </style>
+    {% include get_active_front_theme()+'/sections/resources.html'%}
+
+  {% include get_active_front_theme()+'/sections/drawer_head.html'%}
+</head>
+
+<body>
+    {% include get_active_front_theme()+'/sections/nav.html'%}
+    <div class="shop-spacer-1">
+    </div>
+    <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Shop</a></li>
+        <li class="breadcrumb-item active">Wishlist</li>
+        
+      </ol>
+    </nav>
+    <div class="container">
+                <div class="row">
+                    {%for barcode in get_wishlist_data()%}
+                    {%set product = Product.query.get(barcode)%}
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
+                        <a href="{{ url_for('shop.product', product_barcode=product.barcode) }}">
+                        <div class="card prod" style="margin-bottom: 10px;">
+                            {%set filename_ = ''%}
+                            {%if product.resources%}
+                            {%set filename_ = product.resources[0].filename%}
+                            {%set img_url = url_for('resource.product_image', filename=filename_) %}
+                            {%else%}
+                            {%set img_url = url_for('resource.product_image', filename='default') %}
+                            {%endif%}
+                            <!-- Card image -->
+                            <div style="background-image: url('{{img_url}}'); background-size: cover; height: 200px;">
+                            </div>
+                            <!-- Card content -->
+                            <div class="card-body text-center">
+                                <!-- Title -->
+                                <h4 class="card-title">{{ product.name }} 
+
+                                    <a href="{{ url_for('shop.wishlist_toggle', product_barcode=product.barcode, next=url_for('shop.wishlist')) }}">
+                                        {%if product.barcode in get_wishlist_data() %}
+                                        <i class="fa fa-heart" style="color: #ff4b3b"></i>
+                                        {%else%}
+                                            <i class="fa fa-heart" style="color: gray"></i>
+                                        {%endif%}
+                                    </a>
+                                    
+                                    
+                                </h4>
+                                <!-- Text -->
+                                <p class="card-text">Rs {{product.selling_price}}</p>
+                                <!-- Button -->
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    <!-- Card -->
+                    {%endfor%}
+                </div>
+            </div>
+
+
+    {% include get_active_front_theme()+'/sections/footer.html'%}
+
+
+</body>
+
+</html>

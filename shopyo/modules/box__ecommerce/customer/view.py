@@ -42,8 +42,9 @@ def register():
         if not password1 == password2:
             flash(notify_warning("Passwords don't match"))
             return mhelp.redirect_url('shop.homepage')
-        user.set_hash(password1)
+        user.password = password1
         user.is_customer = True
+        print(user.email, password1)
         user.save()
         flash(notify_success('Successfully registered, please log in!'))
         return mhelp.redirect_url('shop.homepage')
