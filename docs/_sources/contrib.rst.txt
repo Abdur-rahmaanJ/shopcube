@@ -46,35 +46,72 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
        The above command should be ``cd shopyo`` if you cloned using the git command above
 
 #. Setup the python `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ based on your Operating System
-#. Activate the `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_. Now you should see something like:
+
+   For Windows OS you can do this by running:
+
+   .. code-block:: bash
+
+      py -m pip install --upgrade pip
+      py -m venv env # you can replace env with another name that you like. For example, py -m venv shopyo-env
+
+   For Linux and MacOS you can do this by running:
+
+   .. code-block:: bash
+
+      python3 -m pip install --user --upgrade pip
+      python3 -m venv env # you can replace env with another name that you like. For example, python3 -m venv shopyo-env
+
+   .. note::
+      visit `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ for more details 
+
+
+#. Activate the `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ as follows: 
+   
+   For Windows OS you can do this by running:
+
+   .. code-block:: bash
+      
+      .\env\Scripts\activate
+
+   For Linux and MacOS you can do this by running:
+
+   .. code-block:: bash
+
+      source env/bin/activate
+
+   Now you should see something like:
     
    .. code-block:: bash
 
       (env) </my/path/to/shopyo> 
+
     
    .. note::
-      ``env`` is the name of virtual environment that you setup in step above.
+      ``env`` is the name of virtual environment that you setup in step 5 above.
       Make sure to always activate this ``env`` when working on ``shopyo``. If you are using
       `VS Code <https://code.visualstudio.com/>`__  then you can also add the ``"python.pythonPath"`` by creating a ``.vscode`` 
       folder at the root level and adding ``setting.json`` file to it with the content below.
       You need to replace the path with your own path to the virtual environment's ``python.exe`` 
       file and the example below is for a path in Windows OS hence the double backward slash.
-      Now you can create a new terminal with virtual environment activated in VS Code using ``Ctrl`` + ``Shift`` + `````
+      Now you can create a new terminal with virtual environment activated in VS Code using ``Ctrl`` + ``Shift`` + ````` (*control
+      plus shift plus backtick character*).
+      In addition, if you want to deactivate the virtual environment, run ``deactivate`` in command line
 
       .. code-block:: json
 
          {
-            "python.pythonPath": "c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe"
+            "python.pythonPath": "c:\\path\\to\\shopyo\\env\\Scripts\\python.exe"
          }
 
 #. Run:
 
    .. code-block:: bash
 
-      python -m pip install -r dev_requirements.txt
+      python -m pip install -U pip
+      python -m pip install -r requirements.txt -r dev_requirements.txt
     
    .. note::
-      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``dev_requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again 
+      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again 
 
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
     
@@ -89,6 +126,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
       git fetch upstream
       git pull upstream dev
+
 #. Do another:
 
    .. code-block:: bash
@@ -108,7 +146,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
       python manage.py runserver
 
-#. The app should now be running on IP ``127.0.0.1`` at port# ``5000``. You can go to http://localhost:5000/ or http://127.0.0.1:5000/ (127.0.0.1 is another name for localhost). You can click the login nav link or go directly to http://localhost:5000/login/. Login with email ``admin@domain.com`` and password ``pass``
+#. The app should now be running on IP ``127.0.0.1`` at port# ``5000``. You can go to http://localhost:5000/ or http://127.0.0.1:5000/. You can click the login nav link or go directly to http://localhost:5000/login/. Login with email ``admin@domain.com`` and password ``pass``
 
 
 Making a Pull Request
@@ -143,7 +181,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
       python -m pytest .
 
-#. Make sure to bump the version number in file ``shopyo/__init__.py`` as follows:
+#. [*Optional Step*] Make sure to bump the version number in file ``shopyo/__init__.py`` as follows:
     * small fixes: ``_._.x``, (example ``3.4.6`` to ``3.4.7``)
     * feature, many fixes etc: ``_.x.0``, (example ``3.4.6`` to ``3.5.0``)
     * big feature, breaking change etc ``x.0.0`` (example ``3.4.6`` to ``4.0.0``)
@@ -216,9 +254,11 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
       git push origin <the current branch name>    
 
 #. You can now make a PR. When you go to your forked repo or the owner's repo you will see a ``compare & pull request`` button. Click on it and mention the changes you made. Look at the `past PRs <https://github.com/Abdur-rahmaanJ/shopyo/pulls?q=is%3Apr+is%3Aclosed>`_ for examples of what to mention when submitting a PR. If a PR closes an issue, add ``Fixes #<issue number>``, as seen `here <https://github.com/Abdur-rahmaanJ/shopyo/pull/95>`_
-#. If you want you can request reviews when submitting PR.
-#. Add your country flag in readme after accepted PR
-#. At times when you do git status after fetching the latest changes it might say something like: ``Your branch is ahead of 'origin/dev`` which mean the forked branch does not have the latest changes. To push the latest changes to your forked repo, run:
+#. [*Optional Step*] If you want you can request reviews when submitting PR.
+#. [*Optional Step*] Add your country flag in readme after accepted PR.
+
+.. note::
+   At times when you do git status after fetching the latest changes it might say something like: ``Your branch is ahead of 'origin/dev`` which mean that your forked branch does not have the latest local changes and does not match the owner's repo. To push the latest changes to your forked repo, run:
 
    .. code-block:: bash
 

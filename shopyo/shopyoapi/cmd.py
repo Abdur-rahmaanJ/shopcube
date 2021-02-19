@@ -330,25 +330,29 @@ def create_module_in_box(modulename, boxname):
 
 
 def collectstatic(target_module=None):
+
     """
-    Copies module/static into /static/modules/module
-    in static it becomes like
-    static/
-        modules/
-            box_something/
-                modulename
-            modulename2
+    Copies ``module/static`` into ``/static/modules/module``.
+    In static it becomes like
+
+    ::
+
+       static/
+            modules/
+                box_something/
+                    modulename
+                modulename2
+
 
     Parameters
     ----------
     target_module: str
         name of module, in alphanumeric-underscore,
-        supports module or box__name/module
+        supports ``module`` or ``box__name/module``
 
     Returns
     -------
     None
-
 
     """
     modules_path_in_static = os.path.join(static_path, "modules")

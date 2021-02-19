@@ -79,16 +79,6 @@ shopyoapi.init
     :show-inheritance:
 
 
-shopyoapi.uploads
------------------
-
-.. automodule:: shopyoapi.uploads
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
-
-
 shopyoapi.module
 -----------------
 
