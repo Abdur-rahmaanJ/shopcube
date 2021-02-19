@@ -1,0 +1,19 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page = "Email Confirmation" %}
+
+{% block pagehead %}
+    <title>{{ active_page.capitalize() }}</title>
+{% endblock %}
+
+{% block content %}
+	<div class="container col-md-6 mb-4 off-set-2 text-center">
+        <div class="card">
+            <div class="card-body">
+                <img src="/static/shopyo.svg" width="175" height="150">
+                <p>You have not confirmed your account. Email confirmation link was sent to <span class="mark">{{ current_user.email }}</span>. Please check your inbox and your spam folder.</p>
+                <p>Didn't get the email?<a href="{{ url_for('auth.resend',_external=True) }}"> Resend</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

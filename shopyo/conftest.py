@@ -6,11 +6,12 @@ for more details on pytest
 import json
 import os
 import pytest
+import datetime
 from flask import url_for
 
 from app import create_app
 from shopyoapi.init import db as _db
-from modules.box__default.admin.models import User
+from modules.box__default.auth.models import User
 from modules.box__default.settings.models import Settings
 
 # run in shopyo/shopyo
@@ -21,13 +22,14 @@ if os.path.exists("testing.db"):
 
 
 @pytest.fixture(scope="session")
-def new_user():
+def unconfirmed_user():
     """
-    A pytest fixture that returns a user model object
+    A pytest fixture that returns a non admin user
     """
-    user = User(email="newuser@domain.com", password="pass")
-    user.first_name = "New"
-    user.last_name = "User"
+    user = User()
+    user.email = "unconfirmed@domain.com"
+    user.password = "pass"
+    user.is_email_confirmed = False
     return user
 
 
@@ -36,7 +38,11 @@ def non_admin_user():
     """
     A pytest fixture that returns a non admin user
     """
-    user = User(email="admin1@domain.com", password="pass")
+    user = User()
+    user.email = "admin1@domain.com"
+    user.password = "pass"
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
     return user
 
 
@@ -45,7 +51,12 @@ def admin_user():
     """
     A pytest fixture that returns an admin user
     """
-    user = User(email="admin2@domain.com", is_admin=True, password="pass")
+    user = User()
+    user.email = "admin2@domain.com"
+    user.password = "pass"
+    user.is_admin = True
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
     return user
 
 
@@ -68,7 +79,7 @@ def test_client(flask_app):
 
 
 @pytest.fixture(scope="session")
-def db(test_client, non_admin_user, admin_user):
+def db(test_client, non_admin_user, admin_user, unconfirmed_user):
     """
     creates and returns the initial testing database
     """
@@ -76,9 +87,10 @@ def db(test_client, non_admin_user, admin_user):
     _db.app = test_client
     _db.create_all()
 
-    # Insert admin and non admin users
+    # Insert admin, non admin, and unconfirmed
     _db.session.add(non_admin_user)
     _db.session.add(admin_user)
+    _db.session.add(unconfirmed_user)
 
     # add the default settings
     with open("config.json", "r") as config:
@@ -115,6 +127,14 @@ def db_session(db):
     transaction.rollback()
     connection.close()
     session.remove()
+
+
+@pytest.fixture
+def login_unconfirmed_user(auth, unconfirmed_user):
+    """Login with unconfirmed and logout during teadown"""
+    auth.login(unconfirmed_user)
+    yield
+    auth.logout()
 
 
 @pytest.fixture

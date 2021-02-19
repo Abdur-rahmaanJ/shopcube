@@ -7,7 +7,7 @@ from wtforms.validators import InputRequired
 from wtforms.validators import Length
 from wtforms.validators import EqualTo
 from wtforms.validators import ValidationError
-from modules.box__default.admin.models import User
+from .models import User
 
 
 class LoginForm(FlaskForm):

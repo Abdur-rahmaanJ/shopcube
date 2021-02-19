@@ -19,3 +19,6 @@ pytest-order
 tox
 pytest-cov
 codecov
+flask-mailman
+factory-boy
+freezegun

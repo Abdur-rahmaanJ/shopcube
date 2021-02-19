@@ -1,28 +1,21 @@
 import importlib
 import os
 import json
-import sys
-
+import jinja2
 from flask import Flask
-
-# from flask import redirect
-from flask import url_for
 from flask import send_from_directory
-
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
-
-sys.path.append(".")
-
-import jinja2
 from flask_uploads import configure_uploads
 
 from modules.box__default.settings.helpers import get_setting
+
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
+from shopyoapi.init import mail
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
 from shopyoapi.path import modules_path
@@ -34,11 +27,12 @@ try:
     if not os.path.exists('config.json'):
         trycopy('config_demo.json', 'config.json')
 except PermissionError as e:
-    print('Cannot continue, permission error'
-        'initialising config.py and config.json, '
-        'copy and rename them yourself!')
+    print(
+        'Cannot continue, permission error'
+        'initializing config.py and config.json, '
+        'copy and rename them yourself!'
+    )
     raise e
-    
 
 from config import app_config
 
@@ -53,13 +47,13 @@ def create_app(config_name):
     migrate.init_app(app, db)
     db.init_app(app)
     ma.init_app(app)
+    mail.init_app(app)
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
 
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
-
 
     #
     # dev static
@@ -74,7 +68,7 @@ def create_app(config_name):
     available_everywhere_entities = {}
 
     #
-    #  load blueprints
+    # load blueprints
     #
     for folder in os.listdir(os.path.join(base_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__

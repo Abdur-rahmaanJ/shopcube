@@ -1,7 +1,6 @@
 import json
 import os
 from datetime import datetime
-
 from flask import current_app
 from flask import flash
 from flask import jsonify
@@ -10,15 +9,13 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-
 from flask_login import current_user
 
 from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
-
-from modules.box__default.admin.models import User
+from modules.box__default.auth.models import User
 from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
@@ -392,7 +389,7 @@ def checkout_process():
                     user.last_name = last_name
                     user.email = email
                     user.password = form.passoword.data
-                    user.email_confirmed = True
+                    user.is_email_confirmed = True
                     user.email_confirm_date = datetime.now()
 
             order = Order()

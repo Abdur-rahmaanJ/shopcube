@@ -10,9 +10,9 @@ import json
 import pytest
 from flask import request
 from flask import url_for
-from modules.box__default.admin.models import Role
-from modules.box__default.admin.models import User
-from modules.box__default.admin.models import role_user_link
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import User
+from modules.box__default.auth.models import role_user_bridge
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -24,7 +24,7 @@ with open(os.path.join(module_path, "info.json")) as f:
     module_info = json.load(f)
 
 
-class TestAdminInvalidAuth:
+class TestAdminInvalidAccess:
     """
     Test all admin routes for correct user authentication
     """
@@ -84,7 +84,7 @@ class TestAdminInvalidAuth:
 
 
 @pytest.mark.usefixtures("login_admin_user")
-class TestAdminAPI:
+class TestAdminEndpoints:
     """
     Test all admin api post and get requests
     """
@@ -173,7 +173,7 @@ class TestAdminAPI:
         test_user = User.query.filter(User.email == user.email).scalar()
         test_roles = Role.query.count()
         user_role = (
-            User.query.join(role_user_link)
+            User.query.join(role_user_bridge)
             .join(Role)
             .filter(User.id == user.id)
             .scalar()
@@ -236,7 +236,7 @@ class TestAdminAPI:
 
         assert response.status_code == 200
         assert user.email == "bar@gmail.com"
-        assert user.check_hash("newpass")
+        assert user.check_password("newpass")
         assert user.first_name == "Test"
         assert user.last_name == "User"
         assert len(user.roles) == 2
@@ -267,7 +267,7 @@ class TestAdminAPI:
 
         assert response.status_code == 200
         assert user.email == "bar@gmail.com"
-        assert user.check_hash("pass")
+        assert user.check_password("pass")
         assert len(user.roles) == 0
         assert len(role1.users) == 0
         assert len(role2.users) == 0
