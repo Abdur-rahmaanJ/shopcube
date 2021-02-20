@@ -1,0 +1,19 @@
+language:
+    - python3
+python:
+    - "3.6"   # current default Python on Travis CI
+    - "3.7"
+    - "3.8"
+before_install:
+    - python --version
+    - pip install -U pip
+install:
+    - pip install -r requirements.txt -r dev_requirements.txt
+script:
+    - sphinx-build -b html sphinx_source docs
+    - cd shopyo
+    - echo 'Running Tests....'
+    - coverage run --branch --source . -m pytest
+    - coverage report
+after_success:
+    - codecov   # submit coverage
