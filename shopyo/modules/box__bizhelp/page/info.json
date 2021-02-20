@@ -4,5 +4,10 @@
         "type": "show",
         "fa-icon": "fa fa-edit",
         "url_prefix": "/page",
-        "dashboard": "/dashboard"
+        "dashboard": "/dashboard",
+        "author": {
+                "name": "Abdur-Rahmaan Janhangeer",
+                "website": "https://www.pythonkitchen.com/about-me/",
+                "mail": "arj.python@gmail.com"
+        }
 }
