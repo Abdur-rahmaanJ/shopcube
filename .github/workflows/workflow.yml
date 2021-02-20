@@ -17,7 +17,7 @@ jobs:
       - name: Run pytests and generate coverage report
         run: |
           pip install -U pip
-          pip install -r requirement.txt -r dev_requirements.txt
+          pip install -r requirements.txt -r dev_requirements.txt
           sphinx-build -b html sphinx_source docs
           cd shopyo
           echo 'Running Tests....'
