@@ -13,7 +13,7 @@ from modules.box__default.auth.models import User
 
 @pytest.mark.parametrize(
     'email_config',
-    [("MAIL_DEFAULT_SENDER", "remove"), ("MAIL_DEFAULT_SENDER", "none")],
+    [("MAIL_DEFAULT_SENDER", "remove"), ("MAIL_DEFAULT_SENDER", None)],
     indirect=True
 )
 def test_send_email_with_no_default_sender(capfd, email_config):
@@ -33,8 +33,8 @@ def test_send_email_with_no_default_sender(capfd, email_config):
     [
         ("MAIL_USERNAME", "remove"),
         ("MAIL_PASSWORD", "remove"),
-        ("MAIL_USERNAME", "none"),
-        ("MAIL_PASSWORD", "none"),
+        ("MAIL_USERNAME", None),
+        ("MAIL_PASSWORD", None),
     ],
     indirect=True
 )
@@ -55,18 +55,22 @@ def test_send_email_with_no_username_or_password_set(capfd, email_config):
 
 
 def test_send_email_using_template_on_valid_credentials(capfd):
-    user = User.create(email="test@gmail.com", password="pass")
+    user = User.create(email="to@gmail.com", password="pass")
     token = "sometoken"
     template = "auth/emails/activate_user"
     subject = "Please confirm your email"
+    from_email = "from@gmail.com"
     context = {"token": token, "user": user}
-    thread = send_async_email(user.email, subject, template, **context)
+    thread = send_async_email(
+        user.email, subject, template, from_email=from_email, **context
+    )
     thread.join()
     captured = capfd.readouterr()
 
     assert "Please confirm your email" in captured.out
     assert "sometoken" in captured.out
-    assert "test@gmail.com" in captured.out
+    assert "to@gmail.com" in captured.out
+    assert "from@gmail.com" in captured.out
     assert "Welcome to Shopyo" in captured.out
     assert "To confirm your account please click on" in captured.out
     assert "The Shopyo Team" in captured.out

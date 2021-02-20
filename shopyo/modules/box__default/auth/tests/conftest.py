@@ -9,26 +9,25 @@ import pytest
 @pytest.fixture
 def email_config(request, flask_app):
     """
-    pytest fixture for temporally changing the flaskmail-man configs
+    pytest fixture for temporally changing the email related configs
+    To remove the config pass "remove" in @pytest.parameterize. For
+    setting value to the config pass the actual value. See test_email.py
+    for usage
 
     Args:
         request (pytest obj): a built in by pytest object used to read
             incoming fixture arguments
         flask_app (flask app): flask app fixture
 
-    Raises:
-        ValueError: if fixture called with config type other than
-            'remove' or 'none'. See test_email.py for usage
     """
-    config_name, config_type = request.param
+    config_name, config_val = request.param
     old = flask_app.config[config_name]
 
-    if config_type == 'remove':
+    if config_val == "remove":
         del flask_app.config[config_name]
-    elif config_type == 'none':
-        flask_app.config[config_name] = None
     else:
-        raise ValueError('unknown config type')
+        flask_app.config[config_name] = config_val
+        print(f"\n{config_name}: {config_val}\n")
 
     yield
     flask_app.config[config_name] = old
