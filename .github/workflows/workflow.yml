@@ -15,7 +15,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: x64
       - name: Run pytests and generate coverage report
-      - run: |
+        run: |
           pip install -U pip
           pip install -r requirement.txt -r dev_requirements.txt
           sphinx-build -b html sphinx_source docs
