@@ -8,7 +8,7 @@ before_install:
     - python --version
     - pip install -U pip
 install:
-    - pip install -r dev_requirements.txt
+    - pip install -r requirement.txt -r dev_requirements.txt
 script:
     - sphinx-build -b html sphinx_source docs
     - cd shopyo

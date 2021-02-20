@@ -121,6 +121,12 @@
 <span class="sd">        ...</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SEP_CHAR</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span>
+    <span class="n">SEP_NUM</span> <span class="o">=</span> <span class="mi">23</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">SEP_CHAR</span> <span class="o">*</span> <span class="n">SEP_NUM</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cleaning...&quot;</span><span class="p">)</span>
+
     <span class="c1"># getting app context creates the shopyo.db file even if it is not present</span>
     <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_request_context</span><span class="p">():</span>
         <span class="n">db</span><span class="o">.</span><span class="n">drop_all</span><span class="p">()</span>
@@ -171,6 +177,9 @@
     <span class="p">)</span>
 
     <span class="c1"># Uploads</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uploads&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">SEP_CHAR</span> <span class="o">*</span> <span class="n">SEP_NUM</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_path</span><span class="p">,</span> <span class="s2">&quot;modules&quot;</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">folder</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>  <span class="c1"># ignore __pycache__</span>
             <span class="k">continue</span>
@@ -190,8 +199,7 @@
                     <span class="p">)</span>
                     <span class="n">upload</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
                 <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="c1"># print(e)</span>
-                    <span class="k">pass</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># apps</span>
             <span class="k">try</span><span class="p">:</span>
@@ -200,8 +208,7 @@
                 <span class="p">)</span>
                 <span class="n">upload</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># print(e)</span>
-                <span class="k">pass</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span></div>
 
@@ -408,25 +415,29 @@
 
 
 <div class="viewcode-block" id="collectstatic"><a class="viewcode-back" href="../../shopyoapi.html#shopyoapi.cmd.collectstatic">[docs]</a><span class="k">def</span> <span class="nf">collectstatic</span><span class="p">(</span><span class="n">target_module</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Copies module/static into /static/modules/module</span>
-<span class="sd">    in static it becomes like</span>
-<span class="sd">    static/</span>
-<span class="sd">        modules/</span>
-<span class="sd">            box_something/</span>
-<span class="sd">                modulename</span>
-<span class="sd">            modulename2</span>
+<span class="sd">    Copies ``module/static`` into ``/static/modules/module``.</span>
+<span class="sd">    In static it becomes like</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">       static/</span>
+<span class="sd">            modules/</span>
+<span class="sd">                box_something/</span>
+<span class="sd">                    modulename</span>
+<span class="sd">                modulename2</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    target_module: str</span>
 <span class="sd">        name of module, in alphanumeric-underscore,</span>
-<span class="sd">        supports module or box__name/module</span>
+<span class="sd">        supports ``module`` or ``box__name/module``</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
-
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">modules_path_in_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">static_path</span><span class="p">,</span> <span class="s2">&quot;modules&quot;</span><span class="p">)</span>
