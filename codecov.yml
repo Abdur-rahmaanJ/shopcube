@@ -17,7 +17,7 @@ parsers:
       loop: yes
       method: no
       macro: no
-
+base: "parent"
 comment:
   layout: "reach,diff,flags,files,footer"
   behavior: default
