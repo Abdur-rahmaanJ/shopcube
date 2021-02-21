@@ -136,7 +136,7 @@ def login():
             if request.form['next'] == '':
                 next_url = url_for('dashboard.index')
             else:
-                next_url = get_safe_redirect(next_url)
+                next_url = get_safe_redirect(request.form['next'])
         return redirect(next_url)
     return render_template("auth/login.html", **context)
 
@@ -165,12 +165,14 @@ def shop_login():
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    if 'next' not in request.form:
+    
+
+    if 'next' not in request.args:
         next_url = url_for('dashboard.index')
 
     else:
-        if request.form['next'] == '':
+        if request.args.get('next') == '':
             next_url = url_for('dashboard.index')
         else:
-            next_url = get_safe_redirect(next_url)
+            next_url = get_safe_redirect(request.args.get('next') )
     return redirect(next_url)
