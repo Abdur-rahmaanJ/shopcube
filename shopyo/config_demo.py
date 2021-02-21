@@ -35,7 +35,8 @@ class DevelopmentConfig(Config):
     ENV = "development"
     DEBUG = True
     LOGIN_DISABLED = False
-
+    # control email confirmation for user registration
+    EMAIL_CONFIRMATION_DISABLED = False
     # flask-mailman configs
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 465
@@ -57,7 +58,8 @@ class TestingConfig(Config):
     SERVER_NAME = "localhost.com"
     BCRYPT_LOG_ROUNDS = 4
     WTF_CSRF_ENABLED = False
-
+    # control email confirmation for user registration
+    EMAIL_CONFIRMATION_DISABLED = False
     # flask-mailman configs
     MAIL_BACKEND = "console"
     MAIL_USERNAME = "shopyofrom@test.com"

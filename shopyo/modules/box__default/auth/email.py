@@ -42,7 +42,7 @@ def send_async_email(to, subject, template, from_email=None, **kwargs):
     email template files exits
 
     Args:
-        to (String): receipient of the email
+        to (String): recipient of the email
         subject (String): subject of the email
         template (String): template file path to be used in email body
         from_email (String, optional): sender of the email. If not set
