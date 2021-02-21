@@ -5,7 +5,6 @@ coverage:
   precision: 2
   round: down
   range: "65...100"
-  threshold': 0.5%
 
 parsers:
   gcov:
@@ -14,8 +13,8 @@ parsers:
       loop: yes
       method: no
       macro: no
-base: "parent"
+
 comment:
   layout: "reach,diff,flags,files,footer"
   behavior: default
-  require_changes: no 
+  require_changes: no
