@@ -75,19 +75,52 @@ class TestAuthEndpoints:
         assert response.status_code == 200
         assert request.path == url_for("auth.register")
 
-    def test_user_is_registered_on_valid_form_submit(self, test_client, capfd):
+    @pytest.mark.parametrize(
+        'email_config',
+        [
+            ("EMAIL_CONFIRMATION_DISABLED", True),
+        ],
+        indirect=True
+    )
+    def test_user_confirmed_if_email_disabled(self, test_client, email_config):
         data = {
             "email": "test@gmail.com",
             "password": "password",
             "confirm": "password"
         }
-
         response = test_client.post(
             f"{module_info['url_prefix']}/register",
             data=data,
             follow_redirects=True,
         )
+        user = User.query.filter(User.email == "test@gmail.com").scalar()
 
+        assert response.status_code == 200
+        assert request.path == url_for("dashboard.index")
+        assert user.is_email_confirmed is True
+
+    @pytest.mark.parametrize(
+        'email_config',
+        [
+            ("EMAIL_CONFIRMATION_DISABLED", "remove"),
+            ("EMAIL_CONFIRMATION_DISABLED", False),
+            ("EMAIL_CONFIRMATION_DISABLED", None),
+        ],
+        indirect=True
+    )
+    def test_user_is_registered_on_valid_form_submit(
+        self, test_client, capfd, email_config
+    ):
+        data = {
+            "email": "test@gmail.com",
+            "password": "password",
+            "confirm": "password"
+        }
+        response = test_client.post(
+            f"{module_info['url_prefix']}/register",
+            data=data,
+            follow_redirects=True,
+        )
         # Not very happy with this solution. Need a better
         # way to wait for the email thread to join with main
         # thread before reading the email written to stdout @rehmanis
@@ -98,11 +131,13 @@ class TestAuthEndpoints:
 
         user = User.query.filter(User.email == "test@gmail.com").scalar()
 
+        assert response.status_code == 200
+        assert request.path == url_for("auth.unconfirmed")
+        assert b"A confirmation email has been sent via email" in response.data
         assert "test@gmail.com" in captured.out
         assert "Welcome to Shopyo" in captured.out
-        assert response.status_code == 200
         assert user is not None
-        assert request.path == url_for("auth.unconfirmed")
+        assert user.is_email_confirmed is False
 
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_user_not_confirmed_for_already_confirmed_user(self, test_client):

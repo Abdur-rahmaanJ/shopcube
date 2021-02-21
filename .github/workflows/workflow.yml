@@ -1,0 +1,30 @@
+name: Shopyo testing workflow
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.6', '3.7', '3.8' ]
+    name: Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+      - name: Run pytests and generate coverage report
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt -r dev_requirements.txt
+          sphinx-build -b html sphinx_source docs
+          cd shopyo
+          echo 'Running Tests....'
+          coverage run --branch --source . -m pytest
+          coverage report
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+
+
+    

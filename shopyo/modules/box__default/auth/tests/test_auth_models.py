@@ -43,12 +43,34 @@ class TestAnonymousUser:
     def test_anonymous_user_is_admin(self):
         user = AnonymousUser()
 
-        assert user.is_admin
+        assert user.is_admin is False
 
-    def test_anonymous_user_has_email_confirmed(self):
+    @pytest.mark.parametrize(
+        'email_config',
+        [
+            ("EMAIL_CONFIRMATION_DISABLED", "remove"),
+            ("EMAIL_CONFIRMATION_DISABLED", False),
+            ("EMAIL_CONFIRMATION_DISABLED", None),
+            ("EMAIL_CONFIRMATION_DISABLED", "random string"),
+        ],
+        indirect=True
+    )
+    def test_anonymous_user_email_confirmed_disabled(self, email_config):
         user = AnonymousUser()
 
-        assert user.is_email_confirmed
+        assert user.is_email_confirmed is False
+
+    @pytest.mark.parametrize(
+        'email_config',
+        [
+            ("EMAIL_CONFIRMATION_DISABLED", True),
+        ],
+        indirect=True
+    )
+    def test_anonymous_user_has_email_confirmed_enabled(self, email_config):
+        user = AnonymousUser()
+
+        assert user.is_email_confirmed is True
 
     def test_anonymous_username_is_set(self):
         user = AnonymousUser()
@@ -59,6 +81,12 @@ class TestAnonymousUser:
         user = AnonymousUser()
 
         assert bool(user.email)
+
+    def test_anonymous_user_representation(self):
+
+        user = AnonymousUser()
+
+        assert repr(user) == "<AnonymousUser guest>"
 
 
 class TestUser:

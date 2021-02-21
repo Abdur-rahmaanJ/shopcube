@@ -39,15 +39,24 @@ class AnonymousUser(AnonymousUserMixin):
         self.username = "guest"
         self.email = "<anonymous-user-no-email>"
 
-    # ALL PROPERTIES SET TO TRUE TO MAKE TESTING EASIER
-    # UPDATE THIS IN PRODUCTION
     @property
     def is_email_confirmed(self):
-        return True
+        is_disabled = False
+
+        if "EMAIL_CONFIRMATION_DISABLED" in current_app.config:
+            is_disabled = current_app.config["EMAIL_CONFIRMATION_DISABLED"]
+
+            if is_disabled is not True:
+                is_disabled = False
+
+        return is_disabled
 
     @property
     def is_admin(self):
-        return True
+        return False
+
+    def __repr__(self):
+        return f"<AnonymousUser {self.username}>"
 
 
 class User(UserMixin, PkModel):
