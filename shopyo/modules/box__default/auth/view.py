@@ -129,12 +129,14 @@ def login():
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))
         login_user(user)
-        if request.form['next'] is None:
+        if 'next' not in request.form:
             next_url = url_for('dashboard.index')
-        elif request.form['next'] == '':
-            next_url = url_for('dashboard.index')
+
         else:
-            next_url = get_safe_redirect(next_url)
+            if request.form['next'] == '':
+                next_url = url_for('dashboard.index')
+            else:
+                next_url = get_safe_redirect(next_url)
         return redirect(next_url)
     return render_template("auth/login.html", **context)
 
@@ -163,9 +165,12 @@ def shop_login():
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    next_url = request.args.get('next')
-    if next_url is None:
-        return redirect(url_for("auth.login"))
+    if 'next' not in request.form:
+        next_url = url_for('dashboard.index')
+
     else:
-        next_url = get_safe_redirect(next_url)
-        return redirect(next_url)
+        if request.form['next'] == '':
+            next_url = url_for('dashboard.index')
+        else:
+            next_url = get_safe_redirect(next_url)
+    return redirect(next_url)

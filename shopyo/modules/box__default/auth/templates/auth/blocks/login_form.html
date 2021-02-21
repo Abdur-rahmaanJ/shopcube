@@ -27,9 +27,11 @@
     {% endif %}
 </div>
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+{%if request.args.get('next') == True%}
 <input
     type="hidden"
     name="next"
-    value="{{ request.args.get('next', '') }}"
+    value="{{ request.args.get('next') }}"
 />
+{%endif%}
 <input type="submit" name="" value="submit" class="btn btn-info">
