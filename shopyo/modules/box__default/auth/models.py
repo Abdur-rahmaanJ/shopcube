@@ -50,9 +50,6 @@ class AnonymousUser(AnonymousUserMixin):
         return True
 
 
-login_manager.anonymous_user = AnonymousUser
-
-
 class User(UserMixin, PkModel):
     """The user of the app"""
 
@@ -118,6 +115,11 @@ class User(UserMixin, PkModel):
         self.update()
         return True
 
+login_manager.anonymous_user = AnonymousUser
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+login_manager.login_view = 'auth.login'
 
 class Role(PkModel):
     """A role for a user."""

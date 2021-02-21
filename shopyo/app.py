@@ -4,11 +4,22 @@ import json
 import jinja2
 from flask import Flask
 from flask import send_from_directory
+from flask import redirect
+from flask import url_for
+from flask import request
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 from flask_uploads import configure_uploads
+from flask_admin import Admin
+from flask_admin.contrib import sqla as flask_admin_sqla
+from flask_admin import AdminIndexView 
+from flask_admin import expose
+from flask_admin.menu import MenuLink
 
 from modules.box__default.settings.helpers import get_setting
+from modules.box__default.auth.models import User
+from modules.box__default.auth.models import Role
+from modules.box__default.settings.models import Settings
 
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
@@ -21,6 +32,45 @@ from shopyoapi.init import subcategoryphotos
 from shopyoapi.path import modules_path
 from shopyoapi.file import trycopy
 
+#
+# Flask admin setup
+#
+class DefaultModelView(flask_admin_sqla.ModelView):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin
+
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+        return redirect(url_for('auth.login', next=request.url))
+
+
+class MyAdminIndexView(AdminIndexView): 
+    def is_accessible(self): 
+        return current_user.is_authenticated and current_user.is_admin
+
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+        return redirect(url_for('auth.login', next=request.url))
+
+    @expose('/')
+    def index(self):
+        if not current_user.is_authenticated and current_user.is_admin:
+            return redirect(url_for('auth.login'))
+        return super(MyAdminIndexView, self).index()
+
+    @expose('/dashboard')
+    def indexs(self):
+        if not current_user.is_authenticated and current_user.is_admin:
+            return redirect(url_for('auth.login'))
+        return super(MyAdminIndexView, self).index()
+
+#
+# secrets files
+#
 try:
     if not os.path.exists('config.py'):
         trycopy('config_demo.py', 'config.py')
@@ -40,7 +90,7 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 
 
 def create_app(config_name):
-
+    # from modules.box__default.settings.helpers import Settings
     app = Flask(__name__)
     configuration = app_config[config_name]
     app.config.from_object(configuration)
@@ -54,6 +104,13 @@ def create_app(config_name):
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
+
+
+    admin = Admin(app, name='My App', template_mode='bootstrap4', index_view=MyAdminIndexView())
+    admin.add_view(DefaultModelView(User, db.session))
+    admin.add_view(DefaultModelView(Role, db.session))
+    admin.add_view(DefaultModelView(Settings, db.session))
+    admin.add_link(MenuLink(name='Logout', category='', url='/auth/logout?next=/admin'))
 
     #
     # dev static
@@ -83,9 +140,16 @@ def create_app(config_name):
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
-                sys_mod = importlib.import_module(
-                    "modules.{}.{}.view".format(folder, sub_folder)
-                )
+                try:
+                    sys_mod = importlib.import_module(
+                        "modules.{}.{}.view".format(folder, sub_folder)
+                    )
+                    app.register_blueprint(
+                        getattr(sys_mod, "{}_blueprint".format(sub_folder))
+                    )
+                except AttributeError as e:
+                    print(' x Blueprint skipped:', 'modules.{}.{}.view'.format(folder, sub_folder, folder))
+                    pass
                 try:
                     mod_global = importlib.import_module(
                         "modules.{}.{}.global".format(folder, sub_folder)
@@ -96,12 +160,15 @@ def create_app(config_name):
                 except ImportError as e:
                     # print(e)
                     pass
-                app.register_blueprint(
-                    getattr(sys_mod, "{}_blueprint".format(sub_folder))
-                )
+                
         else:
             # apps
-            mod = importlib.import_module("modules.{}.view".format(folder))
+            try:
+                mod = importlib.import_module("modules.{}.view".format(folder))
+                app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
+            except AttributeError as e:
+                    print('[ ] Blueprint skipped:', e)
+                    pass
             try:
                 mod_global = importlib.import_module(
                     "modules.{}.global".format(folder)
@@ -112,7 +179,7 @@ def create_app(config_name):
             except ImportError as e:
                 # print(e)
                 pass
-            app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
+            
 
     #
     # custom templates folder
