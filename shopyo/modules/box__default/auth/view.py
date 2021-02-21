@@ -129,10 +129,12 @@ def login():
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))
         login_user(user)
-        if request.form['next'] is not None:
-            next_url = get_safe_redirect(request.form['next'])
-        else:
+        if request.form['next'] is None:
             next_url = url_for('dashboard.index')
+        elif request.form['next'] == '':
+            next_url = url_for('dashboard.index')
+        else:
+            next_url = get_safe_redirect(next_url)
         return redirect(next_url)
     return render_template("auth/login.html", **context)
 
