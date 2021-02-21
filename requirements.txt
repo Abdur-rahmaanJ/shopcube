@@ -10,3 +10,4 @@ marshmallow==3.8.0
 marshmallow-sqlalchemy==0.23.1
 Pillow==8.0.1
 flask-mailman==0.1.7
+flask-admin==1.5.7
