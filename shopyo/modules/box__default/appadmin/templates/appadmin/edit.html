@@ -1,0 +1,69 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "admin" %}
+{% block pagehead %}
+<title>edit</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'appadmin/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Edit User</h2>
+        <form action='/appadmin/update' method="post">
+            <label>Edit User:<span> {{ user.email }} </span></label>
+            <div class="input-group mb-3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="text" name="email" class="form-control" id="" value="{{ user.email }}" required autocomplete="off">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="password" name="password" class="form-control" id="user_password" value="" autocomplete="off">
+            </div>
+            <div class="">
+                <div class="">
+                    <input type="checkbox" name="is_admin" id="is_admin" class="" {{'checked' if user.is_admin}}>
+                    <label for="is_admin" class="custom-control-label">Admin User</label>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="text" name="first_name" class="form-control" placeholder="First Name" autocomplete="off" value="{{ user.first_name }}">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="text" name="last_name" class="form-control" placeholder="Last Name" autocomplete="off" value="{{ user.last_name }}">
+            </div>
+            <input required name="id" id="user_id" type="hidden" class="form-control" value="{{ user.id }}">
+            <div>
+                Roles<br>
+                <table class="table">
+                    <tbody>
+                        {%for role in roles%}
+                        <tr>
+                            <td><input type="checkbox" name="role_{{role.id}}" {%if role.name in user_roles%} checked {%endif%}></td>
+                            <td>{{role.name}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <div class="input-group mb-3">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input required type="submit" class="btn btn-info" value="edit">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

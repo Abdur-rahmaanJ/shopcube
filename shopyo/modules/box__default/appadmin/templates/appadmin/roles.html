@@ -1,0 +1,40 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "admin" %}
+{% block pagehead %}
+{% endblock %}
+{% block sidebar %}
+{%include 'appadmin/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Roles</h2>
+        <div class="">
+            <form class="" method="POST" action='{{url_for("appadmin.roles_add")}}'>
+                <div class="form-group">
+                    <input name="csrf_token" value="{{csrf_token()}}" type="hidden">
+                    <input class="form-control" type="" name="name"><br>
+                    <button class="btn btn-info" type="submit">add</button>
+                </div>
+            </form>
+            <table>
+                <tbody>
+                    {%for role in roles%}
+                    <tr>
+                        <form action="{{url_for('appadmin.roles_update')}}" method="POST">
+                            <td>
+                                <input value="{{role.name}}" class="form-control" type="" name="role_name"></td>
+                            <input type="hidden" name="role_id" value="{{role.id}}">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                            <td><button class="btn btn-info form-control" type="submit">save</button></td>
+                            <td><a class="btn btn-danger" href="{{url_for('appadmin.roles_delete', role_id=role.id)}}">delete</a></td>
+                        </form>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

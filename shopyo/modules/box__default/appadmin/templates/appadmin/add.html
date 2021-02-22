@@ -1,0 +1,86 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "admin" %}
+{% block pagehead %}
+<title>{{active_page.capitalize()}}</title>
+<style>
+    .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width: 6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width: 6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block sidebar %}
+{%include 'appadmin/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="container col-md-6 off-set-3">
+    <div class="card">
+        <div class="card-body">
+            <form action="/appadmin/add" method="post">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" required autocomplete="off">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                    </div>
+                    <input type="password" name="password" class="form-control" id="user_password" placeholder="Password" required autocomplete="off">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                    </div>
+                    <input type="text" name="first_name" class="form-control" placeholder="First Name" autocomplete="off">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                    </div>
+                    <input type="text" name="last_name" class="form-control" placeholder="Last Name" autocomplete="off">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="is_admin" class="custom-control-input" id="is_admin" value="True" checked>
+                        <label for="is_admin" class="custom-control-label">Admin User</label>
+                    </div>
+                </div>
+                <table class="table">
+                    <tbody>
+                        {%for role in roles%}
+                        <tr>
+                            <td><input type="checkbox" name="role_{{role.id}}"></td>
+                            <td>{{role.name}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input type="submit" class="btn btn-info" value="add" required>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

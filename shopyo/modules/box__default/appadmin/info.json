@@ -1,0 +1,11 @@
+{
+	"display_string": "Admin",
+	"type": "show",
+	"fa-icon": "fas fa-user-lock",
+	"url_prefix": "/appadmin",
+	"author": {
+		"name":"Abdur-Rahmaan Janhangeer",
+		"website":"https://www.pythonkitchen.com/about-me/",
+		"mail":"arj.python@gmail.com"
+		}
+}

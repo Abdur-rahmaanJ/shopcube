@@ -17,8 +17,6 @@ from flask_admin import expose
 from flask_admin.menu import MenuLink
 
 from modules.box__default.settings.helpers import get_setting
-from modules.box__default.auth.models import User
-from modules.box__default.auth.models import Role
 from modules.box__default.settings.models import Settings
 
 from shopyoapi.init import categoryphotos
@@ -107,8 +105,6 @@ def create_app(config_name):
 
 
     admin = Admin(app, name='My App', template_mode='bootstrap4', index_view=MyAdminIndexView())
-    admin.add_view(DefaultModelView(User, db.session))
-    admin.add_view(DefaultModelView(Role, db.session))
     admin.add_view(DefaultModelView(Settings, db.session))
     admin.add_link(MenuLink(name='Logout', category='', url='/auth/logout?next=/admin'))
 

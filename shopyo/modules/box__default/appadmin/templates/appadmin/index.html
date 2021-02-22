@@ -1,0 +1,81 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='admin' %}
+{% block pagehead %}
+<title>{{active_page.capitalize()}}</title>
+<style>
+    .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'appadmin/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<script type="text/javascript">
+$(function() {
+    $('.delete_me').click(function() {
+        var id = $(this).data('id');
+        console.log(id);
+        var ask = confirm("Do you want to delete ?");
+        if (ask == true) {
+            window.open("/appadmin/delete/" + id, "_self")
+        } else {
+
+        }
+    });
+});
+</script>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>{{active_page.capitalize()}}</h2>
+            <table class="table table-responsive table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Admin</th>
+                        <th>Roles</th>
+                        <th style="border: none;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td>{{user.email}}</td>
+                        <td>*******</td>
+                        <td>{{user.is_admin}}</td>
+                        <td>
+                            {%for role in user.roles%}
+                            <div class="badge badge-primary">
+                                {{role.name}}
+                            </div>
+                            {%endfor%}
+                        </td>
+                        <td style="border: none;">
+                            <div style='display: inline-block; '>
+                                <a style="text-decoration: none;">
+                                    <button id='delete' data-id="{{ user.id }}" class="delete_me btn btn-dark" type="" name="{{ user.id }}"><i class="fas fa-trash-alt"></i></button>
+                                </a>
+                                &nbsp;
+                                <a href="/appadmin/edit/{{ user.id }}" style="text-decoration: none;">
+                                    <button data-name="{{ user.id }}" class="btn btn-warning"><i id="ico-{{user.id}}" class="fas fa-pencil-alt"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
