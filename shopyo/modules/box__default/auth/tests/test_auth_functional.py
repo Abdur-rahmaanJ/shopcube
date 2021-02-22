@@ -75,6 +75,23 @@ class TestAuthEndpoints:
         assert response.status_code == 200
         assert request.path == url_for("auth.register")
 
+    def test_user_registration_is_case_insensitive(self, test_client):
+        User.create(email="foo@bar.com", password="pass")
+        data = {
+            "email": "Foo@Bar.com",
+            "password": "password",
+            "confirm": "password"
+        }
+
+        response = test_client.post(
+            f"{module_info['url_prefix']}/register",
+            data=data,
+            follow_redirects=True,
+        )
+
+        assert response.status_code == 200
+        assert request.path == url_for("auth.register")
+
     @pytest.mark.parametrize(
         'email_config',
         [
