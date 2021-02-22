@@ -75,6 +75,23 @@ class TestAuthEndpoints:
         assert response.status_code == 200
         assert request.path == url_for("auth.register")
 
+    def test_user_registration_is_case_insensitive(self, test_client):
+        User.create(email="foo@bar.com", password="pass")
+        data = {
+            "email": "Foo@Bar.com",
+            "password": "password",
+            "confirm": "password"
+        }
+
+        response = test_client.post(
+            f"{module_info['url_prefix']}/register",
+            data=data,
+            follow_redirects=True,
+        )
+
+        assert response.status_code == 200
+        assert request.path == url_for("auth.register")
+
     @pytest.mark.parametrize(
         'email_config',
         [
@@ -254,6 +271,22 @@ class TestAuthEndpoints:
         assert response.status_code == 200
         assert current_user.email == non_admin_user.email
         assert request.path == url_for("dashboard.index")
+
+    def test_valid_dashboard_login_is_case_insensitive(self, test_client):
+        User.create(email="foo@bar.com", password="pass")
+        data = {
+            "email": "Foo@Bar.com",
+            "password": "pass"
+        }
+        response = test_client.post(
+            url_for("auth.login"),
+            data=data,
+            follow_redirects=True,
+        )
+
+        assert response.status_code == 200
+        assert current_user.email.lower() == data["email"].lower()
+        assert request.path == url_for("auth.unconfirmed")
 
     def test_login_for_shop_renders(self, test_client):
         response = test_client.get(url_for("auth.shop_login"))
