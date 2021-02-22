@@ -286,7 +286,7 @@ class TestAuthEndpoints:
 
         assert response.status_code == 200
         assert current_user.email.lower() == data["email"].lower()
-        assert request.path == url_for("dashboard.index")
+        assert request.path == url_for("auth.unconfirmed")
 
     def test_login_for_shop_renders(self, test_client):
         response = test_client.get(url_for("auth.shop_login"))
