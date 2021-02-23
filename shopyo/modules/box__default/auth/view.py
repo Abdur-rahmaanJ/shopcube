@@ -7,6 +7,7 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 from flask import current_app
+from flask import request
 from flask_login import current_user
 from flask_login import login_required
 from flask_login import login_user
@@ -167,14 +168,12 @@ def shop_login():
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    
 
     if 'next' not in request.args:
         next_url = url_for('dashboard.index')
-
     else:
         if request.args.get('next') == '':
             next_url = url_for('dashboard.index')
         else:
-            next_url = get_safe_redirect(request.args.get('next') )
+            next_url = get_safe_redirect(request.args.get('next'))
     return redirect(next_url)

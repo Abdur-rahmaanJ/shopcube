@@ -12,7 +12,7 @@ from flask_wtf.csrf import CSRFProtect
 from flask_uploads import configure_uploads
 from flask_admin import Admin
 from flask_admin.contrib import sqla as flask_admin_sqla
-from flask_admin import AdminIndexView 
+from flask_admin import AdminIndexView
 from flask_admin import expose
 from flask_admin.menu import MenuLink
 
@@ -33,10 +33,11 @@ from shopyoapi.file import trycopy
 #
 # Flask admin setup
 #
+
+
 class DefaultModelView(flask_admin_sqla.ModelView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
@@ -46,8 +47,8 @@ class DefaultModelView(flask_admin_sqla.ModelView):
         return redirect(url_for('auth.login', next=request.url))
 
 
-class MyAdminIndexView(AdminIndexView): 
-    def is_accessible(self): 
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
 
     def inaccessible_callback(self, name, **kwargs):
@@ -69,6 +70,8 @@ class MyAdminIndexView(AdminIndexView):
 #
 # secrets files
 #
+
+
 try:
     if not os.path.exists('config.py'):
         trycopy('config_demo.py', 'config.py')
@@ -103,8 +106,12 @@ def create_app(config_name):
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
 
-
-    admin = Admin(app, name='My App', template_mode='bootstrap4', index_view=MyAdminIndexView())
+    admin = Admin(
+        app,
+        name='My App',
+        template_mode='bootstrap4',
+        index_view=MyAdminIndexView()
+    )
     admin.add_view(DefaultModelView(Settings, db.session))
     admin.add_link(MenuLink(name='Logout', category='', url='/auth/logout?next=/admin'))
 
@@ -156,7 +163,7 @@ def create_app(config_name):
                 except ImportError as e:
                     # print(e)
                     pass
-                
+
         else:
             # apps
             try:
@@ -175,7 +182,6 @@ def create_app(config_name):
             except ImportError as e:
                 # print(e)
                 pass
-            
 
     #
     # custom templates folder
