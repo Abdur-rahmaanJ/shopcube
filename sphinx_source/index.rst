@@ -7,10 +7,11 @@
 Welcome to Shopyo's docs!
 =========================
 
-Shopyo a fast, easy to use Point Of Sale system with
-Open inventory management and Point of sales (powered by python) for small shops.
+Shopyo an Open web framework. It is HIGHLY MODULAR and is built for BIG projects.
 
-It also makes a great, Django-like flask base
+
+The ecommerce part has been offloaded to
+`ShopCube <https://github.com/shopyo/shopcube>`_
 
 
 .. toctree::

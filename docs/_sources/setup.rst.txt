@@ -77,6 +77,7 @@ initialise and setup app.
 
 .. code-block:: bash
 
+    python manage.py createconfig
     python manage.py initialise
 
 run the app.

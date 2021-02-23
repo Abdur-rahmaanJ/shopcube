@@ -8,6 +8,7 @@ import os
 from flask import Blueprint
 from flask import redirect
 from flask import url_for
+from flask import render_template
 
 #
 # from shopyoapi.html import notify_success
@@ -16,6 +17,9 @@ from flask import url_for
 # from shopyoapi.enhance import get_setting
 
 # from modules.box__ecommerce.shop.helpers import get_cart_data
+
+
+from modules.box__default.settings.helpers import get_setting
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -45,4 +49,4 @@ def index():
 
     # return str(module_blueprint.template_folder)
 
-    return redirect(url_for("shop.homepage"))
+    return render_template(get_setting('ACTIVE_FRONT_THEME')+'/index.html')

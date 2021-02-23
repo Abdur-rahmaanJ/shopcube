@@ -113,9 +113,13 @@ It needs the absolute file</p>
 <p>You also get the path when editing wsgi.py, add everything except /wsgi.py</p>
 <p>Now initialise app. On the python app page it will give you an instruction to copy to activate virtual env</p>
 <p>paste in terminal and press enter</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install requirements.txt
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install --upgrade pip
+
+python3 -m pip install -r requirements.txt
 
 <span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py
+
+python3 manage.py createconfig
 
 python3 manage.py initialise
 </pre></div>

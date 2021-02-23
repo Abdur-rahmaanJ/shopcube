@@ -50,9 +50,13 @@ paste in terminal and press enter
 
 .. code-block:: bash
 
-    python3 -m pip install requirements.txt
+    python3 -m pip install --upgrade pip
+
+    python3 -m pip install -r requirements.txt
 
     export FLASK_APP=app.py
+
+    python3 manage.py createconfig
 
     python3 manage.py initialise
 

@@ -61,6 +61,21 @@ def process(args):
         except IndexError as e:
             print("db requires more options")
             raise e
+    elif args[0] == 'createconfig':
+        try:
+            if not os.path.exists('config.py'):
+                trycopy('config_demo.py', 'config.py')
+            else:
+                print('config.py exists')
+            if not os.path.exists('config.json'):
+                trycopy('config_demo.json', 'config.json')
+            else:
+                print('config.json exists')
+        except PermissionError as e:
+            print('Cannot continue, permission error'
+                'initialising config.py and config.json, '
+                'copy and rename them yourself!')
+            raise e
     else:
         print("Command not recognised")
 
