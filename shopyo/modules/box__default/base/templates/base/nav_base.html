@@ -18,7 +18,7 @@
     <ul class="navbar-nav ml-auto">    
         {% if (active_page != 'login') and (active_page != 'register') %}
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('auth.logout')}}" title="Logout">
+                <a class="nav-link" href="{{url_for('auth.logout', next=request.url)}}" title="Logout">
                     <i class="yo-admin-nav-icon fas fa-sign-out-alt"></i>
                 </a>
             </li>

@@ -16,6 +16,8 @@ from sqlalchemy import func
 from shopyoapi.html import notify_danger
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
+from shopyoapi.security import get_safe_redirect
+
 from .models import User
 from .email import send_async_email
 from .forms import LoginForm
@@ -129,7 +131,15 @@ def login():
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))
         login_user(user)
-        return redirect(url_for("dashboard.index"))
+        if 'next' not in request.form:
+            next_url = url_for('dashboard.index')
+
+        else:
+            if request.form['next'] == '':
+                next_url = url_for('dashboard.index')
+            else:
+                next_url = get_safe_redirect(request.form['next'])
+        return redirect(next_url)
     return render_template("auth/login.html", **context)
 
 
@@ -152,9 +162,19 @@ def shop_login():
     return render_template("auth/shop_login.html", **context)
 
 
-@auth_blueprint.route("/logout")
+@auth_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    return redirect(url_for("auth.login"))
+    
+
+    if 'next' not in request.args:
+        next_url = url_for('dashboard.index')
+
+    else:
+        if request.args.get('next') == '':
+            next_url = url_for('dashboard.index')
+        else:
+            next_url = get_safe_redirect(request.args.get('next') )
+    return redirect(next_url)

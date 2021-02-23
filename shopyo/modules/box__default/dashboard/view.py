@@ -5,9 +5,9 @@ from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import render_template
+from modules.box__default.auth.decorators import check_confirmed
 
 from flask_login import login_required
-from modules.box__default.auth.decorators import check_confirmed
 
 from shopyoapi.html import notify_success
 

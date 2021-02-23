@@ -20,7 +20,7 @@ from sqlalchemy import exists
 
 from shopyoapi.init import db
 
-from modules.box__default.admin.admin import admin_required
+from .admin import admin_required
 from modules.box__default.auth.models import Role
 from modules.box__default.auth.models import User
 from shopyoapi.html import notify_warning
@@ -32,15 +32,15 @@ module_info = {}
 with open(dirpath + "/info.json") as f:
     module_info = json.load(f)
 
-admin_blueprint = Blueprint(
-    "admin",
+appadmin_blueprint = Blueprint(
+    "appadmin",
     __name__,
     template_folder="templates",
     url_prefix=module_info["url_prefix"],
 )
 
 
-@admin_blueprint.route("/")
+@appadmin_blueprint.route("/")
 @login_required
 @admin_required
 def user_list():
@@ -52,10 +52,10 @@ def user_list():
     """
     context = {}
     context["users"] = User.query.all()
-    return render_template("admin/index.html", **context)
+    return render_template("appadmin/index.html", **context)
 
 
-@admin_blueprint.route("/add", methods=["GET", "POST"])
+@appadmin_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 @admin_required
 def user_add():
@@ -95,15 +95,15 @@ def user_add():
                     role = Role.get_by_id(role_id)
                     new_user.roles.append(role)
             new_user.save()
-            return redirect(url_for("admin.user_add"))
+            return redirect(url_for("appadmin.user_add"))
 
         flash(notify_warning("User with same email already exists"))
 
     context["roles"] = Role.query.all()
-    return render_template("admin/add.html", **context)
+    return render_template("appadmin/add.html", **context)
 
 
-@admin_blueprint.route("/delete/<id>", methods=["GET"])
+@appadmin_blueprint.route("/delete/<id>", methods=["GET"])
 @login_required
 @admin_required
 def admin_delete(id):
@@ -118,14 +118,14 @@ def admin_delete(id):
 
     if user is None:
         flash(notify_warning("Unable to delete. Invalid user id"))
-        return redirect("/admin")
+        return redirect("/appadmin")
 
     user.delete()
     flash(notify_success("User successfully deleted"))
-    return redirect("/admin")
+    return redirect("/appadmin")
 
 
-@admin_blueprint.route("/edit/<id>", methods=["GET"])
+@appadmin_blueprint.route("/edit/<id>", methods=["GET"])
 @login_required
 @admin_required
 def admin_edit(id):
@@ -141,15 +141,15 @@ def admin_edit(id):
 
     if user is None:
         flash(notify_warning("Unable to edit. Invalid user id"))
-        return redirect("/admin")
+        return redirect("/appadmin")
 
     context["user"] = user
     context["user_roles"] = [r.name for r in user.roles]
     context["roles"] = Role.query.all()
-    return render_template("admin/edit.html", **context)
+    return render_template("appadmin/edit.html", **context)
 
 
-@admin_blueprint.route("/update", methods=["POST"])
+@appadmin_blueprint.route("/update", methods=["POST"])
 @login_required
 @admin_required
 def admin_update():
@@ -192,19 +192,19 @@ def admin_update():
 
     user.update()
     flash(notify_success("User successfully updated"))
-    return redirect("/admin")
+    return redirect("/appadmin")
 
 
-@admin_blueprint.route("/roles")
+@appadmin_blueprint.route("/roles")
 @login_required
 @admin_required
 def roles():
     context = {}
     context["roles"] = Role.query.all()
-    return render_template("admin/roles.html", **context)
+    return render_template("appadmin/roles.html", **context)
 
 
-@admin_blueprint.route("/roles/add", methods=["POST"])
+@appadmin_blueprint.route("/roles/add", methods=["POST"])
 @login_required
 @admin_required
 def roles_add():
@@ -213,12 +213,12 @@ def roles_add():
             role = Role(name=request.form["name"])
             role.save()
             flash(notify_success("Role successfully added"))
-            return redirect(url_for("admin.roles"))
+            return redirect(url_for("appadmin.roles"))
         flash(notify_warning("Role already exists"))
-        return redirect(url_for("admin.roles"))
+        return redirect(url_for("appadmin.roles"))
 
 
-@admin_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
+@appadmin_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
 @login_required
 @admin_required
 def roles_delete(role_id):
@@ -226,14 +226,14 @@ def roles_delete(role_id):
 
     if role is None:
         flash(notify_warning("Unable to delete. Invalid role id"))
-        return redirect(url_for("admin.roles"))
+        return redirect(url_for("appadmin.roles"))
 
     role.delete()
     flash(notify_success("Role successfully deleted"))
-    return redirect(url_for("admin.roles"))
+    return redirect(url_for("appadmin.roles"))
 
 
-@admin_blueprint.route("/roles/update", methods=["POST"])
+@appadmin_blueprint.route("/roles/update", methods=["POST"])
 @login_required
 @admin_required
 def roles_update():
@@ -242,10 +242,10 @@ def roles_update():
 
         if role is None:
             flash(notify_warning("Unable to update. Role does not exist"))
-            return redirect(url_for("admin.roles"))
+            return redirect(url_for("appadmin.roles"))
 
         role.name = request.form["role_name"]
         role.update()
         flash(notify_success("Role successfully updated"))
 
-    return redirect(url_for("admin.roles"))
+    return redirect(url_for("appadmin.roles"))
