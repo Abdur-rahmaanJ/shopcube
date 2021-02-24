@@ -113,6 +113,52 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
    .. note::
       This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again 
 
+Setup Mail Dev Environment (Optional)
+-------------------------------------
+
+If you have Node.js, use the `maildev <https://github.com/maildev/maildev>`_ package. Install it using 
+
+
+   .. code-block:: bash
+
+      npm install -g maildev
+
+
+Then serve it using
+
+
+   .. code-block:: bash
+
+      maildev
+
+
+Dev configs for this setup:
+
+   .. code-block:: python
+
+      class DevelopmentConfig(Config):
+          """Configurations for development"""
+
+          ENV = "development"
+          DEBUG = True
+          LOGIN_DISABLED = False
+          # control email confirmation for user registration
+          EMAIL_CONFIRMATION_DISABLED = False
+          # flask-mailman configs
+          MAIL_SERVER = 'localhost'
+          MAIL_PORT = 1025
+          MAIL_USE_TLS = False
+          MAIL_USE_SSL = False
+          MAIL_USERNAME = '' # os.environ.get("MAIL_USERNAME")
+          MAIL_PASSWORD = '' # os.environ.get("MAIL_PASSWORD")
+          MAIL_DEFAULT_SENDER = 'ma@mail.com' # os.environ.get("MAIL_DEFAULT_SENDER")
+
+Go to http://127.0.0.1:1080 where it serves it's web interface by default. See mails arrive in your inbox!
+
+Syncing and continuing
+----------------------
+
+
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
     
    .. code-block:: bash
