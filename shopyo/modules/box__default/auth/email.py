@@ -20,10 +20,10 @@ def _send_email_helper(app, msg):
     """
     with app.app_context():
         if (
-            "MAIL_USERNAME" not in current_app.config or
-            "MAIL_PASSWORD" not in current_app.config or
-            current_app.config["MAIL_USERNAME"] is None or
-            current_app.config["MAIL_PASSWORD"] is None
+            "MAIL_USERNAME" not in current_app.config
+            or "MAIL_PASSWORD" not in current_app.config
+            or current_app.config["MAIL_USERNAME"] is None
+            or current_app.config["MAIL_PASSWORD"] is None
         ):
             print(
                 "\nShopyo Error: MAIL_USERNAME, and/or MAIL_PASSWORD"
@@ -51,13 +51,13 @@ def send_async_email(to, subject, template, from_email=None, **kwargs):
 
     if from_email is None:
         if (
-            'MAIL_DEFAULT_SENDER' not in current_app.config or
-            current_app.config['MAIL_DEFAULT_SENDER'] is None
+            "MAIL_DEFAULT_SENDER" not in current_app.config
+            or current_app.config["MAIL_DEFAULT_SENDER"] is None
         ):
             print("\nShopyo Error: MAIL_DEFAULT_SENDER not configured\n")
             return
 
-        from_email = current_app.config['MAIL_DEFAULT_SENDER']
+        from_email = current_app.config["MAIL_DEFAULT_SENDER"]
 
     app = current_app._get_current_object()
     template_txt = render_template(f"{template}.txt", **kwargs)

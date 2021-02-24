@@ -105,10 +105,10 @@ def resend():
     context = {"token": token, "user": current_user}
     send_async_email(current_user.email, subject, template, **context)
     flash(notify_success("A new confirmation email has been sent."))
-    return redirect(url_for('auth.unconfirmed'))
+    return redirect(url_for("auth.unconfirmed"))
 
 
-@auth_blueprint.route('/unconfirmed')
+@auth_blueprint.route("/unconfirmed")
 @login_required
 def unconfirmed():
     if current_user.is_email_confirmed:
@@ -132,14 +132,14 @@ def login():
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))
         login_user(user)
-        if 'next' not in request.form:
-            next_url = url_for('dashboard.index')
+        if "next" not in request.form:
+            next_url = url_for("dashboard.index")
 
         else:
-            if request.form['next'] == '':
-                next_url = url_for('dashboard.index')
+            if request.form["next"] == "":
+                next_url = url_for("dashboard.index")
             else:
-                next_url = get_safe_redirect(request.form['next'])
+                next_url = get_safe_redirect(request.form["next"])
         return redirect(next_url)
     return render_template("auth/login.html", **context)
 
@@ -150,11 +150,11 @@ def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
 
-    if 'next' not in request.args:
-        next_url = url_for('dashboard.index')
+    if "next" not in request.args:
+        next_url = url_for("dashboard.index")
     else:
-        if request.args.get('next') == '':
-            next_url = url_for('dashboard.index')
+        if request.args.get("next") == "":
+            next_url = url_for("dashboard.index")
         else:
-            next_url = get_safe_redirect(request.args.get('next'))
+            next_url = get_safe_redirect(request.args.get("next"))
     return redirect(next_url)

@@ -23,18 +23,21 @@ It ships with common business needs and an ecommerce modules by default
 
 # Have a go!
 
-Create a virtual environment and activate it (not needed when installing [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)).
+You can also install [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)
 
 `pip install shopyo`
 
 then
 ```
-shopyo new . shopyotest
-cd shopyotest
+shopyo new blog
+cd blog
 python -m pip install -r requirements.txt
+cd blog
 python manage.py initialise
 python manage.py rundebug
 ```
+
+If for dev use `python -m pip install -r requirements.txt -r dev_requirements.txt`
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 

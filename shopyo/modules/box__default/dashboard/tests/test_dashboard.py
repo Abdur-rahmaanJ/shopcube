@@ -38,7 +38,6 @@ class TestDashboardInvalidAccess:
 
 @pytest.mark.usefixtures("login_non_admin_user")
 class TestDashboardEndpoints:
-
     def test_confirmed_user_can_view_dashboard(self, test_client):
         response = test_client.get("/dashboard/", follow_redirects=True)
 

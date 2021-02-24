@@ -33,7 +33,7 @@ class DevelopmentConfig(Config):
     # control email confirmation for user registration
     EMAIL_CONFIRMATION_DISABLED = False
     # flask-mailman configs
-    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_SERVER = "smtp.googlemail.com"
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
@@ -44,6 +44,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     """Configurations for testsing"""
+
     ENV = "testing"
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///testing.db"

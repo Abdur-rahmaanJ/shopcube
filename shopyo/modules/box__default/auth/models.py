@@ -35,6 +35,7 @@ role_user_bridge = db.Table(
 
 class AnonymousUser(AnonymousUserMixin):
     """ Anonymous user class """
+
     def __init__(self):
         self.username = "guest"
         self.email = "<anonymous-user-no-email>"
@@ -113,7 +114,7 @@ class User(UserMixin, PkModel):
             email = serializer.loads(
                 token,
                 salt=current_app.config["PASSWORD_SALT"],
-                max_age=expiration
+                max_age=expiration,
             )
         except Exception as e:
             print(f"\nShopyo-LOG, Error at confirm_token: {e}")
@@ -133,7 +134,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-login_manager.login_view = 'auth.login'
+login_manager.login_view = "auth.login"
 
 
 class Role(PkModel):

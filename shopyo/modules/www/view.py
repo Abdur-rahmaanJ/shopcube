@@ -49,4 +49,4 @@ def index():
 
     # return str(module_blueprint.template_folder)
 
-    return render_template(get_setting('ACTIVE_FRONT_THEME')+'/index.html')
+    return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html")

@@ -41,7 +41,7 @@ class DefaultModelView(flask_admin_sqla.ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for('auth.login', next=request.url))
+        return redirect(url_for("auth.login", next=request.url))
 
 
 class MyAdminIndexView(AdminIndexView):
@@ -50,19 +50,20 @@ class MyAdminIndexView(AdminIndexView):
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for('auth.login', next=request.url))
+        return redirect(url_for("auth.login", next=request.url))
 
-    @expose('/')
+    @expose("/")
     def index(self):
         if not current_user.is_authenticated and current_user.is_admin:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for("auth.login"))
         return super(MyAdminIndexView, self).index()
 
-    @expose('/dashboard')
+    @expose("/dashboard")
     def indexs(self):
         if not current_user.is_authenticated and current_user.is_admin:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for("auth.login"))
         return super(MyAdminIndexView, self).index()
+
 
 #
 # secrets files
@@ -70,15 +71,15 @@ class MyAdminIndexView(AdminIndexView):
 
 
 try:
-    if not os.path.exists('config.py'):
-        trycopy('config_demo.py', 'config.py')
-    if not os.path.exists('config.json'):
-        trycopy('config_demo.json', 'config.json')
+    if not os.path.exists("config.py"):
+        trycopy("config_demo.py", "config.py")
+    if not os.path.exists("config.json"):
+        trycopy("config_demo.json", "config.json")
 except PermissionError as e:
     print(
-        'Cannot continue, permission error'
-        'initializing config.py and config.json, '
-        'copy and rename them yourself!'
+        "Cannot continue, permission error"
+        "initializing config.py and config.json, "
+        "copy and rename them yourself!"
     )
     raise e
 
@@ -101,12 +102,14 @@ def create_app(config_name):
 
     admin = Admin(
         app,
-        name='My App',
-        template_mode='bootstrap4',
-        index_view=MyAdminIndexView()
+        name="My App",
+        template_mode="bootstrap4",
+        index_view=MyAdminIndexView(),
     )
     admin.add_view(DefaultModelView(Settings, db.session))
-    admin.add_link(MenuLink(name='Logout', category='', url='/auth/logout?next=/admin'))
+    admin.add_link(
+        MenuLink(name="Logout", category="", url="/auth/logout?next=/admin")
+    )
 
     #
     # dev static
@@ -144,7 +147,12 @@ def create_app(config_name):
                         getattr(sys_mod, "{}_blueprint".format(sub_folder))
                     )
                 except AttributeError as e:
-                    print(' x Blueprint skipped:', 'modules.{}.{}.view'.format(folder, sub_folder, folder))
+                    print(
+                        " x Blueprint skipped:",
+                        "modules.{}.{}.view".format(
+                            folder, sub_folder, folder
+                        ),
+                    )
                     pass
                 try:
                     mod_global = importlib.import_module(
@@ -161,10 +169,12 @@ def create_app(config_name):
             # apps
             try:
                 mod = importlib.import_module("modules.{}.view".format(folder))
-                app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
+                app.register_blueprint(
+                    getattr(mod, "{}_blueprint".format(folder))
+                )
             except AttributeError as e:
-                    print('[ ] Blueprint skipped:', e)
-                    pass
+                print("[ ] Blueprint skipped:", e)
+                pass
             try:
                 mod_global = importlib.import_module(
                     "modules.{}.global".format(folder)
@@ -242,9 +252,9 @@ def create_app(config_name):
     # return response
 
 
-with open(os.path.join(base_path, 'config.json')) as f:
+with open(os.path.join(base_path, "config.json")) as f:
     config_json = json.load(f)
-environment = config_json['environment']
+environment = config_json["environment"]
 app = create_app(environment)
 
 

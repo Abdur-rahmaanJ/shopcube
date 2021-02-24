@@ -46,14 +46,14 @@ class TestAnonymousUser:
         assert user.is_admin is False
 
     @pytest.mark.parametrize(
-        'email_config',
+        "email_config",
         [
             ("EMAIL_CONFIRMATION_DISABLED", "remove"),
             ("EMAIL_CONFIRMATION_DISABLED", False),
             ("EMAIL_CONFIRMATION_DISABLED", None),
             ("EMAIL_CONFIRMATION_DISABLED", "random string"),
         ],
-        indirect=True
+        indirect=True,
     )
     def test_anonymous_user_email_confirmed_disabled(self, email_config):
         user = AnonymousUser()
@@ -61,11 +61,11 @@ class TestAnonymousUser:
         assert user.is_email_confirmed is False
 
     @pytest.mark.parametrize(
-        'email_config',
+        "email_config",
         [
             ("EMAIL_CONFIRMATION_DISABLED", True),
         ],
-        indirect=True
+        indirect=True,
     )
     def test_anonymous_user_has_email_confirmed_enabled(self, email_config):
         user = AnonymousUser()
@@ -266,16 +266,8 @@ class TestUserRoleRelation:
         user1.delete()
         roles[0].delete()
 
-        users_in_bridge = (
-            User.query.join(role_user_bridge)
-            .join(Role)
-            .all()
-        )
-        roles_in_bridge = (
-            Role.query.join(role_user_bridge)
-            .join(User)
-            .all()
-        )
+        users_in_bridge = User.query.join(role_user_bridge).join(Role).all()
+        roles_in_bridge = Role.query.join(role_user_bridge).join(User).all()
 
         assert roles_in_bridge is not None
         assert users_in_bridge is not None

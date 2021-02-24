@@ -12,9 +12,9 @@ from modules.box__default.auth.models import User
 
 
 @pytest.mark.parametrize(
-    'email_config',
+    "email_config",
     [("MAIL_DEFAULT_SENDER", "remove"), ("MAIL_DEFAULT_SENDER", None)],
-    indirect=True
+    indirect=True,
 )
 def test_send_email_with_no_default_sender(capfd, email_config):
     user = User.create(email="test@gmail.com", password="pass")
@@ -29,14 +29,14 @@ def test_send_email_with_no_default_sender(capfd, email_config):
 
 
 @pytest.mark.parametrize(
-    'email_config',
+    "email_config",
     [
         ("MAIL_USERNAME", "remove"),
         ("MAIL_PASSWORD", "remove"),
         ("MAIL_USERNAME", None),
         ("MAIL_PASSWORD", None),
     ],
-    indirect=True
+    indirect=True,
 )
 def test_send_email_with_no_username_or_password_set(capfd, email_config):
     user = User.create(email="test@gmail.com", password="pass")
@@ -81,7 +81,7 @@ def test_send_using_helper_function(test_client, flask_app, capfd):
         subject="subject of email",
         body="body of email",
         to=["to@test.com"],
-        from_email="from@test.com"
+        from_email="from@test.com",
     )
     _send_email_helper(flask_app, msg)
     captured = capfd.readouterr()
