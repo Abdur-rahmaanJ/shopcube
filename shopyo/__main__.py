@@ -177,6 +177,8 @@ def new_project(newfoldername):
         os.path.join(dirpathparent, "requirements.txt"),
         os.path.join(base_path, "requirements.txt"),
     )
+    with open(os.path.join(base_path, "requirements.txt"), 'a') as f:
+        f.write('\nshopyo')
     trycopy(
         os.path.join(dirpathparent, "dev_requirements.txt"),
         os.path.join(base_path, "dev_requirements.txt"),
