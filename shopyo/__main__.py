@@ -229,9 +229,7 @@ def new_project(newfoldername):
 
 
 def main():
-    if not is_venv():
-        print("Please use Shopyo in a virtual environment")
-        sys.exit()
+    
     args = sys.argv
     if len(args) == 1:
         printinfo()
@@ -240,6 +238,9 @@ def main():
         printinfo()
         new_project(args[2])
     else:
+        if not is_venv():
+            print("Please use Shopyo in a virtual environment")
+            sys.exit()
         torun = [sys.executable, "manage.py"] + args[1:]
         subprocess.run(torun, stdout=subprocess.PIPE)
 
