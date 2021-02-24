@@ -15,11 +15,6 @@ class Config:
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
     UPLOADED_PATH_THUM = os.path.join(STATIC, "uploads", "thumbs")
 
-    UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
-    UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "category")
-    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
-        STATIC, "uploads", "subcategory"
-    )
     PASSWORD_SALT = "abcdefghi"
     # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
     #     username='shopyo_user',

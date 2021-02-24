@@ -6,9 +6,7 @@
     },
     "settings": {
       "APP_NAME": "Demo",
-      "SECTION_NAME": "Category",
-      "SECTION_ITEMS": "Products",
-      "ACTIVE_FRONT_THEME": "ecommerceus",
+      "ACTIVE_FRONT_THEME": "blogus",
       "ACTIVE_BACK_THEME": "boogle",
       "CURRENCY": "MUR"
     }

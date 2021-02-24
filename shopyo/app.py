@@ -19,14 +19,11 @@ from flask_admin.menu import MenuLink
 from modules.box__default.settings.helpers import get_setting
 from modules.box__default.settings.models import Settings
 
-from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
 from shopyoapi.init import ma
 from shopyoapi.init import migrate
 from shopyoapi.init import mail
-from shopyoapi.init import productphotos
-from shopyoapi.init import subcategoryphotos
 from shopyoapi.path import modules_path
 from shopyoapi.file import trycopy
 
@@ -101,10 +98,6 @@ def create_app(config_name):
     mail.init_app(app)
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
-
-    configure_uploads(app, categoryphotos)
-    configure_uploads(app, subcategoryphotos)
-    configure_uploads(app, productphotos)
 
     admin = Admin(
         app,
@@ -214,8 +207,6 @@ def create_app(config_name):
         #     info_data = json.load(f)
 
         APP_NAME = get_setting("APP_NAME")
-        SECTION_NAME = get_setting("SECTION_NAME")
-        SECTION_ITEMS = get_setting("SECTION_ITEMS")
         # ACTIVE_FRONT_THEME = get_setting("ACTIVE_FRONT_THEME")
         # ACTIVE_FRONT_THEME_VERSION = info_data["version"]
         # ACTIVE_FRONT_THEME_STYLES_URL = url_for(
@@ -226,8 +217,6 @@ def create_app(config_name):
 
         base_context = {
             "APP_NAME": APP_NAME,
-            "SECTION_NAME": SECTION_NAME,
-            "SECTION_ITEMS": SECTION_ITEMS,
             # "ACTIVE_FRONT_THEME": ACTIVE_FRONT_THEME,
             # "ACTIVE_FRONT_THEME_VERSION": ACTIVE_FRONT_THEME_VERSION,
             # "ACTIVE_FRONT_THEME_STYLES_URL": ACTIVE_FRONT_THEME_STYLES_URL,

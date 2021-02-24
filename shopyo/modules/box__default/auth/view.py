@@ -144,25 +144,6 @@ def login():
     return render_template("auth/login.html", **context)
 
 
-@auth_blueprint.route("/shop", methods=["GET", "POST"])
-def shop_login():
-    context = {}
-    login_form = LoginForm()
-    context["form"] = login_form
-
-    if login_form.validate_on_submit():
-        email = login_form.email.data
-        password = login_form.password.data
-        user = User.query.filter_by(email=email).first()
-        if user is None or not user.check_password(password):
-            flash(notify_danger("please check your user id and password"))
-            return redirect(url_for("shop.checkout"))
-        login_user(user)
-        return redirect(url_for("shop.checkout"))
-
-    return render_template("auth/shop_login.html", **context)
-
-
 @auth_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():

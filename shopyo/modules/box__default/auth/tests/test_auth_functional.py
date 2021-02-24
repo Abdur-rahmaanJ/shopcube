@@ -288,36 +288,6 @@ class TestAuthEndpoints:
         assert current_user.email.lower() == data["email"].lower()
         assert request.path == url_for("auth.unconfirmed")
 
-    def test_login_for_shop_renders(self, test_client):
-        response = test_client.get(url_for("auth.shop_login"))
-
-        response.status_code == 200
-        assert b"Login" in response.data
-        assert b"submit" in response.data
-        assert b"CART" in response.data
-
-    def test_invalid_shop_login(self, test_client, non_admin_user):
-        response = test_client.post(
-            url_for("auth.shop_login"),
-            data=dict(email=non_admin_user.email, password="wrongpass"),
-            follow_redirects=True,
-        )
-
-        response.status_code == 200
-        assert request.path == url_for("shop.checkout")
-        assert b"please check your user id and password" in response.data
-
-    def test_valid_shop_login(self, test_client, non_admin_user):
-        response = test_client.post(
-            url_for("auth.shop_login"),
-            data=dict(email=non_admin_user.email, password="pass"),
-            follow_redirects=True,
-        )
-
-        assert response.status_code == 200
-        assert current_user.email == non_admin_user.email
-        assert request.path == url_for("shop.checkout")
-
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_current_user_logout(self, test_client):
         response = test_client.get(

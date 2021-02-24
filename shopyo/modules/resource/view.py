@@ -79,20 +79,6 @@ def active_back_theme_css(active_theme):
     return send_from_directory(theme_dir, "styles.css")
 
 
-@module_blueprint.route("/product/<filename>", methods=["GET"])
-def product_image(filename):
-
-    # return theme_dir
-    if filename == "default":
-        return send_from_directory(
-            os.path.join(current_app.config["BASE_DIR"], "static", "default"),
-            "default_product.jpg",
-        )
-    return send_from_directory(
-        current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
-    )
-
-
 # Handles javascript image uploads from tinyMCE
 @module_blueprint.route("/upload/tinymce/image", methods=["POST"])
 @login_required
