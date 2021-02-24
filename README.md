@@ -29,12 +29,15 @@ Create a virtual environment and activate it (not needed when installing [via gi
 
 then
 ```
-shopyo new . shopyotest
-cd shopyotest
+shopyo new blog
+cd blog
 python -m pip install -r requirements.txt
+cd blog
 python manage.py initialise
 python manage.py rundebug
 ```
+
+If for dev use `python -m pip install -r requirements.txt -r dev_requirements.txt`
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
