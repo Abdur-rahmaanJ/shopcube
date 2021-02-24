@@ -20,9 +20,18 @@ is a combination of many commands
 
    .. code:: bash
 
-       python manage.py <command>
+      python manage.py <command>
 
     except for the ``shopyo new ...``` command
+
+   .. code:: bash
+
+      shopyo new blog
+      cd blog
+      python -m pip install -r requirements.txt
+      cd blog
+      python manage.py initialise
+      python manage.py rundebug
 
 Complete commands
 -----------------

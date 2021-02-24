@@ -100,9 +100,17 @@ is a combination of many commands</p>
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>   python manage.py &lt;command&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>  python manage.py &lt;command&gt;
 
 except <span class="k">for</span> the <span class="sb">``</span>shopyo new ...<span class="sb">```</span> <span class="nb">command</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new blog
+<span class="nb">cd</span> blog
+python -m pip install -r requirements.txt
+<span class="nb">cd</span> blog
+python manage.py initialise
+python manage.py rundebug
 </pre></div>
 </div>
 </div>
