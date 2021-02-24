@@ -3,9 +3,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-# from .shopyoapi.file import trycopy
+from .shopyoapi.file import trycopy
 from .shopyoapi.file import trycopytree
 from .shopyoapi.file import trymkdir
+from .shopyoapi.file import trymkfile
+from .shopyoapi.file import delete_file
 from .shopyoapi.info import printinfo
 
 dirpath = Path(__file__).parent.absolute()
@@ -18,7 +20,146 @@ def is_venv():
     )
 
 
-def new_project(path, newfoldername):
+def conf_py_content(project_name):
+    return """
+# Configuration file for the Sphinx documentation builder.
+#
+# This file only contains a selection of the most common options. For a full
+# list see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+# -- Path setup --------------------------------------------------------------
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+target_dir = os.path.abspath(os.path.join(current_dir, "../{project_name}"))
+sys.path.insert(0, os.path.abspath(target_dir))
+
+
+# -- Project information -----------------------------------------------------
+
+project = "{project_name}"
+# copyright = ''
+author = ""
+
+
+# -- General configuration ---------------------------------------------------
+
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+# ones.
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.napoleon",
+]
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ["_templates"]
+
+# List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+# This pattern also affects html_static_path and html_extra_path.
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+
+# -- Options for HTML output -------------------------------------------------
+html_context = {{
+    "project_links": [
+        "Source Code",
+        "https://github.com/<name>/<project>",
+        "Issue Tracker",
+        "https://github.com/<name>/<project>/issues",
+    ]
+}}
+html_logo = "shopyo.ico"
+
+html_sidebars = {{
+    "**": ["about.html", "relations.html", "navigation.html", "searchbox.html"]
+}}
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
+html_theme = "alabaster"
+html_theme_options = {{
+    "github_repo": "<name>/<project>",
+    "fixed_sidebar": "true",
+}}
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+html_static_path = ["_static"]
+""".format(
+        project_name=project_name
+    )
+
+
+def index_rst_content():
+    return """
+Welcome to ProjectName docs!
+============================
+
+Write project description here
+
+.. toctree::
+   :maxdepth: 9
+
+   Docs <docs>
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+"""
+
+
+def docs_rst_content():
+    return """
+.. :tocdepth:: 5
+
+Documentation
+=============
+
+Sphinx is included in dev_requirements.txt .
+Run in main folder:
+
+.. code:: bash
+
+    sphinx-build -b html sphinx_source docs
+
+to generate html pages in docs
+"""
+
+
+def readme_md_content(project_name):
+    return """
+# {project_name}
+"""
+
+
+def new_project(newfoldername):
+    """
+    $ shopyo new blog
+
+    creates:
+        blog/
+            docs/
+                conf.py
+                index.rst
+            blog/
+    """
+    path = "."
     newfoldername = newfoldername.strip("/").strip("\\")
     print("creating new project {}".format(newfoldername))
 
@@ -26,7 +167,65 @@ def new_project(path, newfoldername):
     trymkdir(base_path)
     print("created dir {} in {}".format(newfoldername, path))
 
-    trycopytree(os.path.join(dirpathparent, "shopyo"), base_path + "/shopyo")
+    trycopytree(
+        os.path.join(dirpathparent, "shopyo"),
+        os.path.join(base_path, newfoldername),
+    )
+    delete_file(os.path.join(base_path, newfoldername, '__init__.py'))
+    delete_file(os.path.join(base_path, newfoldername, '__main__.py'))
+    trycopy(
+        os.path.join(dirpathparent, "requirements.txt"),
+        os.path.join(base_path, "requirements.txt"),
+    )
+    trycopy(
+        os.path.join(dirpathparent, "dev_requirements.txt"),
+        os.path.join(base_path, "dev_requirements.txt"),
+    )
+    trycopy(
+        os.path.join(dirpathparent, ".gitignore"),
+        os.path.join(base_path, ".gitignore"),
+    )
+    trycopy(
+        os.path.join(dirpathparent, ".nojekyll"),
+        os.path.join(base_path, ".nojekyll"),
+    )
+    trycopy(
+        os.path.join(dirpathparent, "tox.ini"),
+        os.path.join(base_path, "tox.ini"),
+    )
+
+    trymkfile(
+        os.path.join(base_path, "README.md"), readme_md_content(newfoldername)
+    )
+
+    # docs
+    trymkdir(os.path.join(base_path, "sphinx_source"))
+    trymkfile(
+        os.path.join(base_path, "sphinx_source", "conf.py"),
+        conf_py_content(newfoldername),
+    )
+    trymkdir(os.path.join(base_path, "sphinx_source", "_static"))
+    trymkfile(
+        os.path.join(base_path, "sphinx_source", "_static", "custom.css"), ""
+    )
+    trycopy(
+        os.path.join(dirpathparent, "sphinx_source", "Makefile"),
+        os.path.join(base_path, "sphinx_source", "Makefile"),
+    )
+    trymkfile(
+        os.path.join(base_path, "sphinx_source", "index.rst"),
+        index_rst_content(),
+    )
+    trymkfile(
+        os.path.join(base_path, "sphinx_source", "docs.rst"),
+        docs_rst_content(),
+    )
+    trycopy(
+        os.path.join(dirpathparent, "sphinx_source", "shopyo.ico"),
+        os.path.join(base_path, "sphinx_source", "shopyo.ico"),
+    )
+
+    print('Project', newfoldername, 'created successfully!')
 
 
 def main():
@@ -37,9 +236,9 @@ def main():
     if len(args) == 1:
         printinfo()
         print("No arguments supplied")
-    if args[1] == "new" and len(args) == 4:
+    if args[1] == "new" and len(args) == 3:
         printinfo()
-        new_project(args[2], args[3])
+        new_project(args[2])
     else:
         torun = [sys.executable, "manage.py"] + args[1:]
         subprocess.run(torun, stdout=subprocess.PIPE)

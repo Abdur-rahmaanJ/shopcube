@@ -49,6 +49,7 @@ class TestAuthEndpoints:
     """
     Test all auth routes' functionalities
     """
+
     def test_user_registration_page_renders(self, test_client):
         response = test_client.get(f"{module_info['url_prefix']}/register")
 
@@ -63,7 +64,7 @@ class TestAuthEndpoints:
         data = {
             "email": "test@gmail.com",
             "password": "password",
-            "confirm": "password"
+            "confirm": "password",
         }
 
         response = test_client.post(
@@ -80,7 +81,7 @@ class TestAuthEndpoints:
         data = {
             "email": "Foo@Bar.com",
             "password": "password",
-            "confirm": "password"
+            "confirm": "password",
         }
 
         response = test_client.post(
@@ -93,17 +94,17 @@ class TestAuthEndpoints:
         assert request.path == url_for("auth.register")
 
     @pytest.mark.parametrize(
-        'email_config',
+        "email_config",
         [
             ("EMAIL_CONFIRMATION_DISABLED", True),
         ],
-        indirect=True
+        indirect=True,
     )
     def test_user_confirmed_if_email_disabled(self, test_client, email_config):
         data = {
             "email": "test@gmail.com",
             "password": "password",
-            "confirm": "password"
+            "confirm": "password",
         }
         response = test_client.post(
             f"{module_info['url_prefix']}/register",
@@ -117,13 +118,13 @@ class TestAuthEndpoints:
         assert user.is_email_confirmed is True
 
     @pytest.mark.parametrize(
-        'email_config',
+        "email_config",
         [
             ("EMAIL_CONFIRMATION_DISABLED", "remove"),
             ("EMAIL_CONFIRMATION_DISABLED", False),
             ("EMAIL_CONFIRMATION_DISABLED", None),
         ],
-        indirect=True
+        indirect=True,
     )
     def test_user_is_registered_on_valid_form_submit(
         self, test_client, capfd, email_config
@@ -131,7 +132,7 @@ class TestAuthEndpoints:
         data = {
             "email": "test@gmail.com",
             "password": "password",
-            "confirm": "password"
+            "confirm": "password",
         }
         response = test_client.post(
             f"{module_info['url_prefix']}/register",
@@ -159,8 +160,7 @@ class TestAuthEndpoints:
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_user_not_confirmed_for_already_confirmed_user(self, test_client):
         response = test_client.get(
-            url_for("auth.confirm", token="sometoken"),
-            follow_redirects=True
+            url_for("auth.confirm", token="sometoken"), follow_redirects=True
         )
 
         assert response.status_code == 200
@@ -171,8 +171,7 @@ class TestAuthEndpoints:
     def test_user_confirmed_on_valid_token(self, test_client):
         token = current_user.generate_confirmation_token()
         response = test_client.get(
-            url_for("auth.confirm", token=token),
-            follow_redirects=True
+            url_for("auth.confirm", token=token), follow_redirects=True
         )
 
         assert response.status_code == 200
@@ -184,8 +183,7 @@ class TestAuthEndpoints:
     def test_no_confirm_sent_for_invalid_token(self, test_client):
         token = current_user.generate_confirmation_token() + "extra"
         response = test_client.get(
-            url_for("auth.confirm", token=token),
-            follow_redirects=True
+            url_for("auth.confirm", token=token), follow_redirects=True
         )
 
         assert response.status_code == 200
@@ -195,8 +193,7 @@ class TestAuthEndpoints:
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_do_not_allow_email_resend_for_confirmed(self, test_client):
         response = test_client.get(
-            url_for("auth.resend"),
-            follow_redirects=True
+            url_for("auth.resend"), follow_redirects=True
         )
 
         assert response.status_code == 200
@@ -205,8 +202,7 @@ class TestAuthEndpoints:
     @pytest.mark.usefixtures("login_unconfirmed_user")
     def test_valid_resend_email_confirmation(self, test_client, capfd):
         response = test_client.get(
-            url_for("auth.resend"),
-            follow_redirects=True
+            url_for("auth.resend"), follow_redirects=True
         )
 
         # Not very happy with this solution. Need a better
@@ -226,8 +222,7 @@ class TestAuthEndpoints:
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_confirmed_user_is_redirected_to_dashboard(self, test_client):
         response = test_client.get(
-            url_for("auth.unconfirmed"),
-            follow_redirects=True
+            url_for("auth.unconfirmed"), follow_redirects=True
         )
 
         assert response.status_code == 200
@@ -274,10 +269,7 @@ class TestAuthEndpoints:
 
     def test_valid_dashboard_login_is_case_insensitive(self, test_client):
         User.create(email="foo@bar.com", password="pass")
-        data = {
-            "email": "Foo@Bar.com",
-            "password": "pass"
-        }
+        data = {"email": "Foo@Bar.com", "password": "pass"}
         response = test_client.post(
             url_for("auth.login"),
             data=data,
@@ -291,8 +283,7 @@ class TestAuthEndpoints:
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_current_user_logout(self, test_client):
         response = test_client.get(
-            url_for("auth.logout"),
-            follow_redirects=True
+            url_for("auth.logout"), follow_redirects=True
         )
 
         assert response.status_code == 200
