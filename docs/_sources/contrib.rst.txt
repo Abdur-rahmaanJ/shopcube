@@ -325,7 +325,7 @@ Maintainers notes
 
 * Version is found in shopyo/__init__.py
 
-.. literalinclude:: ../shopyo/__init__.py
+.. literalinclude:: ../__init__.py
    :language: python
    :linenos:
    :lines: 2-3

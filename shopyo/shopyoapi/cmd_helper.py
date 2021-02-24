@@ -54,7 +54,7 @@ def tryrmfile(path):
         return False
 
 
-def tryrmtree(path):
+def tryrmtree(path, verbose=False):
     """
     Tries to removes an entire directory tree. Path must point to
     a directory. Outputs message to stdin or stderr
@@ -67,11 +67,13 @@ def tryrmtree(path):
     """
     try:
         rmtree(path)
-        print(f"[x] folder '{path}' successfully deleted")
+        if verbose:
+            print(f"[x] folder '{path}' successfully deleted")
         return True
     except OSError as e:
-        print(
-            "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
-            file=sys.stderr,
-        )
+        if verbose:
+            print(
+                "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
+                file=sys.stderr,
+            )
         return False

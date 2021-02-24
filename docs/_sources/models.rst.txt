@@ -12,10 +12,10 @@ Creating a model
 Here is a sample model which uses sqlalchemy
 
 
-.. literalinclude:: ../shopyo/modules/box__bizhelp/contact/models.py
+.. literalinclude:: ../modules/box__bizhelp/contact/models.py
    :language: python
    :linenos:
-   :lines: 5-26
+   :lines: 5-24
 
 🔩 Migrations
 -------------
