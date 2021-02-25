@@ -7,9 +7,9 @@ from .shopyoapi.file import trycopy
 from .shopyoapi.file import trycopytree
 from .shopyoapi.file import trymkdir
 from .shopyoapi.file import trymkfile
-from .shopyoapi.file import delete_file
 from .shopyoapi.info import printinfo
 from .shopyoapi.cmd_helper import tryrmtree
+from .shopyoapi.cmd_helper import tryrmfile
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
@@ -142,6 +142,7 @@ Run in main folder:
 to generate html pages in docs
 """
 
+
 def gitignore_content():
     return '''
 # Byte-compiled / optimized / DLL files
@@ -270,7 +271,7 @@ migrations/
 .vscode
 workspace.code-workspace
 
-#uploads 
+#uploads
 shopyo/static/uploads/products/
 shopyo/static/uploads/images/
 shopyo/static/uploads/thumbs/
@@ -316,10 +317,13 @@ def new_project(newfoldername):
         os.path.join(dirpathparent, "shopyo"),
         os.path.join(base_path, newfoldername),
     )
-    delete_file(os.path.join(base_path, newfoldername, '__init__.py'))
-    delete_file(os.path.join(base_path, newfoldername, '__main__.py'))
-    delete_file(os.path.join(base_path, newfoldername, 'requirements.txt'))
-    delete_file(os.path.join(base_path, newfoldername, 'dev_requirements.txt'))
+    tryrmfile(os.path.join(base_path, newfoldername, '__init__.py'))
+    tryrmfile(os.path.join(base_path, newfoldername, '__main__.py'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'requirements.txt'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'dev_requirements.txt'))
+    tryrmtree(os.path.join(base_path, newfoldername, 'migrations'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'shopyo.db'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'testing.db'))
 
     trycopy(
         os.path.join(dirpathparent, "shopyo", "requirements.txt"),
@@ -382,7 +386,6 @@ def new_project(newfoldername):
 
 
 def main():
-    
     args = sys.argv
     if len(args) == 1:
         printinfo()

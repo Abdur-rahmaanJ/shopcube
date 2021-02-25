@@ -1,3 +1,4 @@
+import os
 import subprocess
 import click
 
@@ -10,6 +11,7 @@ from shopyoapi.cmd import initialise
 from shopyoapi.cmd import collectstatic
 from shopyoapi.database import autoload_models
 from shopyoapi.info import printinfo
+from shopyoapi.file import trycopy
 
 
 def runserver():

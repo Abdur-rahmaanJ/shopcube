@@ -31,7 +31,7 @@ def tryrmcache(dir_name):
     return is_removed
 
 
-def tryrmfile(path):
+def tryrmfile(path, verbose=False):
     """
     tries to remove file path and output message to stdin or stderr.
     Path must point to a file
@@ -44,13 +44,15 @@ def tryrmfile(path):
     """
     try:
         os.remove(path)
-        print(f"[x] file '{path}' successfully deleted")
+        if verbose:
+            print(f"[x] file '{path}' successfully deleted")
         return True
     except OSError as e:
-        print(
-            "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
-            file=sys.stderr,
-        )
+        if verbose:
+            print(
+                "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
+                file=sys.stderr,
+            )
         return False
 
 
