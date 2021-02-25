@@ -368,7 +368,9 @@ def new_project(newfoldername):
         tox_ini_content(),
     )
 
-    trymkfile(os.path.join(base_path, "README.md"), readme_md_content(newfoldername))
+    trymkfile(
+        os.path.join(base_path, "README.md"), readme_md_content(newfoldername)
+    )
 
     # docs
     trymkdir(os.path.join(base_path, "docs"))

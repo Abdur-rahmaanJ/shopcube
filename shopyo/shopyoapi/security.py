@@ -1,4 +1,4 @@
-from flask import request, g, redirect
+from flask import request
 from urllib.parse import urlparse, urljoin
 
 
