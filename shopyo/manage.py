@@ -33,7 +33,7 @@ def process(args):
     elif args[0] == "rundebug":
         app.run(debug=True, host="0.0.0.0")
         try:
-            if args[1]:
+            if len(args) > 2 and args[1]:
                 app.run(debug=True, host="0.0.0.0", port=int(args[1]))
         except IndexError as e:
             raise e
@@ -82,6 +82,9 @@ def process(args):
             raise e
     else:
         print("Command not recognised")
+    
+    # This will be printed on exit
+    print("See you soon!!!")
 
 
 if __name__ == "__main__":
