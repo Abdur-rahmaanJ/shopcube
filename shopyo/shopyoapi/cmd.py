@@ -49,8 +49,8 @@ def clean(app):
         print("[x] all tables dropped")
 
     tryrmcache(os.getcwd())
-    tryrmfile(os.path.join(os.getcwd(), "shopyo.db"))
-    tryrmtree(os.path.join(os.getcwd(), "migrations"))
+    tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=True)
+    tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=True)
 
 
 def initialise():

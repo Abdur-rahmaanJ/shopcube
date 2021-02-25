@@ -294,6 +294,26 @@ def readme_md_content(project_name):
 """
 
 
+def tox_ini_content():
+    return '''
+[tox]
+envlist =
+    py39
+    py38
+    py37
+    py36
+skip_missing_interpreters=true
+
+[testenv]
+# test setup according to https://www.appinv.science/shopyo/testing.html
+changedir = shopyo
+deps = 
+    pytest 
+    pytest-order
+commands = python -m pytest  {posargs}
+'''
+
+
 def new_project(newfoldername):
     """
     $ shopyo new blog
@@ -343,9 +363,9 @@ def new_project(newfoldername):
         os.path.join(base_path, ".nojekyll"),
         '',
     )
-    trycopy(
-        os.path.join(dirpathparent, "shopyo", "tox.ini"),
+    trymkfile(
         os.path.join(base_path, "tox.ini"),
+        tox_ini_content(),
     )
 
     trymkfile(
