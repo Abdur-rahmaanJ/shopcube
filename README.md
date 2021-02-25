@@ -13,13 +13,15 @@ Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly
 
 A 45 mins talk was dedicated to it at [EuroPython](https://youtu.be/rkzXQOC1T0Q) 🌟
 
+Ecommerce part transferred to [ShopCube](https://github.com/shopyo/shopcube)
+
 # What?
 
 Your next-level modular web framework. Headless support coming soon. 
 
 Built on top of Flask, it offers most Django features, sometimes a tidbit more with far more flexibility.
 
-It ships with common business needs and an ecommerce modules by default
+It ships with common business needs by default
 
 # Have a go!
 
@@ -151,12 +153,4 @@ Support team if you are stuck
 [![Stargazers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/stars/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/stargazers)
 
 [![Forkers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/forks/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/network/members)
-
-
-## The engine
-
-Shopyo's engine which provides a Django-like structure and awesome mechanisms has been abstracted into [hadbox](https://www.github.com/hadbox/hadbox)
-
-
-
 
