@@ -9,7 +9,7 @@ from flask import url_for
 from flask import request
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
-from flask_uploads import configure_uploads
+# from flask_uploads import configure_uploads
 from flask_admin import Admin
 from flask_admin.contrib import sqla as flask_admin_sqla
 from flask_admin import AdminIndexView
@@ -147,7 +147,6 @@ def create_app(config_name):
                         " x Blueprint skipped:",
                         "modules.{}.{}.view".format(folder, sub_folder, folder),
                     )
-                    pass
                 try:
                     mod_global = importlib.import_module(
                         "modules.{}.{}.global".format(folder, sub_folder)
@@ -166,7 +165,6 @@ def create_app(config_name):
                 app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
             except AttributeError as e:
                 print("[ ] Blueprint skipped:", e)
-                pass
             try:
                 mod_global = importlib.import_module("modules.{}.global".format(folder))
                 available_everywhere_entities.update(mod_global.available_everywhere)
