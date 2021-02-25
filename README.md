@@ -67,9 +67,11 @@ go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 | WebSockets            | 🔴          | 🔴          | 🟢          |
 | Queue                 | 🔴          | 🔴          | 🟢          |
 | Testing               | 🟢          | 🟢          | 🟢          |
-| Project Docs          | 🟢          | 🔴          | 🔴          |
+| Project Docs*         | 🟢          | 🔴          | 🔴          |
 | Internationalisation  | 🔴          | 🟢          | 🔴          |
 | Caching               | 🔴          | 🟢          | 🟢          |
+
+* Not framework docs but docs for the project you are building.
 
 # First time contributing?
 
