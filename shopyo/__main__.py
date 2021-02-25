@@ -144,7 +144,7 @@ to generate html pages in docs
 
 
 def gitignore_content():
-    return '''
+    return """
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -285,7 +285,7 @@ shopyo/static/modules/
 config.py
 config.json
 
-'''
+"""
 
 
 def readme_md_content(project_name):
@@ -295,7 +295,7 @@ def readme_md_content(project_name):
 
 
 def tox_ini_content():
-    return '''
+    return """
 [tox]
 envlist =
     py39
@@ -311,7 +311,7 @@ deps =
     pytest 
     pytest-order
 commands = python -m pytest  {posargs}
-'''
+"""
 
 
 def new_project(newfoldername):
@@ -337,20 +337,20 @@ def new_project(newfoldername):
         os.path.join(dirpathparent, "shopyo"),
         os.path.join(base_path, newfoldername),
     )
-    tryrmfile(os.path.join(base_path, newfoldername, '__init__.py'))
-    tryrmfile(os.path.join(base_path, newfoldername, '__main__.py'))
-    tryrmfile(os.path.join(base_path, newfoldername, 'requirements.txt'))
-    tryrmfile(os.path.join(base_path, newfoldername, 'dev_requirements.txt'))
-    tryrmtree(os.path.join(base_path, newfoldername, 'migrations'))
-    tryrmfile(os.path.join(base_path, newfoldername, 'shopyo.db'))
-    tryrmfile(os.path.join(base_path, newfoldername, 'testing.db'))
+    tryrmfile(os.path.join(base_path, newfoldername, "__init__.py"))
+    tryrmfile(os.path.join(base_path, newfoldername, "__main__.py"))
+    tryrmfile(os.path.join(base_path, newfoldername, "requirements.txt"))
+    tryrmfile(os.path.join(base_path, newfoldername, "dev_requirements.txt"))
+    tryrmtree(os.path.join(base_path, newfoldername, "migrations"))
+    tryrmfile(os.path.join(base_path, newfoldername, "shopyo.db"))
+    tryrmfile(os.path.join(base_path, newfoldername, "testing.db"))
 
     trycopy(
         os.path.join(dirpathparent, "shopyo", "requirements.txt"),
         os.path.join(base_path, "requirements.txt"),
     )
-    with open(os.path.join(base_path, "requirements.txt"), 'a') as f:
-        f.write('\nshopyo')
+    with open(os.path.join(base_path, "requirements.txt"), "a") as f:
+        f.write("\nshopyo")
     trycopy(
         os.path.join(dirpathparent, "shopyo", "dev_requirements.txt"),
         os.path.join(base_path, "dev_requirements.txt"),
@@ -361,7 +361,7 @@ def new_project(newfoldername):
     )
     trymkfile(
         os.path.join(base_path, ".nojekyll"),
-        '',
+        "",
     )
     trymkfile(
         os.path.join(base_path, "tox.ini"),
@@ -382,9 +382,7 @@ def new_project(newfoldername):
         conf_py_content(newfoldername),
     )
     trymkdir(os.path.join(sphinx_src, "_static"))
-    trymkfile(
-        os.path.join(sphinx_src, "_static", "custom.css"), ""
-    )
+    trymkfile(os.path.join(sphinx_src, "_static", "custom.css"), "")
     trycopy(
         os.path.join(dirpathparent, "shopyo", "sphinx_source", "Makefile"),
         os.path.join(sphinx_src, "Makefile"),
@@ -402,7 +400,7 @@ def new_project(newfoldername):
         os.path.join(sphinx_src, "shopyo.ico"),
     )
 
-    print('Project', newfoldername, 'created successfully!')
+    print("Project", newfoldername, "created successfully!")
 
 
 def main():

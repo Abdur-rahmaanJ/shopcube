@@ -149,9 +149,7 @@ def create_app(config_name):
                 except AttributeError as e:
                     print(
                         " x Blueprint skipped:",
-                        "modules.{}.{}.view".format(
-                            folder, sub_folder, folder
-                        ),
+                        "modules.{}.{}.view".format(folder, sub_folder, folder),
                     )
                     pass
                 try:
