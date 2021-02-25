@@ -55,9 +55,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to Shopyo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup-instructions">Setup Instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-mail-dev-environment-optional">Setup Mail Dev Environment (Optional)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#syncing-and-continuing">Syncing and continuing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#making-a-pull-request">Making a Pull Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-mail-dev-environment-optional">Setup Mail Dev Environment (Optional)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#contributing-to-package">Contributing to package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#maintainers-notes">Maintainers notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#community-discord">💬 Community: Discord</a></li>
@@ -188,48 +187,6 @@ python -m pip install -r requirements.txt -r dev_requirements.txt
 <p>This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> make sure you are in the cloned <code class="docutils literal notranslate"><span class="pre">shopyo</span></code> directory and try again</p>
 </div>
 </li>
-</ol>
-</div>
-<div class="section" id="setup-mail-dev-environment-optional">
-<h2>Setup Mail Dev Environment (Optional)<a class="headerlink" href="#setup-mail-dev-environment-optional" title="Permalink to this headline">¶</a></h2>
-<p>If you have Node.js, use the <a class="reference external" href="https://github.com/maildev/maildev">maildev</a> package. Install it using</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm install -g maildev
-</pre></div>
-</div>
-</div></blockquote>
-<p>Then serve it using</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>maildev
-</pre></div>
-</div>
-</div></blockquote>
-<p>Dev configs for this setup:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DevelopmentConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Configurations for development&quot;&quot;&quot;</span>
-
-    <span class="n">ENV</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span>
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">LOGIN_DISABLED</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="c1"># control email confirmation for user registration</span>
-    <span class="n">EMAIL_CONFIRMATION_DISABLED</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="c1"># flask-mailman configs</span>
-    <span class="n">MAIL_SERVER</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
-    <span class="n">MAIL_PORT</span> <span class="o">=</span> <span class="mi">1025</span>
-    <span class="n">MAIL_USE_TLS</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">MAIL_USE_SSL</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">MAIL_USERNAME</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># os.environ.get(&quot;MAIL_USERNAME&quot;)</span>
-    <span class="n">MAIL_PASSWORD</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># os.environ.get(&quot;MAIL_PASSWORD&quot;)</span>
-    <span class="n">MAIL_DEFAULT_SENDER</span> <span class="o">=</span> <span class="s1">&#39;ma@mail.com&#39;</span> <span class="c1"># os.environ.get(&quot;MAIL_DEFAULT_SENDER&quot;)</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>Go to <a class="reference external" href="http://127.0.0.1:1080">http://127.0.0.1:1080</a> where it serves it’s web interface by default. See mails arrive in your inbox!</p>
-</div>
-<div class="section" id="syncing-and-continuing">
-<h2>Syncing and continuing<a class="headerlink" href="#syncing-and-continuing" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
 <li><p>Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner’s shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your/local/cloned/repo/path/here&gt; <span class="c1"># not needed if you are already inside your cloned shopyo directory</span>
 git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
@@ -370,6 +327,43 @@ git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add des
 </div>
 </div>
 </div>
+<div class="section" id="setup-mail-dev-environment-optional">
+<h2>Setup Mail Dev Environment (Optional)<a class="headerlink" href="#setup-mail-dev-environment-optional" title="Permalink to this headline">¶</a></h2>
+<p>If you have Node.js, use the <a class="reference external" href="https://github.com/maildev/maildev">maildev</a> package. Install it using</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm install -g maildev
+</pre></div>
+</div>
+</div></blockquote>
+<p>Then serve it using</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>maildev
+</pre></div>
+</div>
+</div></blockquote>
+<p>Dev configs for this setup:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DevelopmentConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for development&quot;&quot;&quot;</span>
+
+    <span class="n">ENV</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">LOGIN_DISABLED</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># control email confirmation for user registration</span>
+    <span class="n">EMAIL_CONFIRMATION_DISABLED</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># flask-mailman configs</span>
+    <span class="n">MAIL_SERVER</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">MAIL_PORT</span> <span class="o">=</span> <span class="mi">1025</span>
+    <span class="n">MAIL_USE_TLS</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">MAIL_USE_SSL</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">MAIL_USERNAME</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># os.environ.get(&quot;MAIL_USERNAME&quot;)</span>
+    <span class="n">MAIL_PASSWORD</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># os.environ.get(&quot;MAIL_PASSWORD&quot;)</span>
+    <span class="n">MAIL_DEFAULT_SENDER</span> <span class="o">=</span> <span class="s1">&#39;ma@mail.com&#39;</span> <span class="c1"># os.environ.get(&quot;MAIL_DEFAULT_SENDER&quot;)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Go to <a class="reference external" href="http://127.0.0.1:1080">http://127.0.0.1:1080</a> where it serves it’s web interface by default. See mails arrive in your inbox!</p>
+</div>
 <div class="section" id="contributing-to-package">
 <h2>Contributing to package<a class="headerlink" href="#contributing-to-package" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -377,16 +371,18 @@ git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add des
 <li><p>cd into project folder</p></li>
 <li><p>create and activate venv</p></li>
 <li><p>run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p></li>
-<li><p>after changes run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">--upgrade</span></code></p></li>
 <li><p>test <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">&lt;your</span> <span class="pre">options&gt;</span></code></p></li>
 </ul>
+<p>If you want a system wide tests run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span></code> then <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">path/to/shopyo-x.x.x.tar.gz</span></code></p>
 </div>
 <div class="section" id="maintainers-notes">
 <h2>Maintainers notes<a class="headerlink" href="#maintainers-notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Version is found in shopyo/__init__.py</p></li>
 </ul>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version_info</span><span class="p">])</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">version_info</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version_info</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 <ul class="simple">
