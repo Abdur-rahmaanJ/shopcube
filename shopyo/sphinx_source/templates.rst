@@ -14,7 +14,7 @@ Please see the `Modules section <modules.html>`_ on how to structure a module.
 Having said that, this is the base file we are extending from. 
 
 
-.. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
+.. literalinclude:: ../modules/box__default/base/templates/base/main_base.html
    :language: html
    :linenos:
    :lines: 1-99
@@ -28,7 +28,7 @@ It includes:
 
 Here is the contact form using the base:
 
-.. literalinclude:: ../shopyo/modules/box__bizhelp/contact/templates/contact/contact_form.html
+.. literalinclude:: ../modules/box__bizhelp/contact/templates/contact/contact_form.html
    :language: html
    :linenos:
    :lines: 1-53
@@ -44,7 +44,7 @@ Global values for templates
 
 Global values for templates can be found in shopyoapi/enhance.py in this function
 
-.. literalinclude:: ../shopyo/shopyoapi/enhance.py
+.. literalinclude:: ../shopyoapi/enhance.py
    :language: python
    :linenos:
    :lines: 9-15

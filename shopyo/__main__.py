@@ -7,8 +7,9 @@ from .shopyoapi.file import trycopy
 from .shopyoapi.file import trycopytree
 from .shopyoapi.file import trymkdir
 from .shopyoapi.file import trymkfile
-from .shopyoapi.file import delete_file
 from .shopyoapi.info import printinfo
+from .shopyoapi.cmd_helper import tryrmtree
+from .shopyoapi.cmd_helper import tryrmfile
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
@@ -38,7 +39,7 @@ import sys
 import os
 
 current_dir = os.path.dirname(__file__)
-target_dir = os.path.abspath(os.path.join(current_dir, "../{project_name}"))
+target_dir = os.path.abspath(os.path.join(current_dir, "../"))
 sys.path.insert(0, os.path.abspath(target_dir))
 
 
@@ -142,6 +143,151 @@ to generate html pages in docs
 """
 
 
+def gitignore_content():
+    return '''
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+# shopyo
+test.db
+testing.db
+shopyo.db
+
+# pycharm
+.idea/
+
+# win
+*.exe
+*.cs
+*.bat
+*.vbs
+
+#migrations
+migrations/
+
+#vscode
+.vscode
+workspace.code-workspace
+
+#uploads
+shopyo/static/uploads/products/
+shopyo/static/uploads/images/
+shopyo/static/uploads/thumbs/
+shopyo/static/uploads/category/
+shopyo/static/uploads/subcategory/
+
+# modules in static since present in modules
+shopyo/static/modules/
+
+# ignore secrets
+config.py
+config.json
+
+'''
+
+
 def readme_md_content(project_name):
     return """
 # {project_name}
@@ -171,28 +317,34 @@ def new_project(newfoldername):
         os.path.join(dirpathparent, "shopyo"),
         os.path.join(base_path, newfoldername),
     )
-    delete_file(os.path.join(base_path, newfoldername, '__init__.py'))
-    delete_file(os.path.join(base_path, newfoldername, '__main__.py'))
+    tryrmfile(os.path.join(base_path, newfoldername, '__init__.py'))
+    tryrmfile(os.path.join(base_path, newfoldername, '__main__.py'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'requirements.txt'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'dev_requirements.txt'))
+    tryrmtree(os.path.join(base_path, newfoldername, 'migrations'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'shopyo.db'))
+    tryrmfile(os.path.join(base_path, newfoldername, 'testing.db'))
+
     trycopy(
-        os.path.join(dirpathparent, "requirements.txt"),
+        os.path.join(dirpathparent, "shopyo", "requirements.txt"),
         os.path.join(base_path, "requirements.txt"),
     )
     with open(os.path.join(base_path, "requirements.txt"), 'a') as f:
         f.write('\nshopyo')
     trycopy(
-        os.path.join(dirpathparent, "dev_requirements.txt"),
+        os.path.join(dirpathparent, "shopyo", "dev_requirements.txt"),
         os.path.join(base_path, "dev_requirements.txt"),
     )
-    trycopy(
-        os.path.join(dirpathparent, ".gitignore"),
+    trymkfile(
         os.path.join(base_path, ".gitignore"),
+        gitignore_content(),
     )
-    trycopy(
-        os.path.join(dirpathparent, ".nojekyll"),
+    trymkfile(
         os.path.join(base_path, ".nojekyll"),
+        '',
     )
     trycopy(
-        os.path.join(dirpathparent, "tox.ini"),
+        os.path.join(dirpathparent, "shopyo", "tox.ini"),
         os.path.join(base_path, "tox.ini"),
     )
 
@@ -201,37 +353,39 @@ def new_project(newfoldername):
     )
 
     # docs
-    trymkdir(os.path.join(base_path, "sphinx_source"))
+    trymkdir(os.path.join(base_path, "docs"))
+    sphinx_src = os.path.join(base_path, newfoldername, "sphinx_source")
+    tryrmtree(sphinx_src)
+    trymkdir(sphinx_src)
     trymkfile(
-        os.path.join(base_path, "sphinx_source", "conf.py"),
+        os.path.join(sphinx_src, "conf.py"),
         conf_py_content(newfoldername),
     )
-    trymkdir(os.path.join(base_path, "sphinx_source", "_static"))
+    trymkdir(os.path.join(sphinx_src, "_static"))
     trymkfile(
-        os.path.join(base_path, "sphinx_source", "_static", "custom.css"), ""
+        os.path.join(sphinx_src, "_static", "custom.css"), ""
     )
     trycopy(
-        os.path.join(dirpathparent, "sphinx_source", "Makefile"),
-        os.path.join(base_path, "sphinx_source", "Makefile"),
+        os.path.join(dirpathparent, "shopyo", "sphinx_source", "Makefile"),
+        os.path.join(sphinx_src, "Makefile"),
     )
     trymkfile(
-        os.path.join(base_path, "sphinx_source", "index.rst"),
+        os.path.join(sphinx_src, "index.rst"),
         index_rst_content(),
     )
     trymkfile(
-        os.path.join(base_path, "sphinx_source", "docs.rst"),
+        os.path.join(sphinx_src, "docs.rst"),
         docs_rst_content(),
     )
     trycopy(
-        os.path.join(dirpathparent, "sphinx_source", "shopyo.ico"),
-        os.path.join(base_path, "sphinx_source", "shopyo.ico"),
+        os.path.join(dirpathparent, "shopyo", "sphinx_source", "shopyo.ico"),
+        os.path.join(sphinx_src, "shopyo.ico"),
     )
 
     print('Project', newfoldername, 'created successfully!')
 
 
 def main():
-    
     args = sys.argv
     if len(args) == 1:
         printinfo()
@@ -241,7 +395,7 @@ def main():
         new_project(args[2])
     else:
         if not is_venv():
-            print("Please use Shopyo in a virtual environment")
+            print("Please use Shopyo in a virtual environment for this command")
             sys.exit()
         torun = [sys.executable, "manage.py"] + args[1:]
         subprocess.run(torun, stdout=subprocess.PIPE)
