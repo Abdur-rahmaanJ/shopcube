@@ -82,6 +82,9 @@ def process(args):
             raise e
     else:
         print("Command not recognised")
+    
+    # This will be printed on exit
+    print("See you soon!!!")
 
 
 if __name__ == "__main__":
