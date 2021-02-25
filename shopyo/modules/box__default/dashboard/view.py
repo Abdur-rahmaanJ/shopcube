@@ -26,9 +26,7 @@ all_info = {}
 def index():
     context = {}
 
-    for folder in os.listdir(
-        os.path.join(current_app.config["BASE_DIR"], "modules")
-    ):
+    for folder in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
         if folder.startswith("__"):
             continue
         elif folder.startswith("box__"):
