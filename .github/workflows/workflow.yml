@@ -18,8 +18,8 @@ jobs:
         run: |
           pip install -U pip
           pip install -r ./shopyo/requirements.txt -r ./shopyo/dev_requirements.txt
-          sphinx-build -b html sphinx_source docs
           cd shopyo
+          sphinx-build -b html sphinx_source ../docs
           echo 'Running Tests....'
           coverage run --branch --source . -m pytest
           coverage report

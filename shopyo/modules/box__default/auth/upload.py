@@ -24,6 +24,4 @@ def upload():
         print("Initialising User")
         print(SEP_CHAR * SEP_NUM, end="\n\n")
         print("Adding Admin ...")
-        add_admin(
-            config["admin_user"]["email"], config["admin_user"]["password"]
-        )
+        add_admin(config["admin_user"]["email"], config["admin_user"]["password"])

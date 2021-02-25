@@ -77,9 +77,7 @@ def user_add():
         else:
             is_admin = False
 
-        has_user = db.session.query(
-            exists().where(User.email == email)
-        ).scalar()
+        has_user = db.session.query(exists().where(User.email == email)).scalar()
 
         if not has_user:
             new_user = User()

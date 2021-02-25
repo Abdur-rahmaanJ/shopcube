@@ -7,7 +7,7 @@
   
 </h1>
 
-[![codecov](https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/Abdur-rahmaanJ/shopyo)
+[![codecov](https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/Abdur-rahmaanJ/shopyo) ![shopyo tests status](https://github.com/Abdur-rahmaanJ/shopyo/actions/workflows/workflow.yml/badge.svg)
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
 
