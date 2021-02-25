@@ -32,7 +32,7 @@ class Image(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def getImage(self, image_id):
+    def getImage(image_id):
         return Images.query.filter_by(id=image_id).first()
 
 

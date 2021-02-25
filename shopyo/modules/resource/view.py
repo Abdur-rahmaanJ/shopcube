@@ -10,14 +10,14 @@ from flask import send_from_directory
 
 # from flask import url_for
 
-# from flask_login import login_required
-# from PIL import Image as PILimage
+from flask_login import login_required
+from PIL import Image as PILimage
 
 # from shopyoapi.enhance import get_setting
 # from shopyoapi.file import delete_file
 
 # from modules.box__ecommerce.product.models import Product
-# from modules.resource.models import Image
+from modules.resource.models import Image
 
 # from modules.resource.models import Resource
 
