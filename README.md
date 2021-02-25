@@ -23,8 +23,6 @@ It ships with common business needs and an ecommerce modules by default
 
 # Have a go!
 
-You can also install [via github](https://abdur-rahmaanj.github.io/shopyo/setup.html#install-from-github)
-
 `pip install shopyo`
 
 then
@@ -37,7 +35,13 @@ python manage.py initialise
 python manage.py rundebug
 ```
 
-If for dev use `python -m pip install -r requirements.txt -r dev_requirements.txt`
+It is recommended to use a venv in root folder. 
+
+`python -m venv venv`
+
+If for dev install dev_requirements.txt also. 
+
+`python -m pip install -r requirements.txt -r dev_requirements.txt`
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
