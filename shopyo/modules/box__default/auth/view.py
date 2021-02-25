@@ -66,7 +66,9 @@ def register():
             subject = "Please confirm your email"
             context.update({"token": token, "user": user})
             send_async_email(email, subject, template, **context)
-            flash(notify_success("A confirmation email has been sent via email."))
+            flash(
+                notify_success("A confirmation email has been sent via email.")
+            )
 
         return redirect(url_for("dashboard.index"))
 
@@ -123,7 +125,9 @@ def login():
     if login_form.validate_on_submit():
         email = login_form.email.data
         password = login_form.password.data
-        user = User.query.filter(func.lower(User.email) == func.lower(email)).first()
+        user = User.query.filter(
+            func.lower(User.email) == func.lower(email)
+        ).first()
         if user is None or not user.check_password(password):
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))

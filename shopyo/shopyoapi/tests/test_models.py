@@ -51,7 +51,9 @@ class TestCRUDMixin:
 
     def test_create(self, db_session):
         user = ExampleUserModel.create(username="bar", email="bar@domain.com")
-        result_raw = db_session.execute("""select * from testusers""").fetchone()
+        result_raw = db_session.execute(
+            """select * from testusers"""
+        ).fetchone()
         result_orm = (
             db_session.query(ExampleUserModel)
             .filter(ExampleUserModel.id == user.id)

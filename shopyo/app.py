@@ -9,6 +9,7 @@ from flask import url_for
 from flask import request
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
+
 # from flask_uploads import configure_uploads
 from flask_admin import Admin
 from flask_admin.contrib import sqla as flask_admin_sqla
@@ -107,7 +108,9 @@ def create_app(config_name):
         index_view=MyAdminIndexView(),
     )
     admin.add_view(DefaultModelView(Settings, db.session))
-    admin.add_link(MenuLink(name="Logout", category="", url="/auth/logout?next=/admin"))
+    admin.add_link(
+        MenuLink(name="Logout", category="", url="/auth/logout?next=/admin")
+    )
 
     #
     # dev static
@@ -130,7 +133,9 @@ def create_app(config_name):
 
         if folder.startswith("box__"):
             # boxes
-            for sub_folder in os.listdir(os.path.join(base_path, "modules", folder)):
+            for sub_folder in os.listdir(
+                os.path.join(base_path, "modules", folder)
+            ):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
@@ -162,12 +167,18 @@ def create_app(config_name):
             # apps
             try:
                 mod = importlib.import_module("modules.{}.view".format(folder))
-                app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
+                app.register_blueprint(
+                    getattr(mod, "{}_blueprint".format(folder))
+                )
             except AttributeError as e:
                 print("[ ] Blueprint skipped:", e)
             try:
-                mod_global = importlib.import_module("modules.{}.global".format(folder))
-                available_everywhere_entities.update(mod_global.available_everywhere)
+                mod_global = importlib.import_module(
+                    "modules.{}.global".format(folder)
+                )
+                available_everywhere_entities.update(
+                    mod_global.available_everywhere
+                )
             except ImportError as e:
                 # print(e)
                 pass
