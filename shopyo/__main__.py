@@ -11,6 +11,8 @@ from .shopyoapi.info import printinfo
 from .shopyoapi.cmd_helper import tryrmtree
 from .shopyoapi.cmd_helper import tryrmfile
 
+from manage import process
+
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
 
@@ -406,16 +408,15 @@ def main():
     if len(args) == 1:
         printinfo()
         print("No arguments supplied")
-    if args[1] == "new" and len(args) == 3:
+    elif len(args) == 3 and args[1] == "new" and args[2]:
         printinfo()
         new_project(args[2])
     else:
         if not is_venv():
             print("Please use Shopyo in a virtual environment for this command")
             sys.exit()
-        torun = [sys.executable, "manage.py"] + args[1:]
-        subprocess.run(torun, stdout=subprocess.PIPE)
-
+        process(args[1:])
+        
 
 if __name__ == "__main__":
     main()
