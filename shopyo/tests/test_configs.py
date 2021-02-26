@@ -6,8 +6,7 @@ import pytest
 
 
 class TestAppConfigs:
-
-    @pytest.mark.parametrize('app_type', ["development"])
+    @pytest.mark.parametrize("app_type", ["development"])
     def test_dev_app_config(self, app):
 
         config = app.config
@@ -27,7 +26,7 @@ class TestAppConfigs:
         assert "MAIL_PASSWORD" in config
         assert "MAIL_DEFAULT_SENDER" in config
 
-    @pytest.mark.parametrize('app_type', ["production"])
+    @pytest.mark.parametrize("app_type", ["production"])
     def test_prod_app_config(self, app):
         """
         Test the productions configs. Environment variable
@@ -52,5 +51,7 @@ class TestAppConfigs:
         assert "MAIL_DEFAULT_SENDER" in config
         assert config["MAIL_DEFAULT_SENDER"] == "foo@gmail.com"
         assert "SQLALCHEMY_DATABASE_URI" in config
-        assert config["SQLALCHEMY_DATABASE_URI"] == \
-            "mysql+pymysql://db_username:db_password@db_host/db_name"
+        assert (
+            config["SQLALCHEMY_DATABASE_URI"]
+            == "mysql+pymysql://db_username:db_password@db_host/db_name"
+        )
