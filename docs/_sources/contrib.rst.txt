@@ -103,6 +103,13 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
             "python.pythonPath": "c:\\path\\to\\shopyo\\env\\Scripts\\python.exe"
          }
 
+#. Change into the directory:
+
+   .. code-block:: bash
+
+      cd shopyo 
+      # so now your path should be something like <your path>/shopyo/shopyo
+
 #. Run:
 
    .. code-block:: bash
@@ -111,7 +118,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
       python -m pip install -r requirements.txt -r dev_requirements.txt
     
    .. note::
-      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again 
+      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo/shopyo`` directory and try again 
 
 
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
@@ -127,13 +134,6 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
       git fetch upstream
       git pull upstream dev
-
-#. Do another:
-
-   .. code-block:: bash
-
-      cd shopyo 
-      # so now your path should be something likes <your path>/shopyo/shopyo
 
 #. Now initialize the app by running:
 
@@ -154,7 +154,7 @@ Making a Pull Request
 ---------------------
 Make sure you have setup the repo as explained in :ref:`setup` before making Pull Request (PR)
 
-#. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 9
+#. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 10
 #. To create a branch and switch to that branch you run:
    
    .. code-block:: bash

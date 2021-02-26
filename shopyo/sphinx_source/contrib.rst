@@ -118,7 +118,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
       python -m pip install -r requirements.txt -r dev_requirements.txt
     
    .. note::
-      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again 
+      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo/shopyo`` directory and try again 
 
 
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:

@@ -177,6 +177,12 @@ In addition, if you want to deactivate the virtual environment, run <code class=
 </div>
 </div>
 </li>
+<li><p>Change into the directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo
+<span class="c1"># so now your path should be something like &lt;your path&gt;/shopyo/shopyo</span>
+</pre></div>
+</div>
+</li>
 <li><p>Run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -U pip
 python -m pip install -r requirements.txt -r dev_requirements.txt
@@ -184,7 +190,7 @@ python -m pip install -r requirements.txt -r dev_requirements.txt
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> make sure you are in the cloned <code class="docutils literal notranslate"><span class="pre">shopyo</span></code> directory and try again</p>
+<p>This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> make sure you are in the cloned <code class="docutils literal notranslate"><span class="pre">shopyo/shopyo</span></code> directory and try again</p>
 </div>
 </li>
 <li><p>Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner’s shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:</p>
@@ -196,12 +202,6 @@ git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
 <li><p>Once upstream is setup, you can fetch the latest changes made to shopyo repo. Make sure to do this every time before you make branch to work on a feature. Run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git fetch upstream
 git pull upstream dev
-</pre></div>
-</div>
-</li>
-<li><p>Do another:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo
-<span class="c1"># so now your path should be something likes &lt;your path&gt;/shopyo/shopyo</span>
 </pre></div>
 </div>
 </li>
@@ -222,7 +222,7 @@ git pull upstream dev
 <h2>Making a Pull Request<a class="headerlink" href="#making-a-pull-request" title="Permalink to this headline">¶</a></h2>
 <p>Make sure you have setup the repo as explained in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> before making Pull Request (PR)</p>
 <ol class="arabic">
-<li><p>Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code>. Most likely you will see <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch colored green or marked to tell you that you are on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch. Before creating a new branch from <code class="docutils literal notranslate"><span class="pre">dev</span></code> make sure you have fetched latest changes as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 9</p></li>
+<li><p>Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span></code>. Most likely you will see <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch colored green or marked to tell you that you are on <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch. Before creating a new branch from <code class="docutils literal notranslate"><span class="pre">dev</span></code> make sure you have fetched latest changes as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 10</p></li>
 <li><p>To create a branch and switch to that branch you run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout -b &lt;name of branch&gt;
 <span class="c1"># example: git checkout -b add-form-validation</span>
@@ -381,7 +381,7 @@ git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add des
 <li><p>Version is found in shopyo/__init__.py</p></li>
 </ul>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">version_info</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">version_info</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">41</span><span class="p">)</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version_info</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
