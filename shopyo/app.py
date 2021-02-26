@@ -9,8 +9,6 @@ from flask import url_for
 from flask import request
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
-
-# from flask_uploads import configure_uploads
 from flask_admin import Admin
 from flask_admin.contrib import sqla as flask_admin_sqla
 from flask_admin import AdminIndexView
@@ -19,6 +17,7 @@ from flask_admin.menu import MenuLink
 
 from modules.box__default.settings.helpers import get_setting
 from modules.box__default.settings.models import Settings
+from config import app_config
 
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
@@ -72,8 +71,6 @@ class MyAdminIndexView(AdminIndexView):
 
 
 try:
-    if not os.path.exists("config.py"):
-        trycopy("config_demo.py", "config.py")
     if not os.path.exists("config.json"):
         trycopy("config_demo.json", "config.json")
 except PermissionError as e:
@@ -84,16 +81,28 @@ except PermissionError as e:
     )
     raise e
 
-from config import app_config
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 
 def create_app(config_name):
-    # from modules.box__default.settings.helpers import Settings
-    app = Flask(__name__)
+
+    app = Flask(__name__, instance_relative_config=True)
     configuration = app_config[config_name]
     app.config.from_object(configuration)
+
+    if config_name != "testing":
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile("config.py", silent=True)
+
+    # create empty instance folder and empty config if not present
+    try:
+        os.makedirs(app.instance_path)
+        with open(os.path.join(app.instance_path, "config.py"), "a"):
+            pass
+    except OSError:
+        pass
+
     migrate.init_app(app, db)
     db.init_app(app)
     ma.init_app(app)
@@ -159,8 +168,7 @@ def create_app(config_name):
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
                     )
-                except ImportError as e:
-                    # print(e)
+                except ImportError:
                     pass
 
         else:
@@ -206,47 +214,19 @@ def create_app(config_name):
     #
     @app.context_processor
     def inject_global_vars():
-        # theme_dir = os.path.join(
-        #     app.config["BASE_DIR"], "themes", get_setting("ACTIVE_FRONT_THEME")
-        # )
-        # info_path = os.path.join(theme_dir, "info.json")
-        # with open(info_path) as f:
-        #     info_data = json.load(f)
-
         APP_NAME = get_setting("APP_NAME")
-        # ACTIVE_FRONT_THEME = get_setting("ACTIVE_FRONT_THEME")
-        # ACTIVE_FRONT_THEME_VERSION = info_data["version"]
-        # ACTIVE_FRONT_THEME_STYLES_URL = url_for(
-        #     "resource.active_theme_css",
-        #     active_theme=ACTIVE_FRONT_THEME,
-        #     v=ACTIVE_FRONT_THEME_VERSION,
-        # )
 
         base_context = {
             "APP_NAME": APP_NAME,
-            # "ACTIVE_FRONT_THEME": ACTIVE_FRONT_THEME,
-            # "ACTIVE_FRONT_THEME_VERSION": ACTIVE_FRONT_THEME_VERSION,
-            # "ACTIVE_FRONT_THEME_STYLES_URL": ACTIVE_FRONT_THEME_STYLES_URL,
             "len": len,
             "current_user": current_user,
         }
         base_context.update(available_everywhere_entities)
 
-        # print('\nav everywhere entities\n', available_everywhere_entities)
-
         return base_context
 
     # end of func
     return app
-
-    # app.jinja_env.globals.update(x=x)
-    # if app.config["DEBUG"]:
-    # @app.after_request
-    # def after_request(response):
-    # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, public, max-age=0"
-    # response.headers["Expires"] = 0
-    # response.headers["Pragma"] = "no-cache"
-    # return response
 
 
 with open(os.path.join(base_path, "config.json")) as f:

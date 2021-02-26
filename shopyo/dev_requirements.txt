@@ -9,3 +9,4 @@ pytest-cov==2.11.1
 codecov==2.1.11
 factory-boy==3.2.0
 freezegun==1.1.0
+pytest-dotenv
