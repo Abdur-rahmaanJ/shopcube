@@ -313,13 +313,15 @@ deps =
 commands = python -m pytest  {posargs}
 """
 
+
 def requirements_txt_content():
-    return '''
+    return """
 shopyo
-'''
+"""
+
 
 def dev_requirements_txt_content():
-    return '''
+    return """
 flake8==3.8.4
 black==20.8b1
 isort==5.6.4
@@ -332,7 +334,8 @@ codecov==2.1.11
 factory-boy==3.2.0
 freezegun==1.1.0
 pytest-dotenv
-'''
+"""
+
 
 def new_project(newfoldername):
     """
@@ -371,7 +374,8 @@ def new_project(newfoldername):
         os.path.join(base_path, "requirements.txt"), requirements_txt_content()
     )
     trymkfile(
-        os.path.join(base_path, "dev_requirements.txt"), dev_requirements_txt_content()
+        os.path.join(base_path, "dev_requirements.txt"),
+        dev_requirements_txt_content(),
     )
     trymkfile(
         os.path.join(base_path, ".gitignore"),
@@ -431,7 +435,9 @@ def main():
         new_project(args[2])
     else:
         if not is_venv():
-            print("Please use Shopyo in a virtual environment for this command")
+            print(
+                "Please use Shopyo in a virtual environment for this command"
+            )
             sys.exit()
         torun = [sys.executable, "manage.py"] + args[1:]
         subprocess.run(torun, stdout=subprocess.PIPE)
