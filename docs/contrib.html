@@ -67,6 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="init.html">The Init File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs.html">Docs</a></li>
@@ -378,7 +379,7 @@ git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add des
 <div class="section" id="maintainers-notes">
 <h2>Maintainers notes<a class="headerlink" href="#maintainers-notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Version is found in shopyo/__init__.py</p></li>
+<li><p>Version is found in <code class="docutils literal notranslate"><span class="pre">shopyo/__init__.py</span></code></p></li>
 </ul>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">version_info</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -391,6 +392,7 @@ git add &lt;file1 name&gt; &lt;file2 name&gt; <span class="c1"># to only add des
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup.py publish
 </pre></div>
 </div>
+<p>In <code class="docutils literal notranslate"><span class="pre">__main__.py</span></code> don’t forget to update dev_requirements.txt</p>
 </div>
 <div class="section" id="community-discord">
 <h2>💬 Community: Discord<a class="headerlink" href="#community-discord" title="Permalink to this headline">¶</a></h2>

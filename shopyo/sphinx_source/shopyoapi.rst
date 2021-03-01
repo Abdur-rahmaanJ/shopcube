@@ -69,16 +69,6 @@ api.info
     :show-inheritance:
 
 
-api.init
---------------
-
-.. automodule:: api.init
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
-
-
 api.module
 -----------------
 

@@ -25,6 +25,7 @@ The ecommerce part has been offloaded to
    Templates <templates>
    Models <models>
    Views <views>
+   The Init File <init>
    Commandline <commandline>
    Shopyoapi <shopyoapi>
    Docs <docs>
