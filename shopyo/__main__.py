@@ -291,7 +291,7 @@ config.json
 def readme_md_content(project_name):
     return """
 # {project_name}
-"""
+""".format(project_name)
 
 
 def tox_ini_content():
