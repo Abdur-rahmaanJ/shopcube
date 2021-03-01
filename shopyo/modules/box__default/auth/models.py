@@ -96,8 +96,8 @@ class User(UserMixin, PkModel):
 
     @password.setter
     def password(self, plaintext):
-        self.password = generate_password_hash(password)
-	#the default hashing method is pbkdf2:sha256
+        #the default hashing method is pbkdf2:sha256
+        self._password = generate_password_hash(plaintext)
 
     def check_password(self, password):
         return check_password_hash(self._password, password)
