@@ -30,7 +30,7 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
 setup(
     name="shopyo",  # Required
     version=__version__,  # Required
-    description="Highly Modular Web Framework. Built For Big",  # Optional
+    description="Highly Modular Web Framework. Built For Big. Built on top of Flask with Django advantages",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
     url="https://github.com/Abdur-RahmaanJ/shopyo",  # Optional
@@ -73,9 +73,11 @@ setup(
     packages=["shopyo"],
     include_package_data=True,
     python_requires=">=3.6",
-    # install_requires=open(os.path.join(here, "requirements.txt"), encoding="utf-8")
-    # .read()
-    # .split("\n"),  # Optional
+    install_requires=open(
+        os.path.join(here, "requirements.txt"), encoding="utf-8"
+    )
+    .read()
+    .split("\n"),  # Optional
     project_urls={  # Optional
         "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopyo/issues",
         "Source": "https://github.com/Abdur-RahmaanJ/shopyo/",

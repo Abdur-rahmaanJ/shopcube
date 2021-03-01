@@ -3,15 +3,15 @@ import subprocess
 import click
 
 from app import app
-from shopyoapi.cmd import clean
-from shopyoapi.cmd import create_box
-from shopyoapi.cmd import create_module
-from shopyoapi.cmd import create_module_in_box
-from shopyoapi.cmd import initialise
-from shopyoapi.cmd import collectstatic
-from shopyoapi.database import autoload_models
-from shopyoapi.info import printinfo
-from shopyoapi.file import trycopy
+from shopyo.api.cmd import clean
+from shopyo.api.cmd import create_box
+from shopyo.api.cmd import create_module
+from shopyo.api.cmd import create_module_in_box
+from shopyo.api.cmd import initialise
+from shopyo.api.cmd import collectstatic
+from shopyo.api.database import autoload_models
+from shopyo.api.info import printinfo
+from shopyo.api.file import trycopy
 
 
 def runserver():

@@ -1,5 +1,5 @@
 from app import create_app
-from shopyoapi.cmd_helper import tryrmtree
+from shopyo.api.cmd_helper import tryrmtree
 import pytest
 import os
 import shutil

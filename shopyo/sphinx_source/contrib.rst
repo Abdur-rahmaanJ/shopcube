@@ -108,17 +108,18 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
    .. code-block:: bash
 
       cd shopyo 
-      # so now your path should be something like <your path>/shopyo/shopyo
+      # so now your path should be something like <your path>/shopyo
 
 #. Run:
 
    .. code-block:: bash
 
       python -m pip install -U pip
-      python -m pip install -r requirements.txt -r dev_requirements.txt
+      python -m pip install -e .
+      python -m pip install -r dev_requirements.txt
     
    .. note::
-      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``requirements.txt`` make sure you are in the cloned ``shopyo/shopyo`` directory and try again 
+      This should start installing the packages required for shopyo app and might take a few seconds. 
 
 
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
@@ -139,6 +140,8 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
    .. code-block:: bash
 
+      cd shopyo
+      # so now your path should be something like <your path>/shopyo/shopyo
       python manage.py initialise
 
 #. To start the app, run: 
@@ -311,18 +314,15 @@ Go to http://127.0.0.1:1080 where it serves it's web interface by default. See m
 Contributing to package
 -----------------------
 
-* clone project
-* cd into project folder
-* create and activate venv
-* run ``pip install -e .``
+* run ``pip install -e .`` # if you did not
 * test ``shopyo <your options>``
 
-If you want a system wide tests run ``python setup.py sdist`` then ``python -m pip install path/to/shopyo-x.x.x.tar.gz``
+If you want a system wide tests run ``python setup.py sdist`` then ``python -m pip install path/to/shopyo-x.x.x.tar.gz`` where shopyo-... is found in dist/
 
 Maintainers notes
 -----------------
 
-* Version is found in shopyo/__init__.py
+* Version is found in ``shopyo/__init__.py``
 
 .. literalinclude:: ../__init__.py
    :language: python
@@ -334,6 +334,8 @@ Maintainers notes
 .. code:: bash
 
     python setup.py publish
+
+In ``__main__.py`` don't forget to update dev_requirements.txt
 
 💬 Community: Discord
 ---------------------

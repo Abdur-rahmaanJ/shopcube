@@ -3,37 +3,37 @@ Shopyoapi
 
 Shopyo has some api which eases your life
 
-shopyoapi.cmd
+api.cmd
 -------------
 
-.. automodule:: shopyoapi.cmd
+.. automodule:: api.cmd
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
 
-shopyoapi.database
+api.database
 ------------------
 
-.. automodule:: shopyoapi.database
+.. automodule:: api.database
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
 
-shopyoapi.enhance
+api.enhance
 -----------------
 
-.. automodule:: shopyoapi.enhance
+.. automodule:: api.enhance
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
 
-shopyoapi.file
+api.file
 --------------
 
-.. automodule:: shopyoapi.file
+.. automodule:: api.file
     :members:
     :undoc-members:
     :inherited-members:
@@ -41,48 +41,38 @@ shopyoapi.file
 
 
 
-shopyoapi.forms
+api.forms
 ---------------
 
-.. automodule:: shopyoapi.forms
+.. automodule:: api.forms
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
 
-shopyoapi.html
+api.html
 --------------
 
-.. automodule:: shopyoapi.html
+.. automodule:: api.html
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
 
-shopyoapi.info
+api.info
 --------------
 
-.. automodule:: shopyoapi.info
+.. automodule:: api.info
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
 
 
-shopyoapi.init
---------------
-
-.. automodule:: shopyoapi.init
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
-
-
-shopyoapi.module
+api.module
 -----------------
 
-.. automodule:: shopyoapi.module
+.. automodule:: api.module
     :members:
     :undoc-members:
     :inherited-members:

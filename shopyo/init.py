@@ -15,7 +15,3 @@ ma = Marshmallow()
 login_manager = LoginManager()
 migrate = Migrate()
 mail = Mail()
-
-productphotos = UploadSet("productphotos", IMAGES)
-categoryphotos = UploadSet("categoryphotos", IMAGES)
-subcategoryphotos = UploadSet("subcategoryphotos", IMAGES)

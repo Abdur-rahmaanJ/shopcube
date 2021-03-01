@@ -17,7 +17,7 @@ Having said that, this is the base file we are extending from.
 .. literalinclude:: ../modules/box__default/base/templates/base/main_base.html
    :language: html
    :linenos:
-   :lines: 1-99
+   :lines: 1-19
 
 
 It includes:
@@ -44,7 +44,7 @@ Global values for templates
 
 Global values for templates can be found in shopyoapi/enhance.py in this function
 
-.. literalinclude:: ../shopyoapi/enhance.py
+.. literalinclude:: ../api/enhance.py
    :language: python
    :linenos:
    :lines: 9-15

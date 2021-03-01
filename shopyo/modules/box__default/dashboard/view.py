@@ -9,7 +9,7 @@ from modules.box__default.auth.decorators import check_confirmed
 
 from flask_login import login_required
 
-from shopyoapi.html import notify_success
+from shopyo.api.html import notify_success
 
 dashboard_blueprint = Blueprint(
     "dashboard",

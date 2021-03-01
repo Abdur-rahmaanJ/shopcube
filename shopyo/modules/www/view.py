@@ -9,10 +9,10 @@ from flask import Blueprint
 from flask import render_template
 
 #
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
-# from shopyoapi.enhance import get_active_theme_dir
-# from shopyoapi.enhance import get_setting
+# from shopyo.api.html import notify_success
+# from shopyo.api.forms import flash_errors
+# from shopyo.api.enhance import get_active_theme_dir
+# from shopyo.api.enhance import get_setting
 
 # from modules.box__ecommerce.shop.helpers import get_cart_data
 

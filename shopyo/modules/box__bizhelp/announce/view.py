@@ -4,9 +4,9 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyoapi.forms import flash_errors
-from shopyoapi.html import notify_success
-from shopyoapi.module import ModuleHelp
+from shopyo.api.forms import flash_errors
+from shopyo.api.html import notify_success
+from shopyo.api.module import ModuleHelp
 
 from .forms import AnnounceForm
 from .models import Announcement
