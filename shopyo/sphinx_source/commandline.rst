@@ -40,7 +40,7 @@ Complete commands
 
 .. code:: bash
 
-   shopyo db init # create db from new
+   python manage.py db init # create db from new
 
 
 **Migrate**
@@ -48,14 +48,14 @@ Complete commands
 .. code-block:: bash
 
 
-   shopyo db migrate
-   shopyo db upgrade
+   python manage.py db migrate
+   python manage.py db upgrade
 
 **Clean**
 
 .. code-block:: bash
 
-   shopyo clean
+   python manage.py clean
 
 removes ``__pycache__/``, ``shopyo.db`` and ``migrations``.
 
@@ -71,7 +71,7 @@ removes ``__pycache__/``, ``shopyo.db`` and ``migrations``.
 
 .. code-block:: bash
 
-   shopyo runserver
+   python manage.py runserver
 
 
 **Collect static**
