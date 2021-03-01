@@ -322,7 +322,7 @@ If you want a system wide tests run ``python setup.py sdist`` then ``python -m p
 Maintainers notes
 -----------------
 
-* Version is found in shopyo/__init__.py
+* Version is found in ``shopyo/__init__.py``
 
 .. literalinclude:: ../__init__.py
    :language: python
@@ -334,6 +334,8 @@ Maintainers notes
 .. code:: bash
 
     python setup.py publish
+
+In ``__main__.py`` don't forget to update dev_requirements.txt
 
 💬 Community: Discord
 ---------------------
