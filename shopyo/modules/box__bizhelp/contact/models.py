@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from shopyo.api.init import db
+from init import db
 
 
 class ContactMessage(db.Model):

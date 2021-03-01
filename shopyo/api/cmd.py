@@ -7,7 +7,7 @@ import subprocess
 import sys
 import importlib
 
-from shopyo.api.init import db
+from init import db
 from shopyo.api.cmd_helper import tryrmcache
 from shopyo.api.cmd_helper import tryrmfile
 from shopyo.api.cmd_helper import tryrmtree

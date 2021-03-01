@@ -7,13 +7,13 @@ import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
-from shopyo.api.init import login_manager
+from init import login_manager
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from flask import current_app
 
-from shopyo.api.init import db
+from init import db
 from shopyo.api.models import PkModel
 
 role_user_bridge = db.Table(

@@ -19,11 +19,11 @@ from modules.box__default.settings.helpers import get_setting
 from modules.box__default.settings.models import Settings
 from config import app_config
 
-from shopyo.api.init import db
-from shopyo.api.init import login_manager
-from shopyo.api.init import ma
-from shopyo.api.init import migrate
-from shopyo.api.init import mail
+from init import db
+from init import login_manager
+from init import ma
+from init import migrate
+from init import mail
 from shopyo.api.path import modules_path
 from shopyo.api.file import trycopy
 

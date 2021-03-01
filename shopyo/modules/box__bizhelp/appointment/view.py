@@ -9,8 +9,8 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyo.api.init import db
-from shopyo.api.init import ma
+from init import db
+from init import ma
 
 from modules.box__bizhelp.appointment.models import Appointments
 

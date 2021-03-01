@@ -16,7 +16,7 @@ from shopyo.api.file import get_folders
 # from flask import flash
 # from flask import request
 # from shopyo.api.html import notify_success
-# from shopyo.api.init import db
+# from init import db
 
 # from modules.box__default.settings.models import Settings
 
