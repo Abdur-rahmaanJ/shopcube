@@ -6,7 +6,7 @@ Assets Management
 
 .. code:: python
 
-   from shopyoapi.assets import get_static
+   from shopyo.api.assets import get_static
 
 
 In the case of a module in box:

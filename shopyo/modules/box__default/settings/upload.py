@@ -1,6 +1,6 @@
 import json
 from app import app
-from shopyoapi.init import db
+from shopyo.api.init import db
 from modules.box__default.settings.models import Settings
 
 SEP_CHAR = "#"

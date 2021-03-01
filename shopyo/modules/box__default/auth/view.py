@@ -14,10 +14,10 @@ from flask_login import login_user
 from flask_login import logout_user
 from sqlalchemy import func
 
-from shopyoapi.html import notify_danger
-from shopyoapi.html import notify_success
-from shopyoapi.html import notify_warning
-from shopyoapi.security import get_safe_redirect
+from shopyo.api.html import notify_danger
+from shopyo.api.html import notify_success
+from shopyo.api.html import notify_warning
+from shopyo.api.security import get_safe_redirect
 
 from .models import User
 from .email import send_async_email

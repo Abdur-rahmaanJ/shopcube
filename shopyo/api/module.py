@@ -7,7 +7,7 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 
-from shopyoapi.assets import get_static
+from shopyo.api.assets import get_static
 
 
 class ModuleHelp:

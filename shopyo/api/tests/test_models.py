@@ -6,8 +6,8 @@ https://github.com/cookiecutter-flask/cookiecutter-flask
 
 import pytest
 from flask_login import UserMixin
-from shopyoapi.init import db
-from shopyoapi.models import PkModel
+from shopyo.api.init import db
+from shopyo.api.models import PkModel
 
 
 class ExampleUserModel(PkModel, UserMixin):

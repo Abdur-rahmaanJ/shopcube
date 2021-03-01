@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from shopyoapi.init import db
-from shopyoapi.models import PkModel
+from shopyo.api.init import db
+from shopyo.api.models import PkModel
 
 
 class Announcement(PkModel):

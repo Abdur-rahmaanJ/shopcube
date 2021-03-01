@@ -24,8 +24,8 @@ Here are some boiler plate codes created:
     # from flask import request
 
     # # 
-    # from shopyoapi.html import notify_success
-    # from shopyoapi.forms import flash_errors
+    # from shopyo.api.html import notify_success
+    # from shopyo.api.forms import flash_errors
 
     dirpath = os.path.dirname(os.path.abspath(__file__))
     module_info = {}

@@ -119,20 +119,20 @@ shopyo.db
 
 #migrations
 migrations/
+shopyo/migrations/
 
 #vscode
 .vscode
 workspace.code-workspace
 
 #uploads 
-shopyo/static/uploads/products/
-shopyo/static/uploads/images/
-shopyo/static/uploads/thumbs/
-shopyo/static/uploads/category/
-shopyo/static/uploads/subcategory/
+shopyo/static/uploads/
 
 # modules in static since present in modules
 shopyo/static/modules/
 
 # ignore secrets
 config.json
+
+shopyo/.tox/
+.tox/

@@ -3,13 +3,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-from .shopyoapi.file import trycopy
-from .shopyoapi.file import trycopytree
-from .shopyoapi.file import trymkdir
-from .shopyoapi.file import trymkfile
-from .shopyoapi.info import printinfo
-from .shopyoapi.cmd_helper import tryrmtree
-from .shopyoapi.cmd_helper import tryrmfile
+from .api.file import trycopy
+from .api.file import trycopytree
+from .api.file import trymkdir
+from .api.file import trymkfile
+from .api.info import printinfo
+from .api.cmd_helper import tryrmtree
+from .api.cmd_helper import tryrmfile
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
@@ -313,6 +313,26 @@ deps =
 commands = python -m pytest  {posargs}
 """
 
+def requirements_txt_content():
+    return '''
+shopyo
+'''
+
+def dev_requirements_txt_content():
+    return '''
+flake8==3.8.4
+black==20.8b1
+isort==5.6.4
+Sphinx==3.2.1
+pytest==6.1.1
+pytest-order==0.9.2
+tox==3.21.0
+pytest-cov==2.11.1
+codecov==2.1.11
+factory-boy==3.2.0
+freezegun==1.1.0
+pytest-dotenv
+'''
 
 def new_project(newfoldername):
     """
@@ -339,21 +359,19 @@ def new_project(newfoldername):
     )
     tryrmfile(os.path.join(base_path, newfoldername, "__init__.py"))
     tryrmfile(os.path.join(base_path, newfoldername, "__main__.py"))
-    tryrmfile(os.path.join(base_path, newfoldername, "requirements.txt"))
-    tryrmfile(os.path.join(base_path, newfoldername, "dev_requirements.txt"))
-    tryrmtree(os.path.join(base_path, newfoldername, "migrations"))
-    tryrmfile(os.path.join(base_path, newfoldername, "shopyo.db"))
-    tryrmfile(os.path.join(base_path, newfoldername, "testing.db"))
+    tryrmtree(os.path.join(base_path, newfoldername, "api"))
 
-    trycopy(
-        os.path.join(dirpathparent, "shopyo", "requirements.txt"),
-        os.path.join(base_path, "requirements.txt"),
+    # trycopy(
+    #     os.path.join(dirpathparent, "requirements.txt"),
+    #     os.path.join(base_path, "requirements.txt"),
+    # )
+    # with open(os.path.join(base_path, "requirements.txt"), "a") as f:
+    #     f.write("\nshopyo")
+    trymkfile(
+        os.path.join(base_path, "requirements.txt"), requirements_txt_content()
     )
-    with open(os.path.join(base_path, "requirements.txt"), "a") as f:
-        f.write("\nshopyo")
-    trycopy(
-        os.path.join(dirpathparent, "shopyo", "dev_requirements.txt"),
-        os.path.join(base_path, "dev_requirements.txt"),
+    trymkfile(
+        os.path.join(base_path, "dev_requirements.txt"), dev_requirements_txt_content()
     )
     trymkfile(
         os.path.join(base_path, ".gitignore"),

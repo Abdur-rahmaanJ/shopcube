@@ -6,7 +6,7 @@ from wtforms import StringField
 from wtforms import TextAreaField
 from wtforms.validators import DataRequired
 
-from shopyoapi.validators import verify_slug
+from shopyo.api.validators import verify_slug
 
 
 class PageForm(FlaskForm):

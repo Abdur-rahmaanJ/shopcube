@@ -10,8 +10,8 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyoapi.init import db
-from shopyoapi.init import ma
+from shopyo.api.init import db
+from shopyo.api.init import ma
 
 from modules.box__bizhelp.people.models import People
 

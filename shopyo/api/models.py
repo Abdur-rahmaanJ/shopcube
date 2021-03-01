@@ -2,7 +2,7 @@
 DB-related helper utilities. Taken from database.py
 file at https://github.com/cookiecutter-flask/cookiecutter-flask
 """
-from shopyoapi.init import db
+from shopyo.api.init import db
 
 
 class CRUDMixin:

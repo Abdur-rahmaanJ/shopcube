@@ -7,17 +7,17 @@ import subprocess
 import sys
 import importlib
 
-from shopyoapi.init import db
-from shopyoapi.cmd_helper import tryrmcache
-from shopyoapi.cmd_helper import tryrmfile
-from shopyoapi.cmd_helper import tryrmtree
-from shopyoapi.path import root_path
-from shopyoapi.path import static_path
-from shopyoapi.path import modules_path
-from shopyoapi.file import trymkdir
-from shopyoapi.file import trymkfile
-from shopyoapi.file import get_folders
-from shopyoapi.file import trycopytree
+from shopyo.api.init import db
+from shopyo.api.cmd_helper import tryrmcache
+from shopyo.api.cmd_helper import tryrmfile
+from shopyo.api.cmd_helper import tryrmtree
+from shopyo.api.path import root_path
+from shopyo.api.path import static_path
+from shopyo.api.path import modules_path
+from shopyo.api.file import trymkdir
+from shopyo.api.file import trymkfile
+from shopyo.api.file import get_folders
+from shopyo.api.file import trycopytree
 
 
 def clean(app):
@@ -173,15 +173,15 @@ Please add your models tests to this file.
         f"{base_path}/tests/test_{modulename}_models.py", test_model_content
     )
     view_content = """
-from shopyoapi.module import ModuleHelp
+from shopyo.api.module import ModuleHelp
 # from flask import render_template
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
 # from flask import request
 
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
+# from shopyo.api.html import notify_success
+# from shopyo.api.forms import flash_errors
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint

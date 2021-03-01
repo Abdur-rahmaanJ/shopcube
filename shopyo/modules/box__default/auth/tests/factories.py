@@ -2,7 +2,7 @@
 from factory import Sequence
 from factory.alchemy import SQLAlchemyModelFactory
 
-from shopyoapi.init import db
+from shopyo.api.init import db
 from modules.box__default.auth.models import User
 from modules.box__default.auth.models import Role
 from sqlalchemy.orm import scoped_session
