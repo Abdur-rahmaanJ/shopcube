@@ -435,9 +435,7 @@ def main():
         new_project(args[2])
     else:
         if not is_venv():
-            print(
-                "Please use Shopyo in a virtual environment for this command"
-            )
+            print("Please use Shopyo in a virtual environment for this command")
             sys.exit()
         torun = [sys.executable, "manage.py"] + args[1:]
         subprocess.run(torun, stdout=subprocess.PIPE)
