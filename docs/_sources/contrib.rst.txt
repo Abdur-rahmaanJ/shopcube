@@ -103,12 +103,6 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
             "python.pythonPath": "c:\\path\\to\\shopyo\\env\\Scripts\\python.exe"
          }
 
-#. Change into the directory:
-
-   .. code-block:: bash
-
-      cd shopyo 
-      # so now your path should be something like <your path>/shopyo
 
 #. Run:
 
@@ -157,7 +151,7 @@ Making a Pull Request
 ---------------------
 Make sure you have setup the repo as explained in :ref:`setup` before making Pull Request (PR)
 
-#. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 10
+#. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 9
 #. To create a branch and switch to that branch you run:
    
    .. code-block:: bash
