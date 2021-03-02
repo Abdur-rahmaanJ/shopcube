@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+from __init__ import __version__
 from pathlib import Path
 
 from .api.file import trycopy
@@ -316,8 +317,8 @@ commands = python -m pytest  {posargs}
 
 def requirements_txt_content():
     return """
-shopyo
-"""
+shopyo=={version}
+""".format(version=__version__)
 
 
 def dev_requirements_txt_content():
