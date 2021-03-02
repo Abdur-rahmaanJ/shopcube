@@ -438,7 +438,7 @@ def main():
             print("Please use Shopyo in a virtual environment for this command")
             sys.exit()
         torun = [sys.executable, "manage.py"] + args[1:]
-        subprocess.run(torun, stdout=subprocess.PIPE)
+        subprocess.run(torun)
 
 
 if __name__ == "__main__":
