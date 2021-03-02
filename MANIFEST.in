@@ -10,3 +10,4 @@ recursive-exclude shopyo/static/uploads *
 recursive-exclude shopyo/static/modules *
 recursive-exclude shopyo/.tox *
 recursive-exclude __pycache__ *
+recursive-exclude screenshots *
