@@ -10,6 +10,7 @@ from .api.file import trymkfile
 from .api.info import printinfo
 from .api.cmd_helper import tryrmtree
 from .api.cmd_helper import tryrmfile
+from .manage import process
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
