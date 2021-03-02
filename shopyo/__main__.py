@@ -1,5 +1,4 @@
 import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -438,9 +437,7 @@ def main():
         if not is_venv():
             print("Please use Shopyo in a virtual environment for this command")
             sys.exit()
-        torun = [sys.executable, "manage.py"] + args[1:]
-        subprocess.run(torun, stdout=subprocess.PIPE)
-
+        process(args[1:])
 
 if __name__ == "__main__":
     main()
