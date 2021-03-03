@@ -1,7 +1,8 @@
 import os
 import subprocess
 import sys
-from __init__ import __version__
+import re
+from .__init__ import __version__
 from pathlib import Path
 
 from .api.file import trycopy
@@ -291,7 +292,7 @@ config.json
 
 def readme_md_content(project_name):
     return """
-# {project_name}
+# {0}
 """.format(project_name)
 
 
@@ -426,14 +427,34 @@ def new_project(newfoldername):
     print("Project", newfoldername, "created successfully!")
 
 
+def is_valid_name(name):
+    notallowedpattern = r'[_\.]+'
+    allowedpattern = r'^[\w+\.]+$'
+    isallowed = re.match(allowedpattern, name)
+    isnotallowed = re.match(notallowedpattern, name)
+
+    if not isnotallowed and isallowed:
+        return True
+    else:
+        return False
+
+
 def main():
     args = sys.argv
     if len(args) == 1:
         printinfo()
         print("No arguments supplied")
-    if args[1] == "new" and len(args) == 3:
+    elif len(args) == 2 and args[1] == "new":
         printinfo()
-        new_project(args[2])
+        print("""Please enter an alphanumeric name.
+A combination of character, number and underscore is allowed""")
+    elif len(args) == 3 and args[1] == "new":
+        printinfo()
+        if args[2] and is_valid_name(args[2]):
+            new_project(args[2])
+        else:
+            print("""Please enter an alphanumeric name.
+A combination of character, number and underscore is allowed""")
     else:
         if not is_venv():
             print("Please use Shopyo in a virtual environment for this command")
