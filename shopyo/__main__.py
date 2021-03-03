@@ -426,10 +426,10 @@ def new_project(newfoldername):
 
     print("Project", newfoldername, "created successfully!")
 
+
 def is_valid_name(name):
     notallowedpattern = r'[_\.]+'
     allowedpattern = r'^[\w+\.]+$'
-    
     isallowed = re.match(allowedpattern, name)
     isnotallowed = re.match(notallowedpattern, name)
 
@@ -446,13 +446,15 @@ def main():
         print("No arguments supplied")
     elif len(args) == 2 and args[1] == "new":
         printinfo()
-        print("Please enter an alphanumeric name. A combination of character, number and underscore is allowed")
+        print("""Please enter an alphanumeric name. 
+A combination of character, number and underscore is allowed""")
     elif len(args) == 3 and args[1] == "new":
         printinfo()
         if args[2] and is_valid_name(args[2]):
             new_project(args[2])
         else:
-            print("Please enter an alphanumeric name. A combination of character, number and underscore is allowed")
+            print("""Please enter an alphanumeric name. 
+A combination of character, number and underscore is allowed""")
     else:
         if not is_venv():
             print("Please use Shopyo in a virtual environment for this command")
