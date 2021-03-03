@@ -446,14 +446,14 @@ def main():
         print("No arguments supplied")
     elif len(args) == 2 and args[1] == "new":
         printinfo()
-        print("""Please enter an alphanumeric name. 
+        print("""Please enter an alphanumeric name.
 A combination of character, number and underscore is allowed""")
     elif len(args) == 3 and args[1] == "new":
         printinfo()
         if args[2] and is_valid_name(args[2]):
             new_project(args[2])
         else:
-            print("""Please enter an alphanumeric name. 
+            print("""Please enter an alphanumeric name.
 A combination of character, number and underscore is allowed""")
     else:
         if not is_venv():
