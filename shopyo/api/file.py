@@ -67,7 +67,7 @@ def trymkdir(path, verbose=False):
     try:
         os.mkdir(path)
         if verbose:
-            print("created dir at", path)
+            print(f"[X] Successfully created dir {path}")
     except Exception as e:
         print(e)
 

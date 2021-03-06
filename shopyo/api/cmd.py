@@ -7,6 +7,7 @@ import subprocess
 import sys
 import importlib
 
+
 from init import db
 from shopyo.api.cmd_helper import tryrmcache
 from shopyo.api.cmd_helper import tryrmfile
@@ -48,7 +49,7 @@ def clean(app):
         db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
         print("[x] all tables dropped")
 
-    tryrmcache(os.getcwd())
+    tryrmcache(os.getcwd(), verbose=True)
     tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=True)
     tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=True)
 
@@ -257,7 +258,7 @@ available_everywhere = {
     trymkfile(f"{base_path}/global.py", global_file_content)
 
 
-def create_box(name):
+def create_box(name, verbose=False):
     """
     creates box with box_info.json
 
@@ -274,9 +275,12 @@ def create_box(name):
     """
     base_path = f"modules/box__{name}"
     if os.path.exists(base_path):
-        print(f"Box {base_path} exists!")
+        print(
+            f"[ ] unable to create. Box {base_path} already exists!",
+            file=sys.stderr
+        )
     else:
-        trymkdir(base_path)
+        trymkdir(base_path, verbose=verbose)
         info_json_content = """{{
         "display_string": "{0}",
         "box_name":"{1}",
@@ -288,7 +292,11 @@ def create_box(name):
     }}""".format(
             name.capitalize(), name
         )
-        trymkfile(f"{base_path}/box_info.json", info_json_content)
+        trymkfile(
+            f"{base_path}/box_info.json",
+            info_json_content,
+            verbose=verbose
+        )
 
 
 def create_module_in_box(modulename, boxname):

@@ -1,20 +1,15 @@
-"""
-tests for all commandline arguments work as expected
-Uses pytest with fixture built in fixtures
-(https://docs.pytest.org/en/stable/fixture.html)
-"""
 import os
-from shopyo.api.cmd import clean
 import pytest
+from shopyo.api.scripts import cli
 
 
-@pytest.mark.order("second_to_last")
-class TestCmdClean:
+@pytest.mark.order("last")
+class TestCliClean:
     """tests the clean command line api function"""
 
-    def test_clean_pycache_present_only_in_cwd(self, tmpdir, capfd, flask_app):
+    def test_clean_pycache_present_only_in_cwd(self, tmpdir, flask_app):
         """
-        run clean on the following test directory:
+        run `shopyo clean2 -v` on the following test directory:
 
         <some-unique-tmpdir>/
             __pycache__/
@@ -23,10 +18,11 @@ class TestCmdClean:
         fd = tmpdir.mkdir("__pycache__").join("file.pyc")
         fd.write("content")
         os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner(mix_stderr=False)
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = (
-            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
+            "[x] all tables dropped\n"
+            "[x] __pycache__ successfully deleted\n"
         )
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
@@ -35,45 +31,15 @@ class TestCmdClean:
             f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
         )
 
+        assert result.exit_code == 0
         assert os.path.exists("__pycache__") is False
-        assert expected_out in captured.out
-        assert expected_err_shopyo_db in captured.err
-        assert expected_err_migrations in captured.err
+        assert expected_out in result.output
+        assert expected_err_shopyo_db in result.stderr
+        assert expected_err_migrations in result.stderr
 
-    def test_clean_pycache_in_a_lvl_below_cwd(self, tmpdir, capfd, flask_app):
+    def test_clean_pycache_many_lvls_below_cwd(self, tmpdir, flask_app):
         """
-        run clean on the following test directory:
-
-        <some-unique-tmpdir>/
-            shopyo/
-                __pycache__/
-                    file.pyc
-        """
-        shopyo_path = tmpdir.mkdir("shopyo")
-        pycache_path = shopyo_path.mkdir("__pycache__")
-        pyc = pycache_path.join("file.pyc")
-        pyc.write("content")
-        os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
-        expected_out = (
-            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
-        )
-        expected_err_shopyo_db = (
-            f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
-        )
-        expected_err_migrations = (
-            f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
-        )
-
-        assert os.path.exists(pycache_path) is False
-        assert expected_out in captured.out
-        assert expected_err_shopyo_db in captured.err
-        assert expected_err_migrations in captured.err
-
-    def test_clean_pycache_many_lvls_below_cwd(self, tmpdir, capfd, flask_app):
-        """
-        run clean on the following test directory:
+        run `shopyo clean2 -v` on the following test directory:
 
         <some-unique-tmpdir>/
             shopyo/
@@ -89,10 +55,11 @@ class TestCmdClean:
         pyc = pycache_path.join("file.pyc")
         pyc.write("content")
         os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner()
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = (
-            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
+            "[x] all tables dropped\n"
+            "[x] __pycache__ successfully deleted\n"
         )
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
@@ -101,14 +68,15 @@ class TestCmdClean:
             f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
         )
 
+        assert result.exit_code == 0
         assert os.path.exists(pycache_path) is False
-        assert expected_out in captured.out
-        assert expected_err_shopyo_db in captured.err
-        assert expected_err_migrations in captured.err
+        assert expected_out in result.output
+        assert expected_err_shopyo_db in result.output
+        assert expected_err_migrations in result.output
 
-    def test_clean_many_pycache_in_nested_dirs(self, tmpdir, capfd, flask_app):
+    def test_clean_many_pycache_in_nested_dirs(self, tmpdir, flask_app):
         """
-        run clean on the following test directory:
+        run `shopyo clean2 -v` on the following test directory:
 
         <some-unique-tmpdir>/
             __pycache__/
@@ -131,8 +99,8 @@ class TestCmdClean:
         pyc3 = pycache_path3.join("file.pyc")
         pyc3.write("content")
         os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner()
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = (
             "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
         )
@@ -143,16 +111,17 @@ class TestCmdClean:
             f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
         )
 
+        assert result.exit_code == 0
         assert os.path.exists(pycache_path1) is False
         assert os.path.exists(pycache_path2) is False
         assert os.path.exists(pycache_path3) is False
-        assert expected_out in captured.out
-        assert expected_err_shopyo_db in captured.err
-        assert expected_err_migrations in captured.err
+        assert expected_out in result.output
+        assert expected_err_shopyo_db in result.output
+        assert expected_err_migrations in result.output
 
-    def test_no_clean_applied_on_multiple_pycache(self, tmpdir, capfd):
+    def test_no_clean_applied_on_multiple_pycache(self, tmpdir):
         """
-        run clean on the following test directory:
+        run no clean command on the following test directory:
 
         <some-unique-tmpdir>/
                 __pycache__/
@@ -166,9 +135,9 @@ class TestCmdClean:
         assert os.path.exists(path1)
         assert os.path.exists(path2)
 
-    def test_clean_on_shopyo_db_file(self, tmpdir, capfd, flask_app):
+    def test_clean_on_shopyo_db_file(self, tmpdir, flask_app):
         """
-        run clean on the following test directory:
+        run `shopyo clean2 -v` on the following test directory:
 
         <some-unique-tmpdir>/
             shopyo.db
@@ -176,26 +145,23 @@ class TestCmdClean:
         shopyo_db = tmpdir.join("shopyo.db")
         shopyo_db.write("content")
         os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner()
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
+            "[ ] __pycache__ doesn't exist\n"
             f"[x] file '{os.path.join(tmpdir, 'shopyo.db')}' "
             "successfully deleted\n"
-        )
-        expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
-        expected_err_migrations = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
         )
 
+        assert result.exit_code == 0
         assert os.path.exists(shopyo_db) is False
-        assert expected_out in captured.out
-        assert expected_err_pycache in captured.err
-        assert expected_err_migrations in captured.err
+        assert expected_out in result.output
 
-    def test_clean_on_migration_folder(self, tmpdir, capfd, flask_app):
+    def test_clean_on_migration_folder(self, tmpdir, flask_app):
         """
-        run clean on the following test directory:
+        run `shopyo clean2 -v` on the following test directory:
 
         <some-unique-tmpdir>/
             migrations/
@@ -208,8 +174,8 @@ class TestCmdClean:
         env.write("content-env")
         alembic.write("content-alembic")
         os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner(mix_stderr=False)
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
             f"[x] folder '{os.path.join(tmpdir, 'migrations')}' "
@@ -220,14 +186,15 @@ class TestCmdClean:
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
         )
 
+        assert result.exit_code == 0
         assert os.path.exists(migrations_path) is False
-        assert expected_out in captured.out
-        assert expected_err_pycache in captured.err
-        assert expected_err_shopyo_db in captured.err
+        assert expected_out in result.stdout
+        assert expected_err_pycache in result.stderr
+        assert expected_err_shopyo_db in result.stderr
 
-    def test_clean_on_pycache_shopyo_migration(self, tmpdir, flask_app, capfd):
+    def test_clean_on_pycache_shopyo_migration(self, tmpdir, flask_app):
         """
-        run clean on the following test directory
+        run `shopyo clean2 -v` on the following test directory
 
         shopyo/
             shopyo/
@@ -257,8 +224,8 @@ class TestCmdClean:
         shopyo_db = shopyo_path.join("shopyo.db")
         shopyo_db.write("content")
         os.chdir(shopyo_path)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner()
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
             "[x] __pycache__ successfully deleted\n"
@@ -268,7 +235,8 @@ class TestCmdClean:
             "successfully deleted\n"
         )
 
-        assert expected_out in captured.out
+        assert result.exit_code == 0
+        assert expected_out in result.output
         assert os.path.exists(migrations_path) is False
         assert os.path.exists(pycache_path1) is False
         assert os.path.exists(pycache_path2) is False
@@ -289,10 +257,10 @@ class TestCmdClean:
         assert os.path.exists(migrations_path)
         assert os.path.exists(shopyo_db)
 
-    def test_clean_on_no_files_to_clean(self, tmpdir, capfd, flask_app):
+    def test_clean_on_no_files_to_clean(self, tmpdir, flask_app):
         os.chdir(tmpdir)
-        clean(flask_app)
-        captured = capfd.readouterr()
+        runner = flask_app.test_cli_runner(mix_stderr=False)
+        result = runner.invoke(cli, ["clean2", "-v"])
         expected_out = "[x] all tables dropped\n"
         expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
         expected_err_shopyo_db = (
@@ -302,9 +270,46 @@ class TestCmdClean:
             f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
         )
 
-        assert expected_out in captured.out
-        assert expected_err_pycache in captured.err
-        assert expected_err_shopyo_db in captured.err
-        assert expected_err_migrations in captured.err
+        assert result.exit_code == 0
+        assert expected_out in result.output
+        assert expected_err_pycache in result.stderr
+        assert expected_err_shopyo_db in result.stderr
+        assert expected_err_migrations in result.stderr
 
-    # TODO: add test_clean for postgresSQL to see if tables dropped @rehmanis
+    def test_clean_with_no_verbose_on_empty_dir(self, tmpdir, flask_app):
+        """
+        run `shopyo clean2` on the following empty directory
+        """
+        os.chdir(tmpdir)
+        runner = flask_app.test_cli_runner(mix_stderr=False)
+        result = runner.invoke(cli, ["clean2"])
+        SEP_CHAR = "#"
+        SEP_NUM = 23
+        expect_out = SEP_CHAR * SEP_NUM + "\n\n" + "Cleaning...\n"
+
+        assert result.exit_code == 0
+        assert expect_out == result.output
+
+    def test_clean_with_no_verbose_on_all_files(self, tmpdir, flask_app):
+        """
+        run `shopyo clean2` on the following empty directory
+        """
+        pycache_path = tmpdir.mkdir("__pycache__")
+        shopyo_path = tmpdir.join("shopyo.db")
+        shopyo_path.write("content")
+        migrations_path = tmpdir.mkdir("migrations")
+        os.chdir(tmpdir)
+        runner = flask_app.test_cli_runner(mix_stderr=False)
+        result = runner.invoke(cli, ["clean2"])
+        SEP_CHAR = "#"
+        SEP_NUM = 23
+        expect_out = SEP_CHAR * SEP_NUM + "\n\n" + "Cleaning...\n"
+
+        print(result.output)
+        assert result.exit_code == 0
+        assert expect_out == result.output
+        assert os.path.exists(pycache_path) is False
+        assert os.path.exists(shopyo_path) is False
+        assert os.path.exists(migrations_path) is False
+
+    # TODO: add test_clean for MySQL to see if tables dropped @rehmanis

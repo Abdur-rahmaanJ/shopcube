@@ -1,12 +1,12 @@
 """
 Helper utility functions for commandline api
 """
-import sys
 import os
 from shutil import rmtree
+import click
 
 
-def tryrmcache(dir_name):
+def tryrmcache(dir_name, verbose=False):
     """
     removes all __pycache__ starting from directory dir_name
     all the way to leaf directory
@@ -23,10 +23,11 @@ def tryrmcache(dir_name):
                 rmtree(os.path.join(root, name))
                 is_removed = True
 
-    if is_removed:
-        print("[x] __pycache__ successfully deleted")
-    else:
-        print("[ ] __pycache__ doesn't exist", file=sys.stderr)
+    if verbose:
+        if is_removed:
+            click.echo("[x] __pycache__ successfully deleted")
+        else:
+            click.echo("[ ] __pycache__ doesn't exist", err=True)
 
     return is_removed
 
@@ -45,13 +46,13 @@ def tryrmfile(path, verbose=False):
     try:
         os.remove(path)
         if verbose:
-            print(f"[x] file '{path}' successfully deleted")
+            click.echo(f"[x] file '{path}' successfully deleted")
         return True
     except OSError as e:
         if verbose:
-            print(
-                "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
-                file=sys.stderr,
+            click.echo(
+                f"[ ] unable to delete {e.filename}: {e.strerror}",
+                err=True,
             )
         return False
 
@@ -70,12 +71,12 @@ def tryrmtree(path, verbose=False):
     try:
         rmtree(path)
         if verbose:
-            print(f"[x] folder '{path}' successfully deleted")
+            click.echo(f"[x] folder '{path}' successfully deleted")
         return True
     except OSError as e:
         if verbose:
-            print(
-                "[ ] unable to delete %s: %s." % (e.filename, e.strerror),
-                file=sys.stderr,
+            click.echo(
+                f"[ ] unable to delete {e.filename}: {e.strerror}",
+                err=True,
             )
         return False

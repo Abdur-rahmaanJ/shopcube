@@ -1,7 +1,6 @@
 import os
 import subprocess
 import click
-
 from app import app
 from shopyo.api.cmd import clean
 from shopyo.api.cmd import create_box
