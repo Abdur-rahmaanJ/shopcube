@@ -3,6 +3,47 @@ import pytest
 from shopyo.api.scripts import cli
 
 
+class TestCliCreateBox:
+    """test the create_box command line api function"""
+
+    @pytest.mark.parametrize(
+        "flag_option",
+        [
+            (True, "-v"),
+            (True, "--verbose"),
+            (True, None)
+        ]
+    )
+    def test_create_existing_box(self, startbox_runner, flag_option):
+        expected = "[ ] unable to create. Box modules/box__"
+        result, _ = startbox_runner
+        _, option = flag_option
+
+        assert result.exit_code == 0
+
+        if option is not None:
+            assert expected in result.output
+
+    @pytest.mark.parametrize(
+        "flag_option",
+        [
+            (False, "-v"),
+            (False, "--verbose"),
+            (False, None)
+        ]
+    )
+    def test_create_unique_box(self, startbox_runner, flag_option):
+        result, path = startbox_runner
+        _, option = flag_option
+        expected = "[X] Successfully created dir modules/box__"
+
+        assert result.exit_code == 0
+        assert os.path.exists(path)
+
+        if option is not None:
+            assert expected in result.output
+
+
 @pytest.mark.order("last")
 class TestCliClean:
     """tests the clean command line api function"""
@@ -192,7 +233,8 @@ class TestCliClean:
         assert expected_err_pycache in result.stderr
         assert expected_err_shopyo_db in result.stderr
 
-    def test_clean_on_pycache_shopyo_migration(self, tmpdir, flask_app):
+    @pytest.mark.parametrize("option", ["-v", "--verbose"])
+    def test_clean_pycache_shopyo_migration(self, tmpdir, flask_app, option):
         """
         run `shopyo clean2 -v` on the following test directory
 
@@ -225,7 +267,7 @@ class TestCliClean:
         shopyo_db.write("content")
         os.chdir(shopyo_path)
         runner = flask_app.test_cli_runner()
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean2", option])
         expected_out = (
             "[x] all tables dropped\n"
             "[x] __pycache__ successfully deleted\n"
@@ -257,10 +299,11 @@ class TestCliClean:
         assert os.path.exists(migrations_path)
         assert os.path.exists(shopyo_db)
 
-    def test_clean_on_no_files_to_clean(self, tmpdir, flask_app):
+    @pytest.mark.parametrize("option", ["-v", "--verbose"])
+    def test_clean_on_no_files_to_clean(self, tmpdir, flask_app, option):
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean2", option])
         expected_out = "[x] all tables dropped\n"
         expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
         expected_err_shopyo_db = (
@@ -305,7 +348,6 @@ class TestCliClean:
         SEP_NUM = 23
         expect_out = SEP_CHAR * SEP_NUM + "\n\n" + "Cleaning...\n"
 
-        print(result.output)
         assert result.exit_code == 0
         assert expect_out == result.output
         assert os.path.exists(pycache_path) is False

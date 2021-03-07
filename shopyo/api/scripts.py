@@ -14,6 +14,10 @@ from app import create_app
 from init import db
 
 
+SEP_CHAR = "#"
+SEP_NUM = 23
+
+
 @click.group(cls=FlaskGroup, create_app=create_app)
 def cli():
     """CLI for shopyo"""
@@ -33,10 +37,12 @@ def create_box2(boxname, verbose):
 
     base_path = f"modules/box__{boxname}"
     if os.path.exists(base_path):
-        click.echo(
-            f"[ ] unable to create. Box {base_path} already exists!",
-            err=True
-        )
+
+        if verbose:
+            click.echo(
+                f"[ ] unable to create. Box {base_path} already exists!",
+                err=True
+            )
     else:
         trymkdir(base_path, verbose=verbose)
 
@@ -65,9 +71,6 @@ def clean2(verbose):
     """tries to removes __pycache__, migrations/, shopyo.db files and drops all
     tables
     """
-
-    SEP_CHAR = "#"
-    SEP_NUM = 23
 
     click.echo(SEP_CHAR * SEP_NUM + "\n")
     click.echo("Cleaning...")

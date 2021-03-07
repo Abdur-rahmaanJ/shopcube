@@ -65,7 +65,9 @@ class TestCRUDMixin:
         assert result_raw.username == "bar"
         assert result_orm.username == "bar"
 
-    @pytest.mark.parametrize("commit,expected", [(True, "foo"), (False, "bar")])
+    @pytest.mark.parametrize(
+        "commit,expected", [(True, "foo"), (False, "bar")]
+    )
     def test_update_single(self, db_session, commit, expected):
         user = ExampleUserModel(username="bar", email="bar@domain.com")
         user.save()
