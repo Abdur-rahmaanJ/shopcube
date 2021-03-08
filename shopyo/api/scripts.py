@@ -1,21 +1,25 @@
 import click
 import os
-from flask.cli import with_appcontext
-from shopyo.api.cmd_helper import tryrmcache
-from shopyo.api.cmd_helper import tryrmfile
-from shopyo.api.cmd_helper import tryrmtree
-from shopyo.api.file import trymkdir
-from flask.cli import FlaskGroup
 import sys
+
+from flask.cli import with_appcontext
+from flask.cli import FlaskGroup
+from subprocess import run, PIPE
+from shopyo.api.cmd_helper import _clean
+from shopyo.api.cmd_helper import _collectstatic
+from shopyo.api.cmd_helper import _upload_data
+from shopyo.api.file import trymkdir
+from shopyo.api.database import autoload_models
+from shopyo.api.constants import SEP_CHAR, SEP_NUM
+
 
 sys.path.append(os.getcwd())
 
-from app import create_app
-from init import db
-
-
-SEP_CHAR = "#"
-SEP_NUM = 23
+try:
+    from app import create_app
+    from init import db
+except Exception as e:
+    print(e)
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)
@@ -68,19 +72,59 @@ def create_box2(boxname, verbose):
 @click.option('--verbose', "-v", is_flag=True, default=False)
 @with_appcontext
 def clean2(verbose):
-    """tries to removes __pycache__, migrations/, shopyo.db files and drops all
-    tables
+    """remove __pycache__, migrations/, shopyo.db files and drops db
+    if present
     """
+    _clean(db, verbose=verbose)
 
-    click.echo(SEP_CHAR * SEP_NUM + "\n")
-    click.echo("Cleaning...")
 
-    db.drop_all()
-    db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
+@cli.command("initialise2")
+@click.option('--verbose', "-v", is_flag=True, default=False)
+@with_appcontext
+def initialise(verbose):
+    """
+    Create db, migrate, adds default users, add settings
+    """
+    # drop db, remove mirgration/ and shopyo.db
+    _clean(db, verbose=verbose)
 
+    # load all models available inside modules
+    autoload_models()
+
+    # add a migrations folder to your application.
+    click.echo("Creating db...")
+    click.echo(SEP_CHAR * SEP_NUM)
     if verbose:
-        click.echo("[x] all tables dropped")
+        run(["flask", "db", "init"])
+    else:
+        run(["flask", "db", "init"], stdout=PIPE, stderr=PIPE)
+    click.echo("")
 
-    tryrmcache(os.getcwd(), verbose=verbose)
-    tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
-    tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=verbose)
+    # generate an initial migration i.e autodetect changes in the 
+    # tables (table autodetection is limited. See
+    # https://flask-migrate.readthedocs.io/en/latest/ for more details)
+    click.echo("Migrating db...")
+    click.echo(SEP_CHAR * SEP_NUM)
+    if verbose:
+        run(["flask", "db", "migrate"])
+    else:
+        run(["flask", "db", "migrate"], stdout=PIPE, stderr=PIPE)
+    click.echo("")
+
+    click.echo("Upgrading db...")
+    click.echo(SEP_CHAR * SEP_NUM)
+    if verbose:
+        run(["flask", "db", "upgrade"])
+    else:
+        run(["flask", "db", "upgrade"], stdout=PIPE, stderr=PIPE)
+    # proc = run(["flask", "db", "upgrade"], stdout=PIPE, stderr=PIPE)
+    click.echo("")
+
+    # collect all static folders inside modules/ and add it to global
+    # static
+    _collectstatic(verbose=verbose)
+
+    # Upload models data in upload.py files inside each module
+    _upload_data(verbose=verbose)
+
+    click.echo("All Done!")

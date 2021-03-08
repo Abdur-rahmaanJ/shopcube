@@ -10,8 +10,8 @@ from .api.file import trycopytree
 from .api.file import trymkdir
 from .api.file import trymkfile
 from .api.info import printinfo
-from .api.cmd_helper import tryrmtree
-from .api.cmd_helper import tryrmfile
+from .api.file import tryrmtree
+from .api.file import tryrmfile
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()

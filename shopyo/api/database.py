@@ -1,8 +1,11 @@
 import importlib
 import os
+import click
+
+from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
 
-def autoload_models():
+def autoload_models(verbose=False):
     """
     Auto imports models from modules/ in desired file. Used so that
     flask_migrate does not miss models when migrating
@@ -11,7 +14,9 @@ def autoload_models():
     -------
     None
     """
-    print("Auto importing models")
+    click.echo("Auto importing models...")
+    click.echo(SEP_CHAR * SEP_NUM)
+
     for folder in os.listdir("modules"):
         if folder.startswith("__"):
             continue
@@ -26,13 +31,19 @@ def autoload_models():
                         folder, sub_folder
                     )
                     importlib.import_module(to_load_submodel)
-                    print("[x]", "imported", to_load_submodel)
+                    if verbose:
+                        click.echo(f"[x] imported {to_load_submodel}")
                 except Exception as e:
-                    print("[ ]", e)
+                    if verbose:
+                        click.echo(f"[ ] {e}")
         else:
             try:
                 to_load = "modules.{}.models".format(folder)
                 importlib.import_module(to_load)
-                print("[x]", "imported", to_load)
+                if verbose:
+                    click.echo(f"[x] imported {to_load}")
             except Exception as e:
-                print("[ ]", e)
+                if verbose:
+                    click.echo(f"[ ] {e}")
+
+    click.echo("")

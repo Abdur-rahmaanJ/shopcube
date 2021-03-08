@@ -1,6 +1,7 @@
 import os
 import pytest
 from shopyo.api.scripts import cli
+from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
 
 class TestCliCreateBox:
@@ -321,21 +322,20 @@ class TestCliClean:
 
     def test_clean_with_no_verbose_on_empty_dir(self, tmpdir, flask_app):
         """
-        run `shopyo clean2` on the following empty directory
+        run `shopyo clean2` on empty directory
         """
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
         result = runner.invoke(cli, ["clean2"])
-        SEP_CHAR = "#"
-        SEP_NUM = 23
-        expect_out = SEP_CHAR * SEP_NUM + "\n\n" + "Cleaning...\n"
+        expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
         assert expect_out == result.output
 
     def test_clean_with_no_verbose_on_all_files(self, tmpdir, flask_app):
         """
-        run `shopyo clean2` on the following empty directory
+        run `shopyo clean2` in directory with all files(shopyo.db,
+        migrations/, __pycahce__/)
         """
         pycache_path = tmpdir.mkdir("__pycache__")
         shopyo_path = tmpdir.join("shopyo.db")
@@ -344,9 +344,7 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
         result = runner.invoke(cli, ["clean2"])
-        SEP_CHAR = "#"
-        SEP_NUM = 23
-        expect_out = SEP_CHAR * SEP_NUM + "\n\n" + "Cleaning...\n"
+        expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
         assert expect_out == result.output
