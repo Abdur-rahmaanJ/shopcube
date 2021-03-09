@@ -14,6 +14,13 @@ def is_valid_slug(text):
     slug_regex = re.compile(r"^[-a-zA-Z0-9_]+$")
     return slug_regex.match(text)
 
+def is_valid_url(url):
+    protocol = r'^((?:http|ftp)s?://)?'
+    domain = r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|localhost)'
+    ipv4 = r'(?:25[0-5]|2[0-4]\d|[0-1]?\d?\d)(?:\.(?:25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}'
+    port = r'(?::\d+)?(?:/?|[/?]\S+)$'
+    url_regex = re.compile(protocol + domain + "|" + ipv4 + port, re.IGNORECASE)
+    return url_regex.match(url)
 
 def verify_slug(form, field):
 
