@@ -11,9 +11,9 @@ from init import db
 from shopyo.api.cmd_helper import tryrmcache
 from shopyo.api.cmd_helper import tryrmfile
 from shopyo.api.cmd_helper import tryrmtree
-from shopyo.api.path import root_path
-from shopyo.api.path import static_path
-from shopyo.api.path import modules_path
+from init import root_path
+from init import static_path
+from init import modules_path
 from shopyo.api.file import trymkdir
 from shopyo.api.file import trymkfile
 from shopyo.api.file import get_folders

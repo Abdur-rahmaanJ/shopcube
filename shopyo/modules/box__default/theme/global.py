@@ -3,7 +3,7 @@ from flask import url_for
 import os
 import json
 
-from shopyo.api.path import themes_path
+from init import themes_path
 from modules.box__default.settings.helpers import get_setting
 
 
