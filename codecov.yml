@@ -3,12 +3,12 @@ codecov:
 
 coverage:
   precision: 2
-  round: up
-  range: "65...100"
+  round: down
+  range: "70...100"
   status:
     project:
       default:
-        threshold: 0.1%
+        threshold: 1%
 
 parsers:
   gcov:

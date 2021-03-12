@@ -18,7 +18,7 @@ from sqlalchemy import exists
 
 # from config import Config
 
-from shopyo.api.init import db
+from init import db
 
 from .admin import admin_required
 from modules.box__default.auth.models import Role

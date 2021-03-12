@@ -73,7 +73,9 @@ setup(
     packages=["shopyo"],
     include_package_data=True,
     python_requires=">=3.6",
-    install_requires=open(os.path.join(here, "requirements.txt"), encoding="utf-8")
+    install_requires=open(
+        os.path.join(here, "requirements.txt"), encoding="utf-8"
+    )
     .read()
     .split("\n"),  # Optional
     project_urls={  # Optional

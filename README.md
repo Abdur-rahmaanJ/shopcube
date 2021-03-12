@@ -30,9 +30,7 @@ It ships with common business needs by default
 then
 ```
 shopyo new blog
-cd blog
-python -m pip install -r requirements.txt
-cd blog
+cd blog/blog
 python manage.py initialise
 python manage.py rundebug
 ```
@@ -43,7 +41,7 @@ It is recommended to use a venv in root folder.
 
 If for dev install dev_requirements.txt also. 
 
-`python -m pip install -r requirements.txt -r dev_requirements.txt`
+`python -m pip install -r dev_requirements.txt`
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 

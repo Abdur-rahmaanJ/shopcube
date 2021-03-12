@@ -10,7 +10,7 @@ import datetime
 from flask import url_for
 
 from app import create_app
-from shopyo.api.init import db as _db
+from init import db as _db
 from modules.box__default.auth.models import User
 from modules.box__default.settings.models import Settings
 
