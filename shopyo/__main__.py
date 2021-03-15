@@ -284,7 +284,6 @@ shopyo/static/uploads/subcategory/
 shopyo/static/modules/
 
 # ignore secrets
-config.py
 config.json
 
 """
