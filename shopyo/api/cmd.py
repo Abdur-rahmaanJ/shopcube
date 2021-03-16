@@ -331,8 +331,7 @@ def create_module_in_box(modulename, boxname):
         create_module(modulename, base_path=module_path)
 
 
-def collectstatic(target_module=None):
-
+def collectstatic(target_module=None, static_path_=None, modules_path_=None):
     """
     Copies ``module/static`` into ``/static/modules/module``.
     In static it becomes like
@@ -357,15 +356,19 @@ def collectstatic(target_module=None):
     None
 
     """
-    modules_path_in_static = os.path.join(static_path, "modules")
+    if static_path_ is None:
+        static_path_ = static_path
+    if modules_path_ is None:
+        modules_path_ = modules_path
+    modules_path_in_static = os.path.join(static_path_, "modules")
 
     if target_module is None:
         # clear modules dir if exists.
         tryrmtree(modules_path_in_static)
         # look for static folders in all project
-        for folder in get_folders(modules_path):
+        for folder in get_folders(modules_path_):
             if folder.startswith("box__"):
-                box_path = os.path.join(modules_path, folder)
+                box_path = os.path.join(modules_path_, folder)
                 for subfolder in get_folders(box_path):
                     module_name = subfolder
                     module_static_folder = os.path.join(
@@ -380,7 +383,7 @@ def collectstatic(target_module=None):
             else:
                 module_name = folder
                 module_static_folder = os.path.join(
-                    modules_path, folder, "static"
+                    modules_path_, folder, "static"
                 )
                 if not os.path.exists(module_static_folder):
                     continue
@@ -391,12 +394,12 @@ def collectstatic(target_module=None):
     else:
         # copy only module's static folder
         module_static_folder = os.path.join(
-            modules_path, target_module, "static"
+            modules_path_, target_module, "static"
         )
         if os.path.exists(module_static_folder):
             if target_module.startswith("box__"):
                 if "/" in target_module:
-                    module_name = target_module.split("/")[1]
+                    module_name = target_module
                 else:
                     print("Could not understand module name")
                     sys.exit()
