@@ -396,7 +396,7 @@ def collectstatic(target_module=None):
         if os.path.exists(module_static_folder):
             if target_module.startswith("box__"):
                 if "/" in target_module:
-                    module_name = target_module.split("/")[1]
+                    module_name = target_module
                 else:
                     print("Could not understand module name")
                     sys.exit()
