@@ -7,12 +7,10 @@ import subprocess
 import sys
 import importlib
 
-
 from init import db
 from init import root_path
 from init import static_path
 from init import modules_path
-
 from shopyo.api.file import trymkdir
 from shopyo.api.file import trymkfile
 from shopyo.api.file import get_folders
