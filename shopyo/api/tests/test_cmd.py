@@ -5,6 +5,7 @@ Uses pytest with fixture built in fixtures
 """
 import os
 from shopyo.api.cmd import clean
+from shopyo.api.cmd import collectstatic
 import pytest
 
 
@@ -308,3 +309,43 @@ class TestCmdClean:
         assert expected_err_migrations in captured.err
 
     # TODO: add test_clean for postgresSQL to see if tables dropped @rehmanis
+
+
+class TestCommandlineCollectstatic:
+    def test_collectstatic(self, tmp_path, tmpdir):
+        '''
+        INPUT: 
+
+        modules/
+            box__rand/
+                r1/
+                    static/
+                        norm.css
+            normal_mod/
+                static/
+                    norm.css
+        
+        OUTPUT EXPECTED:
+
+        static/
+            modules/
+                box__rand/
+                    r1/
+                        r1.css
+                normal_mod/
+                    norm.css
+        '''
+        modules_path_ = tmpdir.mkdir("modules")
+        box_rand = modules_path_.mkdir('box__rand')
+        box_rand_r1 = box_rand.mkdir('r1')
+        r1_css = box_rand_r1.mkdir('static').join("r1.css")
+        r1_css.write('content')
+        normal_module = modules_path_.mkdir('normal_mod')
+        norm_css = normal_module.mkdir('static').join("norm.css")
+        norm_css.write('content')
+
+        static_path_ = tmpdir.mkdir("static")
+        collectstatic(static_path_=static_path_, modules_path_=modules_path_)
+        assert os.path.exists(os.path.join(static_path_, 'modules', 'box__rand', 'r1', 'r1.css')) is True
+        assert os.path.exists(os.path.join(static_path_, 'modules', 'normal_mod', 'norm.css')) is True
+        # collectstatic

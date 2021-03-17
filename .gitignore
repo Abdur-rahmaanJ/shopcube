@@ -136,3 +136,4 @@ config.json
 
 shopyo/.tox/
 .tox/
+docs/.doctrees/

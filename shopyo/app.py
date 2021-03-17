@@ -24,7 +24,7 @@ from init import login_manager
 from init import ma
 from init import migrate
 from init import mail
-from shopyo.api.path import modules_path
+from init import modules_path
 from shopyo.api.file import trycopy
 
 #

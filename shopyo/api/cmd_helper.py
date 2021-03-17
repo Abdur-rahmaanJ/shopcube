@@ -6,9 +6,9 @@ import sys
 import click
 import importlib
 
-from shopyo.api.path import root_path
-from shopyo.api.path import static_path
-from shopyo.api.path import modules_path
+from init import root_path
+from init import static_path
+from init import modules_path
 from shopyo.api.file import get_folders
 from shopyo.api.file import trycopytree
 from shopyo.api.file import tryrmcache

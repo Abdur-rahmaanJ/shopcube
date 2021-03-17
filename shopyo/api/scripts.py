@@ -2,6 +2,8 @@ import click
 import os
 import sys
 
+sys.path.append(os.getcwd())
+
 from flask.cli import with_appcontext
 from flask.cli import FlaskGroup
 from subprocess import run, PIPE
@@ -12,8 +14,6 @@ from shopyo.api.file import trymkdir
 from shopyo.api.database import autoload_models
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
-
-sys.path.append(os.getcwd())
 
 try:
     from app import create_app
