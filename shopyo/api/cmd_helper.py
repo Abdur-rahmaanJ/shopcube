@@ -85,7 +85,14 @@ def _collectstatic(target_module="modules", verbose=False):
     # if target_module path does not start with 'modules\' add it to as a
     # prefix to the target_module path
     if target_module != "modules":
-        target_module_start = re.split(r"[/|\\]", target_module, maxsplit=1)[0]
+
+        # normalize the target_module path to be same as that of OS
+        target_module = re.split(r"[/|\\]+", target_module)
+        target_module_start = target_module[0]
+        target_module = os.path.join(*target_module)
+
+        # add the modules folder to start of target_module incase it is not
+        # already present in the path
         if target_module_start != "modules":
             target_module = (
                 os.path.join("modules", target_module)
@@ -93,7 +100,8 @@ def _collectstatic(target_module="modules", verbose=False):
 
     # get the full path for modules (the src). Defaults to ./modules
     modules_path = os.path.join(root_path, target_module)
-    # get the full path of static folder to copyt to (the dest).
+
+    # get the full path of static folder to copy to (the dest).
     # always ./static/modules
     modules_path_in_static = os.path.join(static_path, "modules")
 

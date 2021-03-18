@@ -389,7 +389,7 @@ class TestCliCollectstatic:
     @pytest.mark.usefixtures("fake_foo_project")
     @pytest.mark.parametrize(
         "src,expected",
-        [   
+        [
             ("box__default", "box__default/foo/foo.css"),
             ("box__default", "box__default/zoo/zoo.css"),
             ("box__default/foo", "box__default/foo/foo.css"),
@@ -407,8 +407,6 @@ class TestCliCollectstatic:
         assert result.output == expected_out
         assert os.path.exists(f"static/modules/{expected}")
         assert len(os.listdir("static/modules")) == 1
-
-        print(os.getcwd())
 
     @pytest.mark.usefixtures("fake_foo_project")
     def test_collectstatic_with_invalid_arg(self, cli_runner):
@@ -435,7 +433,6 @@ class TestCliCollectstatic:
         result = cli_runner('--config=testing', "collectstatic2", option)
         expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n"
         expected_out2 = "[x] done copying"
-        print(os.getcwd())
 
         assert result.exit_code == 0
         assert expected_out1 in result.output
