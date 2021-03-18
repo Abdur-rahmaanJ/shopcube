@@ -1,7 +1,20 @@
 import os
 import pytest
+from click.testing import CliRunner
 from shopyo.api.scripts import cli
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
+
+
+@pytest.fixture(scope='session')
+def cli_runner():
+    """Fixture that returns a helper function to run the cookiecutter cli."""
+    runner = CliRunner()
+
+    def cli_main(*cli_args, **cli_kwargs):
+        """Run cookiecutter cli main with the given args."""
+        return runner.invoke(cli, cli_args, **cli_kwargs)
+
+    return cli_main
 
 
 class TestCliCreateBox:
@@ -353,3 +366,77 @@ class TestCliClean:
         assert os.path.exists(migrations_path) is False
 
     # TODO: add test_clean for MySQL to see if tables dropped @rehmanis
+
+
+class TestCliInitialise:
+    pass
+
+
+class TestCliCollectstatic:
+
+    @pytest.mark.usefixtures("fake_foo_project")
+    def test_collectstatic_with_default_src(self, cli_runner):
+        result = cli_runner('--config=testing', "collectstatic2")
+        expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+
+        assert result.exit_code == 0
+        assert result.output == expected_out
+        assert os.path.exists("static/modules/bar/bar.css")
+        assert os.path.exists("static/modules/box__default/foo/foo.css")
+        assert len(os.listdir("static/modules")) == 2
+        assert len(os.listdir("static/modules/box__default")) == 2
+
+    @pytest.mark.usefixtures("fake_foo_project")
+    @pytest.mark.parametrize(
+        "src,expected",
+        [   
+            ("box__default", "box__default/foo/foo.css"),
+            ("box__default", "box__default/zoo/zoo.css"),
+            ("box__default/foo", "box__default/foo/foo.css"),
+            ("bar", "bar/bar.css"),
+            ("box__default\\foo", "box__default/foo/foo.css"),
+            ("modules/bar", "bar/bar.css"),
+            ("modules\\box__default/foo", "box__default/foo/foo.css"),
+        ]
+    )
+    def test_collectstatic_with_valid_arg(self, src, expected, cli_runner):
+        result = cli_runner('--config=testing', "collectstatic2", src)
+        expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+
+        assert result.exit_code == 0
+        assert result.output == expected_out
+        assert os.path.exists(f"static/modules/{expected}")
+        assert len(os.listdir("static/modules")) == 1
+
+        print(os.getcwd())
+
+    @pytest.mark.usefixtures("fake_foo_project")
+    def test_collectstatic_with_invalid_arg(self, cli_runner):
+
+        result = cli_runner('--config=testing', "collectstatic2", "foobar")
+        modules_path = os.path.join("modules", "foobar")
+        modules_path = os.path.join(os.getcwd(), modules_path)
+        expected_out = f"[ ] path: {modules_path} does not exist"
+
+        assert result.exit_code != 0
+        assert expected_out in result.output
+        assert not os.path.exists("static/modules")
+
+    @pytest.mark.usefixtures("fake_foo_project")
+    @pytest.mark.parametrize(
+        "option",
+        [
+            "-v",
+            "--verbose"
+        ]
+    )
+    def test_collectstatic_with_verbose(self, cli_runner, option):
+
+        result = cli_runner('--config=testing', "collectstatic2", option)
+        expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n"
+        expected_out2 = "[x] done copying"
+        print(os.getcwd())
+
+        assert result.exit_code == 0
+        assert expected_out1 in result.output
+        assert expected_out2 in result.output

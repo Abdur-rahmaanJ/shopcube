@@ -100,7 +100,7 @@ def trycopytree(source, dest, verbose=False):
     try:
         shutil.copytree(source, dest)
         if verbose:
-            print("done copying {} to {}".format(source, dest))
+            print("[x] done copying {} to {}".format(source, dest))
     except Exception as e:
         print(e)
 

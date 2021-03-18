@@ -342,26 +342,20 @@ def collectstatic(target_module=None, static_path_=None, modules_path_=None):
     """
     Copies ``module/static`` into ``/static/modules/module``.
     In static it becomes like
-
     ::
-
        static/
             modules/
                 box_something/
                     modulename
                 modulename2
-
-
     Parameters
     ----------
     target_module: str
         name of module, in alphanumeric-underscore,
         supports ``module`` or ``box__name/module``
-
     Returns
     -------
     None
-
     """
     if static_path_ is None:
         static_path_ = static_path

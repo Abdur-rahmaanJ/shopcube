@@ -2,6 +2,7 @@ import importlib
 import os
 import json
 import jinja2
+import sys
 from flask import Flask
 from flask import send_from_directory
 from flask import redirect
@@ -88,7 +89,14 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 def create_app(config_name="development"):
 
     app = Flask(__name__, instance_relative_config=True)
-    configuration = app_config[config_name]
+
+    try:
+        configuration = app_config[config_name]
+    except KeyError as e:
+        print(f"Invalid config name {e}. Available configurations are:")
+        print(list(app_config.keys()))
+        sys.exit(1)
+
     app.config.from_object(configuration)
 
     if config_name != "testing":

@@ -4,11 +4,10 @@ Helper utility functions for commandline api
 import os
 import sys
 import click
+import re
 import importlib
+from flask import current_app
 
-from init import root_path
-from init import static_path
-from init import modules_path
 from shopyo.api.file import get_folders
 from shopyo.api.file import trycopytree
 from shopyo.api.file import tryrmcache
@@ -17,7 +16,7 @@ from shopyo.api.file import tryrmtree
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
 
-def _clean(db, verbose=False):
+def _clean(verbose=False):
     """
     Deletes shopyo.db and migrations/ if present in current working directory.
     Deletes all __pycache__ folders starting from current working directory
@@ -35,10 +34,9 @@ def _clean(db, verbose=False):
         ...
 
     """
-
     click.echo("Cleaning...")
     click.echo(SEP_CHAR * SEP_NUM)
-
+    db = current_app.extensions['sqlalchemy'].db
     db.drop_all()
     db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
 
@@ -52,7 +50,7 @@ def _clean(db, verbose=False):
     click.echo("")
 
 
-def _collectstatic(target_module=None, verbose=False):
+def _collectstatic(target_module="modules", verbose=False):
 
     """
     Copies ``module/static`` into ``/static/modules/module``.
@@ -80,58 +78,86 @@ def _collectstatic(target_module=None, verbose=False):
     """
     click.echo("Collecting static...")
     click.echo(SEP_CHAR * SEP_NUM)
+
+    root_path = os.getcwd()
+    static_path = os.path.join(root_path, "static")
+
+    # if target_module path does not start with 'modules\' add it to as a
+    # prefix to the target_module path
+    if target_module != "modules":
+        target_module_start = re.split(r"[/|\\]", target_module, maxsplit=1)[0]
+        if target_module_start != "modules":
+            target_module = (
+                os.path.join("modules", target_module)
+            )
+
+    # get the full path for modules (the src). Defaults to ./modules
+    modules_path = os.path.join(root_path, target_module)
+    # get the full path of static folder to copyt to (the dest).
+    # always ./static/modules
     modules_path_in_static = os.path.join(static_path, "modules")
 
-    if target_module is None:
-        # clear modules dir if exists.
-        tryrmtree(modules_path_in_static)
-        # look for static folders in all project
-        for folder in get_folders(modules_path):
-            if folder.startswith("box__"):
-                box_path = os.path.join(modules_path, folder)
-                for subfolder in get_folders(box_path):
-                    module_name = subfolder
-                    module_static_folder = os.path.join(
-                        box_path, subfolder, "static"
-                    )
-                    if not os.path.exists(module_static_folder):
-                        continue
-                    module_in_static_dir = os.path.join(
-                        modules_path_in_static, folder, module_name
-                    )
-                    trycopytree(module_static_folder, module_in_static_dir)
-            else:
-                module_name = folder
+    # terminate if modules_path (i.e. src to copy static from) does not exist
+    if not os.path.exists(modules_path):
+        click.echo(f"[ ] path: {modules_path} does not exist")
+        sys.exit(1)
+
+    # clear ./static/modules before coping to it
+    tryrmtree(modules_path_in_static, verbose=verbose)
+
+    # look for static folders in all project
+    for folder in get_folders(modules_path):
+        if folder.startswith("box__"):
+            box_path = os.path.join(modules_path, folder)
+            for subfolder in get_folders(box_path):
+                module_name = subfolder
                 module_static_folder = os.path.join(
-                    modules_path, folder, "static"
+                    box_path, subfolder, "static"
                 )
                 if not os.path.exists(module_static_folder):
                     continue
                 module_in_static_dir = os.path.join(
-                    modules_path_in_static, module_name
+                    modules_path_in_static, folder, module_name
                 )
-                trycopytree(module_static_folder, module_in_static_dir)
-    else:
-        # copy only module's static folder
-        module_static_folder = os.path.join(
-            modules_path, target_module, "static"
-        )
-        if os.path.exists(module_static_folder):
-            if target_module.startswith("box__"):
-                if "/" in target_module:
-                    module_name = target_module.split("/")[1]
-                else:
-                    print("Could not understand module name")
-                    sys.exit()
+
+                # copy from ./modules/<box__name>/<submodule> to
+                # ./static/modules
+                trycopytree(
+                    module_static_folder,
+                    module_in_static_dir,
+                    verbose=verbose
+                )
+        else:
+            path_split = ""
+
+            # split the target module if default target_module path name is
+            # not used
+            if target_module != "modules":
+                path_split = re.split(r"[/|\\]", target_module, maxsplit=1)
+                path_split = path_split[1]
+
+            if folder.lower() == "static":
+                module_static_folder = os.path.join(
+                    modules_path, folder
+                )
+                module_name = path_split
             else:
-                module_name = target_module
+                module_static_folder = os.path.join(
+                    modules_path, folder, "static"
+                )
+                module_name = os.path.join(path_split, folder)
+
+            if not os.path.exists(module_static_folder):
+                continue
             module_in_static_dir = os.path.join(
                 modules_path_in_static, module_name
             )
-            tryrmtree(module_in_static_dir)
-            trycopytree(module_static_folder, module_in_static_dir)
-        else:
-            print("Module does not exist")
+            tryrmtree(module_in_static_dir, verbose=verbose)
+            trycopytree(
+                module_static_folder,
+                module_in_static_dir,
+                verbose=verbose
+            )
 
     click.echo("")
 
@@ -139,6 +165,8 @@ def _collectstatic(target_module=None, verbose=False):
 def _upload_data(verbose=False):
     click.echo("Uploading initial data to db...")
     click.echo(SEP_CHAR * SEP_NUM)
+
+    root_path = os.getcwd()
 
     for folder in os.listdir(os.path.join(root_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__
