@@ -172,7 +172,7 @@ Support team if you are stuck
 ![](screenshots/module_demo.png)
 ![](screenshots/checkout.png)
 
-## Supporters
+## Supporters:
 
 [![Stargazers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/stars/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/stargazers)
 
