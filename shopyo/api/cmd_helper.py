@@ -6,13 +6,17 @@ import sys
 import click
 import re
 import importlib
+import json
 from flask import current_app
+
 
 from shopyo.api.file import get_folders
 from shopyo.api.file import trycopytree
 from shopyo.api.file import tryrmcache
 from shopyo.api.file import tryrmfile
 from shopyo.api.file import tryrmtree
+from shopyo.api.file import trymkdir
+from shopyo.api.file import trymkfile
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
 
@@ -209,3 +213,188 @@ def _upload_data(verbose=False):
                     click.echo(f"[ ] {e}")
 
     click.echo("")
+
+
+def _create_box(boxname, verbose=False):
+
+    base_path = f"modules/{boxname}"
+    if os.path.exists(base_path):
+
+        click.echo(
+            f"[ ] unable to create. Box {base_path} already exists!",
+            err=True
+        )
+        sys.exit(1)
+
+    else:
+        trymkdir(base_path, verbose=verbose)
+
+        info_json = {
+            "display_string": boxname.capitalize(),
+            "box_name": boxname,
+            "author": {
+                "name": "",
+                "website": "",
+                "mail": ""
+            }
+        }
+
+        with open(f"{base_path}/box_info.json", 'w', encoding='utf-8') as f:
+            json.dump(info_json, f, indent=4, sort_keys=True)
+
+        if verbose:
+            click.echo("'box_info.json' content:")
+            click.echo(json.dumps(info_json, indent=4, sort_keys=True))
+
+
+def _create_module(modulename, base_path=None, verbose=False):
+    """
+    creates module with the structure defined in the modules section in docs
+
+    Parameters
+    ----------
+    modulename: str
+        name of module, in alphanumeric-underscore
+
+    Returns
+    -------
+    None
+
+    """
+
+    if bool(re.match(r"^[A-Za-z0-9_]+$", modulename)) is False:
+        click.echo(
+            "[ ] Error: modulename is not valid, please use alphanumeric\
+             and underscore only"
+        )
+        sys.exit()
+
+    click.echo(f"creating module: {modulename}")
+
+    if base_path is None:
+        base_path = os.path.join("modules", modulename)
+
+    trymkdir(base_path, verbose=verbose)
+    trymkdir(os.path.join(base_path, "templates"), verbose=verbose)
+    trymkdir(os.path.join(base_path, "templates", modulename), verbose=verbose)
+    trymkdir(os.path.join(base_path, "tests"), verbose=verbose)
+    trymkdir(os.path.join(base_path, "static"), verbose=verbose)
+    test_func_content = """
+# Please add your functional tests to this file.
+"""
+    test_model_content = """
+# Please add your models tests to this file.
+"""
+    test_func_path = os.path.join(
+        base_path, "tests", f"test_{modulename}_functional.py"
+    )
+    test_models_path = os.path.join(
+        base_path, "tests", f"test_{modulename}_models.py"
+    )
+    trymkfile(
+        test_func_path, test_func_content, verbose=verbose
+    )
+    trymkfile(
+        test_models_path, test_model_content, verbose=verbose
+    )
+    view_content = """
+from shopyo.api.module import ModuleHelp
+# from flask import render_template
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
+# from flask import request
+
+# from shopyo.api.html import notify_success
+# from shopyo.api.forms import flash_errors
+
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
+
+
+@module_blueprint.route("/")
+def index():
+    return mhelp.info['display_string']
+
+# If "dashboard": "/dashboard" is set in info.json
+#
+# @module_blueprint.route("/dashboard", methods=["GET"])
+# def dashboard():
+
+#     context = mhelp.context()
+
+#     context.update({
+
+#         })
+#     return mhelp.render('dashboard.html', **context)
+"""
+    trymkfile(
+        os.path.join(base_path, "view.py"), view_content, verbose=verbose
+    )
+    trymkfile(os.path.join(base_path, "forms.py"), "", verbose=verbose)
+    trymkfile(os.path.join(base_path, "models.py"), "", verbose=verbose)
+
+    info_json = {
+        "display_string": modulename.capitalize(),
+        "module_name": modulename,
+        "type": "show",
+        "fa-icon": "fa fa-store",
+        "url_prefix": f"/{modulename}",
+        "author": {
+            "name": "",
+            "website": "",
+            "mail": ""
+        }
+    }
+
+    info_json_path = os.path.join(base_path, "info.json")
+
+    with open(info_json_path, 'w', encoding='utf-8') as f:
+        json.dump(info_json, f, indent=4, sort_keys=True)
+
+    if verbose:
+        click.echo(f"[x] file created at '{info_json_path}' with content: ")
+        click.echo(json.dumps(info_json, indent=4, sort_keys=True))
+
+    blocks_path = os.path.join(base_path, "templates", modulename, "blocks")
+    trymkdir(blocks_path, verbose=verbose)
+    trymkfile(os.path.join(blocks_path, "sidebar.html"), "", verbose=verbose)
+
+    dashboard_file_content = """
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{% include info['module_name']+'/blocks/sidebar.html' %}
+{% endblock %}
+{% block content %}
+<br>
+
+<div class="card">
+    <div class="card-body">
+
+    </div>
+ </div>
+{% endblock %}
+"""
+    trymkfile(
+        os.path.join(base_path, "templates", modulename, "dashboard.html"),
+        dashboard_file_content,
+        verbose=verbose
+    )
+
+    global_file_content = """
+available_everywhere = {
+
+}
+"""
+    trymkfile(
+        os.path.join(base_path, "global.py"),
+        global_file_content,
+        verbose=verbose
+    )

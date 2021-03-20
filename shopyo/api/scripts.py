@@ -3,12 +3,12 @@ import os
 import sys
 
 from flask.cli import FlaskGroup, pass_script_info
-from flask.cli import with_appcontext
 from subprocess import run, PIPE
 from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
 from shopyo.api.cmd_helper import _upload_data
-from shopyo.api.file import trymkdir
+from shopyo.api.cmd_helper import _create_box
+from shopyo.api.cmd_helper import _create_module
 from shopyo.api.database import autoload_models
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
@@ -36,41 +36,73 @@ def cli(info, **parmams):
 @cli.command("startbox2")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 @click.argument("boxname")
-@with_appcontext
 def create_box(boxname, verbose):
     """creates box with box_info.json.
 
     BOXNAME is the name of the box
     """
-    import json
+    _create_box(boxname, verbose=verbose)
 
-    base_path = f"modules/box__{boxname}"
-    if os.path.exists(base_path):
 
-        if verbose:
+@cli.command("createmodule")
+@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.argument("modulename")
+@click.argument("boxname", required=False, default="")
+def create_module(modulename, boxname, verbose):
+    """
+    create a module MODULENAME inside modules/. If BOXNAME is provided,
+    creates the module inside modules/BOXNAME.
+
+    \b
+    If box BOXNAME does not exist, it is created.
+    If MODULENAME already exists (either inside BOXNAME for the case BOXNAME is
+    provided or inside modules/ when BOXNAME is not provided), an error
+    is thrown and command is terminated.
+
+    structure of modules created is as follows:
+
+        <add module/box directory tree here>
+
+    BOXNAME the name of box to create the MODULENAME in. Must start with
+    ``box__``, otherwise error is thrown
+
+    MODULENAME the name of module to be created. Must not start with
+    ``box__``, otherwise error is thrown
+
+    """
+    if boxname != "" and not boxname.startswith("box__"):
+        click.echo(
+            f"[ ] Invalid BOXNAME '{boxname}'. "
+            "Boxes should start with box__"
+        )
+        sys.exit(1)
+
+    if modulename.startswith("box__"):
+        click.echo(
+            f"[ ] Invalid MODULENAME '{modulename}'. "
+            "MODULENAME cannot start with box__"
+        )
+        sys.exit(1)
+
+    module_path = os.path.join("modules", boxname, modulename)
+
+    if os.path.exists(module_path):
+        if boxname == "":
             click.echo(
-                f"[ ] unable to create. Box {base_path} already exists!",
-                err=True
+                f"[ ] Unable to create module '{modulename}'. "
+                f"Path '{module_path}' exists"
             )
-    else:
-        trymkdir(base_path, verbose=verbose)
+        else:
+            click.echo(
+                f"[ ] Unable to create module '{modulename}' in box"
+                f"'{boxname}. Path '{module_path}' exists"
+            )
+        sys.exit(1)
 
-        info_json = {
-            "display_string": boxname.capitalize(),
-            "box_name": boxname,
-            "author": {
-                "name": "",
-                "website": "",
-                "mail": ""
-            }
-        }
+    if boxname != "":
+        _create_box(boxname, verbose=verbose)
 
-        with open(f"{base_path}/box_info.json", 'w', encoding='utf-8') as f:
-            json.dump(info_json, f, indent=4)
-
-        if verbose:
-            click.echo("'box_info.json' content:")
-            click.echo(json.dumps(info_json, indent=4, sort_keys=True))
+    _create_module(modulename, base_path=module_path, verbose=verbose)
 
 
 @cli.command("collectstatic2")

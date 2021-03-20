@@ -20,42 +20,28 @@ def cli_runner():
 class TestCliCreateBox:
     """test the create_box command line api function"""
 
-    @pytest.mark.parametrize(
-        "flag_option",
-        [
-            (True, "-v"),
-            (True, "--verbose"),
-            (True, None)
-        ]
-    )
-    def test_create_existing_box(self, startbox_runner, flag_option):
-        expected = "[ ] unable to create. Box modules/box__"
-        result, _ = startbox_runner
-        _, option = flag_option
+    def test_create_existing_box(self, tmpdir, cli_runner):
+        tmpdir.mkdir("modules").mkdir("box__foo")
+        os.chdir(tmpdir)
+        result = cli_runner('--config=testing', "startbox2", "box__foo")
+        expected = "[ ] unable to create. Box modules/box__foo already exists!"
+
+        assert result.exit_code != 0
+        assert expected in result.output
+
+    @pytest.mark.parametrize("opt", ["-v", "--verbose"])
+    def test_create_unique_box(self, tmpdir, cli_runner, opt):
+        tmpdir.mkdir("modules")
+        os.chdir(tmpdir)
+        result = cli_runner('--config=testing', "startbox2", "box__foo", opt)
+        expected = "[X] Successfully created dir modules/box__foo"
 
         assert result.exit_code == 0
-
-        if option is not None:
-            assert expected in result.output
-
-    @pytest.mark.parametrize(
-        "flag_option",
-        [
-            (False, "-v"),
-            (False, "--verbose"),
-            (False, None)
-        ]
-    )
-    def test_create_unique_box(self, startbox_runner, flag_option):
-        result, path = startbox_runner
-        _, option = flag_option
-        expected = "[X] Successfully created dir modules/box__"
-
-        assert result.exit_code == 0
-        assert os.path.exists(path)
-
-        if option is not None:
-            assert expected in result.output
+        assert os.path.exists(os.path.join("modules", "box__foo"))
+        assert os.path.exists(
+            os.path.join("modules", "box__foo", "box_info.json")
+        )
+        assert expected in result.output
 
 
 @pytest.mark.order("last")

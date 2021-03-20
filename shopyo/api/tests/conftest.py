@@ -34,21 +34,21 @@ def startbox_runner(flask_app, tmpdir, flag_option):
         and the path of the for new box is returned as tuple
     """
     flag, option = flag_option
-    name = "foo"
+    boxname = "box__foo"
 
     if not bool(flag):
         modules_path = tmpdir.mkdir("modules")
-        path = os.path.join(modules_path, f"box__{name}")
+        path = os.path.join(modules_path, boxname)
     else:
-        path = tmpdir.mkdir("modules").mkdir(f"box__{name}")
+        path = tmpdir.mkdir("modules").mkdir(boxname)
 
     os.chdir(tmpdir)
     runner = flask_app.test_cli_runner()
 
     if option is None:
-        result = runner.invoke(cli, ["startbox2", name])
+        result = runner.invoke(cli, ["startbox2", boxname])
     else:
-        result = runner.invoke(cli, ["startbox2", name, option])
+        result = runner.invoke(cli, ["startbox2", boxname, option])
 
     yield result, path
 
