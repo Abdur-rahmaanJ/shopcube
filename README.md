@@ -153,6 +153,7 @@ We include some custom apps to get started and act as a demo:
 | site name | description
 |:---:|:---:|
 |Maurilearn.com|Elearning platform|
+|Linkolearn.com|Learn By links|
 
 # 📞 Contact
 
