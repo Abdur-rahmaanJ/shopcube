@@ -45,29 +45,8 @@ If for dev install dev_requirements.txt also.
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
-# Comparison 🟢🟡🟠🔴
 
-| ByDefault             | Shopyo     | Django     | Masonite   |
-|-----------------------|------------|------------|------------|
-| Templating            | Jinja      | Own        | Jinja      |
-| ORM                   | SQlAlchemy | Home Grown | Home Grown |
-| Modularity            | 🟢          | 🟡          | 🟠          |
-| Migrations            | 🟢          | 🟢          | 🟢          |
-| Auth                  | 🟢          | 🟢          | 🟢          |
-| Scaffolding           | 🟡          | 🟠          | 🟢          |
-| Mail                  | 🟢          | 🟢          | 🟢          |
-| Dashboard             | 🟢          | 🟢          | 🟠          |
-| Extend Command        | 🟢          | 🟢          | 🟢          |
-| Static                | 🟠          | 🟠          | 🟢          |
-| Packages              | 🔴          | 🟢          | 🟢          |
-| DB pre-populate       | 🟢          | 🟢          | 🟠          |
-| API Validation & Auth | 🔴          | 🔴          | 🟢          |
-| WebSockets            | 🔴          | 🔴          | 🟢          |
-| Queue                 | 🔴          | 🔴          | 🟢          |
-| Testing               | 🟢          | 🟢          | 🟢          |
-| Project Docs*         | 🟢          | 🔴          | 🔴          |
-| Internationalisation  | 🔴          | 🟢          | 🔴          |
-| Caching               | 🔴          | 🟢          | 🟢          |
+![](https://github.com/Abdur-rahmaanJ/shopyo/blob/dev/comparison.png)
 
 * Not framework docs but docs for the project you are building.
 
