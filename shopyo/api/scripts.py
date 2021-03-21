@@ -1,6 +1,7 @@
 import click
 import os
 import sys
+import re
 
 from flask.cli import FlaskGroup, pass_script_info
 from subprocess import run, PIPE
@@ -11,6 +12,7 @@ from shopyo.api.cmd_helper import _create_box
 from shopyo.api.cmd_helper import _create_module
 from shopyo.api.database import autoload_models
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
+from shopyo.api.validators import get_module_path_if_exists
 
 
 def create_shopyo_app(info):
@@ -41,6 +43,15 @@ def create_box(boxname, verbose):
 
     BOXNAME is the name of the box
     """
+    path = os.path.join("modules", boxname)
+
+    if os.path.exists(os.path.join("modules", boxname)):
+        click.echo(
+            f"[ ] unable to create. Box {path} already exists!",
+            err=True
+        )
+        sys.exit(1)
+
     _create_box(boxname, verbose=verbose)
 
 
@@ -73,35 +84,46 @@ def create_module(modulename, boxname, verbose):
     if boxname != "" and not boxname.startswith("box__"):
         click.echo(
             f"[ ] Invalid BOXNAME '{boxname}'. "
-            "Boxes should start with box__"
+            "BOXNAME should start with 'box__' prefix"
         )
         sys.exit(1)
 
-    if modulename.startswith("box__"):
+    if modulename.startswith("box_"):
         click.echo(
             f"[ ] Invalid MODULENAME '{modulename}'. "
-            "MODULENAME cannot start with box__"
+            "MODULENAME cannot start with box_ prefix"
         )
         sys.exit(1)
 
-    module_path = os.path.join("modules", boxname, modulename)
+    if not bool(re.match(r"^[A-Za-z0-9_]+$", modulename)):
+        click.echo(
+            "[ ] Error: MODULENAME is not valid, please use alphanumeric "
+            "and underscore only"
+        )
+        sys.exit(1)
 
-    if os.path.exists(module_path):
-        if boxname == "":
-            click.echo(
-                f"[ ] Unable to create module '{modulename}'. "
-                f"Path '{module_path}' exists"
-            )
-        else:
-            click.echo(
-                f"[ ] Unable to create module '{modulename}' in box"
-                f"'{boxname}. Path '{module_path}' exists"
-            )
+    if boxname != "" and not bool(re.match(r"^[A-Za-z0-9_]+$", boxname)):
+        click.echo(
+            "[ ] Error: BOXNAME is not valid, please use alphanumeric "
+            "and underscore only"
+        )
+        sys.exit(1)
+
+    module_path = get_module_path_if_exists(modulename)
+
+    if module_path is not None:
+        click.echo(
+            f"[ ] Unable to create module '{modulename}'. "
+            f"MODULENAME already exists inside modules/ at {module_path}"
+        )
         sys.exit(1)
 
     if boxname != "":
-        _create_box(boxname, verbose=verbose)
+        box_path = get_module_path_if_exists(boxname)
+        if box_path is None:
+            _create_box(boxname, verbose=verbose)
 
+    module_path = os.path.join("modules", boxname, modulename)
     _create_module(modulename, base_path=module_path, verbose=verbose)
 
 

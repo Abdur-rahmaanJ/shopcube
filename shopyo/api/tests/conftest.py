@@ -54,7 +54,7 @@ def startbox_runner(flask_app, tmpdir, flag_option):
 
 
 @pytest.fixture
-def fake_foo_project(tmp_path):
+def fake_foo_proj(tmp_path):
     """creates a fake shopyo like directory structure as shown below
 
     foo/
@@ -66,13 +66,15 @@ def fake_foo_project(tmp_path):
                 baz/
                     static/
                         baz.css
+                box__bizhelp/
+                    demo/
+                        demo.py
                 box__default/
                     foo/
                         static/
                             foo.css
                     foozoo/
-                        form/
-                            foozoo.py
+                        foozoo.py
                     zoo/
                         static/
                             zoo.css
@@ -88,22 +90,25 @@ def fake_foo_project(tmp_path):
     project_path.mkdir(parents=True)
     static_path = project_path / "static"
     module_path = project_path / "modules"
+    demo_path = module_path / "box__bizhelp/demo/demo.py"
     foo_path = module_path / "box__default/foo/static/foo.css"
     zoo_path = module_path / "box__default/zoo/static/zoo.css"
-    foozoo_path = module_path / "box__default/foozoo/form/foozoo.py"
+    foozoo_path = module_path / "box__default/foozoo/foozoo.py"
     bar_path = module_path / "bar/static/bar.css"
     baz_path = module_path / "baz/model/baz.py"
     static_path.mkdir()
     module_path.mkdir()
+    demo_path.parent.mkdir(parents=True)
     foo_path.parent.mkdir(parents=True)
     zoo_path.parent.mkdir(parents=True)
     foozoo_path.parent.mkdir(parents=True)
     bar_path.parent.mkdir(parents=True)
     baz_path.parent.mkdir(parents=True)
+    demo_path.write_text("demo")
     foo_path.write_text("foo")
     zoo_path.write_text("zoo")
     foozoo_path.write_text("foozoo")
     bar_path.write_text("bar")
     baz_path.write_text("baz")
     os.chdir(project_path)
-    yield
+    yield project_path

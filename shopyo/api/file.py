@@ -14,11 +14,11 @@ def tryrmcache(dir_name, verbose=False):
     Args:
         dir_name(string) : path from where to start removing pycache
     """
-    directory_list = list()
+    # directory_list = list()
     is_removed = False
     for root, dirs, files in os.walk(dir_name, topdown=False):
         for name in dirs:
-            directory_list.append(os.path.join(root, name))
+            # directory_list.append(os.path.join(root, name))
             if name == "__pycache__":
                 shutil.rmtree(os.path.join(root, name))
                 is_removed = True
@@ -144,7 +144,7 @@ def trymkdir(path, verbose=False):
     try:
         os.mkdir(path)
         if verbose:
-            print(f"[X] Successfully created dir {path}")
+            print(f"[x] Successfully created dir {path}")
     except Exception as e:
         print(e)
 
@@ -168,11 +168,10 @@ def trymkfile(path, content, verbose=False):
         with open(path, "w+") as f:
             f.write(content)
         if verbose:
-            print("file created at {}".format(path))
-            print("with content:")
-            print(content)
+            click.echo(f"[x] file {path} created with content: ")
+            click.echo(content)
     except Exception as e:
-        print(e)
+        click.echo(f"[ ] {e}")
 
 
 def absdiroffile(filepath):

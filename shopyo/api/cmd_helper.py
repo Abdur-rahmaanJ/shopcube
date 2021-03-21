@@ -217,39 +217,33 @@ def _upload_data(verbose=False):
 
 def _create_box(boxname, verbose=False):
 
-    base_path = f"modules/{boxname}"
-    if os.path.exists(base_path):
+    base_path = os.path.join("modules", boxname)
+    trymkdir(base_path, verbose=verbose)
 
-        click.echo(
-            f"[ ] unable to create. Box {base_path} already exists!",
-            err=True
-        )
-        sys.exit(1)
-
-    else:
-        trymkdir(base_path, verbose=verbose)
-
-        info_json = {
-            "display_string": boxname.capitalize(),
-            "box_name": boxname,
-            "author": {
-                "name": "",
-                "website": "",
-                "mail": ""
-            }
+    info_json = {
+        "display_string": boxname.capitalize(),
+        "box_name": boxname,
+        "author": {
+            "name": "",
+            "website": "",
+            "mail": ""
         }
+    }
 
-        with open(f"{base_path}/box_info.json", 'w', encoding='utf-8') as f:
-            json.dump(info_json, f, indent=4, sort_keys=True)
+    box_info = os.path.join(base_path, "box_info.json")
 
-        if verbose:
-            click.echo("'box_info.json' content:")
-            click.echo(json.dumps(info_json, indent=4, sort_keys=True))
+    with open(box_info, 'w', encoding='utf-8') as f:
+        json.dump(info_json, f, indent=4, sort_keys=True)
+
+    if verbose:
+        click.echo("'box_info.json' content:")
+        click.echo(json.dumps(info_json, indent=4, sort_keys=True))
 
 
 def _create_module(modulename, base_path=None, verbose=False):
-    """
-    creates module with the structure defined in the modules section in docs
+    """creates module with the structure defined in the modules section in docs
+    Assume valid modulename i.e modulename does not start with ``box__`` and
+    modulename consist only of alphanumeric characters or underscore
 
     Parameters
     ----------
@@ -261,13 +255,6 @@ def _create_module(modulename, base_path=None, verbose=False):
     None
 
     """
-
-    if bool(re.match(r"^[A-Za-z0-9_]+$", modulename)) is False:
-        click.echo(
-            "[ ] Error: modulename is not valid, please use alphanumeric\
-             and underscore only"
-        )
-        sys.exit()
 
     click.echo(f"creating module: {modulename}")
 

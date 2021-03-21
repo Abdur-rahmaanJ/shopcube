@@ -23,8 +23,9 @@ class TestCliCreateBox:
     def test_create_existing_box(self, tmpdir, cli_runner):
         tmpdir.mkdir("modules").mkdir("box__foo")
         os.chdir(tmpdir)
+        module_path = os.path.join("modules", "box__foo")
         result = cli_runner('--config=testing', "startbox2", "box__foo")
-        expected = "[ ] unable to create. Box modules/box__foo already exists!"
+        expected = f"[ ] unable to create. Box {module_path} already exists!"
 
         assert result.exit_code != 0
         assert expected in result.output
@@ -34,7 +35,8 @@ class TestCliCreateBox:
         tmpdir.mkdir("modules")
         os.chdir(tmpdir)
         result = cli_runner('--config=testing', "startbox2", "box__foo", opt)
-        expected = "[X] Successfully created dir modules/box__foo"
+        module_path = os.path.join("modules", "box__foo")
+        expected = f"[x] Successfully created dir {module_path}"
 
         assert result.exit_code == 0
         assert os.path.exists(os.path.join("modules", "box__foo"))
@@ -358,9 +360,129 @@ class TestCliInitialise:
     pass
 
 
+@pytest.mark.usefixtures("fake_foo_proj")
+class TestCliCreateModule:
+
+    @pytest.mark.parametrize("mod", ["box_bar", "box__foo"])
+    def test_create_invalid_modulename_with_box_prefix(self, cli_runner, mod):
+        result = cli_runner('--config=testing', "createmodule", mod)
+        expected_out = (
+            f"[ ] Invalid MODULENAME '{mod}'. MODULENAME cannot start"
+            " with box_ prefix\n"
+        )
+
+        assert result.exit_code != 0
+        assert result.output == expected_out
+
+    @pytest.mark.parametrize("box", ["box_bar", "boxfoo", "foo"])
+    def test_create_module_with_invalid_box_name(self, cli_runner, box):
+        result = cli_runner('--config=testing', "createmodule", "demo", box)
+        expected_out = (
+            f"[ ] Invalid BOXNAME '{box}'. "
+            "BOXNAME should start with 'box__' prefix\n"
+        )
+
+        assert result.exit_code != 0
+        assert result.output == expected_out
+
+    @pytest.mark.parametrize(
+        "mod,box",
+        [
+            ("bar", ""),
+            ("foo", "box__default"),
+            ("foo", ""),
+            ("baz", "box__default"),
+            ("demo", "box__default")
+        ]
+    )
+    def test_create_existing_module(self, cli_runner, mod, box, tmpdir):
+        result = cli_runner('--config=testing', "createmodule", mod, box)
+        expected_out = (
+            f"[ ] Unable to create module '{mod}'. "
+            f"MODULENAME already exists inside modules/ at"
+        )
+
+        assert result.exit_code != 0
+        assert expected_out in result.output
+
+    def test_create_modulename_not_alphanumeric(self, cli_runner):
+        result = cli_runner('--config=testing', "createmodule", "my(demo)mod")
+        expected_out = (
+            "[ ] Error: MODULENAME is not valid, please use alphanumeric "
+            "and underscore only\n"
+        )
+
+        assert result.exit_code != 0
+        assert result.output == expected_out
+
+    def test_create_boxname_not_alphanumeric(self, cli_runner):
+        result = cli_runner(
+            '--config=testing', "createmodule", "mod", "box__?.game"
+        )
+        expected_out = (
+            "[ ] Error: BOXNAME is not valid, please use alphanumeric "
+            "and underscore only\n"
+        )
+
+        assert result.exit_code != 0
+        assert result.output == expected_out
+
+    @pytest.mark.parametrize(
+        "mod,box",
+        [
+            ("store", ""),  # create module
+            ("store", "box__ecommerce"),  # create submodule and also box
+            ("marketplace", "box__default"),  # create submodule but not box
+        ]
+    )
+    def test_create_valid_modules(self, cli_runner, fake_foo_proj, mod, box):
+        result = cli_runner('--config=testing', "createmodule", mod, box)
+        module_path = os.path.join(fake_foo_proj, "modules", box, mod)
+
+        assert result.exit_code == 0
+        assert os.path.exists(module_path)
+        assert os.path.exists(os.path.join(module_path, "templates"))
+        assert os.path.exists(os.path.join(module_path, "templates", mod))
+        assert os.path.exists(
+            os.path.join(
+                module_path, "templates", mod, "blocks", "sidebar.html"
+            )
+        )
+        assert os.path.exists(
+            os.path.join(module_path, "templates", mod, "dashboard.html")
+        )
+        assert os.path.exists(os.path.join(module_path, "tests"))
+        assert os.path.exists(os.path.join(module_path, "static"))
+        assert os.path.exists(
+            os.path.join(module_path, "tests", f"test_{mod}_functional.py")
+        )
+        assert os.path.exists(
+            os.path.join(module_path, "tests", f"test_{mod}_models.py")
+        )
+        assert os.path.exists(os.path.join(module_path, "view.py"))
+        assert os.path.exists(os.path.join(module_path, "forms.py"))
+        assert os.path.exists(os.path.join(module_path, "models.py"))
+        assert os.path.exists(os.path.join(module_path, "info.json"))
+        assert os.path.exists(os.path.join(module_path, "global.py"))
+
+    @pytest.mark.parametrize("opt", ["-v", "--verbose"])
+    def test_create_valid_module_with_verbose(
+        self, cli_runner, fake_foo_proj, opt
+    ):
+        result = cli_runner('--config=testing', "createmodule", "store", opt)
+        module_path = os.path.join(fake_foo_proj, "modules", "store")
+        expected_out1 = "[x] Successfully created"
+        expected_out2 = "created with content"
+
+        assert result.exit_code == 0
+        assert os.path.exists(module_path)
+        assert expected_out1 in result.output
+        assert expected_out2 in result.output
+
+
+@pytest.mark.usefixtures("fake_foo_proj")
 class TestCliCollectstatic:
 
-    @pytest.mark.usefixtures("fake_foo_project")
     def test_collectstatic_with_default_src(self, cli_runner):
         result = cli_runner('--config=testing', "collectstatic2")
         expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
@@ -372,7 +494,6 @@ class TestCliCollectstatic:
         assert len(os.listdir("static/modules")) == 2
         assert len(os.listdir("static/modules/box__default")) == 2
 
-    @pytest.mark.usefixtures("fake_foo_project")
     @pytest.mark.parametrize(
         "src,expected",
         [
@@ -394,7 +515,6 @@ class TestCliCollectstatic:
         assert os.path.exists(f"static/modules/{expected}")
         assert len(os.listdir("static/modules")) == 1
 
-    @pytest.mark.usefixtures("fake_foo_project")
     def test_collectstatic_with_invalid_arg(self, cli_runner):
 
         result = cli_runner('--config=testing', "collectstatic2", "foobar")
@@ -406,14 +526,7 @@ class TestCliCollectstatic:
         assert expected_out in result.output
         assert not os.path.exists("static/modules")
 
-    @pytest.mark.usefixtures("fake_foo_project")
-    @pytest.mark.parametrize(
-        "option",
-        [
-            "-v",
-            "--verbose"
-        ]
-    )
+    @pytest.mark.parametrize("option", ["-v", "--verbose"])
     def test_collectstatic_with_verbose(self, cli_runner, option):
 
         result = cli_runner('--config=testing', "collectstatic2", option)
