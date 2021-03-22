@@ -279,5 +279,5 @@ def new(projname, verbose):
     # create sphinx_source in ./PROJNAME/PROJNAME
 
 
-if __name__ == '__main__':
-    cli()
+# if __name__ == '__main__':
+#     cli()

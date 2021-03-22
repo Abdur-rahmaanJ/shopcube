@@ -82,5 +82,9 @@ setup(
         "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopyo/issues",
         "Source": "https://github.com/Abdur-RahmaanJ/shopyo/",
     },
-    entry_points={"console_scripts": ["shopyo=shopyo.api.scripts:cli"]},
+    entry_points={
+        "console_scripts": [
+            "shopyo=shopyo.api.scripts:cli"
+        ]
+    },
 )
