@@ -23,6 +23,22 @@ def get_module_path_if_exists(name):
     return None
 
 
+def is_alpha_num_underscore(name):
+    """returns whether the given name contains only alphanumeric or underscore
+
+    Parameters
+    ----------
+    name : str
+        to value to check for alphanumeric or underscore
+
+    Returns
+    -------
+    bool
+        returns ``True`` if ``name`` is alphanumeric, ``False`` otherwise
+    """
+    return bool(re.match(r"^[A-Za-z0-9_]+$", name))
+
+
 def is_empty_str(string):
     return string.strip() == ""
 

@@ -24,7 +24,7 @@ class TestCliCreateBox:
         tmpdir.mkdir("modules").mkdir("box__foo")
         os.chdir(tmpdir)
         module_path = os.path.join("modules", "box__foo")
-        result = cli_runner('--config=testing', "startbox2", "box__foo")
+        result = cli_runner("startbox2", "box__foo")
         expected = f"[ ] unable to create. Box {module_path} already exists!"
 
         assert result.exit_code != 0
@@ -34,7 +34,7 @@ class TestCliCreateBox:
     def test_create_unique_box(self, tmpdir, cli_runner, opt):
         tmpdir.mkdir("modules")
         os.chdir(tmpdir)
-        result = cli_runner('--config=testing', "startbox2", "box__foo", opt)
+        result = cli_runner("startbox2", "box__foo", opt)
         module_path = os.path.join("modules", "box__foo")
         expected = f"[x] Successfully created dir {module_path}"
 
@@ -356,6 +356,17 @@ class TestCliClean:
     # TODO: add test_clean for MySQL to see if tables dropped @rehmanis
 
 
+class TestCliNew:
+
+    def test_new_project_valid_name(self, cli_runner, tmpdir):
+        os.chdir(tmpdir)
+        result = cli_runner("new2", "bar")
+
+        print(os.getcwd())
+        print(result.output)
+        assert result.exit_code == 0
+
+
 class TestCliInitialise:
     pass
 
@@ -365,7 +376,7 @@ class TestCliCreateModule:
 
     @pytest.mark.parametrize("mod", ["box_bar", "box__foo"])
     def test_create_invalid_modulename_with_box_prefix(self, cli_runner, mod):
-        result = cli_runner('--config=testing', "createmodule", mod)
+        result = cli_runner("createmodule", mod)
         expected_out = (
             f"[ ] Invalid MODULENAME '{mod}'. MODULENAME cannot start"
             " with box_ prefix\n"
@@ -376,7 +387,7 @@ class TestCliCreateModule:
 
     @pytest.mark.parametrize("box", ["box_bar", "boxfoo", "foo"])
     def test_create_module_with_invalid_box_name(self, cli_runner, box):
-        result = cli_runner('--config=testing', "createmodule", "demo", box)
+        result = cli_runner("createmodule", "demo", box)
         expected_out = (
             f"[ ] Invalid BOXNAME '{box}'. "
             "BOXNAME should start with 'box__' prefix\n"
@@ -396,7 +407,7 @@ class TestCliCreateModule:
         ]
     )
     def test_create_existing_module(self, cli_runner, mod, box, tmpdir):
-        result = cli_runner('--config=testing', "createmodule", mod, box)
+        result = cli_runner("createmodule", mod, box)
         expected_out = (
             f"[ ] Unable to create module '{mod}'. "
             f"MODULENAME already exists inside modules/ at"
@@ -406,7 +417,7 @@ class TestCliCreateModule:
         assert expected_out in result.output
 
     def test_create_modulename_not_alphanumeric(self, cli_runner):
-        result = cli_runner('--config=testing', "createmodule", "my(demo)mod")
+        result = cli_runner("createmodule", "my(demo)mod")
         expected_out = (
             "[ ] Error: MODULENAME is not valid, please use alphanumeric "
             "and underscore only\n"
@@ -416,9 +427,7 @@ class TestCliCreateModule:
         assert result.output == expected_out
 
     def test_create_boxname_not_alphanumeric(self, cli_runner):
-        result = cli_runner(
-            '--config=testing', "createmodule", "mod", "box__?.game"
-        )
+        result = cli_runner("createmodule", "mod", "box__?.game")
         expected_out = (
             "[ ] Error: BOXNAME is not valid, please use alphanumeric "
             "and underscore only\n"
@@ -436,7 +445,7 @@ class TestCliCreateModule:
         ]
     )
     def test_create_valid_modules(self, cli_runner, fake_foo_proj, mod, box):
-        result = cli_runner('--config=testing', "createmodule", mod, box)
+        result = cli_runner("createmodule", mod, box)
         module_path = os.path.join(fake_foo_proj, "modules", box, mod)
 
         assert result.exit_code == 0
@@ -469,7 +478,7 @@ class TestCliCreateModule:
     def test_create_valid_module_with_verbose(
         self, cli_runner, fake_foo_proj, opt
     ):
-        result = cli_runner('--config=testing', "createmodule", "store", opt)
+        result = cli_runner("createmodule", "store", opt)
         module_path = os.path.join(fake_foo_proj, "modules", "store")
         expected_out1 = "[x] Successfully created"
         expected_out2 = "created with content"
@@ -484,7 +493,7 @@ class TestCliCreateModule:
 class TestCliCollectstatic:
 
     def test_collectstatic_with_default_src(self, cli_runner):
-        result = cli_runner('--config=testing', "collectstatic2")
+        result = cli_runner("collectstatic2")
         expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
@@ -507,7 +516,7 @@ class TestCliCollectstatic:
         ]
     )
     def test_collectstatic_with_valid_arg(self, src, expected, cli_runner):
-        result = cli_runner('--config=testing', "collectstatic2", src)
+        result = cli_runner("collectstatic2", src)
         expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
@@ -517,7 +526,7 @@ class TestCliCollectstatic:
 
     def test_collectstatic_with_invalid_arg(self, cli_runner):
 
-        result = cli_runner('--config=testing', "collectstatic2", "foobar")
+        result = cli_runner("collectstatic2", "foobar")
         modules_path = os.path.join("modules", "foobar")
         modules_path = os.path.join(os.getcwd(), modules_path)
         expected_out = f"[ ] path: {modules_path} does not exist"
@@ -529,7 +538,7 @@ class TestCliCollectstatic:
     @pytest.mark.parametrize("option", ["-v", "--verbose"])
     def test_collectstatic_with_verbose(self, cli_runner, option):
 
-        result = cli_runner('--config=testing', "collectstatic2", option)
+        result = cli_runner("collectstatic2", option)
         expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n"
         expected_out2 = "[x] done copying"
 

@@ -1,7 +1,8 @@
 import click
 import os
 import sys
-import re
+from pathlib import Path
+from shutil import copytree, ignore_patterns
 
 from flask.cli import FlaskGroup, pass_script_info
 from subprocess import run, PIPE
@@ -13,11 +14,15 @@ from shopyo.api.cmd_helper import _create_module
 from shopyo.api.database import autoload_models
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 from shopyo.api.validators import get_module_path_if_exists
+from shopyo.api.validators import is_alpha_num_underscore
 
 
 def create_shopyo_app(info):
     sys.path.insert(0, os.getcwd())
-    from app import create_app
+    try:
+        from app import create_app
+    except Exception:
+        return None
 
     config_name = info.data.get('config')
 
@@ -35,13 +40,13 @@ def cli(info, **parmams):
     info.data['config'] = parmams["config"]
 
 
-@cli.command("startbox2")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@cli.command("startbox2", with_appcontext=False)
 @click.argument("boxname")
+@click.option('--verbose', "-v", is_flag=True, default=False)
 def create_box(boxname, verbose):
     """creates box with box_info.json.
 
-    BOXNAME is the name of the box
+    BOXNAME is the name of the box which holds modules
     """
     path = os.path.join("modules", boxname)
 
@@ -55,10 +60,10 @@ def create_box(boxname, verbose):
     _create_box(boxname, verbose=verbose)
 
 
-@cli.command("createmodule")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@cli.command("createmodule", with_appcontext=False)
 @click.argument("modulename")
 @click.argument("boxname", required=False, default="")
+@click.option('--verbose', "-v", is_flag=True, default=False)
 def create_module(modulename, boxname, verbose):
     """
     create a module MODULENAME inside modules/. If BOXNAME is provided,
@@ -95,14 +100,14 @@ def create_module(modulename, boxname, verbose):
         )
         sys.exit(1)
 
-    if not bool(re.match(r"^[A-Za-z0-9_]+$", modulename)):
+    if not is_alpha_num_underscore(modulename):
         click.echo(
             "[ ] Error: MODULENAME is not valid, please use alphanumeric "
             "and underscore only"
         )
         sys.exit(1)
 
-    if boxname != "" and not bool(re.match(r"^[A-Za-z0-9_]+$", boxname)):
+    if boxname != "" and not is_alpha_num_underscore(boxname):
         click.echo(
             "[ ] Error: BOXNAME is not valid, please use alphanumeric "
             "and underscore only"
@@ -127,10 +132,10 @@ def create_module(modulename, boxname, verbose):
     _create_module(modulename, base_path=module_path, verbose=verbose)
 
 
-@cli.command("collectstatic2")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@cli.command("collectstatic2", with_appcontext=False)
 @click.argument("src", required=False, type=click.Path(), default="modules")
-def collectstatic(verbose, src):
+@click.option('--verbose', "-v", is_flag=True, default=False)
+def collectstatic(src, verbose):
     """Copies ``static/`` in ``modules/`` or modules/SRC into
     ``/static/modules/``
 
@@ -182,7 +187,8 @@ def initialise(verbose):
     """
     Create db, migrate, adds default users, add settings
     """
-    print("initializing...")
+    click.echo("initializing...")
+
     # drop db, remove mirgration/ and shopyo.db
     _clean(verbose=verbose)
 
@@ -215,17 +221,62 @@ def initialise(verbose):
         run(["flask", "db", "upgrade"])
     else:
         run(["flask", "db", "upgrade"], stdout=PIPE, stderr=PIPE)
-    # proc = run(["flask", "db", "upgrade"], stdout=PIPE, stderr=PIPE)
     click.echo("")
 
     # collect all static folders inside modules/ and add it to global
-    # static
+    # static/
     _collectstatic(verbose=verbose)
 
     # Upload models data in upload.py files inside each module
     _upload_data(verbose=verbose)
 
     click.echo("All Done!")
+
+
+@cli.command("new2", with_appcontext=False)
+@click.argument("projname")
+@click.option('--verbose', "-v", is_flag=True, default=False)
+def new(projname, verbose):
+
+    if not is_alpha_num_underscore(projname):
+        click.echo(
+            "[ ] Error: PROJNAME is not valid, please use alphanumeric "
+            "and underscore only"
+        )
+        sys.exit(1)
+
+    # get the shopyo src path that the new project will mimic
+    src_shopyo_shopyo = Path(__file__).parent.parent.absolute()
+
+    # the current project path in which we will create the project
+    project_path = os.path.join(".", projname, projname)
+
+    # copy the shopyo/shopyo content to a new shopyo project
+    copytree(
+        src_shopyo_shopyo, project_path,
+        ignore=ignore_patterns(
+            "__main__.py", "api", ".tox", ".coverage", "*.db",
+            "coverage.xml", "setup.cfg", "instance", "migrations",
+            "__pycache__", "*.pyc"
+
+        )
+    )
+
+    # create requirements.txt in root
+
+    # copy the dev_requirement.txt in root
+
+    # copy the tox.ini in root
+
+    # create README in root
+
+    # create .gitignore in root
+
+    # create docs in root
+
+    # create sphinx_source in ./PROJNAME/PROJNAME
+
+    # create sphinx_source in ./PROJNAME/PROJNAME
 
 
 if __name__ == '__main__':

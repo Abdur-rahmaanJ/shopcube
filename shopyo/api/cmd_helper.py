@@ -257,6 +257,7 @@ def _create_module(modulename, base_path=None, verbose=False):
     """
 
     click.echo(f"creating module: {modulename}")
+    click.echo(SEP_CHAR * SEP_NUM)
 
     if base_path is None:
         base_path = os.path.join("modules", modulename)
