@@ -102,7 +102,7 @@ def trycopytree(source, dest, verbose=False):
         if verbose:
             print("[x] done copying {} to {}".format(source, dest))
     except Exception as e:
-        print(e)
+        print(f"[ ] unable to copy directory tree. {e}")
 
 
 def trycopy(source, dest, verbose=False):
@@ -123,9 +123,9 @@ def trycopy(source, dest, verbose=False):
     try:
         shutil.copy(source, dest)
         if verbose:
-            print("done copying {} to {}".format(source, dest))
+            print("[x] done copying {} to {}".format(source, dest))
     except Exception as e:
-        print(e)
+        print(f"[ ] unable to copy file. {e}")
 
 
 def trymkdir(path, verbose=False):
@@ -146,7 +146,7 @@ def trymkdir(path, verbose=False):
         if verbose:
             print(f"[x] Successfully created dir {path}")
     except Exception as e:
-        print(e)
+        print(f"[ ] unable to make directory. {e}")
 
 
 def trymkfile(path, content, verbose=False):
