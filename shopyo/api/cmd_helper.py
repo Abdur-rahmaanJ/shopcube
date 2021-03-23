@@ -290,7 +290,7 @@ def _create_module(modulename, base_path=None, verbose=False):
     # create view.py, forms.py and model.py files inside the module
     trymkfile(
         os.path.join(base_path, "view.py"),
-        get_module_view_content(), 
+        get_module_view_content(),
         verbose=verbose
     )
     trymkfile(os.path.join(base_path, "forms.py"), "", verbose=verbose)
