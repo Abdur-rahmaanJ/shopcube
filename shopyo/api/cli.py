@@ -234,10 +234,14 @@ def initialise(verbose):
 
 
 @cli.command("new", with_appcontext=False)
-@click.argument("projname")
+@click.argument("projname", required=False, default="")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def new(projname, verbose):
     """Creates a new shopyo project.
+
+    By default it will create the project(folder) of same name as the parent
+    folder. If PROJNAME is provided, it will create PROJNAME/PROJNAME under
+    parent folder
 
     PROJNAME is the name of the project that you want to create.
     """
@@ -258,34 +262,73 @@ def new(projname, verbose):
     from shopyo.api.cli_content import get_cli_content
     from shopyo.api.cli_content import get_setup_py_content
 
+    here = os.getcwd()
+
+    if projname == "":
+
+        projname = os.path.basename(here)
+
+        # the base/root project folder where files such as README, docs,
+        # .gitignore etc. will be stored will be same as current working
+        # directory i.e ./
+        root_proj_path = here
+
+        # the current project path in which we will create the project
+        project_path = os.path.join(here, projname)
+
+        if os.path.exists(project_path):
+            click.echo(
+                f"[ ] Error: Unable to create new project. Path {project_path}"
+                " exits"
+            )
+            sys.exit(1)
+
+    else:
+        if not is_alpha_num_underscore(projname):
+            click.echo(
+                "[ ] Error: PROJNAME is not valid, please use alphanumeric "
+                "and underscore only"
+            )
+            sys.exit(1)
+
+        # the base/root project folder where files such as README, docs,
+        # .gitignore etc. will be stored will be ./projname
+        root_proj_path = os.path.join(here, projname)
+
+        # the current project path in which we will create the project
+        project_path = os.path.join(here, projname, projname)
+
+        if os.path.exists(root_proj_path):
+            click.echo(
+                "[ ] Error: Unable to create new project. Path "
+                f"{root_proj_path} exits"
+            )
+            sys.exit(1)
+
     click.echo(f"creating project {projname}...")
     click.echo(SEP_CHAR * SEP_NUM)
 
-    if not is_alpha_num_underscore(projname):
-        click.echo(
-            "[ ] Error: PROJNAME is not valid, please use alphanumeric "
-            "and underscore only"
-        )
-        sys.exit(1)
-
     # the shopyo src path that the new project will mimic
     src_shopyo_shopyo = Path(__file__).parent.parent.absolute()
-
-    # the base/root project folder where files such as README, docs, .gitignore
-    # etc. will be stored
-    root_proj_path = os.path.join(".", projname)
-
-    # the current project path in which we will create the project
-    project_path = os.path.join(".", projname, projname)
 
     # copy the shopyo/shopyo content to the new project
     copytree(
         src_shopyo_shopyo, project_path,
         ignore=ignore_patterns(
-            "__main__.py", "api", ".tox", ".coverage", "*.db",
-            "coverage.xml", "setup.cfg", "instance", "migrations",
-            "__pycache__", "*.pyc", "sphinx_source"
-
+            "__main__.py",
+            "api",
+            ".tox",
+            ".coverage",
+            "*.db",
+            "coverage.xml",
+            "setup.cfg",
+            "instance",
+            "migrations",
+            "__pycache__",
+            "*.pyc",
+            "sphinx_source",
+            "pyproject.toml",
+            "config.json"
         )
     )
 
