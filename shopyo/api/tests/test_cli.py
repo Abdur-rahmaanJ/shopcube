@@ -1,7 +1,7 @@
 import os
 import pytest
 from click.testing import CliRunner
-from shopyo.api.scripts import cli
+from shopyo.api.cli import cli
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
 
@@ -24,7 +24,7 @@ class TestCliCreateBox:
         tmpdir.mkdir("modules").mkdir("box__foo")
         os.chdir(tmpdir)
         module_path = os.path.join("modules", "box__foo")
-        result = cli_runner("startbox2", "box__foo")
+        result = cli_runner("startbox", "box__foo")
         expected = f"[ ] unable to create. Box {module_path} already exists!"
 
         assert result.exit_code != 0
@@ -34,7 +34,7 @@ class TestCliCreateBox:
     def test_create_unique_box(self, tmpdir, cli_runner, opt):
         tmpdir.mkdir("modules")
         os.chdir(tmpdir)
-        result = cli_runner("startbox2", "box__foo", opt)
+        result = cli_runner("startbox", "box__foo", opt)
         module_path = os.path.join("modules", "box__foo")
         expected = f"[x] Successfully created dir {module_path}"
 
@@ -62,7 +62,7 @@ class TestCliClean:
         fd.write("content")
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
             "[x] __pycache__ successfully deleted\n"
@@ -99,7 +99,7 @@ class TestCliClean:
         pyc.write("content")
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner()
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
             "[x] __pycache__ successfully deleted\n"
@@ -143,7 +143,7 @@ class TestCliClean:
         pyc3.write("content")
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner()
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean", "-v"])
         expected_out = (
             "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
         )
@@ -189,7 +189,7 @@ class TestCliClean:
         shopyo_db.write("content")
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner()
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
             "[ ] __pycache__ doesn't exist\n"
@@ -218,7 +218,7 @@ class TestCliClean:
         alembic.write("content-alembic")
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
-        result = runner.invoke(cli, ["clean2", "-v"])
+        result = runner.invoke(cli, ["clean", "-v"])
         expected_out = (
             "[x] all tables dropped\n"
             f"[x] folder '{os.path.join(tmpdir, 'migrations')}' "
@@ -269,7 +269,7 @@ class TestCliClean:
         shopyo_db.write("content")
         os.chdir(shopyo_path)
         runner = flask_app.test_cli_runner()
-        result = runner.invoke(cli, ["clean2", option])
+        result = runner.invoke(cli, ["clean", option])
         expected_out = (
             "[x] all tables dropped\n"
             "[x] __pycache__ successfully deleted\n"
@@ -305,7 +305,7 @@ class TestCliClean:
     def test_clean_on_no_files_to_clean(self, tmpdir, flask_app, option):
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
-        result = runner.invoke(cli, ["clean2", option])
+        result = runner.invoke(cli, ["clean", option])
         expected_out = "[x] all tables dropped\n"
         expected_err_pycache = "[ ] __pycache__ doesn't exist\n"
         expected_err_shopyo_db = (
@@ -327,7 +327,7 @@ class TestCliClean:
         """
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
-        result = runner.invoke(cli, ["clean2"])
+        result = runner.invoke(cli, ["clean"])
         expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
@@ -344,7 +344,7 @@ class TestCliClean:
         migrations_path = tmpdir.mkdir("migrations")
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
-        result = runner.invoke(cli, ["clean2"])
+        result = runner.invoke(cli, ["clean"])
         expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
@@ -360,7 +360,7 @@ class TestCliNew:
 
     def test_new_project_valid_name(self, cli_runner, tmpdir):
         os.chdir(tmpdir)
-        result = cli_runner("new2", "bar")
+        result = cli_runner("new", "bar")
 
         print(os.getcwd())
         print(result.output)
@@ -493,7 +493,7 @@ class TestCliCreateModule:
 class TestCliCollectstatic:
 
     def test_collectstatic_with_default_src(self, cli_runner):
-        result = cli_runner("collectstatic2")
+        result = cli_runner("collectstatic")
         expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
@@ -516,7 +516,7 @@ class TestCliCollectstatic:
         ]
     )
     def test_collectstatic_with_valid_arg(self, src, expected, cli_runner):
-        result = cli_runner("collectstatic2", src)
+        result = cli_runner("collectstatic", src)
         expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
@@ -526,7 +526,7 @@ class TestCliCollectstatic:
 
     def test_collectstatic_with_invalid_arg(self, cli_runner):
 
-        result = cli_runner("collectstatic2", "foobar")
+        result = cli_runner("collectstatic", "foobar")
         modules_path = os.path.join("modules", "foobar")
         modules_path = os.path.join(os.getcwd(), modules_path)
         expected_out = f"[ ] path: {modules_path} does not exist"
@@ -538,7 +538,7 @@ class TestCliCollectstatic:
     @pytest.mark.parametrize("option", ["-v", "--verbose"])
     def test_collectstatic_with_verbose(self, cli_runner, option):
 
-        result = cli_runner("collectstatic2", option)
+        result = cli_runner("collectstatic", option)
         expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n"
         expected_out2 = "[x] done copying"
 

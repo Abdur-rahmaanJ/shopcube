@@ -19,28 +19,28 @@ from shopyo.api.validators import is_alpha_num_underscore
 
 def create_shopyo_app(info):
     sys.path.insert(0, os.getcwd())
+
     try:
         from app import create_app
     except Exception:
         return None
 
-    config_name = info.data.get('config')
-
-    if config_name is None:
-        return None
+    config_name = info.data.get('config') or "development"
 
     return create_app(config_name=config_name)
 
 
 @click.group(cls=FlaskGroup, create_app=create_shopyo_app)
-@click.option('--config', default="development")
+@click.option(
+    '--config', default="development", help="Flask app configuration type"
+)
 @pass_script_info
 def cli(info, **parmams):
     """CLI for shopyo"""
     info.data['config'] = parmams["config"]
 
 
-@cli.command("startbox2", with_appcontext=False)
+@cli.command("startbox", with_appcontext=False)
 @click.argument("boxname")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def create_box(boxname, verbose):
@@ -132,7 +132,7 @@ def create_module(modulename, boxname, verbose):
     _create_module(modulename, base_path=module_path, verbose=verbose)
 
 
-@cli.command("collectstatic2", with_appcontext=False)
+@cli.command("collectstatic", with_appcontext=False)
 @click.argument("src", required=False, type=click.Path(), default="modules")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def collectstatic(src, verbose):
@@ -172,7 +172,7 @@ def collectstatic(src, verbose):
     _collectstatic(target_module=src, verbose=verbose)
 
 
-@cli.command("clean2")
+@cli.command("clean")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def clean(verbose):
     """remove __pycache__, migrations/, shopyo.db files and drops db
@@ -181,7 +181,7 @@ def clean(verbose):
     _clean(verbose=verbose)
 
 
-@cli.command("initialise2")
+@cli.command("initialise")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def initialise(verbose):
     """
@@ -233,10 +233,14 @@ def initialise(verbose):
     click.echo("All Done!")
 
 
-@cli.command("new2", with_appcontext=False)
+@cli.command("new", with_appcontext=False)
 @click.argument("projname")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def new(projname, verbose):
+    """Creates a new shopyo project.
+
+    PROJNAME is the name of the project that you want to create.
+    """
 
     from shopyo.__init__ import __version__
     from shopyo.api.file import trymkfile

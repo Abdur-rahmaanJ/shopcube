@@ -241,6 +241,7 @@ def create_app(config_name="development"):
 
 with open(os.path.join(base_path, "config.json")) as f:
     config_json = json.load(f)
+
 environment = config_json["environment"]
 app = create_app(environment)
 
