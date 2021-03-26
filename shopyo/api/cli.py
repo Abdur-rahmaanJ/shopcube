@@ -17,7 +17,7 @@ from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
 
 
-def create_shopyo_app(info):
+def _create_shopyo_app(info):
     sys.path.insert(0, os.getcwd())
 
     try:
@@ -30,7 +30,7 @@ def create_shopyo_app(info):
     return create_app(config_name=config_name)
 
 
-@click.group(cls=FlaskGroup, create_app=create_shopyo_app)
+@click.group(cls=FlaskGroup, create_app=_create_shopyo_app)
 @click.option(
     '--config', default="development", help="Flask app configuration type"
 )
@@ -44,9 +44,9 @@ def cli(info, **parmams):
 @click.argument("boxname")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def create_box(boxname, verbose):
-    """creates box with box_info.json.
+    """creates ``box`` with ``box_info.json``.
 
-    BOXNAME is the name of the box which holds modules
+    ``BOXNAME`` is the name of the ``box`` which holds modules
     """
     path = os.path.join("modules", boxname)
 
@@ -66,23 +66,23 @@ def create_box(boxname, verbose):
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def create_module(modulename, boxname, verbose):
     """
-    create a module MODULENAME inside modules/. If BOXNAME is provided,
-    creates the module inside modules/BOXNAME.
+    create a module ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
+    provided, creates the module inside ``modules/BOXNAME.``
 
     \b
-    If box BOXNAME does not exist, it is created.
-    If MODULENAME already exists (either inside BOXNAME for the case BOXNAME is
-    provided or inside modules/ when BOXNAME is not provided), an error
+    If box ``BOXNAME`` does not exist, it is created.
+    If ``MODULENAME`` already exists (either inside ``BOXNAME`` for the case ``BOXNAME`` is
+    provided or inside ``modules/`` when ``BOXNAME`` is not provided), an error
     is thrown and command is terminated.
 
     structure of modules created is as follows:
 
         <add module/box directory tree here>
 
-    BOXNAME the name of box to create the MODULENAME in. Must start with
+    ``BOXNAME`` the name of box to create the ``MODULENAME`` in. Must start with
     ``box__``, otherwise error is thrown
 
-    MODULENAME the name of module to be created. Must not start with
+    ``MODULENAME`` the name of module to be created. Must not start with
     ``box__``, otherwise error is thrown
 
     """
@@ -136,38 +136,41 @@ def create_module(modulename, boxname, verbose):
 @click.argument("src", required=False, type=click.Path(), default="modules")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def collectstatic(src, verbose):
-    """Copies ``static/`` in ``modules/`` or modules/SRC into
+    """Copies ``static/`` in ``modules/`` or ``modules/SRC`` into
     ``/static/modules/``
 
-    SRC is the module path relative to ``modules/`` where static/ exists.
+    ``SRC`` is the module path relative to ``modules/`` where ``static/``
+    exists.
 
-    \b
-    Ex usage for
-        modules\\
-            box_default\\
-                auth\\
-                    static\\
-                appadmin\\
-                    static\\
+    Ex usage for::
 
-    To collect static in only one module, run either of two commands
+        \b
+        .
+        └── modules/
+            └── box__default/
+                ├── auth/
+                │   └── static
+                └── appadmin/
+                    └── static
 
-    \b
-    ``$ shopyo collectstatic2 box__default/auth``
-    ``$ shopyo collectstatic2 modules/box__default/auth``
+    To collect static in only one module, run either of two commands::
+
+        \b
+        $ shopyo collectstatic box__default/auth
+        $ shopyo collectstatic modules/box__default/auth
 
     To collect static in all modules inside a box, run either of two commands
-    below
+    below::
 
-    \b
-    ``$ shopyo collectstatic2 box__default``
-    ``$ shopyo collectstatic2 modules/box__default``
+        \b
+        $ shopyo collectstatic box__default
+        $ shopyo collectstatic modules/box__default
 
-    To collect static in all modules run either of the two commands below
+    To collect static in all modules run either of the two commands below::
 
-    \b
-    ``$ shopyo collectstatic2``
-    ``$ shopyo collectstatic2 modules``
+        \b
+        $ shopyo collectstatic
+        $ shopyo collectstatic modules
     """
     _collectstatic(target_module=src, verbose=verbose)
 
@@ -175,8 +178,8 @@ def collectstatic(src, verbose):
 @cli.command("clean")
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def clean(verbose):
-    """remove __pycache__, migrations/, shopyo.db files and drops db
-    if present
+    """removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
+    ``db`` if present
     """
     _clean(verbose=verbose)
 
@@ -185,7 +188,7 @@ def clean(verbose):
 @click.option('--verbose', "-v", is_flag=True, default=False)
 def initialise(verbose):
     """
-    Create db, migrate, adds default users, add settings
+    Creates ``db``, ``migration/``, adds default users, add settings
     """
     click.echo("initializing...")
 
@@ -240,10 +243,10 @@ def new(projname, verbose):
     """Creates a new shopyo project.
 
     By default it will create the project(folder) of same name as the parent
-    folder. If PROJNAME is provided, it will create PROJNAME/PROJNAME under
-    parent folder
+    folder. If ``PROJNAME`` is provided, it will create ``PROJNAME/PROJNAME``
+    under parent folder
 
-    PROJNAME is the name of the project that you want to create.
+    ``PROJNAME`` is the name of the project that you want to create.
     """
 
     from shopyo.__init__ import __version__
