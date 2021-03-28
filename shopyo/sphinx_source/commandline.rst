@@ -6,8 +6,45 @@ Commandline Args
 
 Various commandline args exist to ease your life.
 
+clean
+*****
+
+.. _shopyo clean usage:
+
+Usage
+=====
+
+.. code:: bash
+
+   shopyo clean [OPTIONS]
+
+or
+
+.. code:: bash
+
+   Usage: manage.py clean [OPTIONS]
+
+removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
+``db`` if present
+
+.. _shopyo clean options:
+
+Options
+=======
+
+.. option:: -v, --verbose
+
+   Show all hidden outputs in terminal
+
+.. option:: --help
+
+   Show the command usage/help message and exit
+
+
 Initialise
 **********
+
+.. _shopyo initialise usage:
 
 Usage
 =====
@@ -24,6 +61,8 @@ or
 
 Creates ``db``, ``migration/``, adds default users, add settings.
 This command need to be run only once before running the project
+
+.. _shopyo initialise options:
 
 Options
 =======
