@@ -55,14 +55,17 @@
 <li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing to Shopyo</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules/Apps</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#easy-way-to-create-module">Easy way to create module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#what-make-up-modules">What make up modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#info-json">info.json</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#default-modules">Default Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-modules-boxes">Default Modules/Boxes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#box-bizhelp">box__bizhelp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#box-default">box__default</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#www">www</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#using-shopyo-as-a-flask-base">Using Shopyo as a Flask base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#importing-modules">Importing modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#global-py">global.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#upload-py">upload.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#boxes-or-many-apps-together">Boxes or many apps together</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
@@ -105,89 +108,132 @@ Django as you can see at a glance what is the main script and what
 are modules/apps.</p>
 <div class="section" id="easy-way-to-create-module">
 <h2>Easy way to create module<a class="headerlink" href="#easy-way-to-create-module" title="Permalink to this headline">¶</a></h2>
-<p>Once in a Shopyo project, run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo startapp modulename
+<p>Once inside a Shopyo project directory (i.e
+where the <code class="docutils literal notranslate"><span class="pre">app.py</span></code> and <code class="docutils literal notranslate"><span class="pre">modules/</span></code> reside), run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo createmodule <span class="o">[</span>OPTIONS<span class="o">]</span> MODULENAME <span class="o">[</span>BOXNAME<span class="o">]</span>
 </pre></div>
 </div>
 <p>or you can do</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startapp modulename
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py createmodule <span class="o">[</span>OPTIONS<span class="o">]</span> MODULENAME <span class="o">[</span>BOXNAME<span class="o">]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="what-make-up-modules">
-<h2>What make up modules<a class="headerlink" href="#what-make-up-modules" title="Permalink to this headline">¶</a></h2>
-<p>Modules have the following structure, where product is the module
-name. The EuroPython talk under the <a class="reference external" href="education.html">Education Section</a> might be insightful</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>product/
-    tests/
-    static/
-    templates/
-        product/
-            templatefile.html
-    forms.py
-    info.json
-    models.py
-    view.py
-    global.py # optional
-    upload.py # optional
+<p>For example if you run <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">createmodule</span> <span class="pre">product</span></code>, it will auto create
+the following module structure inside <code class="docutils literal notranslate"><span class="pre">modules/</span></code></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.
+└── product/
+   ├── static/
+   ├── templates/product/
+   │   ├── blocks
+   │   │   └── sidebar.html
+   │   └── dashboard.html
+   ├── tests/
+   │   ├── test_product_functional.py
+   │   └── test_product_models.py
+   ├── forms.py
+   ├── global.py # optional
+   ├── info.json
+   ├── models.py
+   ├── upload.py # optional
+   └── view.py
 </pre></div>
 </div>
-<p>The command in the last section auto creates it for you!</p>
+<p>In case you want to group modules together in a particular subcategory, you can
+create modules inside a box. For example first run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo createmodule product box__ecommerce
+</pre></div>
+</div>
+<p>This will create the box <code class="docutils literal notranslate"><span class="pre">box__ecommerce</span></code> if it does not exist and then create the module
+<code class="docutils literal notranslate"><span class="pre">product</span></code> insides it. If now you want another module, for example, <code class="docutils literal notranslate"><span class="pre">marketplace</span></code> inside <code class="docutils literal notranslate"><span class="pre">box__ecommerce</span></code>,
+then you can run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo createmodule marketplace box__ecommerce
+</pre></div>
+</div>
+<p>With this your modules structure will look like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.
+└── modules/
+    ├── box__ecommerce/
+    │   ├── product/
+    │   └── marketplace/
+    └── ...
+</pre></div>
+</div>
+<p>You can now acces the <code class="docutils literal notranslate"><span class="pre">/product</span></code> and <code class="docutils literal notranslate"><span class="pre">/marketplace</span></code> endpoints</p>
+<p>See <a class="reference internal" href="commandline.html#createmodule"><span class="std std-ref">createmodule</span></a> for more details on command usage. You might find the
+EuroPython talk under the <a class="reference external" href="education.html">Education Section</a> insightful</p>
 </div>
 <div class="section" id="info-json">
 <h2>info.json<a class="headerlink" href="#info-json" title="Permalink to this headline">¶</a></h2>
 <p>The info file allows you to specify module config. This allows you to
 specify the module url and panel icon.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-        <span class="nt">&quot;display_string&quot;</span><span class="p">:</span> <span class="s2">&quot;Page&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;module_name&quot;</span><span class="p">:</span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;fa-icon&quot;</span><span class="p">:</span> <span class="s2">&quot;fa fa-store&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;url_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;/page&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;dashboard&quot;</span><span class="p">:</span> <span class="s2">&quot;/dashboard&quot;</span>
+   <span class="nt">&quot;author&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;mail&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;display_string&quot;</span><span class="p">:</span> <span class="s2">&quot;Page&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;module_name&quot;</span><span class="p">:</span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;fa-icon&quot;</span><span class="p">:</span> <span class="s2">&quot;fa fa-store&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;url_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;/page&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;dashboard&quot;</span><span class="p">:</span> <span class="s2">&quot;/dashboard&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;author</span></code>: Metadata to keep track of author of the module. It stores author’s <code class="docutils literal notranslate"><span class="pre">mail</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>, and <code class="docutils literal notranslate"><span class="pre">website</span></code> information</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">display_string</span></code>: Display name on control panel. If you decide to use Shopyo as a Flask base, it does not matter then</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">module_name</span></code>: Shopyo uses this to reference the module. Not to be duplicated</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Used to show or hide modules on control panel. If control panel module not present, you can skip it</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fa-icon</span></code>: Used to show fontawesome icon on control panel. If control panel module not present, you can skip it</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">url_prefix</span></code>: Needed to specify module’s base url</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dashboard</span></code>: Used to redirect in control panel. For example the contact module’s url is /contact. But we want it to be public. So we have a panel redirect of /dashboard to direct admin to /contact/dashboard. Dont include if you don’t want redirect</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dashboard</span></code>: Used to redirect in control panel. For example the contact module’s url is <code class="docutils literal notranslate"><span class="pre">/contact</span></code>. But we want it to be public. So we have a panel redirect of <code class="docutils literal notranslate"><span class="pre">/dashboard</span></code> to direct admin to <code class="docutils literal notranslate"><span class="pre">/contact/dashboard</span></code>. Dont include if you don’t want redirect</p></li>
 </ul>
 </div>
-<div class="section" id="default-modules">
-<h2>Default Modules<a class="headerlink" href="#default-modules" title="Permalink to this headline">¶</a></h2>
-<p><strong>Admin</strong></p>
-<p><strong>Appointment</strong></p>
-<p><strong>Base</strong></p>
-<p><strong>Category</strong></p>
-<p><strong>Contact</strong></p>
-<p><strong>Control Panel</strong></p>
-<p><strong>Internals</strong></p>
-<p><strong>Login</strong></p>
-<p><strong>Page</strong></p>
-<p><strong>People</strong></p>
-<p><strong>Setting</strong></p>
+<div class="section" id="default-modules-boxes">
+<h2>Default Modules/Boxes<a class="headerlink" href="#default-modules-boxes" title="Permalink to this headline">¶</a></h2>
+<p>The app comes with the following default modules and boxes</p>
+<div class="section" id="box-bizhelp">
+<h3>box__bizhelp<a class="headerlink" href="#box-bizhelp" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>announce</p></li>
+<li><p>appoointment</p></li>
+<li><p>contact</p></li>
+<li><p>page</p></li>
+<li><p>people</p></li>
+</ul>
+</div>
+<div class="section" id="box-default">
+<h3>box__default<a class="headerlink" href="#box-default" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>appadmin</p></li>
+<li><p>auth</p></li>
+<li><p>base</p></li>
+<li><p>dashboard</p></li>
+<li><p>settings</p></li>
+<li><p>theme</p></li>
+</ul>
+</div>
+<div class="section" id="www">
+<h3>www<a class="headerlink" href="#www" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 <div class="section" id="using-shopyo-as-a-flask-base">
 <h2>Using Shopyo as a Flask base<a class="headerlink" href="#using-shopyo-as-a-flask-base" title="Permalink to this headline">¶</a></h2>
-<p>You can customise Shopyo in many ways</p>
-<p>In case you want a partial customisation, keep the following modules:</p>
+<p>You can customise Shopyo in many ways.
+For eample, you can modify exiting modules, add more modules to default boxes
+or even remove the modules you do not need. You might however want to keep the following modules:</p>
 <ul class="simple">
-<li><p>Control Panel</p></li>
-<li><p>Admin</p></li>
-<li><p>Base</p></li>
-<li><p>Login</p></li>
-<li><p>Settings</p></li>
+<li><p>appadmin</p></li>
+<li><p>auth</p></li>
+<li><p>base</p></li>
+<li><p>dashboard</p></li>
+<li><p>settings</p></li>
 </ul>
-<p>In case you want even more customisation, keep the base module and modify it</p>
-<p>If you want even more customisation,  just delete all modules from modules/ folder then run <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">startapp</span> <span class="pre">your_module</span></code>. In which case, remove models import from shopyoapi/uploads.py</p>
 </div>
 <div class="section" id="importing-modules">
 <h2>Importing modules<a class="headerlink" href="#importing-modules" title="Permalink to this headline">¶</a></h2>
-<p>If you want to import from forms.py in same folder you write <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">.forms</span> <span class="pre">import</span> <span class="pre">...</span></code> . If you want to import from other modules you do: <code class="docutils literal notranslate"><span class="pre">`from</span> <span class="pre">modules.modulename.forms</span> <span class="pre">import</span> <span class="pre">...`</span></code></p>
+<p>If you want to import from <code class="docutils literal notranslate"><span class="pre">forms.py</span></code> in same folder you write <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">.forms</span> <span class="pre">import</span> <span class="pre">...</span></code> . If you want to import from other modules you do: <code class="docutils literal notranslate"><span class="pre">`from</span> <span class="pre">modules.modulename.forms</span> <span class="pre">import</span> <span class="pre">...`</span></code></p>
 </div>
 <div class="section" id="global-py">
 <h2>global.py<a class="headerlink" href="#global-py" title="Permalink to this headline">¶</a></h2>
@@ -201,22 +247,62 @@ specify the module url and panel icon.</p>
 </div>
 <div class="section" id="upload-py">
 <h2>upload.py<a class="headerlink" href="#upload-py" title="Permalink to this headline">¶</a></h2>
-<p>upload.py has a def upload(): function where uploads should be done.
-put upload codes in the function using app.app_context()</p>
-<p>Here is a demo:</p>
-</div>
-<div class="section" id="boxes-or-many-apps-together">
-<h2>Boxes or many apps together<a class="headerlink" href="#boxes-or-many-apps-together" title="Permalink to this headline">¶</a></h2>
-<p>If you want to create submodules, first create a box:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startbox demo
+<p><code class="docutils literal notranslate"><span class="pre">upload.py</span></code> has a <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">upload():</span></code> function where uploads should be done.
+This uploads are done when we run <code class="docutils literal notranslate"><span class="pre">shopyo</span> <span class="pre">initialise</span></code>. Example for
+uploading an admin user is shown below:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">modules.box__default.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+
+<span class="k">def</span> <span class="nf">add_admin</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">is_email_confirmed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">email_confirm_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;config.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">add_admin</span><span class="p">(</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;admin_user&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[x] Added Admin User&quot;</span><span class="p">)</span>
 </pre></div>
-</div>
-<p>This will be created as box__demo in modules/</p>
-<p>Then create the submodule:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py startsubapp demoapp <span class="k">in</span> box__demo
-</pre></div>
-</div>
-<p>If you go to url <cite>/demoapp</cite>, you will get Demoapp returned</p>
+</td></tr></table></div>
 </div>
 </div>
 

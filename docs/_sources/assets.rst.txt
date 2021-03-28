@@ -43,14 +43,13 @@ You can test the difference by running
 
 .. code:: bash
 
-   python manage.py rundebug
+   shopyo run --debugger
 
 and 
 
 .. code:: bash
 
-   python manage.py runserver
-
+   shopyo run --no-debugger
 
 
 Your code remains the same. Just the location changes.
