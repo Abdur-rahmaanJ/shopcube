@@ -71,18 +71,17 @@ def create_module(modulename, boxname, verbose):
 
     \b
     If box ``BOXNAME`` does not exist, it is created.
-    If ``MODULENAME`` already exists (either inside ``BOXNAME`` for the case ``BOXNAME`` is
-    provided or inside ``modules/`` when ``BOXNAME`` is not provided), an error
-    is thrown and command is terminated.
+    If ``MODULENAME`` already exists, an error is thrown and command is
+    terminated.
 
     structure of modules created is as follows:
 
         <add module/box directory tree here>
 
-    ``BOXNAME`` the name of box to create the ``MODULENAME`` in. Must start with
+    BOXNAME the name of box to create the MODULENAME in. Must start with
     ``box__``, otherwise error is thrown
 
-    ``MODULENAME`` the name of module to be created. Must not start with
+    MODULENAME the name of module to be created. Must not start with
     ``box__``, otherwise error is thrown
 
     """
@@ -155,21 +154,21 @@ def collectstatic(src, verbose):
 
     To collect static in only one module, run either of two commands::
 
-        \b
         $ shopyo collectstatic box__default/auth
+
         $ shopyo collectstatic modules/box__default/auth
 
     To collect static in all modules inside a box, run either of two commands
     below::
 
-        \b
         $ shopyo collectstatic box__default
+
         $ shopyo collectstatic modules/box__default
 
     To collect static in all modules run either of the two commands below::
 
-        \b
         $ shopyo collectstatic
+
         $ shopyo collectstatic modules
     """
     _collectstatic(target_module=src, verbose=verbose)

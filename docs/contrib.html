@@ -96,7 +96,7 @@
             
   <div class="section" id="contributing-to-shopyo">
 <h1>Contributing to Shopyo<a class="headerlink" href="#contributing-to-shopyo" title="Permalink to this headline">¶</a></h1>
-<p>Shopyo is built using Flask but mimicks Django so that you get to use plug and play modules,
+<p>Shopyo is built using Flask but mimics Django so that you get to use plug and play modules,
 to contribute, it’s nice to know Flask well. Here are some resources which might help you:</p>
 <div class="section" id="resources">
 <h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
@@ -204,16 +204,30 @@ git pull upstream dev
 <li><p>Now initialize the app by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> shopyo
 <span class="c1"># so now your path should be something like &lt;your path&gt;/shopyo/shopyo</span>
-python manage.py initialise
+shopyo initialise
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above <code class="docutils literal notranslate"><span class="pre">initialise</span></code> command can also be run as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py initialise
+</pre></div>
+</div>
 </div>
 </li>
 <li><p>To start the app, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo run
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above <code class="docutils literal notranslate"><span class="pre">run</span></code> command can also be run as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py run
+</pre></div>
+</div>
+</div>
 </li>
-<li><p>The app should now be running on IP <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> at port# <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can go to <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a> or <a class="reference external" href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>. You can click the login nav link or go directly to <a class="reference external" href="http://localhost:5000/login/">http://localhost:5000/login/</a>. Login with email <code class="docutils literal notranslate"><span class="pre">admin&#64;domain.com</span></code> and password <code class="docutils literal notranslate"><span class="pre">pass</span></code></p></li>
+<li><p>The app should now be running on IP <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> at port <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can go to <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a> or <a class="reference external" href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>. For the home page it will say <code class="docutils literal notranslate"><span class="pre">SITE</span> <span class="pre">UNDER</span> <span class="pre">CONSTRUCTION</span></code>.  Go to <a class="reference external" href="http://localhost:5000/login/">http://localhost:5000/login/</a>. Login with email <code class="docutils literal notranslate"><span class="pre">admin&#64;domain.com</span></code> and password <code class="docutils literal notranslate"><span class="pre">pass</span></code></p></li>
 </ol>
 </div>
 <div class="section" id="making-a-pull-request">
@@ -285,7 +299,7 @@ linting errors for you</p>
 <p>If you have already created the <code class="docutils literal notranslate"><span class="pre">setting.json</span></code> file as mentioned in <a class="reference internal" href="#setup"><span class="std std-ref">Setup Instructions</span></a> step 6,
 then your json file will look similar to one below</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\Users\\user\\Documents\\venvs\\my-shopyo-env\\Scripts\\python.exe&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;python.pythonPath&quot;</span><span class="p">:</span> <span class="s2">&quot;c:\\path\\to\\shopyo\\env\\Scripts\\python.exe&quot;</span><span class="p">,</span>
    <span class="nt">&quot;python.linting.flake8Enabled&quot;</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>

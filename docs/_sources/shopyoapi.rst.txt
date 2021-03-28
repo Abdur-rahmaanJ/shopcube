@@ -3,12 +3,12 @@ Shopyoapi
 
 Shopyo has some api which eases your life
 
-api.cli
--------------
+.. api.cli
+.. -------------
 
-.. click:: api.cli:cli
-  :prog: shopyo
-  :nested: full
+.. .. click:: api.cli:cli
+..   :prog: shopyo
+..   :nested: full
 
 api.database
 ------------------

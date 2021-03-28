@@ -33,10 +33,12 @@ author = "Abdur-rahmaanJ & Shopyo Team"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
-    "sphinx.ext.autosectionlabel",
     "sphinx.ext.napoleon",
-    'sphinx_click'
+    'sphinx_click',
+    'sphinxcontrib.spelling'
 ]
+
+# autosectionlabel_prefix_document = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
