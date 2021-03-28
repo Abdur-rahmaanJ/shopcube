@@ -331,7 +331,7 @@ class TestCliClean:
         expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
 
         assert result.exit_code == 0
-        assert expect_out == result.output
+        assert expect_out in result.output
 
     def test_clean_with_no_verbose_on_all_files(self, tmpdir, flask_app):
         """
@@ -345,10 +345,14 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
         result = runner.invoke(cli, ["clean"])
-        expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expect_out1 = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expect_out2 = "[x] __pycache__ successfully deleted\n"
+        expect_out3 = "[ ] unable to delete"
 
         assert result.exit_code == 0
-        assert expect_out == result.output
+        assert expect_out1 in result.output
+        assert expect_out2 not in result.output
+        assert expect_out3 not in result.output
         assert os.path.exists(pycache_path) is False
         assert os.path.exists(shopyo_path) is False
         assert os.path.exists(migrations_path) is False
@@ -471,7 +475,7 @@ class TestCliCreateModule:
         )
 
         assert result.exit_code != 0
-        assert result.output == expected_out
+        assert expected_out in result.output
 
     @pytest.mark.parametrize("box", ["box_bar", "boxfoo", "foo"])
     def test_create_module_with_invalid_box_name(self, cli_runner, box):
@@ -482,7 +486,7 @@ class TestCliCreateModule:
         )
 
         assert result.exit_code != 0
-        assert result.output == expected_out
+        assert expected_out in result.output
 
     @pytest.mark.parametrize(
         "mod,box",
@@ -512,7 +516,7 @@ class TestCliCreateModule:
         )
 
         assert result.exit_code != 0
-        assert result.output == expected_out
+        assert expected_out in result.output
 
     def test_create_boxname_not_alphanumeric(self, cli_runner):
         result = cli_runner("createmodule", "mod", "box__?.game")
@@ -522,7 +526,7 @@ class TestCliCreateModule:
         )
 
         assert result.exit_code != 0
-        assert result.output == expected_out
+        assert expected_out in result.output
 
     @pytest.mark.parametrize(
         "mod,box",
@@ -582,10 +586,12 @@ class TestCliCollectstatic:
 
     def test_collectstatic_with_default_src(self, cli_runner):
         result = cli_runner("collectstatic")
-        expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expected_out2 = "[x] done copying"
 
         assert result.exit_code == 0
-        assert result.output == expected_out
+        assert expected_out1 in result.output
+        assert expected_out2 not in result.output
         assert os.path.exists("static/modules/bar/bar.css")
         assert os.path.exists("static/modules/box__default/foo/foo.css")
         assert len(os.listdir("static/modules")) == 2
@@ -605,10 +611,12 @@ class TestCliCollectstatic:
     )
     def test_collectstatic_with_valid_arg(self, src, expected, cli_runner):
         result = cli_runner("collectstatic", src)
-        expected_out = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expected_out2 = "[x] done copying"
 
         assert result.exit_code == 0
-        assert result.output == expected_out
+        assert expected_out1 in result.output
+        assert expected_out2 not in result.output
         assert os.path.exists(f"static/modules/{expected}")
         assert len(os.listdir("static/modules")) == 1
 

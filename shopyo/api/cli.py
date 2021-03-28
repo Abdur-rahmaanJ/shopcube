@@ -15,6 +15,7 @@ from shopyo.api.database import autoload_models
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
+from shopyo.api.info import printinfo
 
 
 def _create_shopyo_app(info):
@@ -37,6 +38,7 @@ def _create_shopyo_app(info):
 @pass_script_info
 def cli(info, **parmams):
     """CLI for shopyo"""
+    printinfo()
     info.data['config'] = parmams["config"]
 
 
