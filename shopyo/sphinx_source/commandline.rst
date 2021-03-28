@@ -22,7 +22,7 @@ or
 
 .. code:: bash
 
-   Usage: manage.py clean [OPTIONS]
+   manage.py clean [OPTIONS]
 
 removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
 ``db`` if present
@@ -57,7 +57,7 @@ or
 
 .. code:: bash
 
-   Usage: manage.py initialise [OPTIONS]
+   manage.py initialise [OPTIONS]
 
 Creates ``db``, ``migration/``, adds default users, add settings.
 This command need to be run only once before running the project
@@ -91,7 +91,7 @@ or
 
 .. code:: bash
 
-   Usage: manage.py run [OPTIONS]
+   manage.py run [OPTIONS]
 
 Run a local development server.
 
@@ -166,7 +166,7 @@ or
 
 .. code:: bash
 
-   Usage: manage.py createmodule [OPTIONS] MODULENAME [BOXNAME]
+   manage.py createmodule [OPTIONS] MODULENAME [BOXNAME]
 
 create a module ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
 provided, create the module inside ``modules/BOXNAME.``
@@ -218,7 +218,7 @@ or
 
 .. code:: bash
 
-   Usage: manage.py collectstatic [OPTIONS] [SRC]
+   manage.py collectstatic [OPTIONS] [SRC]
 
 Copies ``static/`` in ``modules/`` or ``modules/SRC`` into ``/static/modules/``
 
