@@ -53,7 +53,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Setting up Shopyo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-easy-way">👟 The easy way</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-from-github">🔧 Install from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#default-login"><strong>Default Login</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a></li>
@@ -96,25 +95,33 @@
 <div class="section" id="the-easy-way">
 <h2>👟 The easy way<a class="headerlink" href="#the-easy-way" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>[Important] create a virtual environment and activate it.</p></li>
+<li><p>[Important] create a <a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">virtual environment</a> and activate it</p></li>
 <li><p>install shopyo</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install shopyo
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>create new project</p></li>
-<li><p>create new shopyo project</p></li>
+<li><p>create new project, for example <code class="docutils literal notranslate"><span class="pre">blog</span></code></p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new /path/to/location project-name
-</pre></div>
-</div>
-<p>example</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new /home/profiles/arj/desktop shopyotest
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir blog
+<span class="nb">cd</span> blog
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>cd into path. if you added path as <code class="docutils literal notranslate"><span class="pre">.</span></code> just cd into <code class="docutils literal notranslate"><span class="pre">project-name</span></code></p></li>
+<li><p>create new shopyo project for <code class="docutils literal notranslate"><span class="pre">blog</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="commandline.html#new"><span class="std std-ref">new</span></a> for more details.</p>
+<ul class="simple">
+<li><p>cd into path of the newly create project.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> blog <span class="c1"># path should now /path/to/blog/blog</span>
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>initialise</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo initialise
@@ -123,51 +130,19 @@
 <ul class="simple">
 <li><p>run</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo runserver
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo run
 </pre></div>
 </div>
+<p>The app should now be running on IP <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> at port <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can go to <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a> or <a class="reference external" href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>. For the home page it will say <code class="docutils literal notranslate"><span class="pre">SITE</span> <span class="pre">UNDER</span> <span class="pre">CONSTRUCTION</span></code>.  Go to <a class="reference external" href="http://localhost:5000/login/">http://localhost:5000/login/</a>. Login with email <code class="docutils literal notranslate"><span class="pre">admin&#64;domain.com</span></code> and password <code class="docutils literal notranslate"><span class="pre">pass</span></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If the shopyo command is not recognized. close your commandline prompt and reopen</p>
+<p>If the shopyo command is not recognized make sure you are in <code class="docutils literal notranslate"><span class="pre">blog/blog`</span></code>
+for this example</p>
 </div>
 </div>
 <div class="section" id="install-from-github">
 <h2>🔧 Install from Github<a class="headerlink" href="#install-from-github" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>clone and cd into shopyo/shopyo</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Abdur-rahmaanJ/shopyo
-<span class="nb">cd</span> shopyo/shopyo
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>install requirements</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -r requirements.txt
-</pre></div>
-</div>
-<p>or if you want to contribute</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install -r dev_requirements.txt
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into shopyo/shopyo if not done already.</p>
-<p>initialise and setup app.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py createconfig
-python manage.py initialise
-</pre></div>
-</div>
-<p>run the app.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
-</pre></div>
-</div>
-<p>go to the indicated url</p>
-</div>
-<div class="section" id="default-login">
-<h2><strong>Default Login</strong><a class="headerlink" href="#default-login" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>email: admin@domain.com
-password: pass
-</pre></div>
-</div>
+<p>See the <a class="reference internal" href="contrib.html#setup-instructions"><span class="std std-ref">Setup Instructions</span></a></p>
 </div>
 </div>
 

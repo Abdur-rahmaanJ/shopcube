@@ -141,7 +141,7 @@ www
 Using Shopyo as a Flask base
 ****************************
 
-You can customise Shopyo in many ways. 
+You can customise Shopyo in many ways.
 For eample, you can modify exiting modules, add more modules to default boxes
 or even remove the modules you do not need. You might however want to keep the following modules:
 
@@ -181,4 +181,3 @@ uploading an admin user is shown below:
 .. literalinclude:: ../modules/box__default/auth/upload.py
    :language: python
    :linenos:
-   :lines: 1-30

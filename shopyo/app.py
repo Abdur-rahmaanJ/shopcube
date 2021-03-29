@@ -93,8 +93,10 @@ def create_app(config_name="development"):
     try:
         configuration = app_config[config_name]
     except KeyError as e:
-        print(f"Invalid config name {e}. Available configurations are:")
-        print(list(app_config.keys()))
+        print(
+            f"[ ] Invalid config name {e}. Available configurations are: "
+            f"{list(app_config.keys())}\n"
+        )
         sys.exit(1)
 
     app.config.from_object(configuration)

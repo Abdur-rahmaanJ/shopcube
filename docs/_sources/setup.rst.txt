@@ -6,94 +6,54 @@ Shopyo requires Python. Be sure to have it before!
 👟 The easy way
 ---------------
 
-* [Important] create a virtual environment and activate it.
+* [Important] create a `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ and activate it
 * install shopyo
 
 .. code-block:: bash
 
-    pip install shopyo
+   pip install shopyo
 
-* create new project
-
-* create new shopyo project
+* create new project, for example ``blog``
 
 .. code-block:: bash
 
-    shopyo new /path/to/location project-name
+   mkdir blog
+   cd blog
 
-example
+* create new shopyo project for ``blog``
 
 .. code-block:: bash
 
-    shopyo new /home/profiles/arj/desktop shopyotest
+   shopyo new
 
-* cd into path. if you added path as ``.`` just cd into ``project-name``
+See :ref:`new` for more details.
+
+* cd into path of the newly create project.
+
+.. code-block:: bash
+
+   cd blog # path should now /path/to/blog/blog
 
 * initialise
 
 .. code-block:: bash
 
-    shopyo initialise
+   shopyo initialise
 
 * run
 
 .. code-block:: bash
 
-    shopyo runserver
+   shopyo run
 
-.. note ::
+The app should now be running on IP ``127.0.0.1`` at port ``5000``. You can go to http://localhost:5000/ or http://127.0.0.1:5000/. For the home page it will say ``SITE UNDER CONSTRUCTION``.  Go to http://localhost:5000/login/. Login with email ``admin@domain.com`` and password ``pass``
 
-    If the shopyo command is not recognized. close your commandline prompt and reopen
+.. note::
+
+   If the shopyo command is not recognized make sure you are in ``blog/blog```
+   for this example
 
 
 🔧 Install from Github
 ----------------------
-
-* clone and cd into shopyo/shopyo
-
-
-.. code-block:: bash
-
-    git clone https://github.com/Abdur-rahmaanJ/shopyo
-    cd shopyo/shopyo
-
-* install requirements
-
-.. code-block:: bash
-
-    python -m pip install -r requirements.txt
-
-
-or if you want to contribute
-
-.. code-block:: bash
-
-    python -m pip install -r dev_requirements.txt
-
-
-``cd`` into shopyo/shopyo if not done already.
-
-initialise and setup app.
-
-.. code-block:: bash
-
-    python manage.py createconfig
-    python manage.py initialise
-
-run the app.
-
-.. code-block:: bash
-
-    python manage.py runserver
-
-go to the indicated url
-
-
-**Default Login**
------------------------
-
-.. code-block:: none
-
-    email: admin@domain.com
-    password: pass
-
+See the :ref:`Setup Instructions`

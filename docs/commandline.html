@@ -60,9 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="init.html">The Init File</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Commandline</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#clean">clean</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#shopyo">shopyo</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#options">Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#clean">clean</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#shopyo-clean-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shopyo-clean-options">Options</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#initialise">Initialise</a><ul>
@@ -125,10 +130,41 @@
 <div class="toctree-wrapper compound">
 </div>
 <p>Various commandline args exist to ease your life.</p>
+<div class="section" id="shopyo">
+<h2>shopyo<a class="headerlink" href="#shopyo" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="usage">
+<span id="shopyo-usage"></span><h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p>CLI management for shopyo cli. For Example, to run the app
+in production mode you can run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo --config<span class="o">=</span>production run
+</pre></div>
+</div>
+</div>
+<div class="section" id="options">
+<span id="shopyo-options"></span><h3>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
+<dl class="std option">
+<dt id="cmdoption-version">
+<code class="sig-name descname">--version</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the flask version</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-config">
+<code class="sig-name descname">--config</code><code class="sig-prename descclassname"> &lt;CONFIG NAME&gt;</code><a class="headerlink" href="#cmdoption-config" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default config is set to “development”. Other available configurations are
+“testing” and “production”. For commands <a class="reference internal" href="#createmodule">createmodule</a> , <a class="reference internal" href="#collectstatic">collectstatic</a>
+and <a class="reference internal" href="#new">new</a> this options has no affect.</p>
+</dd></dl>
+
+</div>
+</div>
 <div class="section" id="clean">
 <h2>clean<a class="headerlink" href="#clean" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="usage">
-<span id="shopyo-clean-usage"></span><h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="shopyo-clean-usage">
+<span id="id1"></span><h3>Usage<a class="headerlink" href="#shopyo-clean-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo clean <span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
@@ -139,8 +175,8 @@
 <p>removes <code class="docutils literal notranslate"><span class="pre">__pycache__</span></code>, <code class="docutils literal notranslate"><span class="pre">migrations/</span></code>, <code class="docutils literal notranslate"><span class="pre">shopyo.db</span></code> files and drops
 <code class="docutils literal notranslate"><span class="pre">db</span></code> if present</p>
 </div>
-<div class="section" id="options">
-<span id="shopyo-clean-options"></span><h3>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="shopyo-clean-options">
+<span id="id2"></span><h3>Options<a class="headerlink" href="#shopyo-clean-options" title="Permalink to this headline">¶</a></h3>
 <dl class="std option">
 <dt id="cmdoption-v">
 <span id="cmdoption-verbose"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-v" title="Permalink to this definition">¶</a></dt>
@@ -158,7 +194,7 @@
 <div class="section" id="initialise">
 <h2>Initialise<a class="headerlink" href="#initialise" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="shopyo-initialise-usage">
-<span id="id1"></span><h3>Usage<a class="headerlink" href="#shopyo-initialise-usage" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3>Usage<a class="headerlink" href="#shopyo-initialise-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo initialise <span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
@@ -170,7 +206,7 @@
 This command need to be run only once before running the project</p>
 </div>
 <div class="section" id="shopyo-initialise-options">
-<span id="id2"></span><h3>Options<a class="headerlink" href="#shopyo-initialise-options" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>Options<a class="headerlink" href="#shopyo-initialise-options" title="Permalink to this headline">¶</a></h3>
 <dl class="std option">
 <dt id="cmdoption-0">
 <span id="cmdoption-1"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-0" title="Permalink to this definition">¶</a></dt>
@@ -188,7 +224,7 @@ This command need to be run only once before running the project</p>
 <div class="section" id="run">
 <h2>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="shopyo-run-usage">
-<span id="id3"></span><h3>Usage<a class="headerlink" href="#shopyo-run-usage" title="Permalink to this headline">¶</a></h3>
+<span id="id5"></span><h3>Usage<a class="headerlink" href="#shopyo-run-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo run <span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
@@ -207,7 +243,7 @@ or <code class="docutils literal notranslate"><span class="pre">FLASK_DEBUG=1</s
 </div>
 </div>
 <div class="section" id="shopyo-run-options">
-<span id="id4"></span><h3>Options<a class="headerlink" href="#shopyo-run-options" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3>Options<a class="headerlink" href="#shopyo-run-options" title="Permalink to this headline">¶</a></h3>
 <dl class="std option">
 <dt id="cmdoption-h">
 <span id="cmdoption-host"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--host</code><code class="sig-prename descclassname"> &lt;host&gt;</code><a class="headerlink" href="#cmdoption-h" title="Permalink to this definition">¶</a></dt>
@@ -273,7 +309,7 @@ or <code class="docutils literal notranslate"><span class="pre">FLASK_DEBUG=1</s
 <div class="section" id="createmodule">
 <h2>createmodule<a class="headerlink" href="#createmodule" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="shopyo-createmodule-usage">
-<span id="id5"></span><h3>Usage<a class="headerlink" href="#shopyo-createmodule-usage" title="Permalink to this headline">¶</a></h3>
+<span id="id7"></span><h3>Usage<a class="headerlink" href="#shopyo-createmodule-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo createmodule <span class="o">[</span>OPTIONS<span class="o">]</span> MODULENAME <span class="o">[</span>BOXNAME<span class="o">]</span>
 </pre></div>
 </div>
@@ -287,7 +323,7 @@ provided, create the module inside <code class="docutils literal notranslate"><s
 <p>If <code class="docutils literal notranslate"><span class="pre">MODULENAME</span></code> already exists, an error is thrown and command is terminated.</p>
 </div>
 <div class="section" id="shopyo-createmodule-options">
-<span id="id6"></span><h3>Options<a class="headerlink" href="#shopyo-createmodule-options" title="Permalink to this headline">¶</a></h3>
+<span id="id8"></span><h3>Options<a class="headerlink" href="#shopyo-createmodule-options" title="Permalink to this headline">¶</a></h3>
 <dl class="std option">
 <dt id="cmdoption-4">
 <span id="cmdoption-5"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-4" title="Permalink to this definition">¶</a></dt>
@@ -326,7 +362,7 @@ provided, create the module inside <code class="docutils literal notranslate"><s
 <div class="section" id="collectstatic">
 <h2>collectstatic<a class="headerlink" href="#collectstatic" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="shopyo-collectstatic-usage">
-<span id="id7"></span><h3>Usage<a class="headerlink" href="#shopyo-collectstatic-usage" title="Permalink to this headline">¶</a></h3>
+<span id="id9"></span><h3>Usage<a class="headerlink" href="#shopyo-collectstatic-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo collectstatic <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>SRC<span class="o">]</span>
 </pre></div>
 </div>
@@ -364,7 +400,7 @@ $ shopyo collectstatic modules
 </div></blockquote>
 </div>
 <div class="section" id="shopyo-collectstatic-options">
-<span id="id8"></span><h3>Options<a class="headerlink" href="#shopyo-collectstatic-options" title="Permalink to this headline">¶</a></h3>
+<span id="id10"></span><h3>Options<a class="headerlink" href="#shopyo-collectstatic-options" title="Permalink to this headline">¶</a></h3>
 <dl class="std option">
 <dt id="cmdoption-7">
 <span id="cmdoption-8"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-7" title="Permalink to this definition">¶</a></dt>
@@ -379,7 +415,7 @@ $ shopyo collectstatic modules
 
 </div>
 <div class="section" id="shopyo-collectstatic-arguments">
-<span id="id9"></span><h3>Arguments<a class="headerlink" href="#shopyo-collectstatic-arguments" title="Permalink to this headline">¶</a></h3>
+<span id="id11"></span><h3>Arguments<a class="headerlink" href="#shopyo-collectstatic-arguments" title="Permalink to this headline">¶</a></h3>
 <dl class="object">
 <dt>
 <code class="sig-name descname">SRC</code></dt>
@@ -394,7 +430,7 @@ $ shopyo collectstatic modules
 <div class="section" id="new">
 <h2>new<a class="headerlink" href="#new" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="shopyo-new-usage">
-<span id="id10"></span><h3>Usage<a class="headerlink" href="#shopyo-new-usage" title="Permalink to this headline">¶</a></h3>
+<span id="id12"></span><h3>Usage<a class="headerlink" href="#shopyo-new-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shopyo new <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>PROJNAME<span class="o">]</span>
 </pre></div>
 </div>
@@ -455,7 +491,7 @@ you can initialise your project by running:</p>
 <p>You now have a complete Flask based blog application</p>
 </div>
 <div class="section" id="shopyo-new-options">
-<span id="id11"></span><h3>Options<a class="headerlink" href="#shopyo-new-options" title="Permalink to this headline">¶</a></h3>
+<span id="id13"></span><h3>Options<a class="headerlink" href="#shopyo-new-options" title="Permalink to this headline">¶</a></h3>
 <dl class="std option">
 <dt id="cmdoption-10">
 <span id="cmdoption-11"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-10" title="Permalink to this definition">¶</a></dt>
@@ -470,7 +506,7 @@ you can initialise your project by running:</p>
 
 </div>
 <div class="section" id="shopyo-new-arguments">
-<span id="id12"></span><h3>Arguments<a class="headerlink" href="#shopyo-new-arguments" title="Permalink to this headline">¶</a></h3>
+<span id="id14"></span><h3>Arguments<a class="headerlink" href="#shopyo-new-arguments" title="Permalink to this headline">¶</a></h3>
 <dl class="object">
 <dt>
 <code class="sig-name descname">PROJNAME</code></dt>

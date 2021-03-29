@@ -6,6 +6,40 @@ Commandline Args
 
 Various commandline args exist to ease your life.
 
+shopyo
+******
+
+.. _shopyo usage:
+
+Usage
+=====
+
+.. code:: bash
+
+   shopyo [OPTIONS] COMMAND [ARGS]...
+
+CLI management for shopyo cli. For Example, to run the app
+in production mode you can run 
+
+.. code:: bash
+
+   shopyo --config=production run
+
+.. _shopyo options:
+
+Options
+=======
+
+.. option:: --version
+
+   Show the flask version
+
+.. option:: --config <CONFIG NAME>
+
+   By default config is set to "development". Other available configurations are
+   "testing" and "production". For commands `createmodule`_ , `collectstatic`_
+   and `new`_ this options has no affect.
+
 clean
 *****
 

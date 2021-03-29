@@ -43,13 +43,13 @@ You can test the difference by running
 
 .. code:: bash
 
-   shopyo run --debugger
+   shopyo run
 
 and 
 
 .. code:: bash
 
-   shopyo run --no-debugger
+   shopyo --config=production run
 
 
 Your code remains the same. Just the location changes.

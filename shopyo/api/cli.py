@@ -39,7 +39,10 @@ def _create_shopyo_app(info):
 def cli(info, **parmams):
     """CLI for shopyo"""
     printinfo()
-    info.data['config'] = parmams["config"]
+    config_name = parmams["config"]
+    info.data['config'] = config_name
+    os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
+    os.environ["FLASK_ENV"] = config_name
 
 
 @cli.command("startbox", with_appcontext=False)
