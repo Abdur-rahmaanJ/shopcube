@@ -15,6 +15,8 @@ A 45 mins talk was dedicated to it at [EuroPython](https://youtu.be/rkzXQOC1T0Q)
 
 Ecommerce part transferred to [ShopCube](https://github.com/shopyo/shopcube)
 
+**[ [DOCS](https://shopyo.readthedocs.io/en/latest/) | [DISCORD](https://discord.gg/k37Ef6w) | [CONTRIBUTE](https://shopyo.readthedocs.io/en/latest/contrib.htm)]**
+
 # What?
 
 Your next-level modular web framework. Headless support coming soon. 
@@ -103,13 +105,13 @@ The modules are put by copy paste. No blueprint codes to write.
 
 We follow a 100% first-timers friendly policy.
 
-👉 Get started [here](https://abdur-rahmaanj.github.io/shopyo/contrib.html)
+👉 Get started [here](https://shopyo.readthedocs.io/en/latest/contrib.html)
 
 👉 Join the [Discord](https://discord.gg/k37Ef6w), ask questions & learn about Flask tricks during our dev talks!
 
 # 📚 Docs
 
-👉 Link: [abdur-rahmaanj.github.io/shopyo/](https://abdur-rahmaanj.github.io/shopyo/)
+👉 Link: [shopyo.readthedocs.io/](https://shopyo.readthedocs.io/en/latest/)
 
 # By default
 
