@@ -15,7 +15,7 @@ A 45 mins talk was dedicated to it at [EuroPython](https://youtu.be/rkzXQOC1T0Q)
 
 E-commerce modules transferred to [ShopCube](https://github.com/shopyo/shopcube)
 
-**[ [DOCS](https://shopyo.readthedocs.io/en/latest/) | [DISCORD](https://discord.gg/k37Ef6w) | [CONTRIBUTE](https://shopyo.readthedocs.io/en/latest/contrib.htm) | [TWITTER](https://twitter.com/shopyo1) ]**
+**[ [DOCS](https://shopyo.readthedocs.io/en/latest/) | [DISCORD](https://discord.gg/k37Ef6w) | [CONTRIBUTE](https://shopyo.readthedocs.io/en/latest/contrib.htm) | [TWITTER](https://twitter.com/shopyoproject) ]**
 
 # What?
 
