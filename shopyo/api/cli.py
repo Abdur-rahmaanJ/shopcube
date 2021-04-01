@@ -41,8 +41,8 @@ def cli(info, **parmams):
     printinfo()
     config_name = parmams["config"]
     info.data['config'] = config_name
-    os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
-    os.environ["FLASK_ENV"] = config_name
+    # os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
+    # os.environ["FLASK_ENV"] = config_name
 
 
 @cli.command("startbox", with_appcontext=False)
@@ -200,7 +200,7 @@ def initialise(verbose):
     _clean(verbose=verbose)
 
     # load all models available inside modules
-    autoload_models()
+    autoload_models(verbose=verbose)
 
     # add a migrations folder to your application.
     click.echo("Creating db...")
