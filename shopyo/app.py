@@ -26,8 +26,6 @@ from init import migrate
 from init import mail
 from init import modules_path
 from shopyo.api.file import trycopy
-from shopyo.api.file import trymkdir
-from shopyo.api.file import trymkfile
 
 #
 # Flask admin setup
@@ -73,18 +71,8 @@ class MyAdminIndexView(AdminIndexView):
 
 
 try:
-    if not os.path.exists("config.py"):
-        trycopy("config_demo.py", "config.py")
-    else:
-        print("config.py exists")
     if not os.path.exists("config.json"):
         trycopy("config_demo.json", "config.json")
-    else:
-        print("config.json exists")
-    if not os.path.exists('instance/'):
-        trymkdir('instance/')
-    if not os.path.exists('instance/config.py'):
-        trymkfile('instance/config.py')
 except PermissionError as e:
     print(
         "Cannot continue, permission error"
