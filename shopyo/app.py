@@ -2,6 +2,7 @@ import importlib
 import os
 import json
 import jinja2
+import sys
 from flask import Flask
 from flask import send_from_directory
 from flask import redirect
@@ -85,10 +86,19 @@ except PermissionError as e:
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 
-def create_app(config_name):
+def create_app(config_name="development"):
 
     app = Flask(__name__, instance_relative_config=True)
-    configuration = app_config[config_name]
+
+    try:
+        configuration = app_config[config_name]
+    except KeyError as e:
+        print(
+            f"[ ] Invalid config name {e}. Available configurations are: "
+            f"{list(app_config.keys())}\n"
+        )
+        sys.exit(1)
+
     app.config.from_object(configuration)
 
     if config_name != "testing":
@@ -156,11 +166,12 @@ def create_app(config_name):
                     app.register_blueprint(
                         getattr(sys_mod, "{}_blueprint".format(sub_folder))
                     )
-                except AttributeError as e:
-                    print(
-                        " x Blueprint skipped:",
-                        "modules.{}.{}.view".format(folder, sub_folder, folder),
-                    )
+                except AttributeError:
+                    pass
+                    # print(
+                    #     " x Blueprint skipped:",
+                    #     "modules.{}.{}.view".format(folder, sub_folder),
+                    # )
                 try:
                     mod_global = importlib.import_module(
                         "modules.{}.{}.global".format(folder, sub_folder)
@@ -178,8 +189,9 @@ def create_app(config_name):
                 app.register_blueprint(
                     getattr(mod, "{}_blueprint".format(folder))
                 )
-            except AttributeError as e:
-                print("[ ] Blueprint skipped:", e)
+            except AttributeError:
+                pass
+                # print("[ ] Blueprint skipped:", e)
             try:
                 mod_global = importlib.import_module(
                     "modules.{}.global".format(folder)
@@ -187,7 +199,7 @@ def create_app(config_name):
                 available_everywhere_entities.update(
                     mod_global.available_everywhere
                 )
-            except ImportError as e:
+            except ImportError:
                 # print(e)
                 pass
 
@@ -231,6 +243,7 @@ def create_app(config_name):
 
 with open(os.path.join(base_path, "config.json")) as f:
     config_json = json.load(f)
+
 environment = config_json["environment"]
 app = create_app(environment)
 

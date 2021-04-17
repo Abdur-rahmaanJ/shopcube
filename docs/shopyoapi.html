@@ -61,7 +61,6 @@
 <li class="toctree-l1"><a class="reference internal" href="init.html">The Init File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Shopyoapi</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-api.cmd">api.cmd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-api.database">api.database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-api.enhance">api.enhance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-api.file">api.file</a></li>
@@ -98,130 +97,11 @@
   <div class="section" id="shopyoapi">
 <h1>Shopyoapi<a class="headerlink" href="#shopyoapi" title="Permalink to this headline">¶</a></h1>
 <p>Shopyo has some api which eases your life</p>
-<div class="section" id="module-api.cmd">
-<span id="api-cmd"></span><h2>api.cmd<a class="headerlink" href="#module-api.cmd" title="Permalink to this headline">¶</a></h2>
-<p>commandline utilities functions</p>
-<dl class="py function">
-<dt id="api.cmd.clean">
-<code class="sig-prename descclassname">api.cmd.</code><code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/cmd.html#clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.cmd.clean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes shopyo.db and migrations/ if present in current working directory.
-Deletes all __pycache__ folders starting from current working directory
-all the way to leaf directory.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>app</strong> (<em>-</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>…</p>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="api.cmd.collectstatic">
-<code class="sig-prename descclassname">api.cmd.</code><code class="sig-name descname">collectstatic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_module</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/cmd.html#collectstatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.cmd.collectstatic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copies <code class="docutils literal notranslate"><span class="pre">module/static</span></code> into <code class="docutils literal notranslate"><span class="pre">/static/modules/module</span></code>.
-In static it becomes like</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span><span class="o">/</span>
-     <span class="n">modules</span><span class="o">/</span>
-         <span class="n">box_something</span><span class="o">/</span>
-             <span class="n">modulename</span>
-         <span class="n">modulename2</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>target_module</strong> (<em>str</em>) – name of module, in alphanumeric-underscore,
-supports <code class="docutils literal notranslate"><span class="pre">module</span></code> or <code class="docutils literal notranslate"><span class="pre">box__name/module</span></code></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="api.cmd.create_box">
-<code class="sig-prename descclassname">api.cmd.</code><code class="sig-name descname">create_box</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/cmd.html#create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.cmd.create_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>creates box with box_info.json</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of box, in alphanumeric-underscore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="api.cmd.create_module">
-<code class="sig-prename descclassname">api.cmd.</code><code class="sig-name descname">create_module</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">modulename</span></em>, <em class="sig-param"><span class="n">base_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/cmd.html#create_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.cmd.create_module" title="Permalink to this definition">¶</a></dt>
-<dd><p>creates module with the structure defined in the modules section in docs</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>modulename</strong> (<em>str</em>) – name of module, in alphanumeric-underscore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="api.cmd.create_module_in_box">
-<code class="sig-prename descclassname">api.cmd.</code><code class="sig-name descname">create_module_in_box</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">modulename</span></em>, <em class="sig-param"><span class="n">boxname</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/cmd.html#create_module_in_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.cmd.create_module_in_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>creates module with the structure defined in the modules section in docs in
-a box</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>modulename</strong> (<em>str</em>) – name of module, in alphanumeric-underscore</p></li>
-<li><p><strong>boxname</strong> (<em>str</em>) – name of box, in alphanumeric-underscore</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="api.cmd.initialise">
-<code class="sig-prename descclassname">api.cmd.</code><code class="sig-name descname">initialise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/cmd.html#initialise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.cmd.initialise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create db, migrate, adds default users, add settings</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
 <div class="section" id="module-api.database">
 <span id="api-database"></span><h2>api.database<a class="headerlink" href="#module-api.database" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="api.database.autoload_models">
-<code class="sig-prename descclassname">api.database.</code><code class="sig-name descname">autoload_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/database.html#autoload_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.database.autoload_models" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">api.database.</code><code class="sig-name descname">autoload_models</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/database.html#autoload_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.database.autoload_models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Auto imports models from modules/ in desired file. Used so that
 flask_migrate does not miss models when migrating</p>
 <dl class="field-list simple">
@@ -365,6 +245,54 @@ param</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="api.file.tryrmcache">
+<code class="sig-prename descclassname">api.file.</code><code class="sig-name descname">tryrmcache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_name</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/file.html#tryrmcache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.file.tryrmcache" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes all __pycache__ starting from directory dir_name
+all the way to leaf directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dir_name</strong> (<em>string</em>) – path from where to start removing pycache</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="api.file.tryrmfile">
+<code class="sig-prename descclassname">api.file.</code><code class="sig-name descname">tryrmfile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/file.html#tryrmfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.file.tryrmfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>tries to remove file path and output message to stdin or stderr.
+Path must point to a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>string</em>) – path of the file to remove</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns true upon successful removal false otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="api.file.tryrmtree">
+<code class="sig-prename descclassname">api.file.</code><code class="sig-name descname">tryrmtree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/file.html#tryrmtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.file.tryrmtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to removes an entire directory tree. Path must point to
+a directory. Outputs message to stdin or stderr</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>string</em>) – directory path to be removed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns true upon successful return false otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,8 +1,42 @@
 import re
+import os
 
 from wtforms.validators import ValidationError
 
 # https://wtforms.readthedocs.io/en/2.3.x/validators/
+
+
+def get_module_path_if_exists(name):
+
+    root_path = os.getcwd()
+
+    for folder in os.listdir(os.path.join(root_path, "modules")):
+        module_path = os.path.join(root_path, "modules", folder)
+        sub_module_path = os.path.join(module_path, name)
+
+        if folder == name:
+            return module_path
+
+        if os.path.exists(sub_module_path):
+            return sub_module_path
+
+    return None
+
+
+def is_alpha_num_underscore(name):
+    """returns whether the given name contains only alphanumeric or underscore
+
+    Parameters
+    ----------
+    name : str
+        to value to check for alphanumeric or underscore
+
+    Returns
+    -------
+    bool
+        returns ``True`` if ``name`` is alphanumeric, ``False`` otherwise
+    """
+    return bool(re.match(r"^[A-Za-z0-9_]+$", name))
 
 
 def is_empty_str(string):
@@ -38,26 +72,26 @@ def verify_slug(form, field):
 
 def require_if_default_address(form, field):
 
-    if form.diffAddress.data == False:
+    if form.diffAddress.data is False:
         if is_empty_str(field.data):
             raise ValidationError("{} cannot be empty!".format(field.label))
 
 
 def require_if_diff_address(form, field):
-    if form.diffAddress.data == True:
+    if form.diffAddress.data is True:
         if is_empty_str(field.data):
             raise ValidationError("{} cannot be empty!".format(field.label))
 
 
 def require_if_apply_coupon(form, field):
 
-    if form.applyCoupon.data == True:
+    if form.applyCoupon.data is True:
         if is_empty_str(field.data):
             raise ValidationError("{} cannot be empty!".format(field.label))
 
 
 def require_if_create_account(form, field):
 
-    if form.createAccount.data == True:
+    if form.createAccount.data is True:
         if is_empty_str(field.data):
             raise ValidationError("{} cannot be empty!".format(field.label))

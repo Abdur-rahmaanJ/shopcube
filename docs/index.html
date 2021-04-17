@@ -93,7 +93,6 @@
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setting up Shopyo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="setup.html#the-easy-way">👟 The easy way</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setup.html#install-from-github">🔧 Install from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="setup.html#default-login"><strong>Default Login</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="education.html">Education section</a><ul>
@@ -112,14 +111,17 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules/Apps</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#easy-way-to-create-module">Easy way to create module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#what-make-up-modules">What make up modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#info-json">info.json</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#default-modules">Default Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#default-modules-boxes">Default Modules/Boxes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#box-bizhelp">box__bizhelp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#box-default">box__default</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#www">www</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#using-shopyo-as-a-flask-base">Using Shopyo as a Flask base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#importing-modules">Importing modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#global-py">global.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#upload-py">upload.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#boxes-or-many-apps-together">Boxes or many apps together</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
@@ -141,11 +143,47 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="init.html">The Init File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commandline.html">Commandline</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="commandline.html#complete-commands">Complete commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#shopyo">shopyo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#options">Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#clean">clean</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-clean-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-clean-options">Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#initialise">Initialise</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-initialise-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-initialise-options">Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#run">run</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-run-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-run-options">Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#createmodule">createmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-createmodule-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-createmodule-options">Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#arguments">Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#collectstatic">collectstatic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-collectstatic-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-collectstatic-options">Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-collectstatic-arguments">Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#new">new</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-new-usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-new-options">Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commandline.html#shopyo-new-arguments">Arguments</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="shopyoapi.html">Shopyoapi</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="shopyoapi.html#module-api.cmd">api.cmd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shopyoapi.html#module-api.database">api.database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shopyoapi.html#module-api.enhance">api.enhance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shopyoapi.html#module-api.file">api.file</a></li>

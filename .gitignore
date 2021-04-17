@@ -117,15 +117,15 @@ shopyo.db
 *.bat
 *.vbs
 
-#migrations
+# migrations
 migrations/
 shopyo/migrations/
 
-#vscode
+# vscode
 .vscode
 workspace.code-workspace
 
-#uploads 
+# uploads 
 shopyo/static/uploads/
 
 # modules in static since present in modules

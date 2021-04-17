@@ -3,14 +3,6 @@ Shopyoapi
 
 Shopyo has some api which eases your life
 
-api.cmd
--------------
-
-.. automodule:: api.cmd
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
 
 api.database
 ------------------
