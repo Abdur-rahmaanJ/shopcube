@@ -440,8 +440,8 @@ def new(projname, verbose):
         verbose=verbose
     )
     trycopy(
-        os.path.join(src_shopyo_shopyo, "sphinx_source", "shopyo.ico"),
-        os.path.join(sphinx_src, "shopyo.ico"),
+        os.path.join(src_shopyo_shopyo, "sphinx_source", "shopyo.png"),
+        os.path.join(sphinx_src, "shopyo.png"),
     )
 
     click.echo(f"[x] Project {projname} created successfully!\n")
