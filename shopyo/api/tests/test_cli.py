@@ -442,7 +442,7 @@ class TestCliNew:
             os.path.join(name, name, "sphinx_source", "docs.rst")
         )
         assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "shopyo.ico")
+            os.path.join(name, name, "sphinx_source", "shopyo.png")
         )
         assert not os.path.exists(os.path.join(name, name, "__main__.py"))
         assert not os.path.exists(os.path.join(name, name, "api"))
