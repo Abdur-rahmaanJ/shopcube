@@ -58,7 +58,7 @@ html_context = {
         "https://github.com/Abdur-rahmaanJ/shopyo/issues",
     ]
 }
-html_logo = "shopyo.ico"
+html_logo = "shopyo.png"
 
 html_sidebars = {
     "**": ["about.html", "relations.html", "navigation.html", "searchbox.html"]
