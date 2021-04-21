@@ -110,7 +110,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
       python -m pip install -U pip
       python -m pip install -e .
-      python -m pip install -r dev_requirements.txt
+      python -m pip install -r requirments/dev.txt
 
    .. note::
       This should start installing the packages required for shopyo app and might take a few seconds.
