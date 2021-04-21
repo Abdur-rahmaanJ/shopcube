@@ -1,0 +1,8 @@
+-r tests.in
+-r docs.in
+pip-tools
+flake8
+black
+isort
+codecov
+tox
