@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: pip|${{ runner.os }}|${{ matrix.python }}|${{ hashFiles('setup.py') }}|${{ hashFiles('requirements.txt') }}|${{ hashFiles('dev_requirements.txt') }}
+          key: pip|${{ runner.os }}|${{ matrix.python }}|${{ hashFiles('setup.py') }}|${{ hashFiles('requirements/*.txt') }}|${{ hashFiles('requirements.txt') }}
       - run: pip install tox codecov
       - run: tox -e py
       - name: Upload coverage to Codecov

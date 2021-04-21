@@ -1,0 +1,6 @@
+pytest
+pytest-order
+factory-boy
+freezegun
+pytest-dotenv
+coverage
