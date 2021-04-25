@@ -413,3 +413,53 @@ Arguments
 
    | `Optional argument`
    | if provided, creates the new project folder PROJNAME/PROJNAME inside cwd
+
+
+db
+**
+
+.. _shopyo db usage:
+
+Usage
+=====
+
+.. code:: bash
+
+   shopyo db [OPTIONS]
+
+or
+
+.. code:: bash
+
+   manage.py db [OPTIONS]
+
+db migrate and db upgrate are used to migrate the db
+
+.. note::
+
+   This is wrapper around the ``flask db``  of flask-migrate
+
+
+routes
+******
+
+.. _shopyo routes usage:
+
+Usage
+=====
+
+.. code:: bash
+
+   shopyo routes
+
+or
+
+.. code:: bash
+
+   manage.py routes
+
+Shows all routes and methods
+
+.. note::
+
+   This is wrapper around the ``flask routes``  command
