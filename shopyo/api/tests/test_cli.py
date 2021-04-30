@@ -455,7 +455,6 @@ class TestCliNew:
         assert not os.path.exists(os.path.join(name, name, "instance"))
         assert not os.path.exists(os.path.join(name, name, "migrations"))
         assert not os.path.exists(os.path.join(name, name, "__pycache__"))
-        assert not os.path.exists(os.path.join(name, name, "pyproject.toml"))
         assert not os.path.exists(os.path.join(name, name, "config.json"))
 
 
