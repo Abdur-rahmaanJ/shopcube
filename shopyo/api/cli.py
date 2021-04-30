@@ -4,8 +4,10 @@ import sys
 from pathlib import Path
 from shutil import copytree, ignore_patterns
 
-from flask.cli import FlaskGroup, pass_script_info
-from subprocess import run, PIPE
+from flask.cli import FlaskGroup
+from flask.cli import pass_script_info
+from subprocess import run
+from subprocess import PIPE
 from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
 from shopyo.api.cmd_helper import _upload_data
@@ -334,7 +336,6 @@ def new(projname, verbose):
             "__pycache__",
             "*.pyc",
             "sphinx_source",
-            "pyproject.toml",
             "config.json"
         )
     )
@@ -447,5 +448,21 @@ def new(projname, verbose):
     click.echo(f"[x] Project {projname} created successfully!\n")
 
 
+
+def shopyo_cli():
+    arguments = sys.argv[1:]
+    if len(arguments) > 0:
+        if arguments[0] in ['rundebug', 'runserver']:
+            if arguments[0] == 'rundebug':
+                printinfo()
+                from app import app
+                app.run(debug=True)
+            elif arguments[0] == 'runserver':
+                printinfo()
+                from app import app
+                app.run(debug=False)
+    else:
+        cli()
+
 if __name__ == '__main__':
-    cli()
+    shopyo_cli()

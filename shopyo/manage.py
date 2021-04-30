@@ -5,7 +5,7 @@ Example all ``shopyo <cmd> [OPTIONS] [ARGS]...`` commands can also be run as
 ``python manage.py <cmd> [OPTIONS] [ARGS]...``
 """
 
-from shopyo.api.cli import cli
+from shopyo.api.cli import shopyo_cli
 
 if __name__ == '__main__':
-    cli()
+    shopyo_cli()

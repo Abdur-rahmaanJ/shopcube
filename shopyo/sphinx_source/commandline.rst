@@ -141,6 +141,7 @@ or ``FLASK_DEBUG=1``.
 
 .. _shopyo run options:
 
+
 Options
 =======
 
@@ -183,6 +184,51 @@ Options
 .. option:: --help
 
    Show the command usage/help message and exit
+
+
+rundebug
+********
+
+.. _shopyo rundebug usage:
+
+Usage
+=====
+
+.. code:: bash
+
+   shopyo rundebug [OPTIONS]
+
+or
+
+.. code:: bash
+
+   manage.py rundebug [OPTIONS]
+
+Run a local development server.
+
+same as ``app.run(debug=True)``
+
+runserver
+*********
+
+.. _shopyo rundebug usage:
+
+Usage
+=====
+
+.. code:: bash
+
+   shopyo runserver [OPTIONS]
+
+or
+
+.. code:: bash
+
+   manage.py runserver [OPTIONS]
+
+Run a local development server.
+
+same as ``app.run(debug=False)``
 
 createmodule
 ************
