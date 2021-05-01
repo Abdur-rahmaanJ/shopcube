@@ -4,19 +4,22 @@ from click.testing import CliRunner
 from shopyo.api.cli import cli
 from shopyo.api.constants import SEP_CHAR, SEP_NUM
 
+pytestmark = pytest.mark.cli_unit
+
 
 @pytest.fixture(scope='session')
 def cli_runner():
-    """Fixture that returns a helper function to run the cookiecutter cli."""
+    """Fixture that returns a helper function to run the shopyo cli."""
     runner = CliRunner()
 
     def cli_main(*cli_args, **cli_kwargs):
-        """Run cookiecutter cli main with the given args."""
+        """Run shopyo cli main with the given args."""
         return runner.invoke(cli, cli_args, **cli_kwargs)
 
     return cli_main
 
 
+@pytest.mark.usefixtures("restore_cwd")
 class TestCliCreateBox:
     """test the create_box command line api function"""
 
@@ -46,6 +49,7 @@ class TestCliCreateBox:
         assert expected in result.output
 
 
+@pytest.mark.usefixtures("restore_cwd")
 @pytest.mark.order("last")
 class TestCliClean:
     """tests the clean command line api function"""
@@ -360,6 +364,7 @@ class TestCliClean:
     # TODO: add test_clean for MySQL to see if tables dropped @rehmanis
 
 
+@pytest.mark.usefixtures("restore_cwd")
 class TestCliNew:
 
     @pytest.mark.parametrize("proj,parent", [("", "foo"), ("bar", "")])
