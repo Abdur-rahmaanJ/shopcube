@@ -448,7 +448,6 @@ def new(projname, verbose):
     click.echo(f"[x] Project {projname} created successfully!\n")
 
 
-
 def shopyo_cli():
     arguments = sys.argv[1:]
     if len(arguments) > 0:
@@ -463,6 +462,7 @@ def shopyo_cli():
                 app.run(debug=False)
     else:
         cli()
+
 
 if __name__ == '__main__':
     shopyo_cli()
