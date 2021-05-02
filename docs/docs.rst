@@ -4,12 +4,18 @@ Documentation
 =============
 
 Sphinx is included in dev_requirements.txt .
-Run in sphinx_source parent folder:
+To build the docs run
 
 .. code:: bash
 
-    sphinx-build -b html sphinx_source ../docs
+    cd docs
+    sphinx-build -b html -E . _build
 
-to generate html pages in docs
+You can also build the docs by using the Sphinx Makefile as follows
 
+.. code:: bash
 
+    cd docs
+    make html
+
+To view the docs, open ``_build/html/index.html`` in your browser
