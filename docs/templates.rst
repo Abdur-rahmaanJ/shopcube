@@ -1,8 +1,8 @@
-Templating
+Templates
 ==========
 
 .. toctree::
-    :titlesonly:
+   :titlesonly:
 
 
 Developing a template
@@ -14,7 +14,7 @@ Please see the `Modules section <modules.html>`_ on how to structure a module.
 Having said that, this is the base file we are extending from. 
 
 
-.. literalinclude:: ../modules/box__default/base/templates/base/main_base.html
+.. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
    :language: html
    :linenos:
    :lines: 1-19
@@ -28,7 +28,7 @@ It includes:
 
 Here is the contact form using the base:
 
-.. literalinclude:: ../modules/box__bizhelp/contact/templates/contact/contact_form.html
+.. literalinclude:: ../shopyo/modules/box__bizhelp/contact/templates/contact/contact_form.html
    :language: html
    :linenos:
    :lines: 1-53
@@ -44,7 +44,7 @@ Global values for templates
 
 Global values for templates can be found in shopyoapi/enhance.py in this function
 
-.. literalinclude:: ../api/enhance.py
+.. literalinclude:: ../shopyo/api/enhance.py
    :language: python
    :linenos:
    :lines: 9-15

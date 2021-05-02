@@ -211,7 +211,7 @@ same as ``app.run(debug=True)``
 runserver
 *********
 
-.. _shopyo rundebug usage:
+.. _shopyo runserver usage:
 
 Usage
 =====

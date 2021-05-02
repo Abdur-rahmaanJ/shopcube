@@ -178,6 +178,6 @@ upload.py
 This uploads are done when we run ``shopyo initialise``. Example for
 uploading an admin user is shown below:
 
-.. literalinclude:: ../modules/box__default/auth/upload.py
+.. literalinclude:: ../shopyo/modules/box__default/auth/upload.py
    :language: python
    :linenos:

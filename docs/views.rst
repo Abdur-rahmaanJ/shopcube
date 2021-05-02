@@ -52,9 +52,3 @@ Here are some boiler plate codes created:
 
 
 Using the above you can develop as usual. To change module name and module url, please refer to the modules section under info.json
-
-Passing parameters to templates
--------------------------------
-
-Please see the `Templates <templates.html>`_ section on how to pass
-template variables
