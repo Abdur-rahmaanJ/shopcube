@@ -263,6 +263,7 @@ def new(projname, verbose):
     from shopyo.api.cli_content import get_dev_req_content
     from shopyo.api.cli_content import get_gitignore_content
     from shopyo.api.cli_content import get_sphinx_conf_py
+    from shopyo.api.cli_content import get_sphinx_makefile
     from shopyo.api.cli_content import get_index_rst_content
     from shopyo.api.cli_content import get_docs_rst_content
     from shopyo.api.cli_content import get_pytest_ini_content
@@ -336,7 +337,8 @@ def new(projname, verbose):
             "__pycache__",
             "*.pyc",
             "sphinx_source",
-            "config.json"
+            "config.json",
+            "pyproject.toml"
         )
     )
 
@@ -389,9 +391,6 @@ def new(projname, verbose):
         verbose=verbose
     )
 
-    # create docs in root
-    trymkdir(os.path.join(root_proj_path, "docs"), verbose=verbose)
-
     # create setup.py
     trymkfile(
         os.path.join(root_proj_path, "setup.py"),
@@ -413,36 +412,38 @@ def new(projname, verbose):
         verbose=verbose
     )
 
-    # create sphinx_source in ./PROJNAME/PROJNAME and related files
-    sphinx_src = os.path.join(project_path, "sphinx_source")
+    sphinx_src = os.path.join(root_proj_path, "docs")
+
+    # create sphinx docs in project root
     trymkdir(sphinx_src, verbose=verbose)
+    # create sphinx conf.py inside docs
     trymkfile(
         os.path.join(sphinx_src, "conf.py"),
         get_sphinx_conf_py(projname),
         verbose=verbose
     )
+    # create _static sphinx folder
     trymkdir(os.path.join(sphinx_src, "_static"), verbose=verbose)
     trymkfile(
         os.path.join(sphinx_src, "_static", "custom.css"), "", verbose=verbose
     )
-    trycopy(
-        os.path.join(src_shopyo_shopyo, "sphinx_source", "Makefile"),
+    # create sphinx Makefile inside docs
+    trymkfile(
         os.path.join(sphinx_src, "Makefile"),
+        get_sphinx_makefile(),
         verbose=verbose
     )
+    # create index page
     trymkfile(
         os.path.join(sphinx_src, "index.rst"),
         get_index_rst_content(projname),
         verbose=verbose
     )
+    # create docs page
     trymkfile(
         os.path.join(sphinx_src, "docs.rst"),
         get_docs_rst_content(projname),
         verbose=verbose
-    )
-    trycopy(
-        os.path.join(src_shopyo_shopyo, "sphinx_source", "shopyo.png"),
-        os.path.join(sphinx_src, "shopyo.png"),
     )
 
     click.echo(f"[x] Project {projname} created successfully!\n")

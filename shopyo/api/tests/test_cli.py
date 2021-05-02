@@ -400,6 +400,7 @@ class TestCliNew:
 
         # create the parent folder for foo and none for bar proj
         temp_proj = tmp_path / parent
+        print(temp_proj)
         temp_proj.mkdir(exist_ok=True)
         # change to the parent folder (in case of bar it tmp_path while for foo
         # it is tmp_path/foo) and run the new command. For foo, there is no
@@ -421,33 +422,29 @@ class TestCliNew:
         assert os.path.exists(os.path.join(name, "README.md"))
         assert os.path.exists(os.path.join(name, ".gitignore"))
         assert os.path.exists(os.path.join(name, "pytest.ini"))
-        assert os.path.exists(os.path.join(name, "docs"))
         assert os.path.exists(os.path.join(name, "setup.py"))
         assert os.path.exists(os.path.join(name, name, "__init__.py"))
         assert os.path.exists(os.path.join(name, name, "cli.py"))
-        assert os.path.exists(os.path.join(name, name, "sphinx_source"))
+        assert os.path.exists(os.path.join(name, "docs"))
         assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "conf.py")
+            os.path.join(name, "docs", "conf.py")
         )
         assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "_static")
+            os.path.join(name, "docs", "_static")
         )
         assert os.path.exists(
             os.path.join(
-                name, name, "sphinx_source", "_static", "custom.css"
+                name, "docs", "_static", "custom.css"
             )
         )
         assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "Makefile")
+            os.path.join(name, "docs", "Makefile")
         )
         assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "index.rst")
+            os.path.join(name, "docs", "index.rst")
         )
         assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "docs.rst")
-        )
-        assert os.path.exists(
-            os.path.join(name, name, "sphinx_source", "shopyo.png")
+            os.path.join(name, "docs", "docs.rst")
         )
         assert not os.path.exists(os.path.join(name, name, "__main__.py"))
         assert not os.path.exists(os.path.join(name, name, "api"))

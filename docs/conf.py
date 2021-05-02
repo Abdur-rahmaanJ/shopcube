@@ -5,16 +5,27 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
-
+#
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import sys
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath('.'))
+#
+# -- Project information -----------------------------------------------------
+
+from shopyo import __version__
 import os
+import sys
 
 current_dir = os.path.dirname(__file__)
-target_dir = os.path.abspath(os.path.join(current_dir, "../"))
+print(current_dir)
+target_dir = os.path.abspath(
+    os.path.join(os.path.dirname(current_dir), "shopyo")
+)
+print(target_dir)
 sys.path.insert(0, os.path.abspath(target_dir))
 
 
@@ -23,7 +34,8 @@ sys.path.insert(0, os.path.abspath(target_dir))
 project = "Shopyo"
 # copyright = '2020, Abdur-rahmaanJ'
 author = "Abdur-rahmaanJ & Shopyo Team"
-
+version = __version__
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 

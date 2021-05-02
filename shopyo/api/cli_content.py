@@ -476,18 +476,18 @@ def get_index_rst_content(projname):
 
 def get_docs_rst_content(projname):
     content = textwrap.dedent(
-        f"""\
+        """\
         .. :tocdepth:: 5
 
         Documentation
         =============
 
-        Sphinx is included in dev_requirements.txt .
-        Run in ``{projname}/{projname}`` folder:
+        Sphinx is included in dev_requirements.txt
 
         .. code:: bash
 
-            sphinx-build -b html sphinx_source ../docs
+            cd docs
+            sphinx-build . _build
 
         to generate html pages in docs
         """
@@ -506,25 +506,19 @@ def get_sphinx_conf_py(projname):
         # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
         # -- Path setup --------------------------------------------------------------
-
+        #
         # If extensions (or modules to document with autodoc) are in another directory,
         # add these directories to sys.path here. If the directory is relative to the
         # documentation root, use os.path.abspath to make it absolute, like shown here.
         #
-        import sys
-        import os
-
-        current_dir = os.path.dirname(__file__)
-        target_dir = os.path.abspath(os.path.join(current_dir, "../"))
-        sys.path.insert(0, os.path.abspath(target_dir))
-
-
+        # import os
+        # import sys
+        # sys.path.insert(0, os.path.abspath('.'))
+        #
         # -- Project information -----------------------------------------------------
 
         project = "{projname}"
-        # copyright = ''
         author = ""
-
 
         # -- General configuration ---------------------------------------------------
 
@@ -575,6 +569,36 @@ def get_sphinx_conf_py(projname):
         # relative to this directory. They are copied after the builtin static files,
         # so a file named "default.css" will overwrite the builtin "default.css".
         html_static_path = ["_static"]
+        """
+    )
+
+    return content
+
+
+def get_sphinx_makefile():
+    content = textwrap.dedent(
+        """\
+        # Minimal makefile for Sphinx documentation
+        #
+
+        # You can set these variables from the command line, and also
+        # from the environment for the first two.
+        SPHINXOPTS    ?=
+        SPHINXBUILD   ?= sphinx-build
+        SOURCEDIR     = .
+        BUILDDIR      = _build
+
+        # Put it first so that "make" without argument is like "make help".
+        help:
+            @$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+        .PHONY: help Makefile
+
+        # Catch-all target: route all unknown targets to Sphinx using the new
+        # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+        %: Makefile
+            @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
         """
     )
 
