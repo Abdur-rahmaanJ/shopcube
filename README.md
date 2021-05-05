@@ -1,4 +1,4 @@
-
+# Moved to https://github.com/shopyo/shopyo
 
 <h1 align="center">
   <br>
