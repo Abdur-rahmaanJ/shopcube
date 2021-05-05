@@ -69,3 +69,13 @@ api.module
     :undoc-members:
     :inherited-members:
     :show-inheritance:
+
+
+api.templates
+-----------------
+
+.. automodule:: api.templates
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

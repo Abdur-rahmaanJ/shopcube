@@ -7,6 +7,7 @@ import os
 # from flask import request
 from flask import Blueprint
 from flask import render_template
+from shopyo.api.templates import yo_render
 
 #
 # from shopyo.api.html import notify_success
@@ -48,3 +49,9 @@ def index():
     # return str(module_blueprint.template_folder)
 
     return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html")
+
+
+@module_blueprint.route("/render_demo")
+def render_demo():
+    context = {"fruit": "mango"}
+    return yo_render("blogus/render_demo.html", context)
