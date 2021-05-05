@@ -69,3 +69,21 @@ here is a demo on returning template vars:
       })
       return render_template('page/dashboard.html', **context)
 
+
+
+yo_render
+---------
+
+yo_render simplifies your life
+
+.. code:: python
+
+  from shopyo.api.templates import yo_render
+  ...
+  @module_blueprint.route("/render_demo")
+  def render_demo():
+      context = {
+          'fruit': 'mango'
+      }
+      return yo_render('blogus/render_demo.html', context)
+
