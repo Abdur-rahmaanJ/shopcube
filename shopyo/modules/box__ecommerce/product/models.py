@@ -35,10 +35,20 @@ class Product(PkModel):
     resources = db.relationship(
         "Resource", backref="resources", lazy=True, cascade="all, delete"
     )
+    colors = db.relationship('Color', backref='color_product', lazy=True, cascade="all, delete, delete-orphan")
+    sizes = db.relationship('Size', backref='size_product', lazy=True, cascade="all, delete, delete-orphan")
 
     # 
     subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'),
         nullable=False)
+
+
+    def get_color_string(self):
+        return '\n'.join([c.name for c in self.colors])
+
+
+    def get_size_string(self):
+        return '\n'.join([s.name for s in self.sizes])
 
     def get_one_image_url(self):
         if len(self.resources) == 0:
@@ -63,3 +73,22 @@ class Product(PkModel):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+class Color(PkModel):
+
+    __tablename__ = "color"
+
+
+    name = db.Column(db.String(100))
+
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+
+
+class Size(PkModel):
+
+    __tablename__ = "size"
+
+
+    name = db.Column(db.String(100))
+
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))

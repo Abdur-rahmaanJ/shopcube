@@ -16,3 +16,8 @@ Current features:
 -  orders
 
 Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs to get more development insights
+
+
+```
+pip-compile --output-file=reqs/dev.txt reqs/dev.in 
+```

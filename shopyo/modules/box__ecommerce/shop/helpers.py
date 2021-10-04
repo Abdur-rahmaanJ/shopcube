@@ -5,6 +5,7 @@ from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__default.settings.helpers import get_setting
+from shopyoapi.session import Cart
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 box_path = os.path.dirname(dirpath)
@@ -27,32 +28,12 @@ def get_currency_symbol():
 
 
 def get_cart_data():
-    if "cart" in session:
-        cart_data = session["cart"][0]
-        cart_items = sum(cart_data.values())
-
-        cart_total_price = 0
-        try:
-            for item in cart_data:
-                print(item)
-                product = Product.query.filter_by(barcode=item).first()
-                cart_total_price += (
-                    int(cart_data[item]) * product.selling_price
-                )
-        except Exception as e:
-            pass
-
-    else:
-        session["cart"] = [{}]
-        cart_data = session["cart"][0]
-        cart_items = 0
-        cart_total_price = 0
-
+    cart_data = Cart.data()
     return {
-        "cart_data": cart_data,
-        "cart_items": cart_items,
-        "cart_total_price": cart_total_price,
-    }
+        'cart_items': cart_data['num_items'],
+        'cart_total_price': cart_data['total_price'],
+        'cart_data': cart_data['items']
+        }
 
 
 def get_min_max_subcateg(subcategory_name):

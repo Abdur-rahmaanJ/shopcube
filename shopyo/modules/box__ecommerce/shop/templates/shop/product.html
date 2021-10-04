@@ -261,8 +261,21 @@ $(function() {
                         <h3>{{get_currency_symbol()}} {{ product.selling_price }}</h3><br>
                         {{ product.description }}
                         <hr />
-                        <p>in stock <span class="badge badge-dark">{{ product.in_stock }}</span></p>
+                        <p>in stock <span class="badge badge-dark">{{ product.in_stock }}</span><br>
+                        </p>
                         <form action="{{ url_for('shop.cart_add', product_barcode=product.barcode) }}" method="POST">
+                            <label for="size">Choose a size:</label>
+                            <select name="size" id="size">
+                                {% for s in product.sizes %}
+                                    <option value="{{s.name}}">{{ s.name }}</option>
+                                {% endfor %}
+                            </select><br>
+                            <label for="color">Choose a color:</label>
+                            <select name="color" id="color">
+                                {% for c in product.colors %}
+                                    <option value="{{c.name}}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
                             <div class="row">
                                 <div class="col-xs-2 col-md-4">
                                     <div class="input-group mb-3">
@@ -301,5 +314,6 @@ $(function() {
         </div>
       </div>
       -->
+
 
 {% endblock %}

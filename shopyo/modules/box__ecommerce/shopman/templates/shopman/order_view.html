@@ -52,6 +52,8 @@
                 <tr>
                     <td><b> Name</b></td>
                     <td><b> Barcode</b></td>
+                    <td><b> Size</b> </td>
+                    <td><b> Color </b></td>
                     <td><b> Price</b></td>
                     <td><b> Quantity</b></td>
                     <td><b> Total</b></td>
@@ -61,6 +63,8 @@
                 <tr>
                     <td>{{product.name}}</td>
                     <td>{{product.barcode}}</td>
+                    <td>{{order_item.size}}</td>
+                    <td>{{order_item.color}}</td>
                     <td>{{product.selling_price}}</td>
                     <td>{{order_item.quantity}}</td>
                     <td>{{product.selling_price * order_item.quantity}}</td>
