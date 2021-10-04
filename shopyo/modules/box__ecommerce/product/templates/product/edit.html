@@ -66,7 +66,21 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
                 </div>
-                <input required name="description" autocomplete="off" id="description" type="text" class="form-control" placeholder="Product Description" value="{{product.description}}">
+                <textarea rows="10" name="description" autocomplete="off" id="description" type="text" class="form-control" placeholder="Product Description">{{product.description}}</textarea>
+            </div>
+            <label>colors</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="5" name="colors" autocomplete="off" id="color_description" type="text" class="form-control" placeholder="">{{ product.get_color_string() }}</textarea>
+            </div>
+            <label>sizes</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="5" name="sizes" autocomplete="off" id="size_description" type="text" class="form-control" placeholder="">{{ product.get_size_string() }}</textarea>
             </div>
             <!--
   <label>category</label>
@@ -155,6 +169,7 @@
             <input type="hidden" autocomplete="off" id="category" class="form-control" name="category" placeholder="category" value="{{category}}">
             <input required type="submit" class="btn btn-info" value="edit">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="product_id" value="{{ product.id }}" />
             <script>
             // Limit appointment date selections to current date and the future.
             // Format is yyyy-mm-dd according to section 2.4.5.2 of the W3C HTML 5.2 spec:

@@ -25,6 +25,8 @@ from shopyoapi.init import productphotos
 
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product
+from modules.box__ecommerce.product.models import Size
+from modules.box__ecommerce.product.models import Color
 from modules.resource.models import Resource
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -103,6 +105,9 @@ def add(subcategory_id):
         price = request.form["price"]
         selling_price = request.form["selling_price"]
         in_stock = request.form["in_stock"]
+        colors = request.form["colors"]
+        sizes = request.form["sizes"]
+
         if request.form["discontinued"] == "True":
             discontinued = True
         else:
@@ -132,6 +137,16 @@ def add(subcategory_id):
                 p.price = 0
             if selling_price:
                 p.selling_price = selling_price.strip()
+
+            sizes = sizes.strip().strip('\n')
+            sizes = [s.strip('\r') for s in sizes.split('\n') if s.strip()]
+            sizes = [Size(name=s) for s in sizes]
+            p.sizes = sizes
+
+            colors = colors.strip().strip('\n')
+            colors = [c.strip('\r') for c in colors.split('\n') if c.strip()]
+            colors = [Color(name=c) for c in colors]
+            p.colors = colors
 
             # if 'photos[]' not in request.files:
             #     flash(notify_warning('no file part'))
@@ -208,18 +223,20 @@ def update(subcategory_id):
 
         date = request.form["date"]
         price = request.form["price"]
+        product_id = request.form['product_id']
         if not price.strip():
             price = 0
         selling_price = request.form["selling_price"]
         in_stock = request.form["in_stock"]
+        colors = request.form["colors"]
+        sizes = request.form["sizes"]
+
         if request.form["discontinued"] == "True":
             discontinued = True
         else:
             discontinued = False
 
-        p = Product.query.filter(
-            Product.barcode == old_barcode and Product.category == category
-        ).first()
+        p = Product.query.get(product_id)
         p.barcode = barcode
         p.name = name
         p.description = description
@@ -228,6 +245,19 @@ def update(subcategory_id):
         p.selling_price = selling_price
         p.in_stock = in_stock
         p.discontinued = discontinued
+
+        with db.session.no_autoflush:
+            p.sizes.clear()
+            sizes = sizes.strip().strip('\n')
+            sizes = [s.strip('\r') for s in sizes.split('\n') if s.strip()]
+            sizes = [Size(name=s, product_id=p.id) for s in sizes]
+            p.sizes.extend(sizes)
+        with db.session.no_autoflush:
+            p.colors.clear()
+            colors = colors.strip().strip('\n')
+            colors = [c.strip('\r') for c in colors.split('\n') if c.strip()]
+            colors = [Color(name=c, product_id=p.id) for c in colors]
+            p.colors.extend(colors)
         # p.category = category
         try:
             if "photos[]" in request.files:
@@ -246,7 +276,7 @@ def update(subcategory_id):
                     )
         except flask_uploads.UploadNotAllowed as e:
             pass
-        p.update()
+        db.session.commit()
         return redirect(url_for("product.list", subcategory_id=subcategory.id))
 
 

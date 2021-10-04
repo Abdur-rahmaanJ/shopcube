@@ -11,6 +11,8 @@ Items <br>
 Name: {{ item.get_product().name }}<br>
 Description: {{ item.get_product().description }}<br>
 Quantity: {{ item.quantity }}<br>
+Color: {{ item.color }}<br>
+Size: {{ item.size }}<br>
 Unit Price: Rs {{ item.get_product().price }}<br>
 {% set item_total = int(item.get_product().selling_price) * int(item.quantity) %}
 Total: Rs {{ item_total }}<br>

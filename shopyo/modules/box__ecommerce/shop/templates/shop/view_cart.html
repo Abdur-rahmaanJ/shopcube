@@ -43,36 +43,67 @@ input[type=number]::-webkit-outer-spin-button {
                                 <thead>
                                     <th></th>
                                     <th>Product</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Subtotal</th>
                                 </thead>
                                 <tbody >
-                                    {%for item in cart_data%}
-                                        {%set product = get_product(item)%}
-                                        
-                                        <tr>
-                                            <input type="hidden" name="barcode_{{ loop.index }}" value="{{ product.barcode }}" class="barcode">
-                                            <td><a href="{{ url_for('shop.cart_remove', product_barcode=product.barcode) }}">
-                                                <i style="color: #ff6565;" class="fa fa-times-circle"></i>
-                                            </a></td>
-                                            <td>{{product.name}}</td>
-                                            <td>
-                                            
-                                            <div class="input-group mb-3" style="width: 150px;">
-                                        <div class="input-group-prepend" >
-                                            <button type="button" class="btn btn-primary input-group-text minus-btn">-</button>
+                                    {% set count = namespace(value=0) %}
+                                    {%for barcode in Cart.data()['items']%}
+                                        {%set product = get_product(barcode) %}
+                                        {%set items = Cart.data()['items'][barcode] %}
+
+                                        {% for item in items %}
+                                            {% set count.value = count.value + 1 %}
+                                            <tr>
+                                                <input type="hidden" name="barcode_{{ count.value }}" value="{{ product.barcode }}" class="barcode">
+                                                <td>
+                                                    <a href="{{ url_for('shop.cart_remove', product_barcode=product.barcode, size=item['size'], color=item['color']) }}">
+                                                        <i style="color: #ff6565;" class="fa fa-times-circle"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {{product.name}}
+                                                </td>
+                                                <td>
+                                                    <select name="size_{{ count.value }}" id="size">
+                                                        {% for s in product.sizes %}
+                                                            <option value="{{s.name}}" 
+                                                            {{'selected' if s.name == item['size']}}>
+                                                        {{ s.name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="color_{{ count.value }}" id="color">
+                                                        {% for c in product.colors %}
+                                                            <option value="{{c.name}}"
+                                                            {{'selected' if c.name == item['color']}}
+                                                            >
+                                                            {{ c.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                
+                                                <div class="input-group mb-3" style="width: 150px;">
+                                            <div class="input-group-prepend" >
+                                                <button type="button" class="btn btn-primary input-group-text minus-btn">-</button>
+                                            </div>
+                                            <input style="width: 20px;" class="form-control quantity" aria-label="Amount (to the nearest )" min="0" max="{{ product.in_stock }}" name="quantity_{{ count.value }}" value="{{item['quantity']}}" type="number" >
+                                            <div class="input-group-append" >
+                                                <button type="button" class="btn btn-primary input-group-text plus-btn">+</button>
+                                            </div>
                                         </div>
-                                        <input style="width: 20px;" class="form-control quantity" aria-label="Amount (to the nearest )" min="0" max="{{ product.in_stock }}" name="quantity_{{ loop.index }}" value="{{cart_data[item]}}" type="number" >
-                                        <div class="input-group-append" >
-                                            <button type="button" class="btn btn-primary input-group-text plus-btn">+</button>
-                                        </div>
-                                    </div>
-                                        <input type="hidden" name="" class="in_stock" value="{{product.in_stock}}">
-                                        </td>
-                                            <td class="price">{{product.selling_price}}</td>
-                                            <td class="total_price">{{product.selling_price * cart_data[item]}}</td>
-                                        </tr>
+                                            <input type="hidden" name="" class="in_stock" value="{{product.in_stock}}">
+                                            </td>
+                                                <td class="price">{{product.selling_price}}</td>
+                                                <td class="total_price">{{product.selling_price * item['quantity'] }}</td>
+                                            </tr>
+                                        {% endfor %}
                                         
                                     {%endfor%}
                                 </tbody>
@@ -121,7 +152,7 @@ input[type=number]::-webkit-outer-spin-button {
                                 <span></span>
                             </p>
                             <p>
-                                <button type="button" id='checkoutbut' class="btn btn-primary">CHECKOUT</button>
+                                <a type="button" id='checkoutbut' href="{{ url_for('shop.checkout') }}" class="btn btn-primary">CHECKOUT</a>
                             </p>
                         </div>
                     </div>
@@ -129,6 +160,7 @@ input[type=number]::-webkit-outer-spin-button {
             </div>
     </div>
 </div>
+
 
 <script type="text/javascript">
 /*
@@ -208,45 +240,5 @@ $(reciviedXml).find('p').each(function () {
         $('#grandtotal').text(subtotal+option_price);
     });
 </script>
-<script type="text/javascript">
-    $('#checkoutbut').click(function (){
-        var csrf_token = "{{ csrf_token() }}";
-        var option_id = $('input[type=radio][name=option]:checked').attr('id');
-        var cart = {};
-        $('#cart-items .barcode').each(function () {
-            var barcode = $(this).val();
-            var row = $(this).parent();
-            var quantity_input = $(row).find('.quantity');
-            var quantity = quantity_input.val();
-            cart[barcode] = quantity;
-        });
-        var post_data = {
-            'option_id': option_id,
-            'cart': cart
-        };
-        $.ajax({
-            type: "POST",
-            url: "{{ url_for('shop.prepare_checkout') }}",
-            // The key needs to match your method's input parameter (case-sensitive).
-            data: JSON.stringify(post_data),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(data){
-                // alert(JSON.stringify(data));
-                // window.location.reload();
-                // return false;
-                window.location.href = data['goto'];
-            },
-            failure: function(errMsg) {
-                alert(errMsg);
-            },
-            beforeSend: function(xhr, settings) {
-                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", "{{csrf_token()}}")
-                }
-            }
-        });
-    });
-    
-</script>
+
 {% endblock %}
