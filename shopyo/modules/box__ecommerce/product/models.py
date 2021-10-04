@@ -1,19 +1,20 @@
 from shopyoapi.init import db
+from shopyoapi.models import PkModel
 from flask import url_for
 
 # from modules.box__ecommerce.pos.models import Transaction
 
 transaction_helpers = db.Table(
     "transaction_helpers",
-    db.Column("product_barcode", db.Integer, db.ForeignKey("product.barcode")),
+    db.Column("product_barcode", db.Integer, db.ForeignKey("product.id")),
     db.Column("transaction_id", db.Integer, db.ForeignKey("transactions.id")),
 )
 
 
-class Product(db.Model):
+class Product(PkModel):
     __tablename__ = "product"
 
-    barcode = db.Column(db.String(100), primary_key=True)
+    barcode = db.Column(db.String(100))
     price = db.Column(db.Float)
     name = db.Column(db.String(100))
     description = db.Column(db.String(300))
@@ -24,9 +25,7 @@ class Product(db.Model):
 
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
-    subcategory_name = db.Column(
-        db.String(100), db.ForeignKey("subcategories.name")
-    )
+    subcategory_name = db.relationship("SubCategory", backref=db.backref("subcategory", uselist=False))
     transactions = db.relationship(
         "Transaction",
         secondary=transaction_helpers,
@@ -36,6 +35,10 @@ class Product(db.Model):
     resources = db.relationship(
         "Resource", backref="resources", lazy=True, cascade="all, delete"
     )
+
+    # 
+    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'),
+        nullable=False)
 
     def get_one_image_url(self):
         if len(self.resources) == 0:

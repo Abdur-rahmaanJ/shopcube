@@ -23,7 +23,7 @@
                     padding-left: 10px;">
                     <div >
                         {%for subcategory in category.subcategories%}
-                        <p class="subcategory_link"><a class="shop_underline_pink" href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}">{{subcategory.name}}</a></p>
+                        <p class="subcategory_link"><a class="shop_underline_pink" href="{{ url_for('shop.subcategory', sub_id=subcategory.id) }}">{{ subcategory.name.capitalize() }}</a></p>
                     {%endfor%}
                     </div>
                     

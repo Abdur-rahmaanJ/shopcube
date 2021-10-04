@@ -20,6 +20,7 @@ from shopyoapi.module import ModuleHelp
 from shopyoapi.security import get_safe_redirect
 
 from modules.box__default.admin.models import User
+from modules.box__default.auth.email import send_async_email
 from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
@@ -42,8 +43,8 @@ module_blueprint = globals()[mhelp.blueprint_str]
 # mhelp._context.update({"get_currency_symbol": get_currency_symbol})
 
 
-def get_product(product_id):
-    return Product.query.get(product_id)
+def get_product(barcode):
+    return Product.query.filter_by(barcode=barcode).first()
 
 
 @module_blueprint.route("/home")
@@ -59,7 +60,7 @@ def homepage():
     cart_info = get_cart_data()
     context.update(cart_info)
     return render_template(
-        get_setting("ACTIVE_FRONT_THEME") + "/index.html", **context
+        "ecommerceus/index.html", **context
     )
 
 
@@ -126,17 +127,16 @@ def category(category_name):
     return mhelp.render("category.html", **context)
 
 
-@module_blueprint.route("/sub/<subcategory_name>/page/<int:page>")
-@module_blueprint.route("/sub/<subcategory_name>")
-def subcategory(subcategory_name, page=1, methods=['GET']):
+@module_blueprint.route("/sub/<sub_id>/page/<int:page>")
+@module_blueprint.route("/sub/<sub_id>")
+def subcategory(sub_id, page=1, methods=['GET']):
     context = mhelp.context()
     PAGINATION = 5
     end = page * PAGINATION
     start = end - PAGINATION
 
-    subcategory = SubCategory.query.filter(
-        SubCategory.name == subcategory_name
-    ).first()
+    subcategory = SubCategory.query.get(sub_id)
+    subcategory_name = subcategory.name
 
     min_price = None
     max_price = None
@@ -176,7 +176,7 @@ def subcategory(subcategory_name, page=1, methods=['GET']):
 @module_blueprint.route("/product/<product_barcode>")
 def product(product_barcode):
     context = mhelp.context()
-    product = Product.query.get(product_barcode)
+    product = Product.query.filter_by(barcode=product_barcode).first()
 
     cart_info = get_cart_data()
     # 'cart_data': cart_data,
@@ -197,7 +197,7 @@ def cart_add(product_barcode):
             barcode = request.form["barcode"]
             quantity = int(request.form["quantity"])
 
-            product = Product.query.get(barcode)
+            product = Product.query.filter_by(barcode=barcode).first()
 
             data = session["cart"][0]
             if barcode not in data:
@@ -295,7 +295,7 @@ def prepare_checkout():
         for key in all_data["cart"]:
             barcode = key
             quantity = all_data["cart"][key]
-            product = Product.query.get(barcode)
+            product = Product.query.filter_by(barcode=barcode).first()
             if int(quantity) > product.in_stock:
                 quantity = product.in_stock
             data[barcode] = int(quantity)
@@ -464,15 +464,21 @@ def checkout_process():
 
             for barcode in cart_data:
                 order_item = OrderItem()
-                product = Product.query.get(barcode)
+                product = Product.query.filter_by(barcode=barcode).first()
                 order_item.barcode = barcode
                 order_item.quantity = cart_data[barcode]
-                order_item.price = product.selling_price
                 order.order_items.append(order_item)
+
+            template = "shop/emails/order_info"
+            subject = "FreaksBoutique - Order Details"
+            context = {}
+            context.update({'order': order, 'int': int, 'sum': sum})
+            send_async_email(email, subject, template, **context)
 
             order.insert()
             flash(notify_success("Great!"))
             context = mhelp.context()
+            session["cart"] = [{}]
             return render_template("shop/order_complete.html", **context)
         else:
             flash_errors(form)

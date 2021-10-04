@@ -51,7 +51,6 @@ input[type=number]::-webkit-outer-spin-button {
                                     {%for item in cart_data%}
                                         {%set product = get_product(item)%}
                                         
-                                            
                                         <tr>
                                             <input type="hidden" name="barcode_{{ loop.index }}" value="{{ product.barcode }}" class="barcode">
                                             <td><a href="{{ url_for('shop.cart_remove', product_barcode=product.barcode) }}">
