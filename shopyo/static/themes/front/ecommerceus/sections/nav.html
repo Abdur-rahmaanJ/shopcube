@@ -12,20 +12,31 @@
             <li class="nav-item active"> <a class="nav-link" href="{{ url_for('shop.homepage') }}"> Home </a> </li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('shop.index') }}"> Shop </a></li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> Categories </a>
-                <ul class="dropdown-menu">
-                    {%for category in get_categories()%}
-                    <li>
-                        <a class="dropdown-item" href="{{ url_for('shop.category', category_name=category.name) }}"> {{category.name}} &raquo </a>
-                        <ul class="submenu dropdown-menu">
-                            {%for subcategory in category.subcategories%}
-                            <li><a class="dropdown-item" href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}"> {{ subcategory.name }}</a></li>
-                            {%endfor%}
-                        </ul>
-                    </li>
-                    {%endfor%}
-                </ul>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Men
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% set category = Category.query.filter(Category.name == 'men').first() %}
+                    {% for subcategory in category.subcategories %}
+                    <a class="dropdown-item" href="{{ url_for('shop.subcategory', sub_id=subcategory.id) }}">
+                        {{ subcategory.name.capitalize() }}
+                    </a>
+                    {% endfor %}
+                </div>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Women
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% set category = Category.query.filter(Category.name == 'women').first() %}
+                    {% for subcategory in category.subcategories %}
+                    <a class="dropdown-item" href="{{ url_for('shop.subcategory', sub_id=subcategory.id) }}">
+                        {{ subcategory.name.capitalize() }}
+                    </a>
+                    {% endfor %}
+                </div>
+              </li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('shop.wishlist') }}"> <i class="fa fa-heart"></i> </a></li>
         </ul>
         <!--
@@ -43,17 +54,19 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 {%if not current_user.is_authenticated%}
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LOGIN</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i></a>
                 {%else%}
                     {%if current_user.is_admin%}
-                        <a class="nav-link" href="{{url_for('dashboard.index')}}" >ACCOUNT</a>
+                        <a class="nav-link" href="{{url_for('dashboard.index')}}" ><i class="fa fa-user" style="color: green;"></i></a>
                     {%elif current_user.is_customer%}
-                        <a class="nav-link" href="{{ url_for('customer.dashboard') }}">ACCOUNT</a>
+                        <a class="nav-link" href="{{ url_for('customer.dashboard') }}"><i class="fa fa-user" style="color: green;"></i></a>
                     {%endif%}
                 {%endif%}
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('shop.cart') }}">CART {{cart_items}}/{{get_currency_symbol()}} {{cart_total_price}}</a>
+                <a class="nav-link" href="{{ url_for('shop.cart') }}">
+                    <i class="fa fa-shopping-bag"></i> {{cart_items}}/{{get_currency_symbol()}} {{cart_total_price}}</a>
             </li>
         </ul>
     </div> <!-- navbar-collapse.// -->
@@ -117,6 +130,7 @@
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                     <input type="submit" name="" value="submit" class="btn btn-info">
                                 </form>
+                                
                             </div>
                         </div>
                     </div>
@@ -150,6 +164,10 @@
                                         <input type="submit" name="" class="btn btn-info">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     </form>
+                                    <br>
+                                    <p>
+                                    Your personal data will be used to support your experience on this website, to access your account and for purposes described in our <a href="" style="border-bottom: 1px solid gray">privacy policy</a>
+                                </p>
                                 </div>
                             </div>
                         </div>

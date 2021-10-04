@@ -74,6 +74,13 @@
 .carousel-inner img {
   width: 100%;
 }
+
+.rounded-circ{
+	width: 50px; height: 50px;
+	border-radius: 50% !important;
+	font-size: 30px;
+	padding-top: 10px;
+}
 		</style>
 		{% include get_active_front_theme()+'/sections/resources.html'%}
 
@@ -101,8 +108,9 @@ $(function () {
 
 <div class="container p-5">
 	<div class="text-center">
-		<h2 ><b>WELCOME TO OUR SHOP</b></h2>
-			<a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">shop</button></a>
+		<h2 ><b>WELCOME TO FREAKS BOUTIQUE</b></h2>
+			<!-- <a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">shop</button></a> -->
+			<a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">About Us</button></a>
 		</p>
 	</div>
 </div>
@@ -205,6 +213,49 @@ $(function () {
 			</div>
 		{%endfor%}
 		
+	</div>
+
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>FOLLOW US ON FB AND INSTAGRAM</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div class="container">
+		<div class="row">
+			<a href="#">
+				<div class="card rounded-circ text-center">
+
+						<i class="fab fa-facebook-square"></i>
+
+				</div>
+			</a>&nbsp; &nbsp;
+			<a href="#">
+				<div class="card rounded-circ text-center">
+						<i class="fab fa-instagram"></i>
+				</div>
+			</a>
+		</div>
+
+	</div>
+
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>SIGN UP & BE THE FIRST TO KNOW</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div class="container">
+		<form class="row row-cols-lg-auto g-3 align-items-center">
+  <div class="col-12">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        id="inlineFormInputGroupUsername"
+        placeholder="Email"
+      />
+    </div>
+  </div>
+
+
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
 	</div>
 </div>
 

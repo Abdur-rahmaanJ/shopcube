@@ -128,19 +128,19 @@
                     <ul class="pagination">
                         {% if page != 1 %}
                         <li class="page-item"><a href="{{ url_for('shop.subcategory', 
-                subcategory_name=subcategory_name, page=page-1) }}" class="page-link">
+                sub_id=subcategory.id, page=page-1) }}" class="page-link">
                                 <<</a> </li> {% endif %} {%for x in range(1, total_pages+1)%} {%if x==page%} <li class="page-item active">
                                     <a href="{{ url_for('shop.subcategory', 
-                subcategory_name=subcategory_name, page=loop.index) }}" class="page-link"> {{page}} <span class="sr-only">(current)</span></a>
+                sub_id=subcategory.id, page=loop.index) }}" class="page-link"> {{page}} <span class="sr-only">(current)</span></a>
                         </li>
                         {%else%}
                         <li class="page-item"><a href="{{ url_for('shop.subcategory', 
-                subcategory_name=subcategory_name, page=loop.index) }}" class="page-link"> {{x}} </a></li>
+                sub_id=subcategory.id, page=loop.index) }}" class="page-link"> {{x}} </a></li>
                         {%endif%}
                         {%endfor%}
                         {% if page != total_pages %}
                         <li class="page-item"><a href="{{ url_for('shop.subcategory', 
-                subcategory_name=subcategory_name, page=page+1) }}" class="page-link">>></a></li>
+                sub_id=subcategory.id, page=page+1) }}" class="page-link">>></a></li>
                         {% endif %}
                     </ul>
                 </nav>

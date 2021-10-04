@@ -35,7 +35,7 @@ def get_cart_data():
         try:
             for item in cart_data:
                 print(item)
-                product = Product.query.get(item)
+                product = Product.query.filter_by(barcode=item).first()
                 cart_total_price += (
                     int(cart_data[item]) * product.selling_price
                 )
@@ -57,6 +57,10 @@ def get_cart_data():
 
 def get_min_max_subcateg(subcategory_name):
     subcateg = SubCategory.query.filter(SubCategory.name == subcategory_name).first()
-    min_price = min((p.selling_price for p in subcateg.products))
-    max_price = max((p.selling_price for p in subcateg.products))
+    if len(subcateg.products) > 0:
+        min_price = min((p.selling_price for p in subcateg.products))
+        max_price = max((p.selling_price for p in subcateg.products))
+    else:
+        min_price = 0
+        max_price = 2000
     return [min_price, max_price]

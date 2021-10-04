@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from shopyoapi.init import db
+from shopyoapi.models import PkModel
 from modules.box__ecommerce.product.models import Product
 
 class Order(db.Model):
@@ -66,6 +67,9 @@ class Order(db.Model):
     def get_std_formatted_time(self):
         return self.time.strftime("%b %d %Y, %H:%M")
 
+    def get_ref(self):
+        return '{}#{}'.format(int(self.id)*19, self.get_std_formatted_time())
+
     def get_total_amount(self):
         prices = []
         for item in self.order_items:
@@ -76,18 +80,18 @@ class Order(db.Model):
         return total_prices
 
 
-class OrderItem(db.Model):
+class OrderItem(PkModel):
     __tablename__ = "order_items"
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    order_id = db.Column(db.String(100), db.ForeignKey("orders.id"))
     time = db.Column(db.DateTime, default=datetime.now())
-    barcode = db.Column(db.Integer, db.ForeignKey("product.barcode"))
     quantity = db.Column(db.Integer)
     status = db.Column(
         db.String(120), default="pending"
     )
+    barcode = db.Column(db.String(100), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'),
+        nullable=False)
 
     def add(self):
         db.session.add(self)
@@ -104,7 +108,7 @@ class OrderItem(db.Model):
         db.session.commit()
 
     def get_product(self):
-        return Product.query.get(self.barcode)
+        return Product.query.filter_by(barcode=self.barcode).first()
 
 
 class BillingDetail(db.Model):

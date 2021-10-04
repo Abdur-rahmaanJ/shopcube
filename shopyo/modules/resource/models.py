@@ -15,12 +15,6 @@ class Image(db.Model):
         db.DateTime, default=datetime.datetime.now(), nullable=False
     )
 
-    def set_hash(self, password):
-        self.password = generate_password_hash(password, method="sha256")
-
-    def check_hash(self, password):
-        return check_password_hash(self.password, password)
-
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -32,8 +26,8 @@ class Image(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def getImage(image_id):
-        return Images.query.filter_by(id=image_id).first()
+    # def getImage(image_id):
+    #     return Images.query.filter_by(id=image_id).first()
 
 
 class Resource(db.Model):
@@ -46,19 +40,14 @@ class Resource(db.Model):
     created_date = db.Column(
         db.DateTime, default=datetime.datetime.now(), nullable=False
     )
-    product_barcode = db.Column(
-        db.String(100), db.ForeignKey("product.barcode")
-    )
-    category_name = db.Column(db.String(100), db.ForeignKey("categories.name"))
-    subcategory_name = db.Column(
-        db.String(100), db.ForeignKey("subcategories.name")
-    )
 
-    def set_hash(self, password):
-        self.password = generate_password_hash(password, method="sha256")
-
-    def check_hash(self, password):
-        return check_password_hash(self.password, password)
+    # 
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'),
+        nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),
+        nullable=False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'),
+        nullable=False)
 
     def insert(self):
         db.session.add(self)

@@ -69,7 +69,7 @@
                 <div class="row">
                     {%for subcategory in current_category.subcategories%}
                     <div class="col-lg-6 col-md-6 col-sm-6 col-sx-6">
-                        <a href="{{ url_for('shop.subcategory', subcategory_name=subcategory.name) }}">
+                        <a href="{{ url_for('shop.subcategory', sub_id=subcategory.id, page=1) }}">
                         <div class="card hvr-shadow" style="margin-bottom: 10px;">
                             <!-- Card image -->
                             <div style="background-image: url('{{subcategory.get_one_image_url()}}'); background-size: cover; height: 200px;" >

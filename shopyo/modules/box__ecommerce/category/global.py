@@ -7,4 +7,5 @@ def get_categories():
 
 available_everywhere = {
     "get_categories": get_categories,
+    "Category": Category
 }
