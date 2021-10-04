@@ -17,6 +17,7 @@ from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
 from shopyoapi.html import notify_warning
 from shopyoapi.module import ModuleHelp
+from shopyoapi.session import Cart
 from shopyoapi.security import get_safe_redirect
 
 from modules.box__default.admin.models import User
@@ -192,52 +193,42 @@ def product(product_barcode):
 def cart_add(product_barcode):
     if request.method == "POST":
         flash("")
-        if "cart" in session:
 
-            barcode = request.form["barcode"]
-            quantity = int(request.form["quantity"])
+        barcode = request.form["barcode"]
+        quantity = int(request.form["quantity"])
+        size = request.form['size']
+        color = request.form['color']
 
-            product = Product.query.filter_by(barcode=barcode).first()
+        item_info = {
+            'quantity': quantity,
+            'size': size,
+            'color': color 
+        }
 
-            data = session["cart"][0]
-            if barcode not in data:
-                data[barcode] = quantity
-                session["cart"][0] = data
-            elif barcode in data:
-                updated_quantity = data[barcode] + quantity
-                if updated_quantity > product.in_stock:
-                    flash(
-                        notify_warning(
-                            "Products in cart cannot be greater than product in stock"
-                        )
-                    )
-                    return redirect(
-                        url_for("shop.product", product_barcode=barcode)
-                    )
-                data[barcode] = updated_quantity
-                session["cart"][0] = data
-
+        if Cart.add(barcode, item_info):
+            return mhelp.redirect_url("shop.product", product_barcode=barcode)
         else:
-            # In this block, the user has not started a cart, so we start it for them and add the product.
-            session["cart"] = [{barcode: quantity}]
-
-    return mhelp.redirect_url("shop.product", product_barcode=barcode)
+            flash(
+                notify_warning(
+                    "Products in cart cannot be greater than product in stock"
+                )
+            )
+            return redirect(
+                url_for("shop.product", product_barcode=barcode)
+            )
+    
 
 
 @module_blueprint.route(
-    "/cart/remove/<product_barcode>", methods=["GET", "POST"]
+    "/cart/remove/<product_barcode>/<size>/<color>", methods=["GET", "POST"]
 )
-def cart_remove(product_barcode):
+def cart_remove(product_barcode, size, color):
     if "cart" in session:
-
-        data = session["cart"][0]
-        if product_barcode in data:
-            del data[product_barcode]
+        Cart.remove(product_barcode, size, color)
         flash(notify_success("Removed!"))
         return mhelp.redirect_url("shop.cart")
 
     else:
-        # In this block, the user has not started a cart, so we start it for them and add the product.
         return mhelp.redirect_url("shop.cart")
 
 
@@ -258,22 +249,7 @@ def cart():
 @module_blueprint.route("/cart/update", methods=["GET", "POST"])
 def cart_update():
     if request.method == "POST":
-        data = {}
-        for key in request.form:
-            if key.startswith("barcode"):
-                barcode = request.form[key].strip()
-                product = Product.query.get(barcode)
-
-                number = key.split("_")[1]
-                quantity = request.form["quantity_{}".format(number)]
-                if int(quantity) > product.in_stock:
-                    quantity = product.in_stock
-                data[barcode] = int(quantity)
-
-        if "cart" in session:
-            session["cart"] = [data]
-        else:
-            session["cart"] = [{}]
+        Cart.update(request.form)
         return mhelp.redirect_url("shop.cart")
 
 
@@ -283,29 +259,6 @@ def cart_update():
 #
 
 
-@module_blueprint.route("/prepare/checkout", methods=["GET", "POST"])
-def prepare_checkout():
-    if request.method == "POST":
-        # update cart
-
-        all_data = request.get_json()
-        session["option_id"] = all_data["option_id"]
-
-        data = {}
-        for key in all_data["cart"]:
-            barcode = key
-            quantity = all_data["cart"][key]
-            product = Product.query.filter_by(barcode=barcode).first()
-            if int(quantity) > product.in_stock:
-                quantity = product.in_stock
-            data[barcode] = int(quantity)
-
-        if "cart" in session:
-            session["cart"] = [data]
-        else:
-            session["cart"] = [{}]
-
-        return jsonify({"goto": url_for("shop.checkout")})
 
 
 @module_blueprint.route("/checkout", methods=["GET", "POST"])
@@ -462,12 +415,15 @@ def checkout_process():
             cart_info = get_cart_data()
             cart_data = cart_info["cart_data"]
 
-            for barcode in cart_data:
-                order_item = OrderItem()
-                product = Product.query.filter_by(barcode=barcode).first()
-                order_item.barcode = barcode
-                order_item.quantity = cart_data[barcode]
-                order.order_items.append(order_item)
+            for barcode in Cart.data()['items']:
+                for item in Cart.data()['items'][barcode]:
+                    order_item = OrderItem()
+                    product = Product.query.filter_by(barcode=barcode).first()
+                    order_item.barcode = barcode
+                    order_item.quantity = int(item['quantity'])
+                    order_item.size = item['size']
+                    order_item.color = item['color']
+                    order.order_items.append(order_item)
 
             template = "shop/emails/order_info"
             subject = "FreaksBoutique - Order Details"
@@ -478,7 +434,7 @@ def checkout_process():
             order.insert()
             flash(notify_success("Great!"))
             context = mhelp.context()
-            session["cart"] = [{}]
+            Cart.reset()
             return render_template("shop/order_complete.html", **context)
         else:
             flash_errors(form)

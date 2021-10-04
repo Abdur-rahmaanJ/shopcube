@@ -77,39 +77,28 @@
             <div class="col-md-8">
                 <div class="row">
                     {%for product in products%}
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-sx-6">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
                         <a href="{{ url_for('shop.product', product_barcode=product.barcode) }}">
-                        <div class="card prod" style="margin-bottom: 10px;">
-                            {%set filename_ = ''%}
-                            {%if product.resources%}
-                            {%set filename_ = product.resources[0].filename%}
-                            {%set img_url = url_for('resource.product_image', filename=filename_) %}
-                            {%else%}
-                            {%set img_url = url_for('resource.product_image', filename='default') %}
-                            {%endif%}
-                            <!-- Card image -->
-                            <div style="background-image: url('{{img_url}}'); background-size: cover; height: 200px;">
+                            <div class="card prod hvr-shadow" style="margin-bottom: 10px;">
+                                {%set filename_ = ''%}
+                                {%if product.resources%}
+                                {%set filename_ = product.resources[0].filename%}
+                                {%set img_url = url_for('resource.product_image', filename=filename_) %}
+                                {%else%}
+                                {%set img_url = url_for('resource.product_image', filename='default') %}
+                                {%endif%}
+                                <!-- Card image -->
+                                <div style="background-image: url('{{img_url}}'); background-size: cover; height: 100px;">
+                                </div>
+                                <!-- Card content -->
+                                <div class="card-body text-center">
+                                    <!-- Title -->
+                                    <h6 class="card-title"><a>{{ product.name }}</a></h6>
+                                    <!-- Text -->
+                                    <p class="card-text">Rs {{product.selling_price}}</p>
+                                    <!-- Button -->
+                                </div>
                             </div>
-                            <!-- Card content -->
-                            <div class="card-body text-center">
-                                <!-- Title -->
-                                <h4 class="card-title">{{ product.name }} 
-
-                                    <a href="{{ url_for('shop.wishlist_toggle', product_barcode=product.barcode, next=url_for('shop.index', page=page)) }}">
-                                        {%if product.barcode in get_wishlist_data() %}
-                                        <i class="fa fa-heart" style="color: #ff4b3b"></i>
-                                        {%else%}
-                                            <i class="fa fa-heart" style="color: gray"></i>
-                                        {%endif%}
-                                    </a>
-                                    
-                                    
-                                </h4>
-                                <!-- Text -->
-                                <p class="card-text">Rs {{product.selling_price}}</p>
-                                <!-- Button -->
-                            </div>
-                        </div>
                         </a>
                     </div>
                     <!-- Card -->

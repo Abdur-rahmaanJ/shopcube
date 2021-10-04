@@ -177,20 +177,30 @@
                             <table class="table table-responsive" id="cart-items">
                                 <thead>
                                     <th>Product</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Subtotal</th>
                                 </thead>
                                 <tbody>
-                                    {%for item in cart_data%}
-                                    {%set product = get_product(item)%}
+                                    {% set count = namespace(value=0) %}
+                                    {%for barcode in Cart.data()['items']%}
+                                        {%set product = get_product(barcode) %}
+                                        {%set items = Cart.data()['items'][barcode] %}
+
+                                        {% for item in items %}
+                                            {% set count.value = count.value + 1 %}
                                     <tr>
-                                        <input type="hidden" name="barcode_{{ loop.index }}" value="{{ product.barcode }}" class="barcode">
-                                        <td>{{product.name}}</td>
-                                        <td>{{cart_data[item]}}</td>
+                                        <input type="hidden" name="barcode_{{ count.value }}" value="{{ product.barcode }}" class="barcode">
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ item['size'] }}</td>
+                                        <td>{{ item['color'] }}</td>
+                                        <td>{{ item['quantity'] }}</td>
                                         <td class="price">{{product.selling_price}}</td>
-                                        <td class="total_price">{{product.selling_price * cart_data[item]}}</td>
+                                        <td class="total_price">{{product.selling_price * item['quantity'] }}</td>
                                     </tr>
+                                        {% endfor %}
                                     {%endfor%}
                                 </tbody>
                             </table>
