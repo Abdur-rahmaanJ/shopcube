@@ -86,6 +86,8 @@ class OrderItem(PkModel):
 
     time = db.Column(db.DateTime, default=datetime.now())
     quantity = db.Column(db.Integer)
+    color = db.Column(db.String(100))
+    size = db.Column(db.String(100))
     status = db.Column(
         db.String(120), default="pending"
     )

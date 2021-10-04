@@ -6,8 +6,12 @@ from app import app
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product
+from modules.box__ecommerce.product.models import Color
+from modules.box__ecommerce.product.models import Size
 
 
+colors = [Color(name='c1')]
+sizes = [Size(name='s1')]
 def add_uncategorised_category():
     with app.app_context():
         category = Category(name="uncategorised")
@@ -21,6 +25,9 @@ def add_uncategorised_category():
             discontinued=False,
             description="",
         )
+        p1.colors = colors
+        p1.sizes = sizes
+
         p2 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
@@ -30,6 +37,9 @@ def add_uncategorised_category():
             discontinued=False,
             description="",
         )
+        p2.colors = colors
+        p2.sizes = sizes
+
         p3 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
@@ -39,6 +49,9 @@ def add_uncategorised_category():
             discontinued=False,
             description="",
         )
+        p3.colors = colors
+        p3.sizes = sizes
+
 
         subcategory.products.extend([p1, p2, p3])
         category.subcategories.append(subcategory)
@@ -60,6 +73,9 @@ def add_men_category():
             discontinued=False,
             description="",
         )
+        p1.sizes = sizes
+        p1.colors = colors
+
         p2 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
@@ -69,6 +85,9 @@ def add_men_category():
             discontinued=False,
             description="",
         )
+        p2.sizes = sizes
+        p2.colors = colors
+
         p3 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
@@ -78,6 +97,9 @@ def add_men_category():
             discontinued=False,
             description="",
         )
+        p3.sizes = sizes
+        p3.colors = colors
+
         p4 = Product(
             barcode=str(uuid.uuid1()),
             price=10.0,
@@ -87,6 +109,9 @@ def add_men_category():
             discontinued=False,
             description="",
         )
+        p4.sizes = sizes
+        p4.colors = colors
+
 
         subcategory2.save(commit=False)
         subcategory3.save(commit=False)
