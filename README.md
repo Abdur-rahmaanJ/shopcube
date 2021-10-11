@@ -1,5 +1,7 @@
 # ShopCube
 
+![alt text](https://github.com/VaithiSniper/ShopCube/blob/dev/logo.png?raw=true)
+
 After pip install requirements,
 
 ```
