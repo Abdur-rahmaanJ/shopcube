@@ -42,8 +42,6 @@ flask-sqlalchemy==2.4.4
     #   flask-migrate
 flask-wtf==0.14.3
     # via -r reqs/app.in
-greenlet==1.1.2
-    # via sqlalchemy
 idna==2.10
     # via
     #   email-validator
@@ -70,12 +68,15 @@ marshmallow-sqlalchemy==0.23.1
     # via -r reqs/app.in
 pillow==8.0.1
     # via -r reqs/app.in
+pymysql==1.0.2
+    # via -r reqs/app.in
 requests==2.24.0
     # via -r reqs/app.in
 six==1.16.0
     # via flask-marshmallow
-sqlalchemy==1.4.25
+sqlalchemy==1.3.24
     # via
+    #   -r reqs/app.in
     #   alembic
     #   flask-sqlalchemy
     #   marshmallow-sqlalchemy
