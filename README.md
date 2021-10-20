@@ -4,15 +4,24 @@
 
 
 Copy paste config_demo.json to config.json in shopyo
-Copy paste config_demo.json to config.py in shopyo and replace your SQLALCHEMY_DATABASE_URI details
+Copy paste config_demo.py to config.py in shopyo and replace your SQLALCHEMY_DATABASE_URI details
 
-After pip install requirements,
+install requirements
+
+```
+pip install -r reqs/app.txt
+pip install -r reqs/dev.txt
+```
+
 
 ```
 cd shopyo
 python manage.py initialise
 python manage.py rundebug
 ```
+
+
+browse around and go to /dashboard with login admin@domain.com and password pass
 
 Current features:
 
@@ -23,7 +32,3 @@ Current features:
 
 Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs to get more development insights
 
-
-```
-pip-compile --output-file=reqs/dev.txt reqs/dev.in 
-```

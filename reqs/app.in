@@ -13,3 +13,4 @@ Pillow==8.0.1
 flask-mailman==0.2.3
 wheel==0.37.0
 pymysql==1.0.2
+SQLAlchemy<1.4
