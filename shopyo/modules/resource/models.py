@@ -43,11 +43,11 @@ class Resource(db.Model):
 
     # 
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'),
-        nullable=False)
+        nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),
         nullable=False)
     subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'),
-        nullable=False)
+        nullable=True)
 
     def insert(self):
         db.session.add(self)
