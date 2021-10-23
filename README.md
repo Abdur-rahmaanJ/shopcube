@@ -3,6 +3,8 @@
 ![alt text](https://github.com/shopyo/ShopCube/blob/dev/logo.png?raw=true)
 
 
+Create a virtual environment and activate it
+
 install requirements
 
 ```
