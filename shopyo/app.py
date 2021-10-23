@@ -29,28 +29,45 @@ from shopyoapi.init import subcategoryphotos
 from shopyoapi.path import modules_path
 from shopyoapi.file import trycopy
 
-try:
-    if not os.path.exists('config.py'):
-        trycopy('config_demo.py', 'config.py')
-    if not os.path.exists('config.json'):
-        trycopy('config_demo.json', 'config.json')
-except PermissionError as e:
-    print('Cannot continue, permission error'
-        'initialising config.py and config.json, '
-        'copy and rename them yourself!')
-    raise e
-    
 
 from config import app_config
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
+def load_config_from_obj(app, config_name):
+
+    try:
+        configuration = app_config[config_name]
+    except KeyError as e:
+        print(
+            f"[ ] Invalid config name {e}. Available configurations are: "
+            f"{list(app_config.keys())}\n"
+        )
+        sys.exit(1)
+
+    app.config.from_object(configuration)
+
+
+def load_config_from_instance(app, config_name):
+
+    if config_name != "testing":
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile("config.py", silent=True)
+
+    # create empty instance folder and empty config if not present
+    try:
+        os.makedirs(app.instance_path)
+        with open(os.path.join(app.instance_path, "config.py"), "a"):
+            pass
+    except OSError:
+        pass
 
 def create_app(config_name):
 
     app = Flask(__name__)
-    configuration = app_config[config_name]
-    app.config.from_object(configuration)
+    load_config_from_obj(app, config_name)
+    load_config_from_instance(app, config_name)
+    
     migrate.init_app(app, db)
     db.init_app(app)
     ma.init_app(app)
@@ -58,6 +75,8 @@ def create_app(config_name):
     csrf = CSRFProtect(app)  # noqa
     mail = Mail()
     mail.init_app(app)
+
+
 
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
