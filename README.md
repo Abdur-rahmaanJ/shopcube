@@ -31,7 +31,7 @@ Current features:
 
 Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs to get more development insights
 
-View a live demo of [Shopyo](http://shopcube.pythonanywhere.com/shop/home) deployed to [PythonAnywhere](http://pythonanywhere.com/).
+View a live demo of [ShopCube](http://shopcube.pythonanywhere.com/shop/home) deployed to [PythonAnywhere](http://pythonanywhere.com/).
 
 ## Config DB
 
