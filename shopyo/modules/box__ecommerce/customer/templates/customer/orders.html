@@ -25,7 +25,7 @@
 
             </thead>
             <tbody>
-            	{%for order in logged_in_orders%}
+            	{%for order in logged_in_orders.items%}
 
                     <tr>
                         <td>{{order.get_std_formatted_time()}}</td>
@@ -36,7 +36,47 @@
                 
                 {%endfor%}
             </tbody>
+            {% if prev_url %}
+            <a href="{{ prev_url }}">Prev</a>
+            {% endif %}
+            {% if next_url %}
+            <a href="{{ next_url }}">Next</a>
+            {% endif %}
         </table>
+        <!-- Pagination-->
+        <div class="text-right">
+            <a href="{{ url_for('customer.orders', page=logged_in_orders.prev_num, page2=not_logged_in_orders.prev_num) }}"
+            class="btn btn-outline-dark 
+            {% if logged_in_orders.page == 1 %}disabled{% endif %}">
+                &laquo;
+            </a>
+            <!-- Loop through the number of pages-->
+            {% for page_num in logged_in_orders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}{% if page_num %}
+            <!-- Check for the active page and set the link to "Active"-->
+                    {% if logged_in_orders.page == page_num %}
+                    <a href="{{ url_for('customer.orders', page=page_num, page2=page_num) }}"
+                    class="btn btn-dark">
+                        {{ page_num }}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('customer.orders', page=page_num, page2=page_num) }}"
+                    class="btn btn-outline-dark">
+                        {{ page_num }}
+                    </a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}    
+            <a href="{{ url_for('customer.orders', page=logged_in_orders.next_num, page2=not_logged_in_orders.next_num) }}"
+            class="btn btn-outline-dark 
+            {% if logged_in_orders.page == logged_in_orders.pages %}disabled{% endif %}">
+                &raquo;
+            </a>
+        </div>
+        <p class="text-right mt-3">
+        Showing page {{ logged_in_orders.page }} of {{ logged_in_orders.pages }}
+        </p>
     </div>
  </div>
 
