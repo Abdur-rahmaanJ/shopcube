@@ -66,7 +66,11 @@ def dashboard():
 @login_required
 def orders():
     context = mhelp.context()
-    logged_in_orders = Order.query.filter(Order.logged_in_customer_email == current_user.email).all()
+    NO_OF_ITEMS = 5
+
+    page = request.args.get('page',1,type=int)
+    logged_in_orders = Order.query.filter(Order.logged_in_customer_email == current_user.email).paginate(page, NO_OF_ITEMS, False)
+
     not_logged_in_orders = Order.query.join(BillingDetail).filter(
         (BillingDetail.email == current_user.email) &
         (Order.logged_in_customer_email == '')).all()
