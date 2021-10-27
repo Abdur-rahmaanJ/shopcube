@@ -51,3 +51,9 @@ SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{
     db_name='shopcube'
 )
 ```
+## 🍳 In Action
+
+![](screenshots/new_screenshots/1.png)
+![](screenshots/new_screenshots/2.png)
+![](screenshots/new_screenshots/3.png)
+![](screenshots/new_screenshots/4.png)
