@@ -120,7 +120,7 @@ $(document).ready(function() {
 
     $('.product-item').click(function() {
         var id = $(this).attr('id');
-        var name = encodeURI($(this).text().split('-')[0].trim());
+        var name = $(this).text().split('-')[0].trim();
         var price = encodeURI($(this).text().split('-')[1].trim());
 
         $('#checkout-panel').append(checkout_item(id, name, price));
