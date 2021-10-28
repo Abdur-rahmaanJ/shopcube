@@ -88,12 +88,21 @@
 </div>
 <script type="text/javascript">
 function checkout_item(id, name, price) {
-    return `<li product-id="checkout_${id}" class="checkout-item close-parent list-group-item d-flex justify-content-between lh-condensed">
+    var prod_name = decodeURI(name);
+    var prod_price = decodeURI(price);
+
+    //truncate product name in the checkout menu and display the full name as tooltip
+    if(prod_name.length > 12){
+        prod_name = prod_name.substring(0,12);
+        prod_name = prod_name + '...';
+    }
+
+    return `<li data-prod-name="${name}" product-id="checkout_${id}" class="checkout-item close-parent list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0" class="checkout-item-name">${name}</h6>
+                <h6 class="my-0" class="checkout-item-name">${prod_name}</h6>
                 <small class="text-muted"></small>
               </div>
-              <span class="text-muted ">$<span class="checkout-item-price">${price}</span></span>
+              <span class="text-muted ">$<span class="checkout-item-price">${prod_price}</span></span>
               <button type="button" class="close close-but" aria-label="Close" >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -117,10 +126,9 @@ function update_checkout() {
 }
 $(document).ready(function() {
 
-
     $('.product-item').click(function() {
         var id = $(this).attr('id');
-        var name = $(this).text().split('-')[0].trim();
+        var name = encodeURI($(this).text().split('-')[0].trim());
         var price = encodeURI($(this).text().split('-')[1].trim());
 
         $('#checkout-panel').append(checkout_item(id, name, price));
@@ -178,6 +186,13 @@ $(document).ready(function() {
     $(document).on("click", ".close", function() {
         $(this).closest('.close-parent').remove();
         update_checkout();
+    });
+
+    // display full product name as tooltip when hovering the checkout menu
+    $(document).on("mouseenter", ".checkout-item", function() {
+        full_name = $(this).data('prod-name');
+        full_name = decodeURI(full_name);
+        $(".checkout-item").attr('title', full_name);
     });
 });
 </script>
