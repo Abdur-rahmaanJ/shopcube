@@ -2,55 +2,153 @@
 
 ![alt text](https://github.com/shopyo/ShopCube/blob/dev/logo.png?raw=true)
 
+ShopCube is an e-commerce solution for shops. Complete with cart, wishlist, and orders. Powered by Shopyo, a Python web framework built on top of Flask. 
 
-Create a virtual environment and activate it
+If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy. Feel free to join our [discord group](https://discord.gg/Gnys4C6xZX) if you get stuck or would just like to chat and say hi.
 
-install requirements
+This contribution guide has been adopted from the version used by Shopyo. 
 
-```
-pip install -r reqs/app.txt
-pip install -r reqs/dev.txt
-```
+## First time setup
 
+- Download and install the [latest version of git](https://git-scm.com/downloads).
 
-```
-cd shopyo
-python manage.py initialise
-python manage.py rundebug
-```
-using shopyo/shopcube.db as db
+- Configure git with your [username](https://docs.github.com/en/github/using-git/setting-your-username-in-git) and [email](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address).
 
-browse around and go to /dashboard with login admin@domain.com and password pass
+  ```
+  $ git config --global user.name 'your name'
+  $ git config --global user.email 'your email'
+  ```
 
-Current features:
+- Make sure you have a [GitHub account](https://github.com/join).
 
--  cart
--  wishlist
--  stock
--  orders
+- Fork ShopCube to your GitHub account by clicking the [Fork](https://github.com/shopyo/ShopCube/fork) button.
 
-Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs to get more development insights
+- [Clone](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork) the main repository locally (make sure to have your [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) setup!). Replace `{username}` with your username. 
 
-View a live demo of [ShopCube](http://shopcube.pythonanywhere.com/shop/home) deployed to [PythonAnywhere](http://pythonanywhere.com/).
+  ```
+  $ git clone git@github.com:{username}/ShopCube.git
+  $ cd ShopCube
+  ```
 
-## Config DB
+- Create a virtualenv named env and activate the [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 
+  Linux/macOS	
 
-In shopyo/ create a new folder called instance
+  ```
+  $ python3 -m venv env
+  $ . env/bin/activate
+  ```
 
-In shopyo/instance/ create a new file called config.py
+  Windows
 
+  ```
+  > py -3 -m venv env
+  > env\Scripts\activate
+  ```
 
-In config.py add something like that, the following is for mysql:
+- Upgrade pip and setuptools:
 
-```python
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
-    username='shopcube',
-    password='pass1234-A',
-    server_name='localhost',
-    db_name='shopcube'
-)
-```
+  ```
+  $ python -m pip install --upgrade pip setuptools
+  ```
+
+- Install the development dependencies and ShopCube requirements:
+
+  ```
+  $ pip install -r reqs/app.txt
+  $ pip install -r reqs/dev.txt
+  ```
+
+- Now initialize the app by running:
+
+  ```
+  $ cd shopyo
+  $ python manage.py initialise
+  ```
+
+- Run ShopCube:
+
+  ```
+  $ python manage.py rundebug
+  ```
+
+- Go to the link http://127.0.0.1:5000/ and you should see the ShopCube app running. 
+
+- Login as administrator by clicking on the login icon on the top right hand side of the screen. 
+
+  Enter admin@domain.com as the username and 'pass' as the pasword. 
+
+  After login, you should be directed to http://0.0.0.0:5000/dashboard/. 
+
+  ```
+  # see config.json 
+   "admin_user": {
+        "email": "admin@domain.com",
+        "password": "pass"
+    }
+  ```
+
+## Pull Requests
+
+Make sure you have setup the repo as explained in [First time setup](https://shopyo.readthedocs.io/en/latest/contrib.html#setup) before making Pull Request (PR)
+
+- Create a branch for the issue you would like to work on:
+
+  ```
+  $ git fetch origin
+  $ git checkout -b <your-branch-name> origin/dev
+  ```
+
+  Note
+
+  As a sanity check, you can run `git branch` to see the current branch you are on in case your terminal is not setup to show the current branch.
+
+- Using your favorite editor, make your changes, [committing as you go](https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html#commit-your-changes).
+
+  ```
+  $ git add <filenames to commit>
+  $ git commit -m "<put commit message here>"
+  ```
+
+- Push your commits to your fork on GitHub. The -u option allows your local branch to be pushed to your GitHub repo. 
+
+  ```
+  $ git push -u origin your-branch-name
+  ```
+
+- [Create a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request). You should see the PR link in the terminal after you successfully push your commits. Link to the issue being addressed with `fixes #123` in the pull request. See [example PR](https://github.com/shopyo/shopyo/pull/55).
+
+## Troubleshooting Guide
+
+If you need further assistance, feel free to contact @appinv or @shams on discord. 
+
+- When I initialise the app, I get an error related to MySQL (ie: a Connection Error)
+
+  In `config.py`, make sure you have a database URI
+
+    ```
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
+        username='shopcube',
+        password='pass1234-A',
+        server_name='localhost',
+        db_name='shopcube'
+    ) 
+    ```
+
+  or paste the following into `config.py` inside of the `class DevelopmentConfig(Config)`: 
+
+  ```
+  SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_path, 'app.db')
+  ```
+
+- I launched the app but nothing shows up in /dashboard. 
+
+  - Log in as admin@domain.com with the password 'pass'
+
+- Additional development insights?
+
+  - Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs!
+
 ## 🍳 In Action
 
 ![](screenshots/new_screenshots/1.png)
