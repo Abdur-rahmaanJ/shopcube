@@ -291,7 +291,7 @@ def order_status_change(order_id):
             "order": order
             })
         new_line = '\n'
-        subject, from_email, to = 'Title', 'from@example.com', 'to@example.com'
+        subject, from_email, to = 'Title', 'from@example.com', f'{order.billing_detail.email}'
         text_content = f'Hi {order.billing_detail.first_name},{new_line}Just dropping you '\
             f'an email to notify you that your order with reference {order.get_ref()} has changed '\
             f'status from {previous_status} to {order.status}.{new_line}If you have any queries '\
