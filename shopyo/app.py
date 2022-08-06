@@ -65,6 +65,11 @@ def load_config_from_instance(app, config_name):
 def create_app(config_name):
 
     app = Flask(__name__)
+
+    @app.before_request
+    def check_init():
+        
+
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
     
