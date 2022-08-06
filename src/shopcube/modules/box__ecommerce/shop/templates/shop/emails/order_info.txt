@@ -1,0 +1,51 @@
+Thank you for your order. Here is a summary.
+
+Your order ref is {{ order.get_ref() }}. 
+Your order will not be processed until funds get cleared.
+
+
+
+{% set total_prices = [] %}
+Items 
+{% for item in order.order_items %}
+#{{ loop.index }}
+Name: {{ item.get_product().name }}
+Description: {{ item.get_product().description }}
+Quantity: {{ item.quantity }}
+Color: {{ item.color }}
+Size: {{ item.size }}
+Unit Price: Rs {{ item.get_product().selling_price }}
+{% set item_total = int(item.get_product().selling_price) * int(item.quantity) %}
+Total: Rs {{ item_total }}
+
+{{ total_prices.append(item_total) or ''}}
+{% endfor %}
+
+{% set sum_products = sum(total_prices) %}
+Total for products: Rs {{ sum_products }}
+
+
+Payment Option
+Name: {{ order.payment_option.name }}
+Info: {{ order.payment_option.text }}
+
+
+Shipping Option:
+Option: {{ order.shipping_option.option }}
+Price: Rs {{ order.shipping_option.price }}
+
+
+Billing Details
+First Name: {{ order.billing_detail.first_name }}
+Last Name: {{ order.billing_detail.last_name }}
+Street: {{ order.billing_detail.street }}
+Town/City: {{ order.billing_detail.town_city }}
+Phone: {{ order.billing_detail.phone }}
+Email: {{ order.billing_detail.email }}
+Order Notes:
+{{ order.billing_detail.order_notes }}
+
+Thanks,
+
+
+Freaks Boutique

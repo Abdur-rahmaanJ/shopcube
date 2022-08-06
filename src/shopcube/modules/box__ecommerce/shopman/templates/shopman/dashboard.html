@@ -1,0 +1,43 @@
+{% extends "base/module_base.html" %}
+
+{% set active_page = info['display_string']+' dashboard' %}
+
+{% block pagehead %}
+<title></title>
+<style>
+
+</style>
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+  {%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
+
+{% block content %}
+<br>
+<div>
+    <div class="card">
+        <div class="card-body">
+            <form class="form" method="POST" action="{{ url_for('shopman.set_currency') }}">
+                <div>
+                    <label>{{ form.currency.label }}</label>
+                    {% set z = form.currency.process_data(current_currency) %}
+                    {{ form.currency() }}
+
+                </div><br>
+
+                {{ form.csrf_token }}
+                <button type="submit" class="btn btn-primary">submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

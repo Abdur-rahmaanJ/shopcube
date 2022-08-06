@@ -1,0 +1,39 @@
+ {{
+sidebar_item(
+'Home', 
+icon=info['fa-icon'], 
+url=url_for('shopman.dashboard')
+)
+}}
+
+{{
+sidebar_item(
+'Delivery', 
+icon='fa fa-paper-plane', 
+url=url_for(info['module_name']+'.delivery')
+)
+}}
+
+{{
+sidebar_item(
+'Payment', 
+icon='fa fa-money-check-alt', 
+url=url_for(info['module_name']+'.payment')
+)
+}}
+
+{{
+sidebar_item(
+'Coupon', 
+icon='fa fa-candy-cane', 
+url=url_for(info['module_name']+'.coupon')
+)
+}}
+
+{{
+sidebar_item(
+'Orders', 
+icon='fa fa-clipboard-list', 
+url=url_for(info['module_name']+'.order')
+)
+}}

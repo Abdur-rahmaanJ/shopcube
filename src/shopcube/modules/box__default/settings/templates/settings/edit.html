@@ -1,0 +1,27 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='settings' %}
+
+{% block pagehead %}
+<title>edit</title>
+{% endblock %}
+
+{% block content %}
+
+<form action='/settings/update' method="post">
+  <label>value</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-tag"></i></span>
+    </div>
+    <input required type="text" class="form-control" 
+      name="settings_value" placeholder="Input Value" value="{{ current_value }}">
+    <input required type="hidden" class="form-control" 
+      name="settings_name" placeholder="input Value" value="{{ settings_name }}">
+  </div>
+
+  <br>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <input required  type="submit" class="btn btn-info" value="edit">
+</form>
+{% endblock %}

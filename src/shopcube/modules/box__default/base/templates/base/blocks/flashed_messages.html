@@ -1,0 +1,9 @@
+<div id="flashed-messages" style="z-index: 1500">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        {{ message | safe}}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>

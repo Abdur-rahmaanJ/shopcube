@@ -1,0 +1,127 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "people" %}
+{% block pagehead %}
+<title>add people</title>
+<style>
+    html {
+        scroll-behavior: smooth;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width: 6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width: 6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block sidebar %}
+{%include 'people/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<script type="text/javascript">
+$(function() {
+    $('#searchinput').on('input', function() {
+        $("#results_table tbody").html("<tr></tr>");
+        var result;
+        var valEntered = $(searchinput).val();
+        if (valEntered == '') valEntered = 'searchValueIsEmpty';
+        $.getJSON("/people/search/name/" + valEntered, function(data) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                result = data[i];
+
+                $('#results_table tr:last').after("<tr>" +
+                    "<td>" + result['name'] + "</td>" +
+                    "<td>" + result['date'] + "</td>" +
+                    "<td>" + result['time'] + "</td>" +
+                    "<td>" + result['active'] + "</td>" +
+                    '<td class="delete_me" data-id="' + result['id'] + '"><a href="/people/delete/' + result['id'] + '" class="btn btn-danger" role="button"><i class="fas fa-trash-alt"></i></a>' +
+                    ' <a href="/people/edit/' + result['id'] + '" class="btn btn-warning" role="button"><i class="fas fa-pencil-alt"></i></a></td>' +
+                    "</tr>");
+            }
+        })
+    });
+    $('.delete_me').click(function() {
+        var id = $(this).data("id");
+        var ask = confirm("Do you want to delete ?");
+        if (ask == true) {
+            window.location.replace("/people/delete/" + id, "_self");
+            return false;
+        } else {
+
+        }
+    });
+    $('#isActive').change(function() {
+
+        if ($('#isActive').is(':checked')) {
+            $('.all_not').addClass('all_inactive');
+        } else {
+            $('.all_not').removeClass('all_inactive');
+        }
+
+    });
+});
+</script>
+<br>
+<div class="card">
+    <div class="card-body">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
+        </div>
+        <div id="search_results">
+        </div>
+        <br><br>
+        <table class="table" id="results_table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in people %}
+                <tr>
+                    <td scope="col">{{ person.name }}</td>
+                    <td scope="col">{{ person.phone }}</td>
+                    <td scope="col">{{ person.email }}</td>
+                    <td scope="col">{{ person.notes }}</td>
+                    <td>
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{ person.id }}">
+                            ..more info
+                        </button>
+                        <a href="/people/edit/{{ person.id }}" style="text-decoration: none;">
+                            <button data-name="{{ person.id }}" class="btn btn-warning" type=""><i id='ico-{{ person.id }}' class="fas fa-pencil-alt"></i></button>
+                        </a>
+                        <a href="#" style="text-decoration: none;">
+                            <button id='del-{{ person.id }}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

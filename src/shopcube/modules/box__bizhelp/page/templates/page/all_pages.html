@@ -1,0 +1,32 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='page' %}
+
+{% block pagehead %}
+<title>{{active_page.capitalize()}}</title>
+<style>
+  .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="list-group">
+  {%for page in pages%}
+    
+      <a href="{{url_for('page.view_page', page_id=page.id, slug=page.slug)}}">
+        <div class="list-group-item">
+          {{page.title}}
+        </div>
+        
+      </a>
+    
+  {%endfor%}
+</div>
+{% endblock %}

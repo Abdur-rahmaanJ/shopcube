@@ -1,0 +1,20 @@
+{%set active_page = 'shop.html'%}
+<!-- public facing landing page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'shop/blocks/common_styles.html'%}
+    {% include shop/sections/resources.html'%}
+    {% block pagehead %}{% endblock %}
+    {% include get_active_front_theme()+'/sections/drawer_head.html'%}
+</head>
+
+<body>
+    {% include 'base/blocks/flashed_messages.html'%}
+    {% include get_active_front_theme()+'/sections/nav.html'%}
+    {% block content %}{% endblock %}
+    {% include get_active_front_theme()+'/sections/footer.html'%}
+</body>
+
+</html>

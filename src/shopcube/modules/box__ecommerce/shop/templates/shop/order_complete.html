@@ -1,0 +1,23 @@
+{%set active_page = 'shop.html'%}
+{% extends "shop/base.html" %}
+{% block pagehead %}
+
+{% endblock %}
+{% block content %}
+<div class="shop-spacer-1">
+</div>
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white">
+    	<li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.index') }}">Shop</a></li>
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.cart') }}">Cart</a></li>
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.checkout') }}">Checkout</a></li>
+        <li class="breadcrumb-item ">Order Complete</li>
+    </ol>
+</nav>
+<div>
+    <div class="container">
+        Order complete! <a href="{{ url_for('shop.index') }}" class="btn btn-success">Return to shop</a>
+    </div>
+</div>
+{% endblock %}

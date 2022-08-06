@@ -1,0 +1,35 @@
+<div id="accordion">
+    {%for category in get_categories()%}
+          <div class="card"
+            style="
+            border: none;
+            margin-bottom: 5px;
+            ">
+            <div class="card-header" id="heading_{{category.id}}" 
+            style="
+                background-color: white;
+                border: none;
+                margin-bottom: 5px;">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse_{{category.id}}" aria-expanded="true" aria-controls="collapse_{{category.id}}">
+                  <i class="fa fa-arrow-alt-circle-down"></i> 
+                </button> <a class="shop_underline_pink" href="{{ url_for('shop.category', category_name=category.name) }}" >{{category.name}}</a>
+              </h5>
+            </div>
+
+            <!-- collapse show -->
+            <div id="collapse_{{category.id}}" class="collapse {{ 'show' if current_category_name == category.name else 'hide'}}" aria-labelledby="heading_{{category.id}}" data-parent="#accordion">
+              <div class="card-body" style="
+                    padding-left: 10px;">
+                    <div >
+                        {%for subcategory in category.subcategories%}
+                        <p class="subcategory_link"><a class="shop_underline_pink" href="{{ url_for('shop.subcategory', sub_id=subcategory.id) }}">{{ subcategory.name.capitalize() }}</a></p>
+                    {%endfor%}
+                    </div>
+                    
+              </div>
+            </div>
+          </div>
+    {%endfor%}
+
+</div>

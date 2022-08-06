@@ -1,0 +1,43 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "appointments" %}
+{% block pagehead %}
+<title>edit</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'appointment/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2>Edit Appointment</h2>
+        <form action='/appointment/update' method="post">
+            <label>Edit Meeting</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+                </div>
+                <input required type="text" class="form-control" name="appointment_name" placeholder="Meeting name" value="{{ name }}">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                </div>
+                <input required type="date" class="form-control" name="appointment_date" placeholder="Meeting date" value="{{ date }}">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                </div>
+                <input required type="time" class="form-control" name="appointment_time" placeholder="Meeting time" value="{{ time }}">
+            </div>
+            <input required type="hidden" class="form-control" name="appointment_id" placeholder="#" value="{{ id }}">
+            <input required type="hidden" class="form-control" name="appointment_active" placeholder="#" value="{{ active }}">
+            <br>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="input-group mb-3">
+                <input required type="submit" class="btn btn-info" value="edit">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
