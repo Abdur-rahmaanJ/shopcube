@@ -1,0 +1,11 @@
+{
+	"display_string": "Appointments",
+	"type": "show",
+	"fa-icon": "fas fa-clock",
+	"url_prefix": "/appointment",
+	"author": {
+        "name":"Abdur-Rahmaan Janhangeer",
+        "website":"https://www.pythonkitchen.com/about-me/",
+        "mail":"arj.python@gmail.com"
+    }
+}

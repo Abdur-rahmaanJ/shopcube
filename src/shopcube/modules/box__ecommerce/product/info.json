@@ -1,0 +1,8 @@
+{
+        "display_string": "Products",
+        "module_name":"product",
+        "type": "hidden",
+        "fa-icon": "",
+        "url_prefix": "/product",
+        "dashboard": "/dashboard"
+}

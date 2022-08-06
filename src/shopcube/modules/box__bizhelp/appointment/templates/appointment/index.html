@@ -1,0 +1,100 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "appointments" %}
+{% block pagehead %}
+<title>Settings</title>
+<style>
+    .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width: 6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width: 6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block sidebar %}
+{%include 'appointment/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<script type="text/javascript">
+$(function() {
+    $('.delete_me').click(function() {
+        var id = $(this).attr('name');
+        var ask = confirm("Do you want to delete ?");
+        if (ask == true) {
+            window.location.replace("/appointment/delete/" + id, "_self");
+            return false;
+        } else {
+
+        }
+    });
+    $('#isActive').change(function() {
+
+        if ($('#isActive').is(':checked')) {
+            $('.all_not').addClass('all_inactive');
+        } else {
+            $('.all_not').removeClass('all_inactive');
+        }
+
+    });
+});
+</script>
+<br>
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Meeting Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col"><label style="margin-bottom: auto">Only active&nbsp&nbsp&nbsp<input name="activeBox" id="isActive" type="checkbox" /></label>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr class="{% if appointment.active == " inactive" %}all_not{% endif %}">
+                    <td>{{ appointment.name }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time }}</td>
+                    <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
+                    <td>
+                        <div style='display: inline-block; '>
+                            <a style="text-decoration: none;">
+                                <button id='delete' class="delete_me btn btn-danger" type="" name="{{ appointment.id }}"><i class="fas fa-trash-alt"></i></button>
+                            </a>
+                            &nbsp;
+                            <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
+                                <button data-name="{{ appointment.name }}" class="btn btn-warning"><i id='ico' class="fas fa-pencil-alt"></i>
+                                </button>
+                            </a>
+                            <a href="/appointment/{% if appointment.active == " active" %}inactive{% else %}active{% endif %}/{{ appointment.id }}" style="text-decoration: none; padding-left: 1rem">
+                                <button id="active-btn" data-name="{{ appointment.name }}" class="btn {% if appointment.active == " active" %}active{% else %}inactive{% endif %}">{{ appointment.active }}
+                                </button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

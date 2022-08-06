@@ -1,0 +1,184 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='products' %}
+{% block pagehead %}
+<title>edit</title>
+<style type="text/css">
+.carousel-control-prev,
+.carousel-control-next {
+    height: 100px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    /*height: 50px;*/
+    /*width: 100px;*/
+    /*border-radius: 50%;*/
+    /*border: 1px solid black;*/
+    background-image: none !important;
+    background: none !important;
+    /*font-size: 55px;*/
+    /*color: red;*/
+}
+
+.carousel-control-next-icon:after {
+    content: '>';
+    font-size: 55px;
+    color: red;
+}
+
+.carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: red;
+}
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'product/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Edit product for
+            <span class="badge badge-primary">---</span>
+            <span class="badge badge-secondary">---</span>
+        </h2>
+        <br>
+        <form action="{{url_for('product.update', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data">
+            <label>barcode</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="barcode" autocomplete="off" id="barcode" type="text" class="form-control" placeholder="Barcode" value="{{product.barcode}}">
+                <input name="old_barcode" autocomplete="off" id="barcode" type="hidden" class="form-control" placeholder="Barcode" value="{{product.barcode}}">
+            </div>
+            <label>name</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="name" autocomplete="off" id="name" type="text" class="form-control" placeholder="Product Name" value="{{product.name}}">
+            </div>
+            <label>description</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="10" name="description" autocomplete="off" id="description" type="text" class="form-control" placeholder="Product Description">{{product.description}}</textarea>
+            </div>
+            <label>colors</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="5" name="colors" autocomplete="off" id="color_description" type="text" class="form-control" placeholder="">{{ product.get_color_string() }}</textarea>
+            </div>
+            <label>sizes</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="5" name="sizes" autocomplete="off" id="size_description" type="text" class="form-control" placeholder="">{{ product.get_size_string() }}</textarea>
+            </div>
+            <!--
+  <label>category</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+    </div>
+    <input required
+        name="category" autocomplete="off" id="category" type="text" class="form-control" 
+        placeholder="Product Category" value="{{product.category_name}}">
+  </div>
+-->
+            <label>date</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                </div>
+                <input name="date" id="noHistoricDates" autocomplete="off" id="date" type="date" class="form-control" min="" placeholder="" value="{{product.date}}">
+            </div>
+            <label>price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="price" autocomplete="off" id="price" type="number" step="0.01" class="form-control" placeholder="Price" value="{{product.price}}">
+            </div>
+            <label>selling price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="selling_price" autocomplete="off" id="selling_price" type="number" step="0.01" class="form-control" placeholder="Selling Price" value="{{product.selling_price}}">
+            </div>
+            <label>in stock</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="in_stock" autocomplete="off" id="stock" type="number" step="1" class="form-control" placeholder="Stock" value="{{product.in_stock}}">
+            </div>
+            <label>discontinued</label>
+            <div class="form-check">
+                <input required name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="True" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    Yes
+                </label>
+                <br>
+                <input required name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="False" id="defaultCheck1" checked="checked">
+                <label class="form-check-label" for="defaultCheck2">
+                    No
+                </label>
+            </div>
+            <br>
+            {%if len(product.resources) != 0%}
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {%for resource in product.resources%}
+                    {%if resource.type == 'image'%}
+                    <div class="carousel-item {{'active' if loop.index == 1 else ''}}">
+                        <img class="d-block" width=300 src="{{url_for('resource.product_image', filename=resource.filename)}}" alt="---">
+                        <a style="margin-top: 10px" class="btn btn-danger" href="{{url_for('product.image_delete', filename=resource.filename, barcode=product.barcode)}}">delete</a>
+                    </div>
+                    {%endif%}
+                    {%endfor%}
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <br>
+            </div>
+            {%endif%}
+            <br>
+            <label>add images</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input class="form-control" type="file" name="photos[]" multiple="true" autocomplete="off">
+            </div>
+            <br>
+            <input type="hidden" autocomplete="off" id="category" class="form-control" name="category" placeholder="category" value="{{category}}">
+            <input required type="submit" class="btn btn-info" value="edit">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="product_id" value="{{ product.id }}" />
+            <script>
+            // Limit appointment date selections to current date and the future.
+            // Format is yyyy-mm-dd according to section 2.4.5.2 of the W3C HTML 5.2 spec:
+            // https://www.w3.org/TR/html52/infrastructure.html#valid-date-string
+            /*(function() {
+                document.getElementById("noHistoricDates").setAttribute("min", new Date().toISOString().split("T")[0]);
+            })();*/
+            </script>
+        </form>
+    </div>
+</div>
+{% endblock %}

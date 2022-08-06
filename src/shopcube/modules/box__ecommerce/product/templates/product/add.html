@@ -1,0 +1,136 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='products' %}
+{% block pagehead %}
+<title>add product</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'product/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<script type="text/javascript">
+$(function() {
+    // pos
+    //$.getJSON( "http://localhost:5000/product/erlang", function( data ) {console.log(data[0]['barcode']);})
+    $('#barcode').on('input', function() {
+        $.getJSON("/prods/check/" + $("#barcode").val(), function(data) {
+            $("#check").html("<i class='fa fa-list-alt'></i>");
+            if (data['exists'] === true) {
+                $("#check").html("<i style='color:red;' class='fas fa-exclamation-triangle'></i>");
+            }
+        })
+    });
+});
+</script>
+<div class="card">
+    <div class="card-body">
+        {% if has_product == 'True' %}
+        <div class="alert alert-danger" role="alert">
+            Product alreadly Listed
+        </div>
+        {% endif %}
+        <h2>Add product for
+            <span class="badge badge-primary">---</span>
+            <span class="badge badge-secondary">---</span>
+        </h2>
+        <br>
+        <form action="{{url_for('product.add', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <label>barcode (required)</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="check"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="barcode" autocomplete="off" id="barcode" type="text" class="form-control" placeholder="Barcode" value="{{barcodestr}}">
+            </div>
+            <label>name (required)</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="name" autocomplete="off" id="name" type="text" class="form-control" placeholder="Product Name">
+            </div>
+            <label>description</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="10" name="description" autocomplete="off" id="description" type="text" class="form-control" placeholder="Product Description"></textarea>
+            </div>
+            <label>colors</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="5" name="colors" autocomplete="off" id="color_description" type="text" class="form-control" placeholder="color1&#10;color2&#10;color3"></textarea>
+            </div>
+            <label>sizes</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <textarea rows="5" name="sizes" autocomplete="off" id="size_description" type="text" class="form-control" placeholder="size1&#10;size2&#10;size3"></textarea>
+            </div>
+            <label>date</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                </div>
+                <input name="date" id="noHistoricDates" autocomplete="off" id="date" type="date" class="form-control" min="" placeholder="">
+            </div>
+            <label>price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input name="price" required autocomplete="off" id="price" type="number" step="0.01" class="form-control" placeholder="Price" value=0>
+            </div>
+            <label>selling price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input name="selling_price" autocomplete="off" id="selling_price" type="number" step="0.01" class="form-control" placeholder="Selling Price" value=0>
+            </div>
+            <label>in stock (required)</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input required name="in_stock" autocomplete="off" id="stock" type="number" step="1" class="form-control" placeholder="Stock">
+            </div>
+            <label>discontinued</label>
+            <div class="form-check">
+                <input required name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="True" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    Yes
+                </label>
+                <br>
+                <input required name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="False" id="defaultCheck1" checked="checked">
+                <label class="form-check-label" for="defaultCheck2">
+                    No
+                </label>
+            </div>
+            <br>
+            <label>images</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input class="form-control" type="file" name="photos[]" multiple="true" autocomplete="off">
+            </div>
+            <br>
+            <input type="hidden" autocomplete="off" id="category" class="form-control" name="category" placeholder="category" value="{{category}}">
+            <input required type="submit" class="btn btn-info" value="add">
+            <script>
+            // Limit appointment date selections to current date and the future.
+            // Format is yyyy-mm-dd according to section 2.4.5.2 of the W3C HTML 5.2 spec:
+            // https://www.w3.org/TR/html52/infrastructure.html#valid-date-string
+            /*(function() {
+                document.getElementById("noHistoricDates").setAttribute("min", new Date().toISOString().split("T")[0]);
+            })();*/
+            </script>
+        </form>
+    </div>
+</div>
+{% endblock %}

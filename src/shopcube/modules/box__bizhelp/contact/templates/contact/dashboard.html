@@ -1,0 +1,60 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='contact dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'contact/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <th>Name</th>
+                <th>Mail</th>
+                <th>Date</th>
+                <th>Info</th>
+            </thead>
+            <tbody>
+                {%for message in messages.items%}
+                <tr>
+                    <td>{{message.name}}</td>
+                    <td>{{message.email}}</td>
+                    <td>{{message.created_date}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{message.id}}">
+                            View message
+                        </button>
+                    </td>
+                </tr>
+                <!-- The Modal -->
+                <div class="modal fade" id="modal-{{message.id}}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Message Info</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                {{message.message}}
+                            </div>
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--modal end-->
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page ='control panel' %}
+
+{% block pagehead %}
+<title></title>
+<link rel="stylesheet" href="/static/fontawesome/css/all.css">
+<style>
+
+</style>
+{% endblock %}
+
+{% block content %}
+  {% include 'dashboard/nav.html' %}
+
+  <br>
+
+    {% for info in all_info %}
+        {% if all_info[info]['type'] == 'show'%}
+          {%if 'dashboard' in all_info[info]%}
+            <a class="shopyo-link" href="{{all_info[info]['url_prefix'] + all_info[info]['dashboard']}}">
+          {%else%}
+            <a class="shopyo-link" href="{{all_info[info]['url_prefix']}}">
+          {%endif%}
+          <div class="shopyo-dashboard-card card card-menu">
+            <div class="shopyo-dashboard-card-body card-body text-center">
+              <i class="shopyo-dashboard-card-menu card-menu-icon {{all_info[info]['fa-icon']}}"></i>
+            </div>
+            <div class="shopyo-dashboard-card-footer card-footer">
+              {{all_info[info]['display_string']}}
+            </div>
+          </div>
+        </a>
+        {% endif %}
+    {% endfor %}
+ {% endblock %}

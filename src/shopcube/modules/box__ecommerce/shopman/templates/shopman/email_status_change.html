@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Hi {{order.billing_detail.first_name}},</h3>
+    <h4>Just dropping you an email to notify you that your order with reference {{order.get_ref()}}
+        has changed status from {{previous_status}} to {{order.status}}.</br>
+        If you have any queries please do not hesistate to contact us.</br>
+        Regards,<br>
+        Your Team
+    </h4>
+    
+</body>
+</html>

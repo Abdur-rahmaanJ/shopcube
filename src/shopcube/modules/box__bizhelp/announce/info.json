@@ -1,0 +1,13 @@
+{
+        "display_string": "Announce",
+        "module_name":"announce",
+        "type": "show",
+        "fa-icon": "fa fa-bullhorn",
+        "url_prefix": "/announce",
+        "dashboard": "/dashboard",
+        "author": {
+            "name":"",
+            "website":"",
+            "mail":""
+        }
+}

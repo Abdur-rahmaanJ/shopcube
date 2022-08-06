@@ -1,0 +1,89 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title>Orders</title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<a href="{{url_for('customer.orders')}}" class="btn btn-primary">
+    <i class="fa fa-arrow-left"></i>
+</a>
+<br><br>
+<div class="card" style="padding: 10px;">
+    <div class="card-body">
+        <table class="table table-responsive table-striped">
+            <thead>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Time</td>
+                    <td>{{order.get_std_formatted_time()}}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        {{order.status}}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Items</b></td><td></td>
+                </tr>
+                <tr>
+                    <td><b> Name</b></td>
+                    <td><b> Barcode</b></td>
+                    <td><b> Price</b></td>
+                    <td><b> Quantity</b></td>
+                    <td><b> Total</b></td>
+                </tr>
+                {%for order_item in order.order_items%}
+                {%set product = order_item.get_product()%}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.barcode}}</td>
+                    <td>{{product.selling_price}}</td>
+                    <td>{{order_item.quantity}}</td>
+                    <td>{{product.selling_price * order_item.quantity}}</td>
+                </tr>
+                {%endfor%}
+                <tr>
+                    <td><b>Total amount</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{order.get_total_amount()}}</td>
+                </tr>
+                <tr>
+                    <td>Customer Name</td>
+                    <td>{{order.billing_detail.first_name}} {{order.billing_detail.last_name}}</td>
+                </tr>
+                <tr>
+                    <td>Street</td>
+                    <td>{{order.billing_detail.street}}</td>
+                </tr>
+                <tr>
+                    <td>Town/City</td>
+                    <td>{{order.billing_detail.town_city}}</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>{{order.billing_detail.phone}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{order.billing_detail.email}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+
+
+{% endblock %}
+
+

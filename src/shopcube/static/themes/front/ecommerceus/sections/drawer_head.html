@@ -1,0 +1,68 @@
+<script type="text/javascript">
+/// some script
+$(function() {
+    'use strict'
+
+    $("[data-trigger]").on("click", function() {
+        var trigger_id = $(this).attr('data-trigger');
+        $(trigger_id).toggleClass("show");
+        $('body').toggleClass("offcanvas-active");
+    });
+
+    // close if press ESC button 
+    $(document).on('keydown', function(event) {
+        if (event.keyCode === 27) {
+            $(".navbar-collapse").removeClass("show");
+            $("body").removeClass("overlay-active");
+        }
+    });
+
+    // close button 
+    $(".btn-close").click(function(e) {
+        $(".navbar-collapse").removeClass("show");
+        $("body").removeClass("offcanvas-active");
+    });
+
+
+})
+</script>
+<style type="text/css">
+body.offcanvas-active {
+    overflow: hidden;
+}
+
+.offcanvas-header {
+    display: none;
+}
+
+@media (max-width: 992px) {
+    .offcanvas-header {
+        display: block;
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        width: 100%;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        overflow-y: auto;
+        visibility: hidden;
+        background-color: white;
+        transition: visibility .2s ease-in-out, transform .2s ease-in-out;
+        z-index: 1000;
+    }
+
+    .navbar-collapse.show {
+        visibility: visible;
+        transform: translateX(-100%);
+    }
+
+    .navbar-collapse.show .nav-link{
+        color: black !important;
+    }
+
+}
+</style>

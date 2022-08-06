@@ -1,0 +1,5 @@
+{% macro sidebar_item(text, icon='fa fa-table', url='') -%}
+	<a href="{{url}}" class="list-group-item list-group-item-action yo-sidebar-item">
+	<i class="{{icon}}"></i>&nbsp;&nbsp;&nbsp; {{text}}
+	</a>
+{%- endmacro %}

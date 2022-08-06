@@ -1,0 +1,244 @@
+{%set active_page = 'shop.html'%}
+{% extends "shop/base.html" %}
+{% block pagehead %}
+<style type="text/css">
+
+.quantity{
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    -moz-appearance: textfield !important;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+#cart-items{
+    min-width: 200px;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="shop-spacer-1">
+</div>
+<nav aria-label="breadcrumb ">
+  <ol class="breadcrumb bg-white">
+    <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
+    <li class="breadcrumb-item "><a href="{{ url_for('shop.index') }}">Shop</a></li>
+    <li class="breadcrumb-item active">Cart</li>
+  </ol>
+</nav>
+<div>
+    <div class="container" style="background-color: #">
+        
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7 col-xs-5">
+                            <form method="POST" action="{{ url_for('shop.cart_update') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <span style="font-size: 15px;"><- scroll -></span>
+                            <table class="table table-responsive" id="cart-items">
+                                <thead>
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </thead>
+                                <tbody >
+                                    {% set count = namespace(value=0) %}
+                                    {%for barcode in Cart.data()['items']%}
+                                        {%set product = get_product(barcode) %}
+                                        {%set items = Cart.data()['items'][barcode] %}
+
+                                        {% for item in items %}
+                                            {% set count.value = count.value + 1 %}
+                                            <tr>
+                                                <input type="hidden" name="barcode_{{ count.value }}" value="{{ product.barcode }}" class="barcode">
+                                                <td>
+                                                    <a href="{{ url_for('shop.cart_remove', product_barcode=product.barcode, size=item['size'], color=item['color']) }}">
+                                                        <i style="color: #ff6565;" class="fa fa-times-circle"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {{product.name}}
+                                                </td>
+                                                <td>
+                                                    <select name="size_{{ count.value }}" id="size">
+                                                        {% for s in product.sizes %}
+                                                            <option value="{{s.name}}" 
+                                                            {{'selected' if s.name == item['size']}}>
+                                                        {{ s.name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="color_{{ count.value }}" id="color">
+                                                        {% for c in product.colors %}
+                                                            <option value="{{c.name}}"
+                                                            {{'selected' if c.name == item['color']}}
+                                                            >
+                                                            {{ c.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                
+                                                <div class="input-group mb-3" style="width: 150px;">
+                                            <div class="input-group-prepend" >
+                                                <button type="button" class="btn btn-primary input-group-text minus-btn">-</button>
+                                            </div>
+                                            <input style="width: 20px;" class="form-control quantity" aria-label="Amount (to the nearest )" min="0" max="{{ product.in_stock }}" name="quantity_{{ count.value }}" value="{{item['quantity']}}" type="number" >
+                                            <div class="input-group-append" >
+                                                <button type="button" class="btn btn-primary input-group-text plus-btn">+</button>
+                                            </div>
+                                        </div>
+                                            <input type="hidden" name="" class="in_stock" value="{{product.in_stock}}">
+                                            </td>
+                                                <td class="price">{{product.selling_price}}</td>
+                                                <td class="total_price">{{product.selling_price * item['quantity'] }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <div>
+                                <button class="btn btn-primary" type="button"><a href="{{ url_for('shop.index') }}">
+                                    
+                                    <- Continue shopping
+                                </a></button>
+                                <button class="btn btn-primary" type="submit">Update Cart</button>
+                            </div>
+                            </form>
+                            <br><br>
+                        </div>
+                        <div class="col-md-5 col-xs-3">
+                            <h3>Cart Totals</h3><hr>
+                            <p>
+                                <span>Subtotal: {{ get_currency_symbol() }}<span id="subtotal">{{ cart_total_price }}</span></span>
+                                <span></span>
+                            </p>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <b>Shipping</b>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>option</th>
+                                            <th>price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for option in delivery_options%}
+                                        <tr>
+                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="option" value="{{option.price}}" {{'checked' if loop.index == 1}}></th>
+                                            <td style="min-width: 200px">{{option.option}}</td>
+                                            <td>{{option.price}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p>
+                                <span>Total: {{ get_currency_symbol() }}<span id="grandtotal"></span></span>
+                                <span></span>
+                            </p>
+                            <p>
+                                <a type="button" id='checkoutbut' href="{{ url_for('shop.checkout') }}" class="btn btn-primary">CHECKOUT</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+/*
+$(reciviedXml).find('p').each(function () {
+    var paragraph = $(this).text();
+
+    //do something useful with paragraph
+    console.log(paragraph);
+});
+*/
+    function subtotal() {
+    var tbl = $("#cart-items .total_price");
+
+        sumVal = 0;
+
+    for (var i = 0; i < tbl.length; i++) {
+        // console.log(tbl[i].textContent);
+      sumVal += parseFloat(tbl[i].textContent);
+    }
+    return sumVal
+  }
+
+    sum_price = subtotal();
+    var option_price = parseFloat($('input[type=radio][name=option]:checked').val());
+    $('#grandtotal').text(sum_price+option_price);
+    $('.plus-btn').click(function(){
+        var row = $(this).parent().parent().parent().parent();
+        var in_stock_val = $(row).find('.in_stock').val();
+        var quantity_input = $(row).find('.quantity');
+        
+        if (parseFloat(quantity_input.val())+1 <= parseFloat(in_stock_val)){
+            quantity_input.val(parseFloat(quantity_input.val())+1);
+
+            var total_price_td = $(row).find('.total_price');
+            var price_td = $(row).find('.price');
+
+
+            // console.log(quantity_input.val(), price_td.text());
+
+            total_price_td.text(parseFloat(quantity_input.val()) * parseFloat(price_td.text()));
+
+            sum_price = subtotal();
+            $('#subtotal').text(sum_price);
+            var option_price = parseFloat($('input[type=radio][name=option]:checked').val());
+            $('#grandtotal').text(sum_price+option_price);
+        }
+        
+
+    });
+    $('.minus-btn').click(function(){
+        var row = $(this).parent().parent().parent().parent();
+        var quantity_input = $(row).find('.quantity');
+        if(parseFloat(quantity_input.val())-1 >= 0){
+            quantity_input.val(parseFloat(quantity_input.val())-1);
+
+            var total_price_td = $(row).find('.total_price');
+            var price_td = $(row).find('.price');
+
+
+            // console.log(quantity_input.val(), price_td.text());
+
+            total_price_td.text(parseFloat(quantity_input.val()) * parseFloat(price_td.text()));
+
+            
+            var sum_price = subtotal();
+            $('#subtotal').text(sum_price);
+            var option_price = parseFloat($('input[type=radio][name=option]:checked').val());
+            $('#grandtotal').text(sum_price+option_price);
+            
+        }
+
+    });
+
+    $('input[type=radio][name=option]').change(function() {
+        var subtotal = parseFloat($('#subtotal').text());
+        var option_price = parseFloat(this.value);
+        $('#grandtotal').text(subtotal+option_price);
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+    .annnounce--listed-card{
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<script>
+$(function() {
+    $('.delete_me').click(function() {
+        var id = $(this).attr('id');
+        console.log(id);
+        var announce_id = id.split('-')[1];
+        var announce_title = id.split('-')[2];
+        console.log(announce_id);
+        var ask = confirm("Do you want to delete "+announce_title+" ?");
+        if (ask === true) {
+            window.open("{{info['url_prefix']}}/" + announce_id + "/delete/check", "_self")
+        } else if (ask === false) {
+
+        }
+    });
+});
+</script>
+<br>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            {%for announce in announcements%}
+            <div class="col-sm-3 col-xs-6 col">
+                <div class="card annnounce--listed-card">
+                    <div class="card-header">
+                        {{announce.title}} | {{announce.created_date.strftime("%m/%d/%Y, %H:%M:%S")}}
+                    </div>
+                    <div class="card-body">
+                        <div style="height: 200px; overflow-y: scroll;">
+                            {{announce.content | safe}}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                          <a href="{{url_for(info['module_name']+'.edit', announce_id=announce.id)}}"type="button" class="btn btn-warning">
+                            <i class="fa fa-pencil-alt"></i>
+                        </a>
+                          <a href="#"type="button" class="btn btn-danger delete_me" id="delete-{{announce.id}}-{{announce.title}}">
+                            <i class="fa fa-trash-alt text-white"></i>
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

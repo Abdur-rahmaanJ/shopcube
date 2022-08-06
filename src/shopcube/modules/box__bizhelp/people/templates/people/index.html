@@ -1,0 +1,107 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='people' %}
+{% block pagehead %}
+<title>People</title>
+<style>
+    .hidden {
+    display: none;
+  }
+
+  .show {
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'people/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<script type="text/javascript">
+$(function() {
+    $('.delete_me').click(function() {
+        var id = $(this).attr('id');
+        console.log(id);
+        var name = id.split('-')[1];
+        console.log(name);
+        var ask = confirm("Do you want to delete ?");
+        if (ask == true) {
+            window.location.replace("/people/delete/" + name, "_self")
+        } else {
+
+        }
+    });
+});
+</script>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Note</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for person in people%}
+                    <tr>
+                        <td>{{person.name}}</td>
+                        <td>{{person.phone}}</td>
+                        <td>{{person.email}}</td>
+                        <td>{{person.notes}}</td>
+                        <td>
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-{{person.id}}">
+                                ..more info
+                            </button>
+                            <a href="/people/edit/{{person.id}}" style="text-decoration: none;">
+                                <button data-name="{{person.id}}" class="btn btn-warning" type=""><i id='ico-{{person.id}}' class="fas fa-pencil-alt"></i></button>
+                            </a>
+                            <a href="#" style="text-decoration: none;">
+                                <button id='del-{{person.id}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- People Modal -->
+                    <div class="modal fade" id="modal-{{person.id}}" tabindex="-1" role="dialog" aria-labelledby="peopleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header ">
+                                    <h5 class="modal-title" id="peopleModalLabel">{{person.name}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Age: {{person.age}}</li>
+                                        <li class="list-group-item">Phone: {{person.phone}}</li>
+                                        <li class="list-group-item">Mobile: {{person.mobile}}</li>
+                                        <li class="list-group-item">Email: {{person.email}}</li>
+                                        <li class="list-group-item">Facebook: {{person.facebook}}</li>
+                                        <li class="list-group-item">Twitter: {{person.twitter}}</li>
+                                        <li class="list-group-item">Linkedin: {{person.linkedin}}</li>
+                                        <li class="list-group-item">Notes: {{person.notes}}</li>
+                                        <li class="list-group-item">manufacturer: {{person.is_manufacturer}}</li>
+                                        <li class="list-group-item">manufacturer Name: {{person.manufacturer_name}}</li>
+                                        <li class="list-group-item">manufacturer Phone: {{person.manufacturer_phone}}</li>
+                                        <li class="list-group-item">manufacturer Address: {{person.manufacturer_address}}</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- People Modal End -->
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

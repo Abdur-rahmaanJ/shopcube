@@ -1,0 +1,8 @@
+{
+        "display_string": "Inventory",
+        "module_name":"category",
+        "type": "show",
+        "fa-icon": "fa fa-boxes",
+        "url_prefix": "/category",
+        "dashboard": "/dashboard"
+}
