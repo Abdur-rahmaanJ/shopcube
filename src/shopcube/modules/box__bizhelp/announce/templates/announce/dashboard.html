@@ -1,0 +1,67 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+    	<h3>New Announcement</h3>
+            <form action="{{url_for('{}.add_check'.format(info['module_name']))}}" method="POST">
+                {{ form.title.label }}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                    </div>
+                    {{ form.title }}
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                <div class="field">
+                    {{ form.content.label }} <br>
+                    <div class="input-group mb-3">
+                        {{ form.content }}
+                    </div>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <button class="btn btn-primary">
+                    submit
+                </button>
+            </form>
+    </div>
+</div>
+<br>
+
+<script type="text/javascript" src="{{ url_for('static', filename='tinymce/tinymce.min.js') }}"></script>
+ <script type="text/javascript">
+tinymce.init({
+    selector: '#content',
+    plugins: [
+        'advlist autolink link image imagetools lists charmap print preview hr anchor pagebreak spellchecker',
+        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+        'save table directionality template paste codesample'
+    ],
+    imagetools_toolbar: "rotateleft rotateright | flipv fliph | editimage imageoptions",
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | codesample',
+    relative_urls: false,
+    images_upload_url: "{{url_for('resource.upload_tinymce_image')}}",
+    image_title: true,
+    automatic_uploads: true,
+    images_reuse_filename: false,
+    images_upload_base_path: '/static/uploads/images',
+    codesample_languages: [
+        { text: 'HTML/XML', value: 'markup' },
+        { text: 'JavaScript', value: 'javascript' },
+        { text: 'CSS', value: 'css' },
+        { text: 'Processing', value: 'processing' },
+        { text: 'Python', value: 'python' }
+    ],
+    width: "100%",
+});
+</script>
+{% endblock %}

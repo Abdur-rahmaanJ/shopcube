@@ -1,0 +1,52 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "appointments" %}
+{% block pagehead %}
+<title>add appointment</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'appointment/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Add Appointment</h2>
+        <form action="/appointment/add" method="post">
+            <label>Add Meeting</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+                </div>
+                <input required autocomplete="off" id="name" type="text" class="form-control" name="name" placeholder="Name">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                </div>
+                <input id="noHistoricDates" required autocomplete="off" id="date" type="date" class="form-control" name="date" min="" placeholder="">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                </div>
+                <input required autocomplete="off" id="time" type="time" class="form-control" name="time" placeholder="">
+            </div>
+            <div class="input-group mb-3">
+                <input required autocomplete="off" id="active" type="hidden" class="form-control" name="active" value="active" placeholder="Active">
+            </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="input-group mb-3">
+                <input required type="submit" class="btn btn-info" value="add">
+            </div>
+            <script>
+            // Limit appointment date selections to current date and the future.
+            // Format is yyyy-mm-dd according to section 2.4.5.2 of the W3C HTML 5.2 spec:
+            // https://www.w3.org/TR/html52/infrastructure.html#valid-date-string
+            (function() {
+                document.getElementById("noHistoricDates").setAttribute("min", new Date().toISOString().split("T")[0]);
+            })();
+            </script>
+        </form>
+    </div>
+</div>
+{% endblock %}

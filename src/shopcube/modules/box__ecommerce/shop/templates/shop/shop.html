@@ -1,0 +1,132 @@
+{%set active_page = 'shop.html'%}
+<!-- public facing landing page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'shop/blocks/common_styles.html'%}
+    <style type="text/css">
+    .navbar {
+        background-color: #5d3f3f !important;
+    }
+    </style>
+    {% include get_active_front_theme()+'/sections/resources.html'%}
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+
+        $( function() {
+        
+    $( "#slider-range" ).slider({
+      range: true,
+      min: {{min_max[0]}},
+      max: {{min_max[1]}},
+      values: [ {{filter_min_max[0]}}, {{filter_min_max[1]}} ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "{{get_currency_symbol()}}" + ui.values[ 0 ] + " - {{get_currency_symbol()}}" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "{{get_currency_symbol()}}" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - {{get_currency_symbol()}}" + $( "#slider-range" ).slider( "values", 1 ) );
+
+    $( "#filter_btn" ).click(function() {
+        //var pageURL = $(location).attr("href");
+        // window.location.replace($(location).attr("href")+'?min='+$( "#slider-range" ).slider( "values", 0 )+'&max='+$( "#slider-range" ).slider( "values", 1 ));
+        var url_part = $(location).attr("href");
+        
+        if(url_part.includes("?")){
+            url_part = url_part.split('?')[0];
+        };
+
+        var url_to_search = url_part +'?min='+$( "#slider-range" ).slider( "values", 0 )+'&max='+$( "#slider-range" ).slider( "values", 1 );
+
+        window.location.replace(url_to_search);
+        //alert(url_to_search);
+
+    });
+
+  } );
+  </script>
+
+  {% include get_active_front_theme()+'/sections/drawer_head.html'%}
+</head>
+
+<body>
+    {% include get_active_front_theme()+'/sections/nav.html'%}
+    <div class="shop-spacer-1">
+    </div>
+    <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
+        <li class="breadcrumb-item active">Shop</li>
+        
+      </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                {%include 'shop/blocks/accordion.html'%}
+                <p>
+                    <label for="amount">Price range:</label>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                </p>
+                <div id="slider-range"></div>
+                <br>
+                <button id="filter_btn" class="btn btn-primary">filter</button>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    {%for product in products%}
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
+                        <a href="{{ url_for('shop.product', product_barcode=product.barcode) }}">
+                            <div class="card prod hvr-shadow" style="margin-bottom: 10px;">
+                                {%set filename_ = ''%}
+                                {%if product.resources%}
+                                {%set filename_ = product.resources[0].filename%}
+                                {%set img_url = url_for('resource.product_image', filename=filename_) %}
+                                {%else%}
+                                {%set img_url = url_for('resource.product_image', filename='default') %}
+                                {%endif%}
+                                <!-- Card image -->
+                                <div style="background-image: url('{{img_url}}'); background-size: cover; height: 100px;">
+                                </div>
+                                <!-- Card content -->
+                                <div class="card-body text-center">
+                                    <!-- Title -->
+                                    <h6 class="card-title"><a>{{ product.name }}</a></h6>
+                                    <!-- Text -->
+                                    <p class="card-text">Rs {{product.selling_price}}</p>
+                                    <!-- Button -->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Card -->
+                    {%endfor%}
+                </div>
+                <nav>
+                    <ul class="pagination">
+                        {% if page != 1 %}
+                        <li class="page-item"><a href="{{ url_for('shop.index', page=page-1) }}" class="page-link">
+                                <<</a> </li> {% endif %} {%for x in range(1, total_pages+1)%} {%if x==page%} <li class="page-item active">
+                                    <a href="{{ url_for('shop.index', page=loop.index) }}" class="page-link"> {{page}} <span class="sr-only">(current)</span></a>
+                        </li>
+                        {%else%}
+                        <li class="page-item"><a href="{{ url_for('shop.index', page=loop.index) }}" class="page-link"> {{x}} </a></li>
+                        {%endif%}
+                        {%endfor%}
+                        {% if page != total_pages %}
+                        <li class="page-item"><a href="{{ url_for('shop.index', page=page+1) }}" class="page-link">>></a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    {% include get_active_front_theme()+'/sections/footer.html'%}
+
+
+</body>
+
+</html>

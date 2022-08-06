@@ -1,0 +1,86 @@
+{% extends "base/module_base.html" %}
+
+{% set active_page = info['display_string']+' dashboard' %}
+
+{% block pagehead %}
+<title></title>
+<style>
+
+</style>
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+  {%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+
+
+
+
+{% block content %}
+<br>
+
+<div class="card" style="padding: 10px;">
+	<div class="card-body">
+		<form class="form" method="POST" action="{{ url_for('shopman.delivery_add_option') }}">
+			<div>
+				<label>{{ form.option.label }}</label>
+				{{ form.option() }}
+				<label>{{ form.price.label }}</label>
+				{{ form.price() }}
+			</div><br>
+
+			{{ form.csrf_token }}
+			<button type="submit" class="btn btn-primary">submit</button>
+		</form>
+	</div>
+	
+</div>
+
+<br>
+
+<div class="card" style="padding: 10px;">
+	<div class="card-body">
+<table class="table table-responsive">
+	
+	<thead>
+		<th>Option</th>
+		<th>Price</th>
+		<th></th>
+	</thead>
+	<tbody>
+		{%for option in options%}
+			<tr>
+				<form method="POST" action="{{ url_for('shopman.delivery_option_update') }}">
+				<input type="hidden" name="id" value="{{ option.id }}">
+				<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+				<td>
+					<input style="min-width: 300px;" type="text" name="option" value="{{ option.option }}" class="form-control" />
+				</td>
+				<td>
+					<input style="min-width: 100px;" min="1" type="number" name="price" value="{{ option.price }}" class="form-control" />
+				</td>
+				<td>
+					<div class="btn-group" role="group" aria-label="Basic example">
+					  <button class="btn btn-primary" type="submit">
+					  	save
+					  </button>
+
+					  <button onclick="location.href='{{ url_for('shopman.delivery_option_delete', option_id=option.id) }}'" class="btn btn-danger" type="button">
+					  	delete
+					  </button>
+					</div>
+				</td>
+				</form>
+			</tr>
+		{%endfor%}
+	</tbody>
+	
+</table>
+</div>
+</div>
+
+<br>
+{% endblock %}

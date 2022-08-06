@@ -10,12 +10,12 @@ python setup.py publish to publish
 
 # Always prefer setuptools over distutils
 from setuptools import setup
+import setuptools
 
 # from setuptools import find_packages
 
 import os
 import sys
-from shopyo import __version__  # thanks gunicorn
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -28,13 +28,13 @@ if sys.argv[-1] == "publish":  # requests
 with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
-    name="shopyo",  # Required
-    version=__version__,  # Required
-    description="Flask base & POS software",  # Optional
+    name="shopcube",  # Required
+    version="3.7.1",  # Required
+    description="E-commerce solution",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
-    url="https://github.com/Abdur-RahmaanJ/shopyo",  # Optional
-    author="Abdur-Rahmaan Janhangeer",  # Optional
+    url="https://github.com/shopyo/shopcube",  # Optional
+    author="Abdur-Rahmaan Janhangeer & contributors",  # Optional
     author_email="arj.python@gmail.com",  # Optional
     # Classifiers help users find your project by categorizing it.
     #
@@ -58,6 +58,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     keywords="flask pos management shop ecommerce cms erp",  # Optional
     # You can just specify package directories manually here if your project is
@@ -70,15 +71,18 @@ setup(
     #   py_modules=["my_module"],
     #
     # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-    packages=["shopyo"],
-    include_package_data=True,
     python_requires=">=3.4",
-    install_requires=open(os.path.join(here, "shopyo", "requirements.txt"), encoding="utf-8")
+    install_requires=open(os.path.join(here, "reqs", "app.txt"), encoding="utf-8")
     .read()
     .split("\n"),  # Optional
-    project_urls={  # Optional
-        "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopyo/issues",
-        "Source": "https://github.com/Abdur-RahmaanJ/shopyo/",
+    extras_require={
+        'dev': open(os.path.join(here, "reqs", "dev.txt"), encoding="utf-8")
+            .read()
+            .split("\n"),
     },
-    entry_points={"console_scripts": ["shopyo=shopyo.__main__:main"]},
+    project_urls={  # Optional
+        "Bug Reports": "https://github.com/shopyo/shopcube/issues",
+        "Source": "https://github.com/shopyo/shopcube/",
+    },
+    entry_points={"console_scripts": ["shopcube=shopcube.__main__:main"]},
 )

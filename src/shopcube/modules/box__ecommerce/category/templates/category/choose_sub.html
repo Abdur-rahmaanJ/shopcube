@@ -1,0 +1,25 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='' %}
+{% block pagehead %}
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group">
+            {%if category.subcategories%}
+            {%for subcategory in category.subcategories%}
+            <li class="list-group-item">
+                <img style="width:50px; height: 50px;" {%set filename_='default' %} {%if subcategory.resources%} filename_=subcategory.resources[0].filename {%endif%} src="{{url_for('category.subcategory_image', filename=filename_)}}">
+                <a href="{{url_for('product.list', subcategory_id=subcategory.id)}}" class="btn btn-info"><i class="fa fa-barcode"></i></a>
+                {{subcategory.name}}
+            </li>
+            {%endfor%}
+            {%endif%}
+        </ul>
+    </div>
+</div>
+{% endblock %}

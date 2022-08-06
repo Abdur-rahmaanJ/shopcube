@@ -1,0 +1,140 @@
+{% extends "base/module_base.html" %}
+{% set active_page = "appointments" %}
+{% block pagehead %}
+<title>add appointment</title>
+<style>
+    html {
+        scroll-behavior: smooth;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .active {
+            width: 6rem;
+            color: white;
+            background-color: #34ce57;
+        }
+
+        .inactive {
+            width: 6rem;
+            color: white;
+            background-color: #ff253a;
+        }
+
+        .all_inactive {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block sidebar %}
+{%include 'appointment/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<script type="text/javascript">
+$(function() {
+    $('#searchinput').on('input', function() {
+        $("#results_table tbody").html("<tr></tr>");
+        var result;
+        var valEntered = $(searchinput).val();
+        if (valEntered == '') valEntered = 'searchValueIsEmpty';
+        $.getJSON("/appointment/search/name/" + valEntered, function(data) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                result = data[i];
+
+                $('#results_table tr:last').after("<tr>" +
+                    "<td>" + result['name'] + "</td>" +
+                    "<td>" + result['date'] + "</td>" +
+                    "<td>" + result['time'] + "</td>" +
+                    "<td>" + result['active'] + "</td>" +
+                    '<td class="delete_me" data-id="' + result['id'] + '"><a href="/appointment/delete/' + result['id'] + '" class="btn btn-danger" role="button"><i class="fas fa-trash-alt"></i></a>' +
+                    ' <a href="/appointment/edit/' + result['id'] + '" class="btn btn-warning" role="button"><i class="fas fa-pencil-alt"></i></a></td>' +
+                    "</tr>");
+                //$('#results_table tr:last').after('<tr><td></td><td></td><td></td><td></td><td></td></tr>')
+            }
+        })
+    });
+    $('.delete_me').click(function() {
+        var id = $(this).data("id");
+        var ask = confirm("Do you want to delete ?");
+        if (ask == true) {
+            window.location.replace("/appointment/delete/" + id, "_self");
+            return false;
+        } else {
+
+        }
+    });
+    $('#isActive').change(function() {
+
+        if ($('#isActive').is(':checked')) {
+            $('.all_not').addClass('all_inactive');
+        } else {
+            $('.all_not').removeClass('all_inactive');
+        }
+
+    });
+});
+</script>
+<br>
+<div class="card">
+    <div class="card-body">
+        <!--
+      <div class="input-group">
+        <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
+        <div class="input-group-btn">
+          <button id="searchbtn" class="btn btn-default" ><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+      </div>-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input autocomplete="off" type="text" id="searchinput" class=" form-control" placeholder="Search by name" name="Search">
+        </div>
+        <div id="search_results">
+        </div>
+        <br><br>
+        <table class="table" id="results_table">
+            <thead>
+                <tr>
+                    <th scope="col">Meeting Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Active</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr class="{% if appointment.active == " inactive" %}all_not{% endif %}">
+                    <td>{{ appointment.name }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time }}</td>
+                    <!--<td><a href="/settings/edit/{{appointment.name}}" class="btn btn-info" role="button"><i class="fas fa-pencil-alt"></i></a></td>-->
+                    <td>
+                        <div style='display: inline-block; '>
+                            <a style="text-decoration: none;">
+                                <button id='delete' class="delete_me btn btn-danger" type="" name="{{ appointment.id }}"><i class="fas fa-trash-alt"></i></button>
+                            </a>
+                            &nbsp;
+                            <a href="/appointment/edit/{{ appointment.id }}" style="text-decoration: none;">
+                                <button data-name="{{ appointment.name }}" class="btn btn-warning"><i id='ico' class="fas fa-pencil-alt"></i>
+                                </button>
+                            </a>
+                            <a href="/appointment/{% if appointment.active == " active" %}inactive{% else %}active{% endif %}/{{ appointment.id }}" style="text-decoration: none; padding-left: 1rem">
+                                <button id="active-btn" data-name="{{ appointment.name }}" class="btn {% if appointment.active == " active" %}active{% else %}inactive{% endif %}">{{ appointment.active }}
+                                </button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

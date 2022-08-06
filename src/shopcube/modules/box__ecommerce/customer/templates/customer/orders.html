@@ -1,0 +1,115 @@
+
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title></title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{% include info['module_name']+'/blocks/sidebar.html' %}
+{% endblock %}
+{% block content %}
+<br>
+
+<div class="card">
+    <div class="card-body">
+    	<h3>Orders (Logged In)</h3>
+    	<table class="table table-responsive">
+            <thead>
+
+                <th>time</th>
+                <th>status</th>
+                <th></th>
+                <th></th>
+
+            </thead>
+            <tbody>
+            	{%for order in logged_in_orders.items%}
+
+                    <tr>
+                        <td>{{order.get_std_formatted_time()}}</td>
+                        <td>{{order.status}}</td>
+                        <td></td>
+                        <td><a href="{{url_for('customer.order_view', order_id=order.id)}}" class="btn btn-primary">view</a></td>
+                    </tr>
+                
+                {%endfor%}
+            </tbody>
+            {% if prev_url %}
+            <a href="{{ prev_url }}">Prev</a>
+            {% endif %}
+            {% if next_url %}
+            <a href="{{ next_url }}">Next</a>
+            {% endif %}
+        </table>
+        <!-- Pagination-->
+        <div class="text-right">
+            <a href="{{ url_for('customer.orders', page=logged_in_orders.prev_num, page2=not_logged_in_orders.prev_num) }}"
+            class="btn btn-outline-dark 
+            {% if logged_in_orders.page == 1 %}disabled{% endif %}">
+                &laquo;
+            </a>
+            <!-- Loop through the number of pages-->
+            {% for page_num in logged_in_orders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}{% if page_num %}
+            <!-- Check for the active page and set the link to "Active"-->
+                    {% if logged_in_orders.page == page_num %}
+                    <a href="{{ url_for('customer.orders', page=page_num, page2=page_num) }}"
+                    class="btn btn-dark">
+                        {{ page_num }}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('customer.orders', page=page_num, page2=page_num) }}"
+                    class="btn btn-outline-dark">
+                        {{ page_num }}
+                    </a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}    
+            <a href="{{ url_for('customer.orders', page=logged_in_orders.next_num, page2=not_logged_in_orders.next_num) }}"
+            class="btn btn-outline-dark 
+            {% if logged_in_orders.page == logged_in_orders.pages %}disabled{% endif %}">
+                &raquo;
+            </a>
+        </div>
+        <p class="text-right mt-3">
+        Showing page {{ logged_in_orders.page }} of {{ logged_in_orders.pages }}
+        </p>
+    </div>
+ </div>
+
+<br>
+ <div class="card">
+    <div class="card-body">
+    	<h3>Orders (Not Logged In)</h3>
+    	<table class="table table-responsive">
+            <thead>
+            	<th>customer</th>
+                <th>time</th>
+                <th>status</th>
+                <th>product</th>
+                <th>quantity</th>
+                <th></th>
+
+            </thead>
+            <tbody>
+            	{%for order in not_logged_in_orders%}
+	                {%for order_item in order.order_items%}
+
+	                <tr>
+	                	<td>{{order_item.item_order.billing_detail.email}}</td>
+	                    <td>{{order_item.item_order.get_std_formatted_time()}}</td>
+	                    <td>{{order_item.status}}</td>
+	                    <td>{{order_item.order_item_product.name}}</td>
+	                    <td>{{order_item.quantity}}</td>
+	                    <td><a href="{{ url_for('customer.order_view', item_id=order_item.id) }}"><button class="btn btn-primary">view</button></a></td>
+	                </tr>
+	                {%endfor%}
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+ </div>
+{% endblock %}

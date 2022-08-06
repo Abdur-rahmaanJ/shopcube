@@ -1,0 +1,266 @@
+{%set active_page = 'index.html'%}
+
+<!-- public facing landing page -->
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<style type="text/css">
+.carousel-item {
+  height: 100vh;
+  min-height: 350px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+.carousel-item:after {
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,0.2);
+}
+
+
+.fixed-top.scrolled {
+  background-color: #000 !important;
+  transition: background-color 400ms linear;
+}    
+
+.fixed-top.scrolled .nav-link {
+  color:#555;
+}
+
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 2px solid #f1f1f1;
+}
+.separator::before {
+    margin-right: .25em;
+
+}
+.separator::after {
+    margin-left: .25em;
+
+}
+
+
+.navbar{
+    padding-right: 120px;
+    padding-left: 120px;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+
+}
+
+
+.carousel-inner img {
+  width: 100%;
+}
+
+.rounded-circ{
+	width: 50px; height: 50px;
+	border-radius: 50% !important;
+	font-size: 30px;
+	padding-top: 10px;
+}
+		</style>
+		{% include get_active_front_theme()+'/sections/resources.html'%}
+
+		<script type="text/javascript">
+$(function () {
+  $(document).scroll(function () {
+	  var $nav = $(".fixed-top");
+	  $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+	});
+});
+		</script>
+
+
+		{% include get_active_front_theme()+'/sections/drawer_head.html'%}
+	</head>
+<body>
+	{% include 'base/blocks/flashed_messages.html' %}
+	{% include get_active_front_theme()+'/sections/nav.html'%}
+	<header style=""> <!--https://startbootstrap.com/snippets/full-slider-->
+
+  		{% include get_active_front_theme()+'/sections/carousel.html'%}
+	</header>
+
+	{% include get_active_front_theme()+'/sections/image_row.html'%}
+
+<div class="container p-5">
+	<div class="text-center">
+		<h2 ><b>WELCOME TO FREAKS BOUTIQUE</b></h2>
+			<!-- <a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">shop</button></a> -->
+			<a href="{{url_for('shop.index')}}"><button type="button" class="btn btn-primary">About Us</button></a>
+		</p>
+	</div>
+</div>
+
+<div style="background-color: #fff; border-top: 5px solid #000000; border-bottom: 5px solid #000000;">
+	<div style="background-color: #000000; border-top: 5px solid white; border-bottom: 5px solid white; padding-top: 30px; padding-bottom: 20px;"  class="text-center">
+		<h2 class="white-text"><b>HOME DELIVERY</b></h2>
+		<p class="white-text">PLAINE WILHEMS ONLY</p>
+	</div>
+</div>
+
+<div class="container" style="padding-top: 50px;">
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>OUR CATEGORIES</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div>
+		<div class="row">
+		
+		{%for category in get_categories()%}
+			{%if category.name.upper() != 'UNCATEGORISED'%}
+
+	        <div class="col-12 col-sm-6 col-md-3">
+	        <a href="{{category.get_page_url()}}">
+	        	<!-- Card -->
+				<div class="card" style="margin-bottom: 10px;">
+
+				  <!-- Card image -->
+				  <div style="background-image: url('{{category.get_one_image_url()}}'); background-size: cover; height: 150px;">
+		        		
+		        	</div>
+
+				  <!-- Card content -->
+				  <div class="card-body text-center">
+
+				    <!-- Title -->
+				    <h4 class="card-title"><a>{{ category.name }}</a></h4>
+				    <!-- Text -->
+				    {%set sum_ = namespace(items=0) %}
+				    {%for subcategory in category.subcategories%}
+				    	{%set sum_.items =  sum_.items + len(subcategory.products) %}
+				    	
+				    {%endfor%}
+				    <p class="card-text">{{ sum_.items }} products</p>
+				    <!-- Button -->
+				    
+
+				  </div>
+
+				</div>
+				<!-- Card -->
+		        </a>
+	        
+			</div>
+	        {%endif%}
+		{%endfor%}
+
+		</div>
+	</div>
+
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>NEW PRODUCTS</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div class="row">
+		{%set target_prds = get_products()[::-1]%}
+		{%set target_num=5%}
+		{%if len(target_prds) >= 5%}
+
+		{%else%}
+			{%set target_num=len(target_prds)%}
+		{%endif%}
+		{%for i in range(target_num)%}
+
+			{%set product = target_prds[i]%}
+			<div class="col-12 col-sm-6 col-md-3">
+	        
+	        <a href="{{product.get_page_url()}}">
+	        	<!-- Card -->
+				<div class="card" style="margin-bottom: 10px;">
+
+				  <!-- Card image -->
+				  <div style="background-image: url('{{product.get_one_image_url()}}'); background-size: cover; height: 150px;">
+		        		
+		        	</div>
+
+				  <!-- Card content -->
+				  <div class="card-body text-center">
+
+				    <!-- Title -->
+				    <h4 class="card-title"><a>{{ product.name }}</a></h4>
+				    <!-- Text -->
+				    
+				    <p class="card-text">Rs {{product.selling_price}}</p>
+				    <!-- Button -->
+				    
+
+				  </div>
+
+				</div>
+				<!-- Card -->
+	        </a>
+
+			</div>
+		{%endfor%}
+		
+	</div>
+
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>FOLLOW US ON FB AND INSTAGRAM</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div class="container">
+		<div class="row">
+			<a href="#">
+				<div class="card rounded-circ text-center">
+
+						<i class="fab fa-facebook-square"></i>
+
+				</div>
+			</a>&nbsp; &nbsp;
+			<a href="#">
+				<div class="card rounded-circ text-center">
+						<i class="fab fa-instagram"></i>
+				</div>
+			</a>
+		</div>
+
+	</div>
+
+	<div class="separator">&nbsp;&nbsp;&nbsp;<b>SIGN UP & BE THE FIRST TO KNOW</b>&nbsp;&nbsp;&nbsp;</div>
+
+	<div class="container">
+		<form class="row row-cols-lg-auto g-3 align-items-center">
+  <div class="col-12">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        id="inlineFormInputGroupUsername"
+        placeholder="Email"
+      />
+    </div>
+  </div>
+
+
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+	</div>
+</div>
+
+
+
+	{% include get_active_front_theme()+'/sections/footer.html'%}
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+	"display_string": "People",
+	"type": "show",
+	"fa-icon": "fa fa-users",
+	"url_prefix": "/people",
+	"author": {
+		"name": "Abdur-Rahmaan Janhangeer",
+		"website": "https://www.pythonkitchen.com/about-me/",
+		"mail": "arj.python@gmail.com"
+	}
+}
