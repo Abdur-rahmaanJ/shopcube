@@ -1,14 +1,42 @@
+
+
+
+<div align="center">
+
+
+
+
+<img src="https://github.com/shopyo/ShopCube/blob/dev/assets/logo.png" width="250" />
+
+[![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
+
+🇲🇺 🇵🇰 🇳🇬 🇮🇳 
+
+</div>
+
+<div align="center">
+
+[![Discord](https://img.shields.io/badge/chat%20on-discord-green.svg)](https://discord.gg/k37Ef6w)
+
+</div>
+
 # ShopCube
 
-![alt text](https://github.com/shopyo/ShopCube/blob/dev/logo.png?raw=true)
+ShopCube is an e-commerce solution for shops. Complete with 
 
-ShopCube is an e-commerce solution for shops. Complete with cart, wishlist, and orders. Powered by Shopyo, a Python web framework built on top of Flask. 
+- [x] 🛒 cart
+- [x] ⭐ wishlist
+- [x] 📑 orders
+- [ ] 📤 upload by csv
+- [ ] 📊 charts
 
-If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy. Feel free to join our [discord group](https://discord.gg/Gnys4C6xZX) if you get stuck or would just like to chat and say hi.
 
-This contribution guide has been adopted from the version used by Shopyo. 
+If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy. Join [#shopcube](https://discord.gg/Gnys4C6xZX) if you get stuck or would just like to chat and say hi.
 
-## First time setup
+Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework built on top of Flask. 
+
+
+## 🍼 First time setup
 
 - Download and install the [latest version of git](https://git-scm.com/downloads).
 
@@ -88,7 +116,7 @@ This contribution guide has been adopted from the version used by Shopyo.
     }
   ```
 
-## Pull Requests
+## ↩ Pull Requests
 
 Make sure you have setup the repo as explained in [First time setup](https://shopyo.readthedocs.io/en/latest/contrib.html#setup) before making Pull Request (PR)
 
@@ -118,9 +146,9 @@ Make sure you have setup the repo as explained in [First time setup](https://sho
 
 - [Create a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request). You should see the PR link in the terminal after you successfully push your commits. Link to the issue being addressed with `fixes #123` in the pull request. See [example PR](https://github.com/shopyo/shopyo/pull/55).
 
-## Troubleshooting Guide
+## 🔨 Troubleshooting Guide
 
-If you need further assistance, feel free to contact @appinv or @shams on discord. 
+If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) on discord. 
 
 - When I initialise the app, I get an error related to MySQL (ie: a Connection Error)
 
