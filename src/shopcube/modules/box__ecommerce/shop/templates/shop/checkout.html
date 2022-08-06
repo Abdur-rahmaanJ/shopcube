@@ -1,0 +1,330 @@
+{%set active_page = 'shop.html'%}
+{% extends "shop/base.html" %}
+{% block pagehead %}
+
+{% endblock %}
+{% block content %}
+<div class="shop-spacer-1">
+</div>
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.index') }}">Shop</a></li>
+        <li class="breadcrumb-item "><a href="{{ url_for('shop.cart') }}">Cart</a></li>
+        <li class="breadcrumb-item active">Checkout</li>
+    </ol>
+</nav>
+<div>
+    <div class="container">
+        <form method="POST" action="{{ url_for('shop.checkout_process') }}">
+            {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="col-md-6 col-xs-4">
+                <div class="card">
+                    <div class="card-body">
+                        {%if not current_user.is_authenticated%}
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                <a class="shop_underline_pink" href="{{url_for('auth.shop_login')}}">log in to retain your rewards</a>
+                                </div>
+                                
+                            </div><br>
+                        {%endif%}
+                        <div class="defaultAddress">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_first_name.label }}</label><br>
+                                    {{ form.default_first_name(value=checkout_data['default_first_name']) }}
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_last_name.label }}</label><br>
+                                    {{ form.default_last_name(value=checkout_data['default_last_name']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_country.label }}</label><br>
+                                    {{ form.default_country() }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>{{ form.default_street.label }}</label><br>
+                                    {{ form.default_street(value=checkout_data['default_street']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>{{ form.default_town_city.label }}</label><br>
+                                    {{ form.default_town_city(value=checkout_data['default_town_city']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_phone.label }}</label><br>
+                                    {{ form.default_phone(value=checkout_data['default_phone']) }}
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    <label>{{ form.default_email.label }}</label><br>
+                                    {{ form.default_email(value=checkout_data['default_email']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <label>{{ form.default_order_notes.label }}</label><br>
+                                    {{ form.default_order_notes(value=checkout_data['default_order_notes']) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    {{ form.diffAddress() }}
+                                    {{ form.diffAddress.label }}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="diffAddress" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.diff_first_name.label }} <br>
+                                    {{ form.diff_first_name(value=checkout_data['diff_first_name']) }}
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.diff_last_name.label }} <br>
+                                    {{ form.diff_last_name(value=checkout_data['diff_last_name']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.diff_country.label }} <br>
+                                    {{ form.diff_country() }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    {{ form.diff_street.label }} <br>
+                                    {{ form.diff_street(value=checkout_data['diff_street']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    {{ form.diff_town_city.label }} <br>
+                                    {{ form.diff_town_city(value=checkout_data['diff_town']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.diff_phone.label }} <br>
+                                    {{ form.diff_phone(value=checkout_data['diff_phone']) }}
+                                </div>
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.diff_email.label }} <br>
+                                    {{ form.diff_email(value=checkout_data['diff_email']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    {{ form.diff_order_notes.label }} <br>
+                                    {{ form.diff_order_notes(value=checkout_data['diff_order_notes']) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    {{ form.applyCoupon() }}
+                                    <label class="form-check-label" for="applyCoupon" >
+                                        {{ form.applyCoupon.label }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="applyCoupon" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.coupon.label }}<br>
+                                    {{ form.coupon(value=checkout_data['coupon']) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-check">
+                                    {{ form.createAccount() }}
+                                    {{ form.createAccount.label }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="createAccount" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-4">
+                                    {{ form.password.label }}<br>
+                                    {{ form.password() }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-4">
+                <div class="card">
+                    <div class="card-body">
+                        
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <table class="table table-responsive" id="cart-items">
+                                <thead>
+                                    <th>Product</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </thead>
+                                <tbody>
+                                    {% set count = namespace(value=0) %}
+                                    {%for barcode in Cart.data()['items']%}
+                                        {%set product = get_product(barcode) %}
+                                        {%set items = Cart.data()['items'][barcode] %}
+
+                                        {% for item in items %}
+                                            {% set count.value = count.value + 1 %}
+                                    <tr>
+                                        <input type="hidden" name="barcode_{{ count.value }}" value="{{ product.barcode }}" class="barcode">
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ item['size'] }}</td>
+                                        <td>{{ item['color'] }}</td>
+                                        <td>{{ item['quantity'] }}</td>
+                                        <td class="price">{{product.selling_price}}</td>
+                                        <td class="total_price">{{product.selling_price * item['quantity'] }}</td>
+                                    </tr>
+                                        {% endfor %}
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <div>
+                                Grand Subtotal: {{get_currency_symbol()}} <span id="grandsubtotal"></span><br><br>
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <b>Shipping</b>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>option</th>
+                                            <th>price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for option in delivery_options%}
+                                        <tr>
+                                            <th><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="deliveryoption" data-value="{{option.price}}" value={{ option.id }} {{'checked' if loop.index == 1}}></th>
+                                            <td style="min-width: 200px">{{option.option}}</td>
+                                            <td>{{option.price}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <b>Payment</b>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for option in payment_options%}
+                                        <tr>
+                                            <td><input class="form-check-input" type="radio" id="option_{{ option.id }}" name="paymentoption" value="{{option.id}}" {{'checked' if loop.index == 1}}></td>
+                                            <td style="min-width: 200px">{{option.name}}<br>
+                                            {{option.text}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                Grand total: {{get_currency_symbol()}} <span id="grandtotal"></span><br><br>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary">Place order</button>
+                            </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+    function subtotal() {
+        var tbl = $("#cart-items .total_price");
+
+        sumVal = 0;
+
+        for (var i = 0; i < tbl.length; i++) {
+            // console.log(tbl[i].textContent);
+            sumVal += parseFloat(tbl[i].textContent);
+        }
+        return sumVal
+    }
+
+    $(document).ready(function() {
+        $('input[type="checkbox"][name="diffAddress"]').click(function() {
+            var inputValue = $(this).attr("value");
+            $("." + inputValue).toggle();
+            $('.defaultAddress').toggle();
+        });
+
+
+        var grandsubtotal = subtotal();
+        $('#grandsubtotal').text(grandsubtotal);
+        var oprice = parseFloat($('input[type=radio][name=deliveryoption]').attr('data-value'));
+        $('#grandtotal').text(grandsubtotal+oprice);
+
+        var boolMap = {
+            "False": false,
+            "True": true
+        }
+
+        $('input[type="checkbox"][name="applyCoupon"]').click(function() {
+
+            var inputValue = $(this).attr("value");
+            // console.log(inputValue)
+            $("." + inputValue).toggle();
+            //$('.applyCoupon').toggle();
+        });
+
+
+        $('input[type=radio][name=deliveryoption]').change(function() {
+            var subtotal = parseFloat($('#grandsubtotal').text());
+            var option_price = parseFloat($(this).attr('data-value'));
+            $('#grandtotal').text(subtotal+option_price);
+        });
+
+        var diffAddress = boolMap["{{checkout_data['diffAddress']}}"];
+        var applyCoupon = boolMap["{{checkout_data['applyCoupon']}}"];
+        var createAccount = boolMap["{{checkout_data['createAccount']}}"];
+
+        if (diffAddress){
+            $('input[type="checkbox"][name="diffAddress"]').click();
+        }
+
+        if(applyCoupon){
+            $('input[type="checkbox"][name="applyCoupon"]').click();
+        }
+
+        if(createAccount){
+            $('input[type="checkbox"][name="createAccount]').click();
+        }
+
+
+    });
+    </script>
+    {% endblock %}

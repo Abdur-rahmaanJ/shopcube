@@ -1,0 +1,47 @@
+Thank you for your order. Here is a summary.<br>
+<br>
+Your order ref is {{ order.get_ref() }}. <br>
+Your order will not be processed until funds get cleared.<br>
+<br>
+<br>
+{% set total_prices = [] %}
+Items <br>
+{% for item in order.order_items %}
+#{{ loop.index }}<br>
+Name: {{ item.get_product().name }}<br>
+Description: {{ item.get_product().description }}<br>
+Quantity: {{ item.quantity }}<br>
+Color: {{ item.color }}<br>
+Size: {{ item.size }}<br>
+Unit Price: Rs {{ item.get_product().price }}<br>
+{% set item_total = int(item.get_product().selling_price) * int(item.quantity) %}
+Total: Rs {{ item_total }}<br>
+<br>
+{{ total_prices.append(item_total) or ''}}
+{% endfor %}
+<br>
+{% set sum_products = sum(total_prices) %}
+<span style="padding: 5px; border-bottom: 2px solid black;">Total for products: Rs {{ sum_products }}</span><br>
+<br>
+Payment Option<br>
+Name: {{ order.payment_option.name }}<br>
+Info: {{ order.payment_option.text }}<br>
+<br>
+Shipping Option:<br>
+Option: {{ order.shipping_option.option }}<br>
+<span style="padding: 5px; border-bottom: 2px solid black;">Price: Rs {{ order.shipping_option.price }}</span><br>
+<br><br>
+<span style="padding: 5px; border-bottom: 2px solid black;">Grand Total: Rs {{ int(sum_products) + int(order.shipping_option.price) }}</span>
+<br><br>
+Billing Details<br>
+First Name: {{ order.billing_detail.first_name }}<br>
+Last Name: {{ order.billing_detail.last_name }}<br>
+Street: {{ order.billing_detail.street }}<br>
+Town/City: {{ order.billing_detail.town_city }}<br>
+Phone: {{ order.billing_detail.phone }}<br>
+Email: {{ order.billing_detail.email }}<br>
+Order Notes:<br>
+{{ order.billing_detail.order_notes }}<br>
+Thanks,<br>
+<br>
+Freaks Boutique

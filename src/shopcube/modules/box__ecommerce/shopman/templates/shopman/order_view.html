@@ -1,0 +1,109 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title>Orders</title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<a href="{{url_for('shopman.order')}}" class="btn btn-primary">
+    <i class="fa fa-arrow-left"></i>
+</a>
+<br><br>
+<div class="card" style="padding: 10px;">
+    <div class="card-body">
+        <table class="table table-responsive table-striped">
+            <thead>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ref</td>
+                    <td>{{order.get_ref()}}</td>
+                </tr>
+                <tr>
+                    <td>Time</td>
+                    <td>{{order.get_std_formatted_time()}}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        {{order.status}}<br>
+                        <form action="{{url_for('shopman.order_status_change', order_id=order.id)}}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                            <select name="order_status" id="cars">
+                              <option value="pending">Pending</option>
+                              <option value="processing">Processing</option>
+                              <option value="shipped">Shipped</option>
+                              <option value="cancelled">Cancelled</option>
+                              <option value="refunded">Refunded</option>
+                            </select>
+
+                            <input type="submit" value="change">
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Items</b></td><td></td>
+                </tr>
+                <tr>
+                    <td><b> Name</b></td>
+                    <td><b> Barcode</b></td>
+                    <td><b> Size</b> </td>
+                    <td><b> Color </b></td>
+                    <td><b> Price</b></td>
+                    <td><b> Quantity</b></td>
+                    <td><b> Total</b></td>
+                </tr>
+                {%for order_item in order.order_items%}
+                {%set product = order_item.get_product()%}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.barcode}}</td>
+                    <td>{{order_item.size}}</td>
+                    <td>{{order_item.color}}</td>
+                    <td>{{product.selling_price}}</td>
+                    <td>{{order_item.quantity}}</td>
+                    <td>{{product.selling_price * order_item.quantity}}</td>
+                </tr>
+                {%endfor%}
+                <tr>
+                    <td><b>Total amount</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{order.get_total_amount()}}</td>
+                </tr>
+                <tr>
+                    <td>Customer Name</td>
+                    <td>{{order.billing_detail.first_name}} {{order.billing_detail.last_name}}</td>
+                </tr>
+                <tr>
+                    <td>Street</td>
+                    <td>{{order.billing_detail.street}}</td>
+                </tr>
+                <tr>
+                    <td>Town/City</td>
+                    <td>{{order.billing_detail.town_city}}</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>{{order.billing_detail.phone}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{order.billing_detail.email}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+
+
+{% endblock %}
+
+

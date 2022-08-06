@@ -1,0 +1,199 @@
+{% extends "base/main_base.html" %}
+{% set active_page ='pos' %}
+{% block pagehead %}
+<link rel="stylesheet" type="text/css" href="/static/css/b4vtabs.min.css">
+<style type="text/css">
+#checkout-panel {
+    min-height: 300px;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.product-item {
+    cursor: pointer;
+    user-select: none;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Total $<span id='checkout-total'>0</span></span>
+                        <span class="badge badge-secondary badge-pill"><span id="checkout-item-count">0</span></span>
+                    </h4>
+                    <div id="checkout-panel" class="list-group">
+                    </div>
+                    <div>
+                        <label for="user-change">User Change</label>
+                        <input type="number" id="user-change" type="" class="form-control" name="">
+                        <p>Return $<span id="change-return">---</span></p>
+                        <p class="d-flex justify-content-between align-items-center mb-3">
+                            <button id="calculate-change" class="btn btn-primary">Calculate</button>
+                            <button id="confirm-transaction" class="btn btn-success">Confirm</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div>
+                        <div class="row">
+                            <ul class="nav nav-tabs left-tabs">
+                                {%for category in categories%}
+                                <li class="nav-item">
+                                    <a class="nav-link 
+              {{'active' if loop.index==1}}" href="#tab-panel-{{category.id}}" data-toggle="tab">{{category.name}}</a>
+                                </li>
+                                {%endfor%}
+                                <!-- use the title attribute to show a tooltip with the full long name
+                   in case the tab is trucated-->
+                                <!--
+            <li class="nav-item">
+              
+              <a
+                class="nav-link"
+                href="#tab-panel-3"
+                title="More Description Here"
+                data-toggle="tab"
+                >Tab 3</a
+              >
+            </li>-->
+                            </ul>
+                            <div class="tab-content">
+                                {%for category in categories%}
+                                <article class="tab-pane container 
+            {{'active' if loop.index==1}}" id="tab-panel-{{category.id}}">
+                                    {%for subcategory in category.subcategories%}
+                                    <p><b>{{subcategory.name}}</b></p>
+                                    {%for product in subcategory.products%}
+                                    {%if product.in_stock > 0%}
+                                    <p style="border: 2px solid black; padding: 5px; margin: 5px; display: inline-block">
+                                        <span class="product-item" id="product_{{product.barcode}}">{{product.name}} - {{product.selling_price}}</span>
+                                        <span class="badge badge-secondary">{{product.in_stock}}</span>
+                                    </p>
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%endfor%}
+                                </article>
+                                {%endfor%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function checkout_item(id, name, price) {
+    var prod_name = decodeURI(name);
+    var prod_price = decodeURI(price);
+
+    //truncate product name in the checkout menu and display the full name as tooltip
+    if(prod_name.length > 12){
+        prod_name = prod_name.substring(0,12);
+        prod_name = prod_name + '...';
+    }
+
+    return `<li data-prod-name="${name}" product-id="checkout_${id}" class="checkout-item close-parent list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0" class="checkout-item-name">${prod_name}</h6>
+                <small class="text-muted"></small>
+              </div>
+              <span class="text-muted ">$<span class="checkout-item-price">${prod_price}</span></span>
+              <button type="button" class="close close-but" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+    </li>`
+}
+
+function update_checkout() {
+
+    // price
+    var total = 0;
+    var item_count = 0;
+    $(".checkout-item").each(function(i, obj) {
+        var price = $(this).find('.checkout-item-price').text();
+        var price_s = String(price).trim().trim('$');
+        total += int(price_s);
+        item_count += 1;
+    });
+    $('#checkout-total').text(total);
+    $('#checkout-item-count').text(item_count);
+
+}
+$(document).ready(function() {
+
+    $('.product-item').click(function() {
+        var id = $(this).attr('id');
+        var name = encodeURI($(this).text().split('-')[0].trim());
+        var price = encodeURI($(this).text().split('-')[1].trim());
+
+        $('#checkout-panel').append(checkout_item(id, name, price));
+        update_checkout();
+    });
+
+    $('#calculate-change').click(function() {
+        var user_change = int($('#user-change').val().trim());
+        var total = int($('#checkout-total').text().trim());
+        if (user_change > total) {
+            $('#change-return').text(user_change - total);
+        }
+    });
+
+    $('#confirm-transaction').click(function() {
+        var items = {};
+        $(".checkout-item").each(function(i, obj) {
+            var id = $(this).attr('product-id').split('_')[2];
+            if (!(id in items)) {
+                items[id] = { 'count': 1 }
+            } else
+            if (id in items) {
+                items[id]['count'] += 1;
+            }
+        });
+
+        var json_submit = items;
+        $.ajax({
+            type: "POST",
+            url: "{{url_for('pos.transaction')}}",
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: JSON.stringify(json_submit),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                // alert(data);
+                window.location.reload();
+                return false;
+            },
+            failure: function(errMsg) {
+                alert(errMsg);
+            },
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{csrf_token()}}")
+                }
+            }
+        });
+    });
+
+
+
+
+
+    $(document).on("click", ".close", function() {
+        $(this).closest('.close-parent').remove();
+        update_checkout();
+    });
+
+    // display full product name as tooltip when hovering the checkout menu
+    $(document).on("mouseenter", ".checkout-item", function() {
+        full_name = $(this).data('prod-name');
+        full_name = decodeURI(full_name);
+        $(".checkout-item").attr('title', full_name);
+    });
+});
+</script>
+{% endblock %}

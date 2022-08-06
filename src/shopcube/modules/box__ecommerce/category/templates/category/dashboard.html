@@ -1,0 +1,77 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='category' %}
+{% block pagehead %}
+<title></title>
+<style>
+    .hidden{
+    display: none;
+  }
+  .show{
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<script type="text/javascript">
+$(function() {
+    $('.delete_me').click(function() {
+        var id = $(this).attr('id');
+        console.log(id);
+        var name = id.split('-').slice(1).join('-');
+        console.log(name);
+        var ask = confirm("Do you want to delete ?");
+        if (ask === true) {
+            window.open("/category/" + name + "/delete", "_self")
+        } else if (ask === false) {
+
+        }
+    });
+});
+</script>
+<div class="card">
+    <div class="card-body">
+        {%for category in categorys%}
+        <a href="">
+            <div style='display: inline-block; border:1px solid gray; width: 100%; padding: 5px;'>
+                <!--<img width="30px"  src="/static/box.svg">-->
+                <!-- url_for('product.list', category_name=category.name) -->
+                <a href="{{url_for('category.choose_sub_dashboard', category_id=category.id)}}" style="text-decoration: none;">
+                    <button style="width:75px;" class="btn btn-info" type="">
+                        <i class="fa fa-tags"></i>
+                    </button>
+                </a>
+                &nbsp;&nbsp;
+                <div style='display: inline-block;'>
+                    {%set filename_ = ''%}
+                    {%if category.resources%}
+                    {%set filename_ = category.resources[0].filename%}
+                    {%endif%}
+                    <img style="width: 50px; height: 50px;" src="{{url_for('category.category_image', filename=filename_)}}">
+                </div>
+                <div style='display: inline-block;'>
+                    <input disabled id="{{category.name}}" type="text" class="form-control" name="category_name" placeholder="Barcode" value="{{category.name}}">
+                </div>
+                {%if category.name != 'uncategorised'%}
+                <a href="#" style="text-decoration: none; float:right;">
+                    <button id='del-{{category.name}}' class="delete_me btn btn-danger" type=""><i class="fas fa-trash-alt"></i></button>
+                </a>
+                &nbsp;
+                <a href="{{url_for('category.edit_dashboard', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
+                    <button data-name="{{category.name}}" class="btn btn-warning" type=""><i id='ico-{{category.name}}' class="fas fa-pencil-alt"></i></button>
+                </a>
+                &nbsp;
+                {%endif%}
+                <a href="{{url_for('category.manage_sub', category_name=category.name)}}" style="text-decoration: none; float:right; margin-right: 10px;">
+                    <button title="add subcategory" data-name="{{category.name}}" class="btn btn-info" type="">
+                        Manage subcategory</button>
+                </a>
+            </div>
+        </a><br><br>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

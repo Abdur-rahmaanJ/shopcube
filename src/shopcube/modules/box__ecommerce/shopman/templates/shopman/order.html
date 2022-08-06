@@ -1,0 +1,46 @@
+{% extends "base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}
+<title>Orders</title>
+<style>
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include info['module_name']+'/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card" style="padding: 10px;">
+    <div class="card-body">
+        <table class="table table-responsive">
+            <thead>
+                <th>ref</th>
+                <th>time</th>
+                <th>status</th>
+                <th>customer name</th>
+                <th>customer email</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {%for order in orders%}
+
+                <tr>
+                    <td>{{order.get_ref()}}</td>
+                    <td>{{order.get_std_formatted_time()}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.billing_detail.first_name}} {{order.billing_detail.last_name}}</td>
+                    <td>{{order.billing_detail.email}}</td>
+                    <td><a href="{{url_for('shopman.order_view', order_id=order.id)}}" class="btn btn-primary">view</a></td>
+                </tr>
+                
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+
+
+{% endblock %}
+
+
