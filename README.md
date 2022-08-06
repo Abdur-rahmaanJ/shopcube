@@ -17,6 +17,8 @@
 <div align="center">
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-green.svg)](https://discord.gg/k37Ef6w)
+[![OpenCollective](https://img.shields.io/badge/open--collective-sponsor-ff69b4)](https://opencollective.com/shopyo)
+
 
 </div>
 
@@ -117,6 +119,8 @@ Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework bu
   ```
 
 ## ↩ Pull Requests
+
+--> Add flag to readme
 
 Make sure you have setup the repo as explained in [First time setup](https://shopyo.readthedocs.io/en/latest/contrib.html#setup) before making Pull Request (PR)
 
