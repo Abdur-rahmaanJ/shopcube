@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
-
+import shutil
 # from .shopyoapi.file import trycopy
 from .shopyoapi.file import trycopytree
 from .shopyoapi.file import trymkdir
@@ -41,6 +41,27 @@ def main():
     if args[1] == "new" and len(args) == 4:
         printinfo()
         new_project(args[2], args[3])
+    if args[1] == "showjson":
+        configjson = os.path.join(dirpath, 'config.json')
+        with open(configjson) as f:
+            print(f.read())
+
+    if args[1] == "copyjson":
+        config_example_json = os.path.join(dirpath, 'config.example.json')
+        config_json = os.path.join(os.getcwd(), 'config.json')
+        shutil.copyfile(config_example_json, config_json)
+        print('json config file copied to', config_json)
+    if args[1] == "applyjson":
+        config_json_original = os.path.join(dirpath, 'config.json')
+        config_json_cwd = os.path.join(os.getcwd(), 'config.json')
+        shutil.copyfile(config_json_cwd, config_json_original)
+        print('json file applied')
+
+    if args[1] == "restorejson":
+        config_json_example = os.path.join(dirpath, 'config.example.json')
+        config_json_original = os.path.join(dirpath, 'config.json')
+        shutil.copyfile(config_json_example, config_json_original)
+        print('json file restored')
     else:
         path = os.path.join(dirpath, "manage.py")
         torun = [sys.executable, path] + args[1:]

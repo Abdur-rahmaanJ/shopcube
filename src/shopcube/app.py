@@ -8,7 +8,7 @@ from flask import Flask
 # from flask import redirect
 from flask import url_for
 from flask import send_from_directory
-
+import logging
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 
@@ -31,6 +31,8 @@ from shopyoapi.file import trycopy
 
 
 from config import app_config
+
+logging.basicConfig(level=logging.DEBUG)
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -62,13 +64,20 @@ def load_config_from_instance(app, config_name):
     except OSError:
         pass
 
-def create_app(config_name):
+def create_app(config_name, configs=None):
 
     app = Flask(__name__)
 
-
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
+
+    if configs:
+        for key in configs['configs'][config_name]:
+            value = configs['configs'][config_name][key]
+        app.config[key] = value
+
+
+    # app.logger.info(app.config)
     
     migrate.init_app(app, db)
     db.init_app(app)
@@ -201,6 +210,7 @@ def create_app(config_name):
 
         return base_context
 
+
     # end of func
     return app
 
@@ -217,7 +227,8 @@ def create_app(config_name):
 with open(os.path.join(base_path, 'config.json')) as f:
     config_json = json.load(f)
 environment = config_json['environment']
-app = create_app(environment)
+
+app = create_app(environment, configs=config_json)
 
 
 if __name__ == "__main__":
