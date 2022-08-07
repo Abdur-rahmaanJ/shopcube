@@ -11,7 +11,6 @@ from shopyoapi.cmd import collectstatic
 from shopyoapi.database import autoload_models
 from shopyoapi.info import printinfo
 
-
 def runserver():
     app.run(host="0.0.0.0", debug=False)
 
