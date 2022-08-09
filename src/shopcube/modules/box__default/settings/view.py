@@ -7,7 +7,7 @@ from flask import request
 
 from flask_login import login_required
 
-from shopyoapi.init import db
+from init import db
 
 from modules.box__default.settings.models import Settings
 

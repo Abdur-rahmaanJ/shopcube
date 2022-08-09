@@ -12,8 +12,8 @@ from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
-from shopyoapi.init import db
-from shopyoapi.models import PkModel
+from init import db
+from shopyo.api.models import PkModel
 
 role_user_link = db.Table(
     "role_user_link",

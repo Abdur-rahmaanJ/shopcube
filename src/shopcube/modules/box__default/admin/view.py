@@ -18,13 +18,13 @@ from sqlalchemy import exists
 
 # from config import Config
 
-from shopyoapi.init import db
+from init import db
 
 from modules.box__default.admin.admin import admin_required
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
-from shopyoapi.html import notify_warning
-from shopyoapi.html import notify_success
+from shopyo.api.html import notify_warning
+from shopyo.api.html import notify_success
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

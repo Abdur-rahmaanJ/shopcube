@@ -5,7 +5,7 @@ from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__default.settings.helpers import get_setting
-from shopyoapi.session import Cart
+from utils.session import Cart
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 box_path = os.path.dirname(dirpath)

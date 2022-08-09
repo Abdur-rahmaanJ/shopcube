@@ -1,5 +1,5 @@
 
-from shopyoapi.module import ModuleHelp
+from shopyo.api.module import ModuleHelp
 from modules.box__default.auth.forms import RegisterCustomerForm
 from modules.box__default.admin.models import User
 from modules.box__ecommerce.shop.models import Order
@@ -12,10 +12,10 @@ from flask import url_for
 from flask import flash
 from flask import request
 
-from shopyoapi.html import notify_warning
-from shopyoapi.html import notify_success
-from shopyoapi.forms import flash_errors
-from shopyoapi.init import db
+from shopyo.api.html import notify_warning
+from shopyo.api.html import notify_success
+from shopyo.api.forms import flash_errors
+from init import db
 
 from flask_login import login_required
 from flask_login import logout_user

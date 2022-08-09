@@ -12,8 +12,8 @@ from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 
-from shopyoapi.html import notify_danger
-from shopyoapi.html import notify_success
+from shopyo.api.html import notify_danger
+from shopyo.api.html import notify_success
 
 from modules.box__default.admin.models import User
 from modules.box__default.auth.forms import LoginForm, RegistrationForm

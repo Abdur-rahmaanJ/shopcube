@@ -7,7 +7,7 @@ from flask import url_for
 
 from flask_login import login_required
 
-from shopyoapi.html import notify_success
+from shopyo.api.html import notify_success
 
 from .forms import ContactForm
 from .models import ContactMessage

@@ -5,8 +5,8 @@ remember: backrefs should be unique
 from sqlalchemy import exists
 from sqlalchemy.orm import validates
 
-from shopyoapi.init import db
-from shopyoapi.models import PkModel
+from init import db
+from shopyo.api.models import PkModel
 from flask import url_for
 
 
