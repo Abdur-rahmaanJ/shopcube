@@ -19,15 +19,15 @@ from flask_uploads import configure_uploads
 from flask_mailman import Mail
 
 from modules.box__default.settings.helpers import get_setting
-from shopyoapi.init import categoryphotos
-from shopyoapi.init import db
-from shopyoapi.init import login_manager
-from shopyoapi.init import ma
-from shopyoapi.init import migrate
-from shopyoapi.init import productphotos
-from shopyoapi.init import subcategoryphotos
-from shopyoapi.path import modules_path
-from shopyoapi.file import trycopy
+from init import categoryphotos
+from init import db
+from init import login_manager
+from init import ma
+from init import migrate
+from init import productphotos
+from init import subcategoryphotos
+from init import modules_path
+from shopyo.api.file import trycopy
 
 
 from config import app_config

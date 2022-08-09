@@ -14,7 +14,7 @@
     },
     "configs": {
       "development":{
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///shopcube2.db"
+        "SQLALCHEMY_DATABASE_URI": "sqlite:///shopcube.db"
       },
       "production":{
 

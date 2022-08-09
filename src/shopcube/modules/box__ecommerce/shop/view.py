@@ -13,12 +13,12 @@ from flask import url_for
 
 from flask_login import current_user
 
-from shopyoapi.forms import flash_errors
-from shopyoapi.html import notify_success
-from shopyoapi.html import notify_warning
-from shopyoapi.module import ModuleHelp
-from shopyoapi.session import Cart
-from shopyoapi.security import get_safe_redirect
+from shopyo.api.forms import flash_errors
+from shopyo.api.html import notify_success
+from shopyo.api.html import notify_warning
+from shopyo.api.module import ModuleHelp
+from utils.session import Cart
+from shopyo.api.security import get_safe_redirect
 
 from modules.box__default.admin.models import User
 from modules.box__default.auth.email import send_async_email

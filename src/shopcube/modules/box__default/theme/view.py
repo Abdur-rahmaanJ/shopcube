@@ -10,17 +10,17 @@ from flask import url_for
 from flask_login import login_required
 
 from modules.box__default.settings.helpers import get_setting
-from shopyoapi.enhance import set_setting
-from shopyoapi.file import get_folders
+from utils.enhance import set_setting
+from shopyo.api.file import get_folders
 
 # from flask import flash
 # from flask import request
-# from shopyoapi.html import notify_success
-# from shopyoapi.init import db
+# from shopyo.api.html import notify_success
+# from init import db
 
 # from modules.box__default.settings.models import Settings
 
-# from shopyoapi.forms import flash_errors
+# from shopyo.api.forms import flash_errors
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

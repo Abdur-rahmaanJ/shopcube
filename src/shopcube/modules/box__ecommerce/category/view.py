@@ -16,14 +16,14 @@ import flask_uploads
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
 
-from shopyoapi.file import delete_file
-from shopyoapi.file import unique_sec_filename
-from shopyoapi.html import notify_success
-from shopyoapi.html import notify_warning
-from shopyoapi.init import categoryphotos
-from shopyoapi.init import subcategoryphotos
-from shopyoapi.init import db
-from shopyoapi.validators import is_empty_str
+from shopyo.api.file import delete_file
+from utils.file import unique_sec_filename
+from shopyo.api.html import notify_success
+from shopyo.api.html import notify_warning
+from init import categoryphotos
+from init import subcategoryphotos
+from init import db
+from shopyo.api.validators import is_empty_str
 
 from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category

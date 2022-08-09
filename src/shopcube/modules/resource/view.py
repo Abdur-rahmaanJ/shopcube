@@ -13,8 +13,8 @@ from flask import send_from_directory
 from flask_login import login_required
 from PIL import Image as PILimage
 
-# from shopyoapi.enhance import get_setting
-# from shopyoapi.file import delete_file
+# from utils.enhance import get_setting
+# from shopyo.api.file import delete_file
 
 # from modules.box__ecommerce.product.models import Product
 from modules.resource.models import Image
@@ -23,8 +23,8 @@ from modules.resource.models import Image
 
 # from flask import flash
 # from flask import request#
-# from shopyoapi.html import notify_success
-# from shopyoapi.forms import flash_errors
+# from shopyo.api.html import notify_success
+# from shopyo.api.forms import flash_errors
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
