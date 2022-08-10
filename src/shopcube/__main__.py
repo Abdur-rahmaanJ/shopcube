@@ -4,9 +4,9 @@ import sys
 from pathlib import Path
 import shutil
 # from .shopyoapi.file import trycopy
-from .shopyoapi.file import trycopytree
-from .shopyoapi.file import trymkdir
-from .shopyoapi.info import printinfo
+from shopyo.api.file import trycopytree
+from shopyo.api.file import trymkdir
+from shopyo.api.info import printinfo
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()
@@ -23,26 +23,44 @@ def main():
         with open(configjson) as f:
             print(f.read())
 
-    if args[1] == "copyjson":
+    elif args[1] == "copyjson":
         config_example_json = os.path.join(dirpath, 'config.example.json')
         config_json = os.path.join(os.getcwd(), 'config.json')
         shutil.copyfile(config_example_json, config_json)
         print('json config file copied to', config_json)
-    if args[1] == "applyjson":
+    elif args[1] == "applyjson":
         config_json_original = os.path.join(dirpath, 'config.json')
         config_json_cwd = os.path.join(os.getcwd(), 'config.json')
         shutil.copyfile(config_json_cwd, config_json_original)
         print('json file applied')
 
-    if args[1] == "restorejson":
+    elif args[1] == "restorejson":
         config_json_example = os.path.join(dirpath, 'config.example.json')
         config_json_original = os.path.join(dirpath, 'config.json')
         shutil.copyfile(config_json_example, config_json_original)
         print('json file restored')
+
+
+    elif args[1] == "create":
+        source = os.path.join(dirpathparent, 'shopcube')
+        dest = os.path.join(os.getcwd(), 'shopcube')
+
+        print('creating new project!')
+        trycopytree(source, dest, verbose=False)
+        print('project created')
+
+
+    elif args[1] == "packageinfo":
+        source = os.path.join(dirpathparent, 'shopcube')
+        print('Package dir', source)
+
+
     else:
-        path = os.path.join(dirpath, "manage.py")
-        torun = [sys.executable, path] + args[1:]
-        subprocess.run(torun, stdout=subprocess.PIPE)
+        print('[NOTE] Running shopyo commands inside packages!')
+        source = os.path.join(dirpathparent, 'shopcube')
+        commands = ['shopyo', *args[1:]]
+        p = subprocess.Popen(commands, cwd=source)
+        p.wait()
 
 
 if __name__ == "__main__":
