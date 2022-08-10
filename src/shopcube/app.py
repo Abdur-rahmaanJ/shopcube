@@ -125,6 +125,7 @@ def create_app(config_name, configs=None):
                 sys_mod = importlib.import_module(
                     "modules.{}.{}.view".format(folder, sub_folder)
                 )
+                # print('module', folder, sub_folder, file=open('file.log', 'a'), flush=True)
                 try:
                     mod_global = importlib.import_module(
                         "modules.{}.{}.global".format(folder, sub_folder)
@@ -132,8 +133,10 @@ def create_app(config_name, configs=None):
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
                     )
+                    # print('module', mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
                 except ImportError as e:
                     # print(e)
+                    # print(e, file=open('file.log', 'a'), flush=True)
                     pass
                 app.register_blueprint(
                     getattr(sys_mod, "{}_blueprint".format(sub_folder))
@@ -141,6 +144,7 @@ def create_app(config_name, configs=None):
         else:
             # apps
             mod = importlib.import_module("modules.{}.view".format(folder))
+            # print('module', folder, file=open('file.log', 'a'), flush=True)
             try:
                 mod_global = importlib.import_module(
                     "modules.{}.global".format(folder)
@@ -148,8 +152,11 @@ def create_app(config_name, configs=None):
                 available_everywhere_entities.update(
                     mod_global.available_everywhere
                 )
+
+                # print(mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
             except ImportError as e:
-                # print(e)
+                # e
+                # print(e, file=open('file.log', 'a'), flush=True)
                 pass
             app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
 
@@ -206,11 +213,12 @@ def create_app(config_name, configs=None):
         }
         base_context.update(available_everywhere_entities)
 
-        # print('\nav everywhere entities\n', available_everywhere_entities)
+        app.logger.info(available_everywhere_entities)
+
 
         return base_context
 
-
+    print(available_everywhere_entities, file=open('file.log', 'a'), flush=True)
     # end of func
     return app
 
