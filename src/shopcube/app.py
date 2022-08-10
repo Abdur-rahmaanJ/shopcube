@@ -8,7 +8,7 @@ from flask import Flask
 # from flask import redirect
 from flask import url_for
 from flask import send_from_directory
-
+import logging
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 
@@ -19,18 +19,20 @@ from flask_uploads import configure_uploads
 from flask_mailman import Mail
 
 from modules.box__default.settings.helpers import get_setting
-from shopyoapi.init import categoryphotos
-from shopyoapi.init import db
-from shopyoapi.init import login_manager
-from shopyoapi.init import ma
-from shopyoapi.init import migrate
-from shopyoapi.init import productphotos
-from shopyoapi.init import subcategoryphotos
-from shopyoapi.path import modules_path
-from shopyoapi.file import trycopy
+from init import categoryphotos
+from init import db
+from init import login_manager
+from init import ma
+from init import migrate
+from init import productphotos
+from init import subcategoryphotos
+from init import modules_path
+from shopyo.api.file import trycopy
 
 
 from config import app_config
+
+logging.basicConfig(level=logging.DEBUG)
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -62,13 +64,20 @@ def load_config_from_instance(app, config_name):
     except OSError:
         pass
 
-def create_app(config_name):
+def create_app(config_name, configs=None):
 
     app = Flask(__name__)
 
-
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
+
+    if configs:
+        for key in configs['configs'][config_name]:
+            value = configs['configs'][config_name][key]
+        app.config[key] = value
+
+
+    # app.logger.info(app.config)
     
     migrate.init_app(app, db)
     db.init_app(app)
@@ -116,6 +125,7 @@ def create_app(config_name):
                 sys_mod = importlib.import_module(
                     "modules.{}.{}.view".format(folder, sub_folder)
                 )
+                # print('module', folder, sub_folder, file=open('file.log', 'a'), flush=True)
                 try:
                     mod_global = importlib.import_module(
                         "modules.{}.{}.global".format(folder, sub_folder)
@@ -123,8 +133,10 @@ def create_app(config_name):
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
                     )
+                    # print('module', mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
                 except ImportError as e:
                     # print(e)
+                    # print(e, file=open('file.log', 'a'), flush=True)
                     pass
                 app.register_blueprint(
                     getattr(sys_mod, "{}_blueprint".format(sub_folder))
@@ -132,6 +144,7 @@ def create_app(config_name):
         else:
             # apps
             mod = importlib.import_module("modules.{}.view".format(folder))
+            # print('module', folder, file=open('file.log', 'a'), flush=True)
             try:
                 mod_global = importlib.import_module(
                     "modules.{}.global".format(folder)
@@ -139,8 +152,11 @@ def create_app(config_name):
                 available_everywhere_entities.update(
                     mod_global.available_everywhere
                 )
+
+                # print(mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
             except ImportError as e:
-                # print(e)
+                # e
+                # print(e, file=open('file.log', 'a'), flush=True)
                 pass
             app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
 
@@ -197,10 +213,12 @@ def create_app(config_name):
         }
         base_context.update(available_everywhere_entities)
 
-        # print('\nav everywhere entities\n', available_everywhere_entities)
+        app.logger.info(available_everywhere_entities)
+
 
         return base_context
 
+    print(available_everywhere_entities, file=open('file.log', 'a'), flush=True)
     # end of func
     return app
 
@@ -217,7 +235,8 @@ def create_app(config_name):
 with open(os.path.join(base_path, 'config.json')) as f:
     config_json = json.load(f)
 environment = config_json['environment']
-app = create_app(environment)
+
+app = create_app(environment, configs=config_json)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ from flask import url_for
 import os
 import json
 
-from shopyoapi.path import themes_path
+from init import themes_path
 from modules.box__default.settings.helpers import get_setting
 
 
@@ -66,6 +66,7 @@ def get_active_back_theme_styles_url():
         v=get_active_back_theme_version(),
     )
 
+print('theme global @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=open('file.log', 'a'), flush=True)
 
 available_everywhere = {
     "get_active_front_theme": get_active_front_theme,
@@ -73,5 +74,5 @@ available_everywhere = {
     "get_active_front_theme_styles_url": get_active_front_theme_styles_url,
     "get_active_back_theme": get_active_back_theme,
     "get_active_back_theme_version": get_active_back_theme_version,
-    "get_active_back_theme_styles_url": get_active_back_theme_styles_url,
+    "get_active_back_theme_styles_url": get_active_back_theme_styles_url
 }

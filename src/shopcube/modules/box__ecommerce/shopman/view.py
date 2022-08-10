@@ -12,12 +12,12 @@ from flask_login import login_required
 from flask_mailman import EmailMultiAlternatives
 
 from modules.box__default.settings.helpers import get_setting
-from shopyoapi.enhance import set_setting
-from shopyoapi.forms import flash_errors
+from utils.enhance import set_setting
+from shopyo.api.forms import flash_errors
 
 # #
-from shopyoapi.html import notify_success
-from shopyoapi.module import ModuleHelp
+from shopyo.api.html import notify_success
+from shopyo.api.module import ModuleHelp
 
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.shop.models import Order

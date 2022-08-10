@@ -5,7 +5,7 @@ from selenium import webdriver
 
 from app import create_app
 
-from shopyoapi.init import db
+from init import db
 
 from modules.box__default.admin.models import User
 from modules.box__default.settings.models import Settings
