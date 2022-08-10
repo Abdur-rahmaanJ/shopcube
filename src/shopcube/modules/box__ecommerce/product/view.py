@@ -17,11 +17,11 @@ from flask_login import login_required
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
-from shopyoapi.file import delete_file
-from shopyoapi.file import unique_filename
-from shopyoapi.init import db
-from shopyoapi.init import ma
-from shopyoapi.init import productphotos
+from shopyo.api.file import delete_file
+from shopyo.api.file import unique_filename
+from init import db
+from init import ma
+from init import productphotos
 
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product

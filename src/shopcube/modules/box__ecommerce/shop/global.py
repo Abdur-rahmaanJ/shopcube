@@ -3,7 +3,7 @@ from modules.box__ecommerce.shop.helpers import get_cart_data
 from modules.box__ecommerce.shop.helpers import get_min_max_subcateg
 
 from flask import session
-from shopyoapi.session import Cart
+from utils.session import Cart
 
 def get_wishlist_data():
     if 'wishlist' not in session:

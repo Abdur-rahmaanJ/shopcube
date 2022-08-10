@@ -6,7 +6,7 @@
 
 
 
-<img src="https://github.com/shopyo/ShopCube/blob/dev/assets/logo.png" width="250" />
+<img src="https://github.com/shopyo/shopcube/blob/dev/assets/logo.png" width="250" />
 
 [![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
 
@@ -22,9 +22,9 @@
 
 </div>
 
-# ShopCube
+# shopcube
 
-ShopCube is an e-commerce solution for shops. Complete with 
+shopcube is an e-commerce solution for shops. Complete with 
 
 - [x] 🛒 cart
 - [x] ⭐ wishlist
@@ -37,6 +37,63 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
 Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework built on top of Flask. 
 
+
+## ⚡ Quick try
+
+
+```
+$ python -m pip install shopcube
+$ shopcube initialise
+$ shopcube rundebug
+```
+
+Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+## 🎫 Some explanations
+
+Shopcube has two modes: 
+
+- package mode if you want to just use the app as is
+- control mode if you want to see exactly what's going on
+
+Package mode has several commands to manage the json settings file
+
+```
+$ shopcube showjson # show settings
+$ shopcube copyjson # copy json file from site-packages in current directory
+$ shopcube applyjson # apply json file in current directory
+$ shopcube restorejson # restore original json file in site-packages
+$ shopcube create # create new project named shopcube in current directory
+$ shopcube packageinfo # path of project
+```
+
+Control mode allows you to use Shopyo commands as you would in any project
+
+```
+$ shopcube create 
+$ ls shopcube/
+├── app.py
+├── config.example.json
+├── config.json
+├── config.py
+├── conftest.py
+├── file.log
+├── __init__.py
+├── init.py
+├── instance
+├── __main__.py
+├── modules
+├── __pycache__
+├── pyproject.toml
+├── requirements.txt
+├── setup.cfg
+├── static
+├── tests
+├── utils
+└── wsgi.py
+$ cd shopcube
+$ shopyo rundebug
+```
 
 ## 🍼 First time setup
 
@@ -51,13 +108,13 @@ Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework bu
 
 - Make sure you have a [GitHub account](https://github.com/join).
 
-- Fork ShopCube to your GitHub account by clicking the [Fork](https://github.com/shopyo/ShopCube/fork) button.
+- Fork shopcube to your GitHub account by clicking the [Fork](https://github.com/shopyo/shopcube/fork) button.
 
 - [Clone](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork) the main repository locally (make sure to have your [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) setup!). Replace `{username}` with your username. 
 
   ```
-  $ git clone git@github.com:{username}/ShopCube.git
-  $ cd ShopCube
+  $ git clone git@github.com:{username}/shopcube.git
+  $ cd shopcube
   ```
 
 - Create a virtualenv named env and activate the [virtual environment](https://docs.python.org/3/tutorial/venv.html):
@@ -82,27 +139,27 @@ Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework bu
   $ python -m pip install --upgrade pip setuptools
   ```
 
-- Install the development dependencies and ShopCube requirements:
+- Install the development dependencies and shopcube requirements:
 
   ```
-  $ pip install -r reqs/app.txt
-  $ pip install -r reqs/dev.txt
+  $ python -m pip install -r reqs/dev.txt
   ```
 
 - Now initialize the app by running:
 
   ```
-  $ cd shopyo
-  $ python manage.py initialise
+  $ python -m pip install -e .
+  $ cd src/shopcube
+  $ shopyo initialise
   ```
 
-- Run ShopCube:
+- Run shopcube:
 
   ```
-  $ python manage.py rundebug
+  $ shopyo rundebug
   ```
 
-- Go to the link http://127.0.0.1:5000/ and you should see the ShopCube app running. 
+- Go to the link http://127.0.0.1:5000/ and you should see the shopcube app running. 
 
 - Login as administrator by clicking on the login icon on the top right hand side of the screen. 
 

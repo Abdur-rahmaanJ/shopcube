@@ -9,7 +9,7 @@ import pytest
 from flask import url_for
 
 from app import create_app
-from shopyoapi.init import db as _db
+from init import db as _db
 from modules.box__default.admin.models import User
 from modules.box__default.settings.models import Settings
 

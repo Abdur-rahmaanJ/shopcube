@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from shopyoapi.init import db
-from shopyoapi.models import PkModel
+from init import db
+from shopyo.api.models import PkModel
 from modules.box__ecommerce.product.models import Product
 
 class Order(db.Model):

@@ -12,13 +12,13 @@ from flask_login import login_required
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
-# from shopyoapi.html import notify_success
+# from shopyo.api.html import notify_success
 
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.pos.models import Transaction
 from modules.box__ecommerce.product.models import Product
 
-# from shopyoapi.forms import flash_errors
+# from shopyo.api.forms import flash_errors
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

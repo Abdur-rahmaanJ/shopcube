@@ -1,5 +1,5 @@
-from shopyoapi.init import db
-from shopyoapi.models import PkModel
+from init import db
+from shopyo.api.models import PkModel
 from flask import url_for
 
 # from modules.box__ecommerce.pos.models import Transaction
