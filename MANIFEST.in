@@ -1,2 +1,7 @@
-include requirements.txt
-recursive-include shopyo *
+include README.md
+recursive-include reqs *
+recursive-include src/shopcube/modules *
+include src/shopcube/config.example.json
+include src/shopcube/config.json
+global-exclude *.py[cod]
+global-exclude __pycache__

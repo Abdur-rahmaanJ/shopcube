@@ -22,6 +22,7 @@ flask==2.2.0
     #   flask-mailman
     #   flask-marshmallow
     #   flask-migrate
+    #   flask-reuploaded
     #   flask-sqlalchemy
     #   flask-wtf
     #   shopyo
@@ -37,6 +38,8 @@ flask-marshmallow==0.14.0
     # via shopyo
 flask-migrate==3.1.0
     # via shopyo
+flask-reuploaded==1.2.0
+    # via -r reqs/app.in
 flask-sqlalchemy==2.5.1
     # via
     #   flask-migrate
@@ -70,6 +73,8 @@ marshmallow-sqlalchemy==0.26.1
     # via shopyo
 mkdocs-material-extensions==1.0.3
     # via flask-mailman
+pillow==9.2.0
+    # via -r reqs/app.in
 pymysql==1.0.2
     # via -r reqs/app.in
 shopyo==4.5.8

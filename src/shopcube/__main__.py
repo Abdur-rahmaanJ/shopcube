@@ -55,6 +55,11 @@ def main():
         print('Package dir', source)
 
 
+    elif args[1] == "runhere":
+        source = os.path.join(dirpathparent, 'shopcube')
+        commands = ['shopyo', *args[2:]]
+        p = subprocess.Popen(commands, cwd=os.getcwd())
+        p.wait()
     else:
         print('[NOTE] Running shopyo commands inside packages!')
         source = os.path.join(dirpathparent, 'shopcube')
