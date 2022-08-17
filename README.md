@@ -92,6 +92,7 @@ $ ls shopcube/
 ├── utils
 └── wsgi.py
 $ cd shopcube
+$ shopyo initialise
 $ shopyo rundebug
 ```
 

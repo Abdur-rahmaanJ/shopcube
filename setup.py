@@ -11,13 +11,16 @@ python setup.py publish to publish
 # Always prefer setuptools over distutils
 from setuptools import setup
 import setuptools
+from setuptools import find_packages
 
 # from setuptools import find_packages
 
 import os
 import sys
+import glob
 
 here = os.path.abspath(os.path.dirname(__file__))
+
 
 if sys.argv[-1] == "publish":  # requests
     os.system("python setup.py sdist")  # bdist_wheel
@@ -29,7 +32,7 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
     name="shopcube",  # Required
-    version="4.0.0",  # Required
+    version="4.1.0",  # Required
     description="E-commerce solution",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
@@ -72,6 +75,7 @@ setup(
     #
     # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
     python_requires=">=3.4",
+    include_package_data=True,
     install_requires=open(os.path.join(here, "reqs", "app.txt"), encoding="utf-8")
     .read()
     .split("\n"),  # Optional
@@ -84,5 +88,6 @@ setup(
         "Bug Reports": "https://github.com/shopyo/shopcube/issues",
         "Source": "https://github.com/shopyo/shopcube/",
     },
+    packages=find_packages(),
     entry_points={"console_scripts": ["shopcube=shopcube.__main__:main"]},
 )

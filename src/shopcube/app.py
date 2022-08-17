@@ -18,7 +18,7 @@ import jinja2
 from flask_uploads import configure_uploads
 from flask_mailman import Mail
 
-from modules.box__default.settings.helpers import get_setting
+
 from init import categoryphotos
 from init import db
 from init import login_manager
@@ -122,30 +122,35 @@ def create_app(config_name, configs=None):
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
+
+                sys.path.insert(0, base_path)
                 sys_mod = importlib.import_module(
                     "modules.{}.{}.view".format(folder, sub_folder)
                 )
-                # print('module', folder, sub_folder, file=open('file.log', 'a'), flush=True)
+                print('module', folder, sub_folder, file=open('file.log', 'a'), flush=True)
                 try:
+                    sys.path.insert(0, base_path)
                     mod_global = importlib.import_module(
                         "modules.{}.{}.global".format(folder, sub_folder)
                     )
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
                     )
-                    # print('module', mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
+                    print('module', mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
                 except ImportError as e:
                     # print(e)
-                    # print(e, file=open('file.log', 'a'), flush=True)
+                    print(e, file=open('file.log', 'a'), flush=True)
                     pass
                 app.register_blueprint(
                     getattr(sys_mod, "{}_blueprint".format(sub_folder))
                 )
         else:
             # apps
+            sys.path.insert(0, base_path)
             mod = importlib.import_module("modules.{}.view".format(folder))
-            # print('module', folder, file=open('file.log', 'a'), flush=True)
+            print('module', folder, file=open('file.log', 'a'), flush=True)
             try:
+                sys.path.insert(0, base_path)
                 mod_global = importlib.import_module(
                     "modules.{}.global".format(folder)
                 )
@@ -153,10 +158,10 @@ def create_app(config_name, configs=None):
                     mod_global.available_everywhere
                 )
 
-                # print(mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
+                print(mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
             except ImportError as e:
                 # e
-                # print(e, file=open('file.log', 'a'), flush=True)
+                print(e, file=open('file.log', 'a'), flush=True)
                 pass
             app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
 
@@ -189,6 +194,8 @@ def create_app(config_name, configs=None):
         # info_path = os.path.join(theme_dir, "info.json")
         # with open(info_path) as f:
         #     info_data = json.load(f)
+        sys.path.insert(0, base_path)
+        from modules.box__default.settings.helpers import get_setting
 
         APP_NAME = get_setting("APP_NAME")
         SECTION_NAME = get_setting("SECTION_NAME")
