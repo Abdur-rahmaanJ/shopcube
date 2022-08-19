@@ -10,7 +10,7 @@
 
 [![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
 
-🇲🇺 🇵🇰 🇳🇬 🇮🇳 
+🇲🇺 🇵🇰 🇳🇬 🇮🇳
 
 </div>
 
@@ -24,7 +24,7 @@
 
 # shopcube
 
-shopcube is an e-commerce solution for shops. Complete with 
+shopcube is an e-commerce solution for shops. Complete with
 
 - [x] 🛒 cart
 - [x] ⭐ wishlist
@@ -35,7 +35,7 @@ shopcube is an e-commerce solution for shops. Complete with
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy. Join [#shopcube](https://discord.gg/Gnys4C6xZX) if you get stuck or would just like to chat and say hi.
 
-Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework built on top of Flask. 
+Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework built on top of Flask.
 
 
 ## ⚡ Quick try
@@ -51,7 +51,7 @@ Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## 🎫 Some explanations
 
-Shopcube has two modes: 
+Shopcube has two modes:
 
 - package mode if you want to just use the app as is
 - control mode if you want to see exactly what's going on
@@ -70,7 +70,7 @@ $ shopcube packageinfo # path of project
 Control mode allows you to use Shopyo commands as you would in any project
 
 ```
-$ shopcube create 
+$ shopcube create
 $ ls shopcube/
 ├── app.py
 ├── config.example.json
@@ -111,7 +111,7 @@ $ shopyo rundebug
 
 - Fork shopcube to your GitHub account by clicking the [Fork](https://github.com/shopyo/shopcube/fork) button.
 
-- [Clone](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork) the main repository locally (make sure to have your [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) setup!). Replace `{username}` with your username. 
+- [Clone](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork) the main repository locally (make sure to have your [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) setup!). Replace `{username}` with your username.
 
   ```
   $ git clone git@github.com:{username}/shopcube.git
@@ -120,7 +120,7 @@ $ shopyo rundebug
 
 - Create a virtualenv named env and activate the [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 
-  Linux/macOS	
+  Linux/macOS
 
   ```
   $ python3 -m venv env
@@ -144,6 +144,7 @@ $ shopyo rundebug
 
   ```
   $ python -m pip install -r reqs/dev.txt
+  $ pre-commit install
   ```
 
 - Now initialize the app by running:
@@ -160,16 +161,16 @@ $ shopyo rundebug
   $ shopyo rundebug
   ```
 
-- Go to the link http://127.0.0.1:5000/ and you should see the shopcube app running. 
+- Go to the link http://127.0.0.1:5000/ and you should see the shopcube app running.
 
-- Login as administrator by clicking on the login icon on the top right hand side of the screen. 
+- Login as administrator by clicking on the login icon on the top right hand side of the screen.
 
-  Enter admin@domain.com as the username and 'pass' as the pasword. 
+  Enter admin@domain.com as the username and 'pass' as the pasword.
 
-  After login, you should be directed to http://0.0.0.0:5000/dashboard/. 
+  After login, you should be directed to http://0.0.0.0:5000/dashboard/.
 
   ```
-  # see config.json 
+  # see config.json
    "admin_user": {
         "email": "admin@domain.com",
         "password": "pass"
@@ -200,7 +201,7 @@ Make sure you have setup the repo as explained in [First time setup](https://sho
   $ git commit -m "<put commit message here>"
   ```
 
-- Push your commits to your fork on GitHub. The -u option allows your local branch to be pushed to your GitHub repo. 
+- Push your commits to your fork on GitHub. The -u option allows your local branch to be pushed to your GitHub repo.
 
   ```
   $ git push -u origin your-branch-name
@@ -210,7 +211,7 @@ Make sure you have setup the repo as explained in [First time setup](https://sho
 
 ## 🔨 Troubleshooting Guide
 
-If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) on discord. 
+If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) on discord.
 
 - When I initialise the app, I get an error related to MySQL (ie: a Connection Error)
 
@@ -222,16 +223,16 @@ If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) 
         password='pass1234-A',
         server_name='localhost',
         db_name='shopcube'
-    ) 
+    )
     ```
 
-  or paste the following into `config.py` inside of the `class DevelopmentConfig(Config)`: 
+  or paste the following into `config.py` inside of the `class DevelopmentConfig(Config)`:
 
   ```
   SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_path, 'app.db')
   ```
 
-- I launched the app but nothing shows up in /dashboard. 
+- I launched the app but nothing shows up in /dashboard.
 
   - Log in as admin@domain.com with the password 'pass'
 
