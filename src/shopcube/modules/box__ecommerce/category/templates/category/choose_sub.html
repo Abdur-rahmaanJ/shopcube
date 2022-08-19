@@ -14,6 +14,8 @@
 <br>
 <div class="card">
     <div class="card-body">
+        <h3>Category: {{ category.name }}</h3>
+        <br>
         <ul class="list-group">
             {%if category.subcategories%}
             {%for subcategory in category.subcategories%}
