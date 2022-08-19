@@ -2,10 +2,9 @@ import json
 import os
 import uuid
 
+# from flask import flash
 from flask import Blueprint
 from flask import current_app
-
-# from flask import flash
 from flask import jsonify
 from flask import redirect
 from flask import render_template
@@ -14,19 +13,19 @@ from flask import url_for
 
 import flask_uploads
 from flask_login import login_required
+from shopyo.api.file import delete_file
+from shopyo.api.file import unique_filename
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
-from shopyo.api.file import delete_file
-from shopyo.api.file import unique_filename
 from init import db
 from init import ma
 from init import productphotos
 
 from modules.box__ecommerce.category.models import SubCategory
+from modules.box__ecommerce.product.models import Color
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
-from modules.box__ecommerce.product.models import Color
 from modules.resource.models import Resource
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -138,13 +137,13 @@ def add(subcategory_id):
             if selling_price:
                 p.selling_price = selling_price.strip()
 
-            sizes = sizes.strip().strip('\n')
-            sizes = [s.strip('\r') for s in sizes.split('\n') if s.strip()]
+            sizes = sizes.strip().strip("\n")
+            sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
             sizes = [Size(name=s) for s in sizes]
             p.sizes = sizes
 
-            colors = colors.strip().strip('\n')
-            colors = [c.strip('\r') for c in colors.split('\n') if c.strip()]
+            colors = colors.strip().strip("\n")
+            colors = [c.strip("\r") for c in colors.split("\n") if c.strip()]
             colors = [Color(name=c) for c in colors]
             p.colors = colors
 
@@ -223,7 +222,7 @@ def update(subcategory_id):
 
         date = request.form["date"]
         price = request.form["price"]
-        product_id = request.form['product_id']
+        product_id = request.form["product_id"]
         if not price.strip():
             price = 0
         selling_price = request.form["selling_price"]
@@ -248,14 +247,14 @@ def update(subcategory_id):
 
         with db.session.no_autoflush:
             p.sizes.clear()
-            sizes = sizes.strip().strip('\n')
-            sizes = [s.strip('\r') for s in sizes.split('\n') if s.strip()]
+            sizes = sizes.strip().strip("\n")
+            sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
             sizes = [Size(name=s, product_id=p.id) for s in sizes]
             p.sizes.extend(sizes)
         with db.session.no_autoflush:
             p.colors.clear()
-            colors = colors.strip().strip('\n')
-            colors = [c.strip('\r') for c in colors.split('\n') if c.strip()]
+            colors = colors.strip().strip("\n")
+            colors = [c.strip("\r") for c in colors.split("\n") if c.strip()]
             colors = [Color(name=c, product_id=p.id) for c in colors]
             p.colors.extend(colors)
         # p.category = category

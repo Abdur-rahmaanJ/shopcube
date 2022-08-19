@@ -4,8 +4,8 @@
 # may need to rename it during the import:
 #
 #
-import sys
 import os
+import sys
 
 #
 ## The "/home/appinv" below specifies your home

@@ -8,7 +8,6 @@ from flask import request
 from flask import url_for
 
 from flask_login import login_required
-
 from shopyo.api.forms import flash_errors
 
 from .forms import PageForm
@@ -73,11 +72,11 @@ def check_pagecontent():
         form = PageForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return redirect(url_for("{}.dashboard".format(module_name)))
+            return redirect(url_for(f"{module_name}.dashboard"))
         toaddpage = Page(
             slug=form.slug.data,
             content=form.content.data,
             title=form.title.data,
         )
         toaddpage.insert()
-        return redirect(url_for("{}.dashboard".format(module_name)))
+        return redirect(url_for(f"{module_name}.dashboard"))

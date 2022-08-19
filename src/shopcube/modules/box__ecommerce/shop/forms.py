@@ -3,8 +3,8 @@ from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import TextAreaField
 from wtforms.fields import BooleanField
-from wtforms.fields import SelectField
 from wtforms.fields import EmailField
+from wtforms.fields import SelectField
 
 # from wtforms.fields import IntegerField
 # from wtforms.validators import DataRequired

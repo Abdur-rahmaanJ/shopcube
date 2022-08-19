@@ -1,6 +1,8 @@
 import json
+
 from app import app
 from init import db
+
 from modules.box__default.settings.models import Settings
 
 
@@ -17,7 +19,7 @@ def add_setting(name, value):
 
 
 def upload():
-    with open("config.json", "r") as config:
+    with open("config.json") as config:
         config = json.load(config)
         print("Initialising Settings")
         print("Adding Settings ...")

@@ -5,13 +5,14 @@ from app import app
 
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
-from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Color
+from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
 
+colors = [Color(name="c1")]
+sizes = [Size(name="s1")]
 
-colors = [Color(name='c1')]
-sizes = [Size(name='s1')]
+
 def add_uncategorised_category():
     with app.app_context():
         category = Category(name="uncategorised")
@@ -52,10 +53,10 @@ def add_uncategorised_category():
         p3.colors = colors
         p3.sizes = sizes
 
-
         subcategory.products.extend([p1, p2, p3])
         category.subcategories.append(subcategory)
         category.save()
+
 
 def add_men_category():
     with app.app_context():
@@ -112,20 +113,16 @@ def add_men_category():
         p4.sizes = sizes
         p4.colors = colors
 
-
         subcategory2.save(commit=False)
         subcategory3.save(commit=False)
         subcategory4.save(commit=False)
 
-
         subcategory1.products.extend([p1, p2, p3, p4])
-        category.subcategories.extend([
-            subcategory1,
-            subcategory2,
-            subcategory3,
-            subcategory4
-            ])
+        category.subcategories.extend(
+            [subcategory1, subcategory2, subcategory3, subcategory4]
+        )
         category.save()
+
 
 def add_women_category():
     with app.app_context():
@@ -140,17 +137,15 @@ def add_women_category():
         subcategory4.save(commit=False)
         subcategory1.save(commit=False)
 
-        category.subcategories.extend([
-            subcategory1,
-            subcategory2,
-            subcategory3,
-            subcategory4
-            ])
+        category.subcategories.extend(
+            [subcategory1, subcategory2, subcategory3, subcategory4]
+        )
         category.save()
+
 
 def upload():
     # print("Adding category and subcategory uncategorised ...")
     # add_uncategorised_category()
-    print('Add category')
+    print("Add category")
     add_men_category()
     add_women_category()

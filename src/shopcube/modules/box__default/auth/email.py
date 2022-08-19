@@ -6,6 +6,7 @@ from threading import Thread
 
 from flask import current_app
 from flask import render_template
+
 from flask_mailman import EmailMultiAlternatives
 
 

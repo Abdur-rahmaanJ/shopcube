@@ -10,20 +10,20 @@ from flask import render_template
 from flask import request
 from flask import send_from_directory
 from flask import url_for
-from sqlalchemy import and_
 
 import flask_uploads
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
-
 from shopyo.api.file import delete_file
-from utils.file import unique_sec_filename
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
-from init import categoryphotos
-from init import subcategoryphotos
-from init import db
 from shopyo.api.validators import is_empty_str
+from sqlalchemy import and_
+
+from init import categoryphotos
+from init import db
+from init import subcategoryphotos
+from utils.file import unique_sec_filename
 
 from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
