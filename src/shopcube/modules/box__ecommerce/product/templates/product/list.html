@@ -7,12 +7,13 @@
 {%include 'product/blocks/sidebar.html'%}
 {%endblock%}
 {% block content %}
+
 <br>
 <div class="card">
     <div class="card-body">
-        <h2>products for
-            <span class="badge badge-primary">---</span>
-            <span class="badge badge-secondary">---</span>
+        <h2>Category
+            <span class="badge badge-primary">{{ subcategory.category.name }}</span> | Subcategory
+            <span class="badge badge-secondary">{{ subcategory.name }}</span>
         </h2>
         <br>
         <table class="table">

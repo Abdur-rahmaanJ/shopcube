@@ -237,6 +237,10 @@ def check(category_name):
 )
 @login_required
 def manage_sub(category_name):
+    """
+
+    Edit subcategory
+    """
     context = {}
     category = Category.query.filter(Category.name == category_name).first()
 
