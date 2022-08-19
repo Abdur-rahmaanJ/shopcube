@@ -8,6 +8,11 @@
 {%endblock%}
 {% block content %}
 <br>
+<a class="btn btn-primary" href="{{ url_for('category.dashboard') }}">
+    < BACK
+</a>
+<br>
+<br>
 <div class="card">
     <div class="card-body">
         {%if category.name != 'uncategorised'%}
