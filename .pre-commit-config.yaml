@@ -18,7 +18,7 @@ repos:
         name: isort (pyi)
         types: [pyi]
   - repo: https://github.com/psf/black
-    rev: 21.7b0
+    rev: 22.3.0
     hooks:
       - id: black
   - repo: https://github.com/pre-commit/pre-commit-hooks

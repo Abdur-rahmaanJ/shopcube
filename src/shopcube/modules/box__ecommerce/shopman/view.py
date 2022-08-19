@@ -10,27 +10,26 @@ from flask import request
 
 from flask_login import login_required
 from flask_mailman import EmailMultiAlternatives
-
-from modules.box__default.settings.helpers import get_setting
-from utils.enhance import set_setting
 from shopyo.api.forms import flash_errors
 
 # #
 from shopyo.api.html import notify_success
 from shopyo.api.module import ModuleHelp
 
+from utils.enhance import set_setting
+
+from modules.box__default.auth.email import send_async_email
+from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shopman.forms import CouponForm
 from modules.box__ecommerce.shopman.forms import CurrencyForm
 from modules.box__ecommerce.shopman.forms import DeliveryOptionForm
 from modules.box__ecommerce.shopman.forms import PaymentOptionForm
-from modules.box__default.auth.email import send_async_email
 
 from .models import Coupon
 from .models import DeliveryOption
 from .models import PaymentOption
-
 
 mhelp = ModuleHelp(__file__, __name__)
 
@@ -112,7 +111,7 @@ def delivery_option_update():
         option = DeliveryOption.query.get(opt_id)
         option.option = option_data
         option.price = price_data
-        option.update()        
+        option.update()
 
         flash(notify_success("Option updated!"))
         return mhelp.redirect_url("shopman.delivery")
@@ -259,46 +258,54 @@ def order_delete(order_id):
     return mhelp.redirect_url("shopman.order")
 
 
-@module_blueprint.route("/order/<order_id>/view/dashboard", methods=["GET", "POST"])
+@module_blueprint.route(
+    "/order/<order_id>/view/dashboard", methods=["GET", "POST"]
+)
 @login_required
 def order_view(order_id):
     order = Order.query.get(order_id)
     context = mhelp.context()
-    context.update({
-        "dir": dir, 
-        "order": order
-        })
+    context.update({"dir": dir, "order": order})
     return mhelp.render("order_view.html", **context)
 
 
 @module_blueprint.route("/order/<order_id>/status", methods=["POST"])
 @login_required
 def order_status_change(order_id):
-    if request.method == 'POST':
-        order_status = request.form['order_status']
+    if request.method == "POST":
+        order_status = request.form["order_status"]
         order = Order.query.get(order_id)
-        valid_status = ['pending', 'processing', 'shipped', 'cancelled', 'refunded']
+        valid_status = [
+            "pending",
+            "processing",
+            "shipped",
+            "cancelled",
+            "refunded",
+        ]
         if order_status not in valid_status:
-            return 'unknown order status'        
+            return "unknown order status"
         previous_status = order.status
 
         order.status = order_status
         order.update()
 
         context = mhelp.context()
-        context.update({
-            "previous_status": previous_status,
-            "order": order
-            })
-        new_line = '\n'
-        subject, from_email, to = 'Title', 'from@example.com', f'{order.billing_detail.email}'
-        text_content = f'Hi {order.billing_detail.first_name},{new_line}Just dropping you '\
-            f'an email to notify you that your order with reference {order.get_ref()} has changed '\
-            f'status from {previous_status} to {order.status}.{new_line}If you have any queries '\
-            f'please do not hesistate to contact us.{new_line}Regards,{new_line}Your Team'
+        context.update({"previous_status": previous_status, "order": order})
+        new_line = "\n"
+        subject, from_email, to = (
+            "Title",
+            "from@example.com",
+            f"{order.billing_detail.email}",
+        )
+        text_content = (
+            f"Hi {order.billing_detail.first_name},{new_line}Just dropping you "
+            f"an email to notify you that your order with reference {order.get_ref()} has changed "
+            f"status from {previous_status} to {order.status}.{new_line}If you have any queries "
+            f"please do not hesistate to contact us.{new_line}Regards,{new_line}Your Team"
+        )
         html_content = mhelp.render("email_status_change.html", **context)
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
-        flash(notify_success('Order Updated'))
-        return mhelp.redirect_url('shopman.order_view', order_id=order_id)
+        flash(notify_success("Order Updated"))
+        return mhelp.redirect_url("shopman.order_view", order_id=order_id)

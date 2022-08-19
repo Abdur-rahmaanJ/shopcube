@@ -5,9 +5,9 @@ from flask import redirect
 from flask import url_for
 
 from flask_login import current_user
+from shopyo.api.html import notify_warning
 
 from init import login_manager
-from shopyo.api.html import notify_warning
 
 from modules.box__default.admin.models import User
 

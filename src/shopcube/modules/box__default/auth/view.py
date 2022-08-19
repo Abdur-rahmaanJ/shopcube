@@ -11,12 +11,12 @@ from flask import url_for
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
-
 from shopyo.api.html import notify_danger
 from shopyo.api.html import notify_success
 
 from modules.box__default.admin.models import User
-from modules.box__default.auth.forms import LoginForm, RegistrationForm
+from modules.box__default.auth.forms import LoginForm
+from modules.box__default.auth.forms import RegistrationForm
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -60,22 +60,22 @@ def login():
     context = {}
     login_form = LoginForm()
     context["form"] = login_form
-    if request.method == 'POST':
+    if request.method == "POST":
         if login_form.validate_on_submit():
             email = login_form.email.data
             password = login_form.password.data
-            user = User.query.filter(User.email==email).first()
+            user = User.query.filter(User.email == email).first()
             print(email, password, user)
             if user is None or not user.check_hash(password):
-                flash('')
+                flash("")
                 flash(notify_danger("please check your user id and password"))
                 return redirect(url_for("www.index"))
             login_user(user)
             if user.is_admin:
-                flash(notify_success('Successfully logged in!'))
+                flash(notify_success("Successfully logged in!"))
                 return redirect(url_for("dashboard.index"))
             elif user.is_customer:
-                flash(notify_success('Successfully logged in!'))
+                flash(notify_success("Successfully logged in!"))
                 return redirect(url_for("shop.homepage"))
 
     return render_template("auth/login.html", **context)
@@ -104,5 +104,5 @@ def shop_login():
 def logout():
     logout_user()
     flash(notify_success("Successfully logged out"))
-    return redirect(url_for('www.index'))
+    return redirect(url_for("www.index"))
     # return redirect(url_for("auth.login"))

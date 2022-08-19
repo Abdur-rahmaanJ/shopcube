@@ -1,23 +1,24 @@
 import json
 import os
 
+# from flask import redirect
 # from flask import render_template
 from flask import Blueprint
 from flask import current_app
-
-# from flask import redirect
 from flask import send_from_directory
-
-# from flask import url_for
 
 from flask_login import login_required
 from PIL import Image as PILimage
 
+# from modules.box__ecommerce.product.models import Product
+from modules.resource.models import Image
+
+# from flask import url_for
+
+
 # from utils.enhance import get_setting
 # from shopyo.api.file import delete_file
 
-# from modules.box__ecommerce.product.models import Product
-from modules.resource.models import Image
 
 # from modules.resource.models import Resource
 
@@ -141,7 +142,7 @@ def upload_tinymce_image():
                 )
                 db.session.add(img)
                 db.session.commit()
-            except IOError:
+            except OSError:
                 output = make_response(404)
                 output.headers["Error"] = (
                     "Cannot create thumbnail for " + filename

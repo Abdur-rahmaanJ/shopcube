@@ -5,11 +5,14 @@ for more details on pytest
 """
 import json
 import os
-import pytest
+
 from flask import url_for
+
+import pytest
 
 from app import create_app
 from init import db as _db
+
 from modules.box__default.admin.models import User
 from modules.box__default.settings.models import Settings
 
@@ -81,7 +84,7 @@ def db(test_client, non_admin_user, admin_user):
     _db.session.add(admin_user)
 
     # add the default settings
-    with open("config.json", "r") as config:
+    with open("config.json") as config:
         config = json.load(config)
     for name, value in config["settings"].items():
         s = Settings(setting=name, value=value)

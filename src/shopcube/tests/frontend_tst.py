@@ -4,7 +4,6 @@ from flask_testing import LiveServerTestCase
 from selenium import webdriver
 
 from app import create_app
-
 from init import db
 
 from modules.box__default.admin.models import User
@@ -58,7 +57,7 @@ class LoginTest(TestBase):
     """Test login"""
 
     def setUp(self):
-        super(LoginTest, self).setUp()
+        super().setUp()
         self.url = f"{self.get_server_url()}/login/"
 
     def test_successful_login(self):

@@ -22,7 +22,7 @@ def trycopytree(source, dest):
     """
     try:
         shutil.copytree(source, dest)
-        print("done copying {} to {}".format(source, dest))
+        print(f"done copying {source} to {dest}")
     except Exception as e:
         print(e)
 
@@ -44,7 +44,7 @@ def trycopy(source, dest):
     """
     try:
         shutil.copy(source, dest)
-        print("done copying {} to {}".format(source, dest))
+        print(f"done copying {source} to {dest}")
     except Exception as e:
         print(e)
 
@@ -87,7 +87,7 @@ def trymkfile(path, content):
     try:
         with open(path, "w+") as f:
             f.write(content)
-        print("file created at {}".format(path))
+        print(f"file created at {path}")
         print("with content:")
         print(content)
     except Exception as e:
@@ -121,7 +121,7 @@ def get_folders(path):
 
 def unique_filename(fname):
     prepended = str(uuid.uuid4()).replace("-", "_")[:10]
-    return "{}_{}".format(prepended, fname)
+    return f"{prepended}_{fname}"
 
 
 def delete_file(path):

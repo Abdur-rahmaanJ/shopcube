@@ -34,13 +34,15 @@ class DevelopmentConfig(Config):
     # control email confirmation for user registration
     EMAIL_CONFIRMATION_DISABLED = False
     # flask-mailman configs
-    MAIL_SERVER = 'localhost'
+    MAIL_SERVER = "localhost"
     MAIL_PORT = 1025
     MAIL_USE_TLS = False
     MAIL_USE_SSL = False
-    MAIL_USERNAME = '' # os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = '' # os.environ.get("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = 'ma@mail.com' # os.environ.get("MAIL_DEFAULT_SENDER")
+    MAIL_USERNAME = ""  # os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = ""  # os.environ.get("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = (
+        "ma@mail.com"  # os.environ.get("MAIL_DEFAULT_SENDER")
+    )
 
 
 class TestingConfig(Config):
