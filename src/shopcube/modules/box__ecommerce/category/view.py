@@ -511,8 +511,8 @@ def choose_sub_dashboard(category_id):
 def subcategory_image(filename):
     if filename == "default":
         return send_from_directory(
-            os.path.join(current_app.config["BASE_DIR"], "static", "default"),
-            "default_subcategory.jpg",
+            os.path.join(current_app.config["BASE_DIR"], "static"),
+            "logo.png",
         )
     return send_from_directory(
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
