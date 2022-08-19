@@ -40,8 +40,8 @@ $(function() {
                 <!--<img width="30px"  src="/static/box.svg">-->
                 <!-- url_for('product.list', category_name=category.name) -->
                 <a href="{{url_for('category.choose_sub_dashboard', category_id=category.id)}}" style="text-decoration: none;">
-                    <button style="width:75px;" class="btn btn-info" type="">
-                        <i class="fa fa-tags"></i>
+                    <button style="" class="btn btn-info" type="">
+                        products
                     </button>
                 </a>
                 &nbsp;&nbsp;
@@ -49,8 +49,12 @@ $(function() {
                     {%set filename_ = ''%}
                     {%if category.resources%}
                     {%set filename_ = category.resources[0].filename%}
-                    {%endif%}
                     <img style="width: 50px; height: 50px;" src="{{url_for('category.category_image', filename=filename_)}}">
+                    {%else%}
+                    {%set filename_ = '/static/logo.png'%}
+                    <img style="width: 50px; height: 50px;" src="{{filename_}}">
+                    {%endif%}
+
                 </div>
                 <div style='display: inline-block;'>
                     <input disabled id="{{category.name}}" type="text" class="form-control" name="category_name" placeholder="Barcode" value="{{category.name}}">
