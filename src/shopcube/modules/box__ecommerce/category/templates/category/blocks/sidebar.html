@@ -13,7 +13,9 @@ bgid='category_home'
 {{
 sidebar_item('Add Category',
 icon='fas fa-plus-circle',
-url=url_for('category.add')
+url=url_for('category.add'),
+bgtrigger=sidebar_bgtrigger,
+bgid='add_category'
 )
 }}
 {%endif%}
@@ -22,7 +24,9 @@ url=url_for('category.add')
 {{
 sidebar_item('Manage Subcategory',
 icon='fa fa-wrench',
-url=url_for('category.manage_sub', category_name=subcategory.category.name)
+url=url_for('category.manage_sub', category_name=subcategory.category.name),
+bgtrigger=sidebar_bgtrigger,
+bgid='manage_subcateg'
 )
 }}
 {%endif%}
