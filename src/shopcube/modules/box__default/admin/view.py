@@ -7,24 +7,25 @@ import json
 import os
 
 from flask import Blueprint
+from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
-from flask import flash
 
 from flask_login import login_required
+from shopyo.api.html import notify_success
+from shopyo.api.html import notify_warning
 from sqlalchemy import exists
-
-# from config import Config
 
 from init import db
 
 from modules.box__default.admin.admin import admin_required
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
-from shopyo.api.html import notify_warning
-from shopyo.api.html import notify_success
+
+# from config import Config
+
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

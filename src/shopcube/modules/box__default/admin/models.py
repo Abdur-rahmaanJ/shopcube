@@ -4,16 +4,17 @@
 
 """
 import datetime
-from sqlalchemy.ext.hybrid import hybrid_property
+
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
 from flask_login import login_manager
 from itsdangerous import URLSafeTimedSerializer
+from shopyo.api.models import PkModel
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from init import db
-from shopyo.api.models import PkModel
 
 role_user_link = db.Table(
     "role_user_link",
@@ -105,7 +106,7 @@ class User(UserMixin, PkModel):
         return email
 
         def __repr__(self):
-            return "User: {}".format(self.email)
+            return f"User: {self.email}"
 
 
 class Role(PkModel):

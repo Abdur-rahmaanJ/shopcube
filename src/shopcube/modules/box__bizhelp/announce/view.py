@@ -3,7 +3,6 @@ from flask import flash
 from flask import request
 
 from flask_login import login_required
-
 from shopyo.api.forms import flash_errors
 from shopyo.api.html import notify_success
 from shopyo.api.module import ModuleHelp

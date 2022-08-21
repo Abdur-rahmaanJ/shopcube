@@ -4,8 +4,9 @@ Uses pytest with fixture built in fixtures
 (https://docs.pytest.org/en/stable/fixture.html)
 """
 import os
-from shopyo.api.cmd import clean
+
 import pytest
+from shopyo.api.cmd import clean
 
 
 @pytest.mark.order("last")

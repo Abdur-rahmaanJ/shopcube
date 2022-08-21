@@ -1,4 +1,1 @@
-
-available_everywhere = {
-
-}
+available_everywhere = {}

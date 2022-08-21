@@ -12,13 +12,13 @@ from flask import session
 from flask import url_for
 
 from flask_login import current_user
-
 from shopyo.api.forms import flash_errors
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
 from shopyo.api.module import ModuleHelp
-from utils.session import Cart
 from shopyo.api.security import get_safe_redirect
+
+from utils.session import Cart
 
 from modules.box__default.admin.models import User
 from modules.box__default.auth.email import send_async_email
@@ -28,13 +28,13 @@ from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.shop.forms import CheckoutForm
 from modules.box__ecommerce.shop.helpers import get_cart_data
+from modules.box__ecommerce.shop.helpers import get_min_max_subcateg
 from modules.box__ecommerce.shop.models import BillingDetail
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem
+from modules.box__ecommerce.shopman.models import Coupon
 from modules.box__ecommerce.shopman.models import DeliveryOption
 from modules.box__ecommerce.shopman.models import PaymentOption
-from modules.box__ecommerce.shopman.models import Coupon
-from modules.box__ecommerce.shop.helpers import get_min_max_subcateg
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -60,9 +60,7 @@ def homepage():
     context = mhelp.context()
     cart_info = get_cart_data()
     context.update(cart_info)
-    return render_template(
-        "ecommerceus/index.html", **context
-    )
+    return render_template("ecommerceus/index.html", **context)
 
 
 @module_blueprint.route("/page/<int:page>")
@@ -79,15 +77,22 @@ def index(page=1):
     min_price = None
     max_price = None
 
-    def_min_price = min((p.selling_price for p in products))
-    def_max_price = max((p.selling_price for p in products))
+    def_min_price = min(p.selling_price for p in products)
+    def_max_price = max(p.selling_price for p in products)
     filter_min_max = [def_min_price, def_max_price]
-    if request.args.get('min') and request.args.get('max'):
-        if request.args.get('min').isnumeric() and request.args.get('max').isnumeric():
-            min_price = int(request.args.get('min'))
-            max_price = int(request.args.get('max'))
+    if request.args.get("min") and request.args.get("max"):
+        if (
+            request.args.get("min").isnumeric()
+            and request.args.get("max").isnumeric()
+        ):
+            min_price = int(request.args.get("min"))
+            max_price = int(request.args.get("max"))
             print(min_price, max_price)
-            products = list((p for p in products if min_price <= p.selling_price <= max_price))
+            products = list(
+                p
+                for p in products
+                if min_price <= p.selling_price <= max_price
+            )
             products = products[start:end]
             filter_min_max = [min_price, max_price]
 
@@ -101,7 +106,7 @@ def index(page=1):
             "page": page,
             "products": products,
             "min_max": min_max,
-            "filter_min_max": filter_min_max
+            "filter_min_max": filter_min_max,
         }
     )
     context.update(cart_info)
@@ -130,7 +135,7 @@ def category(category_name):
 
 @module_blueprint.route("/sub/<sub_id>/page/<int:page>")
 @module_blueprint.route("/sub/<sub_id>")
-def subcategory(sub_id, page=1, methods=['GET']):
+def subcategory(sub_id, page=1, methods=["GET"]):
     context = mhelp.context()
     PAGINATION = 5
     end = page * PAGINATION
@@ -143,22 +148,28 @@ def subcategory(sub_id, page=1, methods=['GET']):
     max_price = None
     products = subcategory.products[start:end]
     filter_min_max = get_min_max_subcateg(subcategory_name)
-    if request.args.get('min') and request.args.get('max'):
-        if request.args.get('min').isnumeric() and request.args.get('max').isnumeric():
-            min_price = int(request.args.get('min'))
-            max_price = int(request.args.get('max'))
+    if request.args.get("min") and request.args.get("max"):
+        if (
+            request.args.get("min").isnumeric()
+            and request.args.get("max").isnumeric()
+        ):
+            min_price = int(request.args.get("min"))
+            max_price = int(request.args.get("max"))
             print(min_price, max_price)
-            products = list((p for p in subcategory.products if min_price <= p.selling_price <= max_price))
+            products = list(
+                p
+                for p in subcategory.products
+                if min_price <= p.selling_price <= max_price
+            )
             products = products[start:end]
             filter_min_max = [min_price, max_price]
-    
+
     total_pages = (len(products) // PAGINATION) + 1
     current_category_name = subcategory.category.name
     subcategory_name = subcategory.name
 
     cart_info = get_cart_data()
 
-    
     context.update(
         {
             "subcategory": subcategory,
@@ -167,7 +178,7 @@ def subcategory(sub_id, page=1, methods=['GET']):
             "page": page,
             "products": products,
             "subcategory_name": subcategory_name,
-            "filter_min_max": filter_min_max
+            "filter_min_max": filter_min_max,
         }
     )
     context.update(cart_info)
@@ -196,14 +207,10 @@ def cart_add(product_barcode):
 
         barcode = request.form["barcode"]
         quantity = int(request.form["quantity"])
-        size = request.form['size']
-        color = request.form['color']
+        size = request.form["size"]
+        color = request.form["color"]
 
-        item_info = {
-            'quantity': quantity,
-            'size': size,
-            'color': color 
-        }
+        item_info = {"quantity": quantity, "size": size, "color": color}
 
         if Cart.add(barcode, item_info):
             return mhelp.redirect_url("shop.product", product_barcode=barcode)
@@ -213,10 +220,7 @@ def cart_add(product_barcode):
                     "Products in cart cannot be greater than product in stock"
                 )
             )
-            return redirect(
-                url_for("shop.product", product_barcode=barcode)
-            )
-    
+            return redirect(url_for("shop.product", product_barcode=barcode))
 
 
 @module_blueprint.route(
@@ -259,8 +263,6 @@ def cart_update():
 #
 
 
-
-
 @module_blueprint.route("/checkout", methods=["GET", "POST"])
 def checkout():
     context = mhelp.context()
@@ -280,7 +282,7 @@ def checkout():
         countries = json.load(f)
     form = CheckoutForm()
     # country_choices = [(c["name"], c["name"]) for c in countries]
-    country_choices = [('mauritius', 'Mauritius')]
+    country_choices = [("mauritius", "Mauritius")]
     form.default_country.choices = country_choices
     form.diff_country.choices = country_choices
 
@@ -332,10 +334,10 @@ def checkout_process():
         # form.default_country.choices = country_choices
         # form.diff_country.choices = country_choices
 
-        country_choices = [('mauritius', 'Mauritius')]
+        country_choices = [("mauritius", "Mauritius")]
         form.default_country.choices = country_choices
         form.diff_country.choices = country_choices
-        
+
         # print(dir(form))
         # ordered dict print(form._fields[0][0])
 
@@ -380,7 +382,7 @@ def checkout_process():
             billing_detail.order_notes = order_notes
 
             if form.createAccount.data:
-                if not User.query.filter((User.email == email)).first():
+                if not User.query.filter(User.email == email).first():
                     user = User()
                     user.first_name = first_name
                     user.last_name = last_name
@@ -415,20 +417,20 @@ def checkout_process():
             cart_info = get_cart_data()
             cart_data = cart_info["cart_data"]
 
-            for barcode in Cart.data()['items']:
-                for item in Cart.data()['items'][barcode]:
+            for barcode in Cart.data()["items"]:
+                for item in Cart.data()["items"][barcode]:
                     order_item = OrderItem()
                     product = Product.query.filter_by(barcode=barcode).first()
                     order_item.barcode = barcode
-                    order_item.quantity = int(item['quantity'])
-                    order_item.size = item['size']
-                    order_item.color = item['color']
+                    order_item.quantity = int(item["quantity"])
+                    order_item.size = item["size"]
+                    order_item.color = item["color"]
                     order.order_items.append(order_item)
 
             template = "shop/emails/order_info"
             subject = "FreaksBoutique - Order Details"
             context = {}
-            context.update({'order': order, 'int': int, 'sum': sum})
+            context.update({"order": order, "int": int, "sum": sum})
             send_async_email(email, subject, template, **context)
 
             order.insert()
@@ -447,7 +449,7 @@ def wishlist_toggle(product_barcode):
     # next url hecks
     next_url = request.args.get("next")
     if next_url is None:
-        next_url = '/'
+        next_url = "/"
     next_url = get_safe_redirect(next_url)
 
     # product checks
@@ -455,14 +457,14 @@ def wishlist_toggle(product_barcode):
     if product is None:
         return redirect(next_url)
 
-    if 'wishlist' not in session:
-        session['wishlist'] = []
+    if "wishlist" not in session:
+        session["wishlist"] = []
 
-    if product_barcode not in session['wishlist']:
-        session['wishlist'].append(product_barcode)
+    if product_barcode not in session["wishlist"]:
+        session["wishlist"].append(product_barcode)
         session.modified = True
-    elif product_barcode in session['wishlist']:
-        session['wishlist'].remove(product_barcode)
+    elif product_barcode in session["wishlist"]:
+        session["wishlist"].remove(product_barcode)
         session.modified = True
 
     return redirect(next_url)
@@ -471,7 +473,5 @@ def wishlist_toggle(product_barcode):
 @module_blueprint.route("/wishlist", methods=["GET"])
 def wishlist():
     context = mhelp.context()
-    context.update({
-        'Product': Product
-        })
-    return mhelp.render('wishlist.html', **context)
+    context.update({"Product": Product})
+    return mhelp.render("wishlist.html", **context)

@@ -1,11 +1,17 @@
 {% extends "base/module_base.html" %}
 {% set active_page ='manage subcategory' %}
+{% set sidebar_bgtrigger = 'category_home' %}
 {% block pagehead %}
 {% endblock %}
 {% block sidebar %}
 {%include 'category/blocks/sidebar.html'%}
 {%endblock%}
 {% block content %}
+<br>
+<a class="btn btn-primary" href="{{ url_for('category.dashboard') }}">
+    < BACK
+</a>
+<br>
 <br>
 <div class="card">
     <div class="card-body">

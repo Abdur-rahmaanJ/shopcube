@@ -2,12 +2,13 @@
 remember: backrefs should be unique
 """
 
+from flask import url_for
+
+from shopyo.api.models import PkModel
 from sqlalchemy import exists
 from sqlalchemy.orm import validates
 
 from init import db
-from shopyo.api.models import PkModel
-from flask import url_for
 
 
 class Category(PkModel):
@@ -37,13 +38,17 @@ class Category(PkModel):
 
     def get_one_image_url(self):
         if len(self.resources) == 0:
-            return url_for('static', filename='default/default_subcategory.jpg')
+            return url_for(
+                "static", filename="default/default_subcategory.jpg"
+            )
         else:
             resource = self.resources[0]
-            return url_for('static', filename='uploads/products/{}'.format(resource.filename))
+            return url_for(
+                "static", filename=f"uploads/products/{resource.filename}"
+            )
 
     def get_page_url(self):
-        return url_for('shop.category', category_name=self.name)
+        return url_for("shop.category", category_name=self.name)
 
 
 class SubCategory(PkModel):
@@ -74,16 +79,28 @@ class SubCategory(PkModel):
             product = self.products[0]
             if len(product.resources) == 0:
                 if len(self.resources) == 0:
-                    return url_for('static', filename='default/default_subcategory.jpg')
+                    return url_for(
+                        "static", filename="default/default_subcategory.jpg"
+                    )
                 else:
                     resource = self.resources[0]
-                    return url_for('static', filename='uploads/subcategory/{}'.format(resource.filename))
+                    return url_for(
+                        "static",
+                        filename=f"uploads/subcategory/{resource.filename}",
+                    )
             else:
                 resource = product.resources[0]
-                return url_for('static', filename='uploads/products/{}'.format(resource.filename))
+                return url_for(
+                    "static", filename=f"uploads/products/{resource.filename}"
+                )
         else:
             if len(self.resources) == 0:
-                return url_for('static', filename='default/default_subcategory.jpg')
+                return url_for(
+                    "static", filename="default/default_subcategory.jpg"
+                )
             else:
                 resource = self.resources[0]
-                return url_for('static', filename='uploads/subcategory/{}'.format(resource.filename))
+                return url_for(
+                    "static",
+                    filename=f"uploads/subcategory/{resource.filename}",
+                )

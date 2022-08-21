@@ -1,6 +1,8 @@
-import json
 import datetime
+import json
+
 from app import app
+
 from modules.box__default.admin.models import User
 
 
@@ -16,7 +18,7 @@ def add_admin(email, password):
 
 
 def upload():
-    with open("config.json", "r") as config:
+    with open("config.json") as config:
         config = json.load(config)
         print("Initialising User")
         print("Adding Admin ...")

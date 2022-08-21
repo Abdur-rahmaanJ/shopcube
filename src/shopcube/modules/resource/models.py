@@ -41,13 +41,16 @@ class Resource(db.Model):
         db.DateTime, default=datetime.datetime.now(), nullable=False
     )
 
-    # 
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'),
-        nullable=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),
-        nullable=False)
-    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'),
-        nullable=True)
+    #
+    product_id = db.Column(
+        db.Integer, db.ForeignKey("product.id"), nullable=True
+    )
+    category_id = db.Column(
+        db.Integer, db.ForeignKey("categories.id"), nullable=False
+    )
+    subcategory_id = db.Column(
+        db.Integer, db.ForeignKey("subcategories.id"), nullable=True
+    )
 
     def insert(self):
         db.session.add(self)

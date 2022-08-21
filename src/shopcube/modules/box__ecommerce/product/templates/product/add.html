@@ -1,5 +1,6 @@
 {% extends "base/module_base.html" %}
 {% set active_page ='products' %}
+{% set sidebar_bgtrigger = 'add_product' %}
 {% block pagehead %}
 <title>add product</title>
 {% endblock %}
@@ -30,8 +31,8 @@ $(function() {
         </div>
         {% endif %}
         <h2>Add product for
-            <span class="badge badge-primary">---</span>
-            <span class="badge badge-secondary">---</span>
+            <span class="badge badge-primary">{{ subcategory.category.name }}</span>
+            <span class="badge badge-secondary">{{ subcategory.name }}</span>
         </h2>
         <br>
         <form action="{{url_for('product.add', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data">
