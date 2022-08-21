@@ -19,6 +19,8 @@ class Config:
     UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
         STATIC, "uploads", "subcategory"
     )
+    UPLOADED_PRODUCTEXCEL_DEST = os.path.join(STATIC, "uploads")
+    UPLOADED_PRODUCTEXCEL_ALLOW = ("xls", "xlsx", "xlsm", "xlsb", "odf")
     PASSWORD_SALT = "abcdefghi"
 
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopcube.db"

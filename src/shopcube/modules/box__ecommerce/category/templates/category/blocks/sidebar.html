@@ -8,6 +8,16 @@ bgid='category_home'
 )}}
 
 
+{{
+sidebar_item(
+'Upload',
+icon='fa fa-cloud-upload-alt',
+url=url_for('category.upload'),
+bgtrigger=sidebar_bgtrigger,
+bgid='upload_product'
+)
+}}
+
 
 {%if active_page not in ['manage subcategory', 'subcategory']%}
 {{

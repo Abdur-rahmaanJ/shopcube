@@ -26,6 +26,7 @@ from init import login_manager
 from init import ma
 from init import migrate
 from init import modules_path
+from init import productexcel
 from init import productphotos
 from init import subcategoryphotos
 
@@ -88,6 +89,7 @@ def create_app(config_name, configs=None):
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
+    configure_uploads(app, productexcel)
 
     #
     # dev static
