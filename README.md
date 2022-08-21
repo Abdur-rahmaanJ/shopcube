@@ -18,7 +18,7 @@
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-green.svg)](https://discord.gg/k37Ef6w)
 [![OpenCollective](https://img.shields.io/badge/open--collective-sponsor-ff69b4)](https://opencollective.com/shopyo)
-
+[![CodeQL](https://github.com/shopyo/shopcube/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/shopyo/shopcube/actions/workflows/codeql-analysis.yml)
 
 </div>
 
