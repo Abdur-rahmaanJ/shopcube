@@ -1,26 +1,42 @@
 
 {{
-sidebar_item('Category Home', 
-icon='fa fa-store', 
-url=url_for('category.dashboard')
+sidebar_item('Category Home',
+icon='fa fa-store',
+url=url_for('category.dashboard'),
+bgtrigger=sidebar_bgtrigger,
+bgid='category_home'
 )}}
 
+
+{{
+sidebar_item(
+'Upload',
+icon='fa fa-cloud-upload-alt',
+url=url_for('category.upload'),
+bgtrigger=sidebar_bgtrigger,
+bgid='upload_product'
+)
+}}
 
 
 {%if active_page not in ['manage subcategory', 'subcategory']%}
 {{
-sidebar_item('Add Category', 
-icon='fas fa-plus-circle', 
-url=url_for('category.add')
+sidebar_item('Add Category',
+icon='fas fa-plus-circle',
+url=url_for('category.add'),
+bgtrigger=sidebar_bgtrigger,
+bgid='add_category'
 )
 }}
 {%endif%}
 
 {%if active_page == 'subcategory'%}
 {{
-sidebar_item('Manage Subcategory', 
-icon='fa fa-wrench', 
-url=url_for('category.manage_sub', category_name=subcategory.category.name)
+sidebar_item('Manage Subcategory',
+icon='fa fa-wrench',
+url=url_for('category.manage_sub', category_name=subcategory.category.name),
+bgtrigger=sidebar_bgtrigger,
+bgid='manage_subcateg'
 )
 }}
 {%endif%}

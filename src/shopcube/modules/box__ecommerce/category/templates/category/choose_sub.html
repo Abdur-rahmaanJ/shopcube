@@ -1,20 +1,30 @@
 {% extends "base/module_base.html" %}
 {% set active_page ='' %}
+{% set sidebar_bgtrigger = 'category_home' %}
 {% block pagehead %}
 {% endblock %}
 {% block sidebar %}
 {%include 'category/blocks/sidebar.html'%}
 {%endblock%}
 {% block content %}
-<br><br>
+<br>
+<a class="btn btn-primary" href="{{ url_for('category.dashboard') }}">
+    < BACK
+</a>
+<br>
+<br>
 <div class="card">
     <div class="card-body">
+        <h3>Category: {{ category.name }}</h3>
+        <br>
         <ul class="list-group">
             {%if category.subcategories%}
             {%for subcategory in category.subcategories%}
             <li class="list-group-item">
                 <img style="width:50px; height: 50px;" {%set filename_='default' %} {%if subcategory.resources%} filename_=subcategory.resources[0].filename {%endif%} src="{{url_for('category.subcategory_image', filename=filename_)}}">
-                <a href="{{url_for('product.list', subcategory_id=subcategory.id)}}" class="btn btn-info"><i class="fa fa-barcode"></i></a>
+                <a href="{{url_for('product.list', subcategory_id=subcategory.id)}}" class="btn btn-info">
+                    view products
+                </a>
                 {{subcategory.name}}
             </li>
             {%endfor%}

@@ -1,5 +1,6 @@
 {% extends "base/module_base.html" %}
 {% set active_page ="products" %}
+{% set sidebar_bgtrigger = 'product_search' %}
 {% block pagehead %}
 <title>lookup</title>
 {% endblock %}
@@ -15,7 +16,7 @@ $(function() {
     var global_search = 'False';
     var field = 'barcode';
     $('#searchinput').on('input', function() {
-        //$("#results_table tr").remove(); 
+        //$("#results_table tr").remove();
         if ($("#global_search").prop("checked") == true) {
             global_search = 'True';
         }

@@ -1,8 +1,11 @@
 from datetime import datetime
 
-from init import db
 from shopyo.api.models import PkModel
+
+from init import db
+
 from modules.box__ecommerce.product.models import Product
+
 
 class Order(db.Model):
     __tablename__ = "orders"
@@ -68,7 +71,7 @@ class Order(db.Model):
         return self.time.strftime("%b %d %Y, %H:%M")
 
     def get_ref(self):
-        return '{}#{}'.format(int(self.id)*19, self.get_std_formatted_time())
+        return f"{int(self.id) * 19}#{self.get_std_formatted_time()}"
 
     def get_total_amount(self):
         prices = []
@@ -83,17 +86,15 @@ class Order(db.Model):
 class OrderItem(PkModel):
     __tablename__ = "order_items"
 
-
     time = db.Column(db.DateTime, default=datetime.now())
     quantity = db.Column(db.Integer)
     color = db.Column(db.String(100))
     size = db.Column(db.String(100))
-    status = db.Column(
-        db.String(120), default="pending"
-    )
+    status = db.Column(db.String(120), default="pending")
     barcode = db.Column(db.String(100), nullable=False)
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'),
-        nullable=False)
+    order_id = db.Column(
+        db.Integer, db.ForeignKey("orders.id"), nullable=False
+    )
 
     def add(self):
         db.session.add(self)

@@ -7,7 +7,6 @@ from flask import flash
 from flask import render_template
 
 from flask_login import login_required
-
 from shopyo.api.html import notify_success
 
 dashboard_blueprint = Blueprint(
@@ -65,5 +64,5 @@ def index():
                     all_info[folder] = module_info
 
     context["all_info"] = all_info
-    flash(notify_success("Notif test"))
+    # flash(notify_success("Notif test"))
     return render_template("dashboard/index.html", **context)

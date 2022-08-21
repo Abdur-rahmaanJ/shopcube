@@ -1,5 +1,6 @@
 {% extends "base/module_base.html" %}
 {% set active_page ='category' %}
+{% set sidebar_bgtrigger = 'add_category' %}
 {% block pagehead %}
 <title>add category</title>
 {% endblock %}
@@ -7,6 +8,7 @@
 {%include 'category/blocks/sidebar.html'%}
 {%endblock%}
 {% block content %}
+
 <br>
 <script type="text/javascript">
 $(function() {

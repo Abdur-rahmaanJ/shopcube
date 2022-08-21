@@ -9,14 +9,15 @@ from flask import request
 from flask_login import current_user
 from flask_login import login_required
 
+from modules.box__ecommerce.category.models import Category
+from modules.box__ecommerce.pos.models import Transaction
+from modules.box__ecommerce.product.models import Product
+
 # from flask import url_for
 # from flask import redirect
 # from flask import flash
 # from shopyo.api.html import notify_success
 
-from modules.box__ecommerce.category.models import Category
-from modules.box__ecommerce.pos.models import Transaction
-from modules.box__ecommerce.product.models import Product
 
 # from shopyo.api.forms import flash_errors
 

@@ -5,10 +5,14 @@ for the `category` blueprint.
 These tests use GETs and POSTs to different URLs to check
 for the proper behavior of the `category` blueprint.
 """
-import os
 import json
+import os
+
+from flask import request
+from flask import url_for
+
 import pytest
-from flask import url_for, request
+
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 

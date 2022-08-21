@@ -1,5 +1,6 @@
 {% extends "base/module_base.html" %}
 {% set active_page ='products' %}
+{% set sidebar_bgtrigger = 'product_home' %}
 {% block pagehead %}
 <title>SpareParts</title>
 {% endblock %}
@@ -8,11 +9,16 @@
 {%endblock%}
 {% block content %}
 <br>
+<a class="btn btn-primary" href="{{ url_for('category.choose_sub_dashboard', category_id=subcategory.category.id) }}">
+    < BACK
+</a>
+<br>
+<br>
 <div class="card">
     <div class="card-body">
-        <h2>products for
-            <span class="badge badge-primary">---</span>
-            <span class="badge badge-secondary">---</span>
+        <h2>Category
+            <span class="badge badge-primary">{{ subcategory.category.name }}</span> | Subcategory
+            <span class="badge badge-secondary">{{ subcategory.name }}</span>
         </h2>
         <br>
         <table class="table">
@@ -45,7 +51,11 @@
                         <a href="{{url_for('product.edit_dashboard', barcode=p.barcode)}}" class="btn btn-warning" role="button">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a href="{{url_for('product.delete', barcode=p.barcode)}}" class="btn btn-danger" role="button">
+                        <a
+                            href="{{url_for('product.delete', barcode=p.barcode)}}"
+                            class="btn btn-danger" role="button"
+                            onclick="return confirm('Sure you want to delete product {{p.name}} with barcode {{p.barcode}}?');"
+                            >
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

@@ -1,40 +1,39 @@
 import importlib
-import os
 import json
+import logging
+import os
 import sys
 
-from flask import Flask
-
 # from flask import redirect
-from flask import url_for
+from flask import Flask
 from flask import send_from_directory
-import logging
+from flask import url_for
+
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 
 sys.path.append(".")
 
 import jinja2
-from flask_uploads import configure_uploads
 from flask_mailman import Mail
+from flask_uploads import configure_uploads
+from shopyo.api.file import trycopy
 
-
+from config import app_config
 from init import categoryphotos
 from init import db
 from init import login_manager
 from init import ma
 from init import migrate
+from init import modules_path
+from init import productexcel
 from init import productphotos
 from init import subcategoryphotos
-from init import modules_path
-from shopyo.api.file import trycopy
-
-
-from config import app_config
 
 logging.basicConfig(level=logging.DEBUG)
 
 base_path = os.path.dirname(os.path.abspath(__file__))
+
 
 def load_config_from_obj(app, config_name):
 
@@ -64,6 +63,7 @@ def load_config_from_instance(app, config_name):
     except OSError:
         pass
 
+
 def create_app(config_name, configs=None):
 
     app = Flask(__name__)
@@ -72,13 +72,12 @@ def create_app(config_name, configs=None):
     load_config_from_instance(app, config_name)
 
     if configs:
-        for key in configs['configs'][config_name]:
-            value = configs['configs'][config_name][key]
+        for key in configs["configs"][config_name]:
+            value = configs["configs"][config_name][key]
         app.config[key] = value
 
-
     # app.logger.info(app.config)
-    
+
     migrate.init_app(app, db)
     db.init_app(app)
     ma.init_app(app)
@@ -87,12 +86,10 @@ def create_app(config_name, configs=None):
     mail = Mail()
     mail.init_app(app)
 
-
-
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
-
+    configure_uploads(app, productexcel)
 
     #
     # dev static
@@ -125,45 +122,60 @@ def create_app(config_name, configs=None):
 
                 sys.path.insert(0, base_path)
                 sys_mod = importlib.import_module(
-                    "modules.{}.{}.view".format(folder, sub_folder)
+                    f"modules.{folder}.{sub_folder}.view"
                 )
-                print('module', folder, sub_folder, file=open('file.log', 'a'), flush=True)
+                print(
+                    "module",
+                    folder,
+                    sub_folder,
+                    file=open("file.log", "a"),
+                    flush=True,
+                )
                 try:
                     sys.path.insert(0, base_path)
                     mod_global = importlib.import_module(
-                        "modules.{}.{}.global".format(folder, sub_folder)
+                        f"modules.{folder}.{sub_folder}.global"
                     )
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
                     )
-                    print('module', mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
+                    print(
+                        "module",
+                        mod_global.available_everywhere,
+                        file=open("file.log", "a"),
+                        flush=True,
+                    )
                 except ImportError as e:
                     # print(e)
-                    print(e, file=open('file.log', 'a'), flush=True)
+                    print(e, file=open("file.log", "a"), flush=True)
                     pass
                 app.register_blueprint(
-                    getattr(sys_mod, "{}_blueprint".format(sub_folder))
+                    getattr(sys_mod, f"{sub_folder}_blueprint")
                 )
         else:
             # apps
             sys.path.insert(0, base_path)
-            mod = importlib.import_module("modules.{}.view".format(folder))
-            print('module', folder, file=open('file.log', 'a'), flush=True)
+            mod = importlib.import_module(f"modules.{folder}.view")
+            print("module", folder, file=open("file.log", "a"), flush=True)
             try:
                 sys.path.insert(0, base_path)
                 mod_global = importlib.import_module(
-                    "modules.{}.global".format(folder)
+                    f"modules.{folder}.global"
                 )
                 available_everywhere_entities.update(
                     mod_global.available_everywhere
                 )
 
-                print(mod_global.available_everywhere, file=open('file.log', 'a'), flush=True)
+                print(
+                    mod_global.available_everywhere,
+                    file=open("file.log", "a"),
+                    flush=True,
+                )
             except ImportError as e:
                 # e
-                print(e, file=open('file.log', 'a'), flush=True)
+                print(e, file=open("file.log", "a"), flush=True)
                 pass
-            app.register_blueprint(getattr(mod, "{}_blueprint".format(folder)))
+            app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
 
     #
     # custom templates folder
@@ -222,10 +234,11 @@ def create_app(config_name, configs=None):
 
         app.logger.info(available_everywhere_entities)
 
-
         return base_context
 
-    print(available_everywhere_entities, file=open('file.log', 'a'), flush=True)
+    print(
+        available_everywhere_entities, file=open("file.log", "a"), flush=True
+    )
     # end of func
     return app
 
@@ -239,9 +252,9 @@ def create_app(config_name, configs=None):
     # return response
 
 
-with open(os.path.join(base_path, 'config.json')) as f:
+with open(os.path.join(base_path, "config.json")) as f:
     config_json = json.load(f)
-environment = config_json['environment']
+environment = config_json["environment"]
 
 app = create_app(environment, configs=config_json)
 
