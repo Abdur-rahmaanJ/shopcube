@@ -51,7 +51,11 @@
                         <a href="{{url_for('product.edit_dashboard', barcode=p.barcode)}}" class="btn btn-warning" role="button">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a href="{{url_for('product.delete', barcode=p.barcode)}}" class="btn btn-danger" role="button">
+                        <a
+                            href="{{url_for('product.delete', barcode=p.barcode)}}"
+                            class="btn btn-danger" role="button"
+                            onclick="return confirm('Sure you want to delete product {{p.name}} with barcode {{p.barcode}}?');"
+                            >
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
