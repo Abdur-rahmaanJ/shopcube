@@ -29,7 +29,7 @@ shopcube is an e-commerce solution for shops. Complete with
 - [x] 🛒 cart
 - [x] ⭐ wishlist
 - [x] 📑 orders
-- [ ] 📤 upload by csv
+- [x] 📤 upload by csv
 - [ ] 📊 charts
 
 
