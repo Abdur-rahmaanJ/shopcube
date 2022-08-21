@@ -10,7 +10,7 @@
 
 [![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
 
-🇲🇺 🇵🇰 🇳🇬 🇮🇳
+🇲🇺 🇵🇰 🇳🇬 🇮🇳 🇻🇳 🇬🇭
 
 </div>
 
@@ -37,6 +37,13 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
 Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework built on top of Flask.
 
+## Testimonials
+
+[source](https://github.com/shopyo/shopcube/discussions/16)
+
+> This was my first time contributing to an open source project and I struggled quite a bit but Abdur-Rahmaan and shams are responsive , helpful, and welcoming!! I was able to make a small contribution despite having little experience using Flask. Whenever I had questions, they were answered well on discord. I recommend working with Abdur-Rahmaan and shams! If you're nervous about contributing, they make the experience much less intimidating than I had anticipated. --[@taanguyen](https://github.com/taanguyen)
+
+> I'd like to thank @Abdur-rahmaanJ for creating this project! Though I have limited experience working with Flask, and was unable to understand the code and its functioning at first, Abdur-rahmaanJ explained everything very patiently and helped me clear all the doubts! I was able to learn new concepts and it was an amazing experience overall. I'd recommend opensource newbies like me and even experienced contributors to make contributions to this project. 💯 --[@geeythree](https://github.com/geeythree)
 
 ## ⚡ Quick try
 
