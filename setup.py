@@ -8,16 +8,18 @@ python setup.py publish to publish
 
 """
 
-# Always prefer setuptools over distutils
-from setuptools import setup
+import glob
+import os
+import sys
+
 import setuptools
+
+# Always prefer setuptools over distutils
 from setuptools import find_packages
+from setuptools import setup
 
 # from setuptools import find_packages
 
-import os
-import sys
-import glob
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -32,7 +34,7 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
     name="shopcube",  # Required
-    version="4.1.0",  # Required
+    version="4.2.0",  # Required
     description="E-commerce solution",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
@@ -80,9 +82,9 @@ setup(
     .read()
     .split("\n"),  # Optional
     extras_require={
-        'dev': open(os.path.join(here, "reqs", "dev.txt"), encoding="utf-8")
-            .read()
-            .split("\n"),
+        "dev": open(os.path.join(here, "reqs", "dev.txt"), encoding="utf-8")
+        .read()
+        .split("\n"),
     },
     project_urls={  # Optional
         "Bug Reports": "https://github.com/shopyo/shopcube/issues",
