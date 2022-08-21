@@ -26,7 +26,6 @@ from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Color
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
-from modules.resource.models import Resource
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

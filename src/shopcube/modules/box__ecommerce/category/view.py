@@ -12,22 +12,29 @@ from flask import send_from_directory
 from flask import url_for
 
 import flask_uploads
+import pandas as pd
 from flask_login import login_required
 from flask_sqlalchemy import sqlalchemy
 from shopyo.api.file import delete_file
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
+from shopyo.api.templates import yo_render
 from shopyo.api.validators import is_empty_str
 from sqlalchemy import and_
 
 from init import categoryphotos
 from init import db
+from init import productexcel
 from init import subcategoryphotos
 from utils.file import unique_sec_filename
 
 from modules.box__default.settings.helpers import get_setting
+from modules.box__ecommerce.category.forms import UploadProductForm
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
+from modules.box__ecommerce.product.models import Color
+from modules.box__ecommerce.product.models import Product
+from modules.box__ecommerce.product.models import Size
 from modules.resource.models import Resource
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -530,3 +537,132 @@ def category_image(filename):
     return send_from_directory(
         current_app.config["UPLOADED_CATEGORYPHOTOS_DEST"], filename
     )
+
+
+#
+# Upload
+#
+
+
+@module_blueprint.route("/upload/", methods=["GET", "POST"])
+@login_required
+def upload():
+    product_form = UploadProductForm()
+    return yo_render("category/upload.html", locals())
+
+
+def isdiscontinued(cell_value):
+    cell_value = str(cell_value)
+
+    if cell_value == "yes":
+        return True
+    if cell_value == "1":
+        return True
+    return False
+
+
+@module_blueprint.route("/upload/check", methods=["GET", "POST"])
+@login_required
+def upload_check():
+    form = UploadProductForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            filename = productexcel.save(
+                request.files[form.product_file.data.name]
+            )
+            file_path = os.path.join(
+                current_app.config["UPLOADED_PRODUCTEXCEL_DEST"], filename
+            )
+
+            xls = pd.ExcelFile(file_path)
+
+            products = pd.read_excel(xls, xls.sheet_names[0])
+
+            for i, row in products.iterrows():
+                barcode = str(row[0]).strip()
+                name = str(row[1]).strip()
+                description = str(row[2]).strip()
+                colors = str(row[3]).strip()
+                sizes = str(row[4]).strip()
+                price = str(row[5]).strip()
+                selling_price = str(row[6]).strip()
+                in_stock = str(row[7]).strip()
+                discontinued = str(row[8]).strip()
+                category_name = str(row[9]).strip()
+                subcategory_name = str(row[10]).strip()
+
+                discontinued = isdiscontinued(row[8])
+
+                with db.session.no_autoflush:
+                    product = Product.query.filter(
+                        Product.barcode == barcode
+                    ).first()
+                    category = Category.query.filter(
+                        Category.name == category_name
+                    ).first()
+                    subcategory = SubCategory.query.filter(
+                        SubCategory.name == subcategory_name
+                    ).first()
+                    already_existed = False
+
+                    if not subcategory:
+                        subcategory = SubCategory(name=subcategory_name)
+
+                    if not category:
+                        category = Category(name=category_name)
+
+                    if not product:
+                        already_existed = True
+                        product = Product()
+
+                    product.barcode = barcode
+                    product.name = name
+                    product.description = description
+                    # product.date = date
+
+                    if not str(price).strip():
+                        price = 0
+                    product.price = price
+                    product.selling_price = selling_price
+                    product.in_stock = in_stock
+                    product.discontinued = discontinued
+
+                    product.sizes.clear()
+                    sizes = sizes.strip().strip("\n")
+                    sizes = [
+                        s.strip("\r") for s in sizes.split("\n") if s.strip()
+                    ]
+                    sizes = [
+                        Size(name=s, product_id=product.id) for s in sizes
+                    ]
+                    product.sizes.extend(sizes)
+
+                    product.colors.clear()
+                    colors = colors.strip().strip("\n")
+                    colors = [
+                        c.strip("\r") for c in colors.split("\n") if c.strip()
+                    ]
+                    colors = [
+                        Color(name=c, product_id=product.id) for c in colors
+                    ]
+                    product.colors.extend(colors)
+
+                category.subcategories.append(subcategory)
+                subcategory.products.append(product)
+            db.session.add(category)
+            db.session.add(subcategory)
+            db.session.add(product)
+
+            print(product, subcategory, category)
+
+            db.session.commit()
+
+            flash(
+                notify_success(
+                    f"Products uploaded: {form.product_file.data.name}"
+                )
+            )
+            os.remove(file_path)
+        else:
+            flash_errors(form)
+    return redirect(url_for("category.upload"))

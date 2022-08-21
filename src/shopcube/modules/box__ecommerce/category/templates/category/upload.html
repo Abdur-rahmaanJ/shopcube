@@ -1,0 +1,115 @@
+{% extends "base/module_base.html" %}
+{% set active_page ='products' %}
+{% set sidebar_bgtrigger = 'upload_product' %}
+{% block pagehead %}
+<title>add product</title>
+<style type="text/css">
+    .loader,
+      .loader:before,
+      .loader:after {
+        border-radius: 50%;
+        width: 2.5em;
+        height: 2.5em;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        -webkit-animation: load7 1.8s infinite ease-in-out;
+        animation: load7 1.8s infinite ease-in-out;
+      }
+      .loader {
+        color: #fcba03;
+        font-size: 10px;
+        margin: 30px auto;
+        position: relative;
+        text-indent: -9999em;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+      }
+      .loader:before,
+      .loader:after {
+        content: '';
+        position: absolute;
+        top: 0;
+      }
+      .loader:before {
+        left: -3.5em;
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+      }
+      .loader:after {
+        left: 3.5em;
+      }
+      @-webkit-keyframes load7 {
+        0%,
+        80%,
+        100% {
+          box-shadow: 0 2.5em 0 -1.3em;
+        }
+        40% {
+          box-shadow: 0 2.5em 0 0;
+        }
+      }
+      @keyframes load7 {
+        0%,
+        80%,
+        100% {
+          box-shadow: 0 2.5em 0 -1.3em;
+        }
+        40% {
+          box-shadow: 0 2.5em 0 0;
+        }
+      }
+
+</style>
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <div id="request-loader">
+        </div>
+        <br>
+        <br>
+        <form action="{{url_for('category.upload_check')}}" method="POST" enctype="multipart/form-data">
+            <div class="form-field">
+                {{ product_form.product_file.label }} <a href="{{ url_for('static', filename='default/data/products.xlsx') }}" class="btn btn-info">download sample data</a><br><br>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-book"></i></span>
+                    </div>
+                    {{ product_form.product_file }}
+                </div>
+            </div>
+            <input class="upload-btn form-control" type="submit" value="submit" class="btn btn-info">
+            {{ product_form.csrf_token }}
+        </form>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $(".upload-btn").click(function() {
+                // disable button
+                //$(this).prop("disabled", true);
+                // add spinner to button
+                /*$(this).html(
+                  `Loading...`
+                );*/
+                if ($('#upload-product-input').get(0).files.length === 0) {
+                    console.log("No files selected.");
+                } else {
+                    $('#request-loader').html(
+                        `<div class="loader">
+
+                </div><br>
+                Processing ...`
+                    );
+                }
+            });
+        });
+        </script>
+    </div>
+</div>
+{% endblock %}
