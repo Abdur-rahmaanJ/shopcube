@@ -124,7 +124,7 @@ migrations/
 .vscode
 workspace.code-workspace
 
-#uploads 
+#uploads
 shopyo/static/uploads/products/
 shopyo/static/uploads/images/
 shopyo/static/uploads/thumbs/
@@ -135,3 +135,5 @@ shopyo/static/uploads/subcategory/
 shopyo/static/modules/
 
 shopcube.db
+
+uploads/
