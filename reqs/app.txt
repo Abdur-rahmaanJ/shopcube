@@ -14,6 +14,8 @@ email-validator==1.1.3
     # via
     #   -r reqs/app.in
     #   shopyo
+et-xmlfile==1.1.0
+    # via openpyxl
 flask==2.2.0
     # via
     #   -r reqs/app.in
@@ -73,14 +75,26 @@ marshmallow-sqlalchemy==0.26.1
     # via shopyo
 mkdocs-material-extensions==1.0.3
     # via flask-mailman
+numpy==1.23.2
+    # via pandas
+openpyxl==3.0.10
+    # via -r reqs/app.in
+pandas==1.4.3
+    # via -r reqs/app.in
 pillow==9.2.0
     # via -r reqs/app.in
 pymysql==1.0.2
     # via -r reqs/app.in
+python-dateutil==2.8.2
+    # via pandas
+pytz==2022.2.1
+    # via pandas
 shopyo==4.5.8
     # via -r reqs/app.in
 six==1.16.0
-    # via flask-marshmallow
+    # via
+    #   flask-marshmallow
+    #   python-dateutil
 sqlalchemy==1.4.27
     # via
     #   alembic
