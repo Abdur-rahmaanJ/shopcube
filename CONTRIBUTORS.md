@@ -10,3 +10,4 @@
 | 🇮🇳 | [@geeythree](https://github.com/geeythree) |
 | 🇬🇭 | [@bensonOSei](https://github.com/bensonOSei) |
 | 🇮🇳 | [@kumaryogesh17](https://github.com/kumaryogesh17) |
+| 🇻🇳 | [@taanguyen](https://github.com/taanguyen) |
