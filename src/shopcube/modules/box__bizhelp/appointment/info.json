@@ -1,6 +1,6 @@
 {
 	"display_string": "Appointments",
-	"type": "show",
+	"type": "hide",
 	"fa-icon": "fas fa-clock",
 	"url_prefix": "/appointment",
 	"author": {
