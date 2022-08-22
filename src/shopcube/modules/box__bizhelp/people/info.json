@@ -1,6 +1,6 @@
 {
 	"display_string": "People",
-	"type": "show",
+	"type": "hide",
 	"fa-icon": "fa fa-users",
 	"url_prefix": "/people",
 	"author": {
