@@ -65,7 +65,6 @@ def login():
             email = login_form.email.data
             password = login_form.password.data
             user = User.query.filter(User.email == email).first()
-            print(email, password, user)
             if user is None or not user.check_hash(password):
                 flash("")
                 flash(notify_danger("please check your user id and password"))
