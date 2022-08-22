@@ -44,7 +44,6 @@ def register():
             return mhelp.redirect_url("shop.homepage")
         user.password = password1
         user.is_customer = True
-        print(user.email, password1)
         user.save()
         flash(notify_success("Successfully registered, please log in!"))
         return mhelp.redirect_url("shop.homepage")
