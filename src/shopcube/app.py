@@ -50,10 +50,10 @@ def load_config_from_obj(app, config_name):
 
 
 def load_config_from_instance(app, config_name):
-
+    instance_path = os.path.join(base_path, "instance")
     if config_name != "testing":
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile("config.py", silent=True)
+        app.config.from_pyfile(os.path.join(app.instance_path, "config.py"), silent=True)
 
     # create empty instance folder and empty config if not present
     try:
