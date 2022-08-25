@@ -51,6 +51,8 @@ def load_config_from_obj(app, config_name):
 
 def load_config_from_instance(app, config_name):
     instance_path = os.path.join(base_path, "instance")
+    app.instance_path = instance_path
+
     if config_name != "testing":
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile(

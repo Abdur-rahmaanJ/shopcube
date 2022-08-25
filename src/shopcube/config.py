@@ -24,6 +24,12 @@ class Config:
     PASSWORD_SALT = "abcdefghi"
 
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopcube.db"
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
+    #     username='',
+    #     password='',
+    #     server_name='localhost',
+    #     db_name=''
+    # )
 
 
 class DevelopmentConfig(Config):
