@@ -61,6 +61,7 @@ def load_config_from_instance(app, config_name):
 
     # create empty instance folder and empty config if not present
     try:
+        app.instance_path = instance_path
         os.makedirs(app.instance_path)
         with open(os.path.join(app.instance_path, "config.py"), "a"):
             pass
@@ -78,7 +79,7 @@ def create_app(config_name, configs=None):
     if configs:
         for key in configs["configs"][config_name]:
             value = configs["configs"][config_name][key]
-        app.config[key] = value
+            app.config[key] = value
 
     # app.logger.info(app.config)
 
