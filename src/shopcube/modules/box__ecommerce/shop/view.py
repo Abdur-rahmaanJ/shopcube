@@ -467,7 +467,7 @@ def wishlist_toggle(product_barcode):
         session["wishlist"].remove(product_barcode)
         session.modified = True
 
-    return redirect(next_url)
+    return redirect(get_safe_redirect(next_url))
 
 
 @module_blueprint.route("/wishlist", methods=["GET"])
