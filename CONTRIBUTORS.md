@@ -11,3 +11,4 @@
 | 🇬🇭 | [@bensonOSei](https://github.com/bensonOSei) |
 | 🇮🇳 | [@kumaryogesh17](https://github.com/kumaryogesh17) |
 | 🇻🇳 | [@taanguyen](https://github.com/taanguyen) |
+| 🇳🇬 | [@yemiOdetola](https://github.com/yemiOdetola) |
