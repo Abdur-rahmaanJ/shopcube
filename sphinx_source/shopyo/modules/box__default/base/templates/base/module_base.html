@@ -5,11 +5,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-    
+
     {% include 'base/blocks/default_styles.html'%}
     {% block pagehead %}{% endblock %}
 
-    
+
     {% include 'base/blocks/resources.html'%}
 </head>
 <body>
@@ -44,7 +44,7 @@
             <li class="nav-item">
               <a class="nav-link" href="">Logout</a>
             </li>
-            
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Dropdown
@@ -61,7 +61,7 @@
         </div>
       </nav>
       <div class="container-fluid shopyo-module-area">
-        
+
         {% block content %}{% endblock %}
 
       </div>

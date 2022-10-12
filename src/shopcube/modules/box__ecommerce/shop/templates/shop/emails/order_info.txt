@@ -1,12 +1,12 @@
 Thank you for your order. Here is a summary.
 
-Your order ref is {{ order.get_ref() }}. 
+Your order ref is {{ order.get_ref() }}.
 Your order will not be processed until funds get cleared.
 
 
 
 {% set total_prices = [] %}
-Items 
+Items
 {% for item in order.order_items %}
 #{{ loop.index }}
 Name: {{ item.get_product().name }}

@@ -1,8 +1,8 @@
 """
 Helper utility functions for commandline api
 """
-import sys
 import os
+import sys
 from shutil import rmtree
 
 

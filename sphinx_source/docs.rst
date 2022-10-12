@@ -11,5 +11,3 @@ Run in main folder:
     sphinx-build -b html sphinx_source docs
 
 to generate html pages in docs
-
-

@@ -8,10 +8,10 @@
     margin: 0 !important;
     -moz-appearance: textfield !important;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 #cart-items{
     min-width: 200px;
@@ -31,7 +31,7 @@ input[type=number]::-webkit-outer-spin-button {
 </nav>
 <div>
     <div class="container" style="background-color: #">
-        
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -70,7 +70,7 @@ input[type=number]::-webkit-outer-spin-button {
                                                 <td>
                                                     <select name="size_{{ count.value }}" id="size">
                                                         {% for s in product.sizes %}
-                                                            <option value="{{s.name}}" 
+                                                            <option value="{{s.name}}"
                                                             {{'selected' if s.name == item['size']}}>
                                                         {{ s.name }}
                                                         </option>
@@ -88,7 +88,7 @@ input[type=number]::-webkit-outer-spin-button {
                                                     </select>
                                                 </td>
                                                 <td>
-                                                
+
                                                 <div class="input-group mb-3" style="width: 150px;">
                                             <div class="input-group-prepend" >
                                                 <button type="button" class="btn btn-primary input-group-text minus-btn">-</button>
@@ -104,13 +104,13 @@ input[type=number]::-webkit-outer-spin-button {
                                                 <td class="total_price">{{product.selling_price * item['quantity'] }}</td>
                                             </tr>
                                         {% endfor %}
-                                        
+
                                     {%endfor%}
                                 </tbody>
                             </table>
                             <div>
                                 <button class="btn btn-primary" type="button"><a href="{{ url_for('shop.index') }}">
-                                    
+
                                     <- Continue shopping
                                 </a></button>
                                 <button class="btn btn-primary" type="submit">Update Cart</button>
@@ -190,7 +190,7 @@ $(reciviedXml).find('p').each(function () {
         var row = $(this).parent().parent().parent().parent();
         var in_stock_val = $(row).find('.in_stock').val();
         var quantity_input = $(row).find('.quantity');
-        
+
         if (parseFloat(quantity_input.val())+1 <= parseFloat(in_stock_val)){
             quantity_input.val(parseFloat(quantity_input.val())+1);
 
@@ -207,7 +207,7 @@ $(reciviedXml).find('p').each(function () {
             var option_price = parseFloat($('input[type=radio][name=option]:checked').val());
             $('#grandtotal').text(sum_price+option_price);
         }
-        
+
 
     });
     $('.minus-btn').click(function(){
@@ -224,12 +224,12 @@ $(reciviedXml).find('p').each(function () {
 
             total_price_td.text(parseFloat(quantity_input.val()) * parseFloat(price_td.text()));
 
-            
+
             var sum_price = subtotal();
             $('#subtotal').text(sum_price);
             var option_price = parseFloat($('input[type=radio][name=option]:checked').val());
             $('#grandtotal').text(sum_price+option_price);
-            
+
         }
 
     });

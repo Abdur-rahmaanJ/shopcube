@@ -24,7 +24,7 @@
         <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Shop</a></li>
         <li class="breadcrumb-item active">Wishlist</li>
-        
+
       </ol>
     </nav>
     <div class="container">
@@ -47,7 +47,7 @@
                             <!-- Card content -->
                             <div class="card-body text-center">
                                 <!-- Title -->
-                                <h4 class="card-title">{{ product.name }} 
+                                <h4 class="card-title">{{ product.name }}
 
                                     <a href="{{ url_for('shop.wishlist_toggle', product_barcode=product.barcode, next=url_for('shop.wishlist')) }}">
                                         {%if product.barcode in get_wishlist_data() %}
@@ -56,8 +56,8 @@
                                             <i class="fa fa-heart" style="color: gray"></i>
                                         {%endif%}
                                     </a>
-                                    
-                                    
+
+
                                 </h4>
                                 <!-- Text -->
                                 <p class="card-text">Rs {{product.selling_price}}</p>

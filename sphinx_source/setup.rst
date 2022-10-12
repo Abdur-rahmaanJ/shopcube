@@ -95,4 +95,3 @@ go to the indicated url
 
     email: admin@domain.com
     password: pass
-

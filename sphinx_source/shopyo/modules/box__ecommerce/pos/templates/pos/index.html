@@ -43,7 +43,7 @@
                             <ul class="nav nav-tabs left-tabs">
                                 {%for category in categories%}
                                 <li class="nav-item">
-                                    <a class="nav-link 
+                                    <a class="nav-link
               {{'active' if loop.index==1}}" href="#tab-panel-{{category.id}}" data-toggle="tab">{{category.name}}</a>
                                 </li>
                                 {%endfor%}
@@ -51,7 +51,7 @@
                    in case the tab is trucated-->
                                 <!--
             <li class="nav-item">
-              
+
               <a
                 class="nav-link"
                 href="#tab-panel-3"
@@ -63,7 +63,7 @@
                             </ul>
                             <div class="tab-content">
                                 {%for category in categories%}
-                                <article class="tab-pane container 
+                                <article class="tab-pane container
             {{'active' if loop.index==1}}" id="tab-panel-{{category.id}}">
                                     {%for subcategory in category.subcategories%}
                                     <p><b>{{subcategory.name}}</b></p>

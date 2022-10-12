@@ -19,7 +19,7 @@ def flash_errors(form):
     """
     for field, errors in form.errors.items():
         for error in errors:
-            error_msg = u"Error in the %s field - %s" % (
+            error_msg = "Error in the %s field - %s" % (
                 getattr(form, field).label.text,
                 error,
             )

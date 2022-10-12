@@ -59,9 +59,7 @@ class Cart:
         cart_total_price = 0
         for barcode in cls._data():
             product = Product.query.filter_by(barcode=barcode).first()
-            cart_total_price += (
-                cls.items_quantity(barcode) * product.selling_price
-            )
+            cart_total_price += cls.items_quantity(barcode) * product.selling_price
 
         return cart_total_price
 
@@ -119,9 +117,7 @@ class Cart:
         if cls.has_barcode(barcode):
             has_order = cls.has_order(barcode, item_info)
             if has_order:
-                updated_quantity = (
-                    cls.items_quantity(barcode) + item_info["quantity"]
-                )
+                updated_quantity = cls.items_quantity(barcode) + item_info["quantity"]
                 if updated_quantity > product.in_stock:
                     return False
                 cls._data()[barcode][has_order["i"]]["quantity"] += item_info[

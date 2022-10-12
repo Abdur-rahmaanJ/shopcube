@@ -40,9 +40,7 @@ def get_cart_data():
 
 
 def get_min_max_subcateg(subcategory_name):
-    subcateg = SubCategory.query.filter(
-        SubCategory.name == subcategory_name
-    ).first()
+    subcateg = SubCategory.query.filter(SubCategory.name == subcategory_name).first()
     if len(subcateg.products) > 0:
         min_price = min(p.selling_price for p in subcateg.products)
         max_price = max(p.selling_price for p in subcateg.products)
