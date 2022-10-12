@@ -40,4 +40,3 @@ In case of change to models, do
 
    python manage.py db migrate
    python manage.py db upgrade
-

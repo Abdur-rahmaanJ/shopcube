@@ -61,7 +61,7 @@
 	                            </div>
 	                            <div class="modal-body">
 
-	                            			
+
 	                            	Name  - Quantity - Price - barcode <hr>
 	                                        {%for item in order.order_items%}
 
@@ -69,7 +69,7 @@
 	                                        {{product.name}} -
 	                                        {{item.quantity}} X
 	                                       Rs {{item.price}} -
-	                                       {{item.barcode}} 
+	                                       {{item.barcode}}
 	                                       <hr>
 	                                        {%endfor%}
 
@@ -112,7 +112,7 @@
 	                    </div>
 	                </div><!-- modal end-->
                 </tr>
-                
+
                 {%endfor%}
             </tbody>
         </table>
@@ -122,5 +122,3 @@
 
 
 {% endblock %}
-
-

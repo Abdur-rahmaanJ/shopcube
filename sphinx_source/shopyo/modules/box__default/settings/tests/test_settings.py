@@ -6,13 +6,15 @@ These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `settings` blueprint.
 """
 
-import os
 import json
+import os
+
 from flask import request
 from flask import url_for
-import pytest
-from modules.box__default.settings.models import Settings
 
+import pytest
+
+from modules.box__default.settings.models import Settings
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.dirname(dirpath)
@@ -78,9 +80,7 @@ class TestSettingsAPI:
     )
     def test_settings_edit(self, test_client, setting):
 
-        response = test_client.get(
-            f"{module_info['url_prefix']}/edit/{setting}"
-        )
+        response = test_client.get(f"{module_info['url_prefix']}/edit/{setting}")
         assert response.status_code == 200
 
     def test_settings_update(self, test_client):

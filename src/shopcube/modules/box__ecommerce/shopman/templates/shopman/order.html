@@ -32,7 +32,7 @@
                     <td>{{order.billing_detail.email}}</td>
                     <td><a href="{{url_for('shopman.order_view', order_id=order.id)}}" class="btn btn-primary">view</a></td>
                 </tr>
-                
+
                 {%endfor%}
             </tbody>
         </table>
@@ -42,5 +42,3 @@
 
 
 {% endblock %}
-
-

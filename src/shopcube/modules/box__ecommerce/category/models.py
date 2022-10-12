@@ -14,9 +14,7 @@ from init import db
 class Category(PkModel):
     __tablename__ = "categories"
     name = db.Column(db.String(100), unique=True, nullable=False)
-    subcategories = db.relationship(
-        "SubCategory", backref="category", lazy=True
-    )
+    subcategories = db.relationship("SubCategory", backref="category", lazy=True)
     resources = db.relationship(
         "Resource",
         backref="resource_category",
@@ -28,9 +26,7 @@ class Category(PkModel):
 
     @classmethod
     def category_exists(cls, name):
-        return db.session.query(
-            exists().where(cls.name == name.lower())
-        ).scalar()
+        return db.session.query(exists().where(cls.name == name.lower())).scalar()
 
     @validates("name")
     def convert_lower(self, key, value):
@@ -38,14 +34,10 @@ class Category(PkModel):
 
     def get_one_image_url(self):
         if len(self.resources) == 0:
-            return url_for(
-                "static", filename="default/default_subcategory.jpg"
-            )
+            return url_for("static", filename="default/default_subcategory.jpg")
         else:
             resource = self.resources[0]
-            return url_for(
-                "static", filename=f"uploads/products/{resource.filename}"
-            )
+            return url_for("static", filename=f"uploads/products/{resource.filename}")
 
     def get_page_url(self):
         return url_for("shop.category", category_name=self.name)
@@ -56,15 +48,11 @@ class SubCategory(PkModel):
     name = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     products = db.relationship("Product", backref="subcategory", lazy=True)
-    resources = db.relationship(
-        "Resource", backref="resource_subcategory", lazy=True
-    )
+    resources = db.relationship("Resource", backref="resource_subcategory", lazy=True)
 
     @classmethod
     def category_exists(cls, name):
-        return db.session.query(
-            exists().where(cls.name == name.lower())
-        ).scalar()
+        return db.session.query(exists().where(cls.name == name.lower())).scalar()
 
     @validates("name")
     def convert_lower(self, key, value):
@@ -79,9 +67,7 @@ class SubCategory(PkModel):
             product = self.products[0]
             if len(product.resources) == 0:
                 if len(self.resources) == 0:
-                    return url_for(
-                        "static", filename="default/default_subcategory.jpg"
-                    )
+                    return url_for("static", filename="default/default_subcategory.jpg")
                 else:
                     resource = self.resources[0]
                     return url_for(
@@ -95,9 +81,7 @@ class SubCategory(PkModel):
                 )
         else:
             if len(self.resources) == 0:
-                return url_for(
-                    "static", filename="default/default_subcategory.jpg"
-                )
+                return url_for("static", filename="default/default_subcategory.jpg")
             else:
                 resource = self.resources[0]
                 return url_for(

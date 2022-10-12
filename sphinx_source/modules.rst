@@ -126,12 +126,12 @@ global.py
 ---------
 
 
-Expects 
+Expects
 
 .. code:: python
 
     available_everywhere = {
-        
+
     }
 
 

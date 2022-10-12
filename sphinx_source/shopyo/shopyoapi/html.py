@@ -34,7 +34,7 @@ def notify(message, alert_type="primary"):
         message=message, alert_type=alert_type
     )
 
-    scriptFade = """ 
+    scriptFade = """
     <script>
           setTimeout(function() {
             $('#flashed-messages').fadeOut('fast');

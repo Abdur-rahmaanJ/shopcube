@@ -8,7 +8,6 @@ import os
 from flask import flash
 from flask import request
 
-from modules.box__default.settings.helpers import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.forms import flash_errors
 
@@ -16,6 +15,7 @@ from shopyoapi.forms import flash_errors
 from shopyoapi.html import notify_success
 from shopyoapi.module import ModuleHelp
 
+from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shopman.forms import CouponForm

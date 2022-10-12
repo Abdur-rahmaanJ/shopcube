@@ -81,17 +81,12 @@ def index(page=1):
     def_max_price = max(p.selling_price for p in products)
     filter_min_max = [def_min_price, def_max_price]
     if request.args.get("min") and request.args.get("max"):
-        if (
-            request.args.get("min").isnumeric()
-            and request.args.get("max").isnumeric()
-        ):
+        if request.args.get("min").isnumeric() and request.args.get("max").isnumeric():
             min_price = int(request.args.get("min"))
             max_price = int(request.args.get("max"))
             print(min_price, max_price)
             products = list(
-                p
-                for p in products
-                if min_price <= p.selling_price <= max_price
+                p for p in products if min_price <= p.selling_price <= max_price
             )
             products = products[start:end]
             filter_min_max = [min_price, max_price]
@@ -117,9 +112,7 @@ def index(page=1):
 def category(category_name):
 
     context = mhelp.context()
-    current_category = Category.query.filter(
-        Category.name == category_name
-    ).first()
+    current_category = Category.query.filter(Category.name == category_name).first()
 
     cart_info = get_cart_data()
 
@@ -149,10 +142,7 @@ def subcategory(sub_id, page=1, methods=["GET"]):
     products = subcategory.products[start:end]
     filter_min_max = get_min_max_subcateg(subcategory_name)
     if request.args.get("min") and request.args.get("max"):
-        if (
-            request.args.get("min").isnumeric()
-            and request.args.get("max").isnumeric()
-        ):
+        if request.args.get("min").isnumeric() and request.args.get("max").isnumeric():
             min_price = int(request.args.get("min"))
             max_price = int(request.args.get("max"))
             print(min_price, max_price)
@@ -243,9 +233,7 @@ def cart():
     cart_info = get_cart_data()
     delivery_options = DeliveryOption.query.all()
 
-    context.update(
-        {"delivery_options": delivery_options, "get_product": get_product}
-    )
+    context.update({"delivery_options": delivery_options, "get_product": get_product})
     context.update(cart_info)
     return mhelp.render("view_cart.html", **context)
 
@@ -394,21 +382,15 @@ def checkout_process():
 
             order = Order()
             order.billing_detail = billing_detail
-            shipping_option = DeliveryOption.query.get(
-                request.form["deliveryoption"]
-            )
+            shipping_option = DeliveryOption.query.get(request.form["deliveryoption"])
             order.shipping_option = shipping_option
-            payment_option = PaymentOption.query.get(
-                request.form["paymentoption"]
-            )
+            payment_option = PaymentOption.query.get(request.form["paymentoption"])
             order.payment_option = payment_option
             if current_user.is_authenticated:
                 order.logged_in_customer_email = current_user.email
 
             if form.applyCoupon.data:
-                coupon = Coupon.query.filter(
-                    Coupon.string == form.coupon.data
-                ).first()
+                coupon = Coupon.query.filter(Coupon.string == form.coupon.data).first()
                 if coupon:
                     order.coupon = coupon
                 else:

@@ -77,9 +77,7 @@ def test_contact_validate_msg(test_client):
     # add a message
     response = test_client.post(
         url_for("contact.validate_message"),
-        data=dict(
-            name="User1", email="user1@gmail.com", message="User1 Message"
-        ),
+        data=dict(name="User1", email="user1@gmail.com", message="User1 Message"),
         follow_redirects=True,
     )
     assert response.status_code == 200
