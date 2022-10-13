@@ -15,9 +15,7 @@ class Order(db.Model):
 
     logged_in_customer_email = db.Column(db.String(120), default="")
 
-    coupon = db.relationship(
-        "Coupon", backref="coupon_order", lazy=True, uselist=False
-    )
+    coupon = db.relationship("Coupon", backref="coupon_order", lazy=True, uselist=False)
 
     order_items = db.relationship(
         "OrderItem",
@@ -92,9 +90,7 @@ class OrderItem(PkModel):
     size = db.Column(db.String(100))
     status = db.Column(db.String(120), default="pending")
     barcode = db.Column(db.String(100), nullable=False)
-    order_id = db.Column(
-        db.Integer, db.ForeignKey("orders.id"), nullable=False
-    )
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
 
     def add(self):
         db.session.add(self)

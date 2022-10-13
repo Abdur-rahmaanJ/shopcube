@@ -22,9 +22,7 @@ def autoload_models():
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
                 try:
-                    to_load_submodel = "modules.{}.{}.models".format(
-                        folder, sub_folder
-                    )
+                    to_load_submodel = "modules.{}.{}.models".format(folder, sub_folder)
                     importlib.import_module(to_load_submodel)
                     print("[x]", "imported", to_load_submodel)
                 except Exception as e:

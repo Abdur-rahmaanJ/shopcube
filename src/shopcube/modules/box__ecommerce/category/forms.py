@@ -11,9 +11,7 @@ class UploadProductForm(FlaskForm):
     product_file = FileField(
         "Product upload",
         validators=[
-            FileAllowed(
-                productexcel, "File must be in xls, xlsx, xlsm, xlsb, odf"
-            ),
+            FileAllowed(productexcel, "File must be in xls, xlsx, xlsm, xlsb, odf"),
             FileRequired("File was empty!"),
         ],
         render_kw={

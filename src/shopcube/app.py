@@ -117,18 +117,14 @@ def create_app(config_name, configs=None):
 
         if folder.startswith("box__"):
             # boxes
-            for sub_folder in os.listdir(
-                os.path.join(base_path, "modules", folder)
-            ):
+            for sub_folder in os.listdir(os.path.join(base_path, "modules", folder)):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
 
                 sys.path.insert(0, base_path)
-                sys_mod = importlib.import_module(
-                    f"modules.{folder}.{sub_folder}.view"
-                )
+                sys_mod = importlib.import_module(f"modules.{folder}.{sub_folder}.view")
                 print(
                     "module",
                     folder,
@@ -154,9 +150,7 @@ def create_app(config_name, configs=None):
                     # print(e)
                     print(e, file=open("file.log", "a"), flush=True)
                     pass
-                app.register_blueprint(
-                    getattr(sys_mod, f"{sub_folder}_blueprint")
-                )
+                app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
         else:
             # apps
             sys.path.insert(0, base_path)
@@ -164,12 +158,8 @@ def create_app(config_name, configs=None):
             print("module", folder, file=open("file.log", "a"), flush=True)
             try:
                 sys.path.insert(0, base_path)
-                mod_global = importlib.import_module(
-                    f"modules.{folder}.global"
-                )
-                available_everywhere_entities.update(
-                    mod_global.available_everywhere
-                )
+                mod_global = importlib.import_module(f"modules.{folder}.global")
+                available_everywhere_entities.update(mod_global.available_everywhere)
 
                 print(
                     mod_global.available_everywhere,
@@ -241,9 +231,7 @@ def create_app(config_name, configs=None):
 
         return base_context
 
-    print(
-        available_everywhere_entities, file=open("file.log", "a"), flush=True
-    )
+    print(available_everywhere_entities, file=open("file.log", "a"), flush=True)
     # end of func
     return app
 

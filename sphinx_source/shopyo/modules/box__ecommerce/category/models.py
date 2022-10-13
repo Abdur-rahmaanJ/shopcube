@@ -12,9 +12,7 @@ from shopyoapi.models import PkModel
 class Category(PkModel):
     __tablename__ = "categories"
     name = db.Column(db.String(100), unique=True, nullable=False)
-    subcategories = db.relationship(
-        "SubCategory", backref="category", lazy=True
-    )
+    subcategories = db.relationship("SubCategory", backref="category", lazy=True)
     resources = db.relationship(
         "Resource",
         backref="resource_category",
@@ -26,9 +24,7 @@ class Category(PkModel):
 
     @classmethod
     def category_exists(cls, name):
-        return db.session.query(
-            exists().where(cls.name == name.lower())
-        ).scalar()
+        return db.session.query(exists().where(cls.name == name.lower())).scalar()
 
     @validates("name")
     def convert_lower(self, key, value):
@@ -40,15 +36,11 @@ class SubCategory(PkModel):
     name = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     products = db.relationship("Product", backref="subcategory", lazy=True)
-    resources = db.relationship(
-        "Resource", backref="resource_subcategory", lazy=True
-    )
+    resources = db.relationship("Resource", backref="resource_subcategory", lazy=True)
 
     @classmethod
     def category_exists(cls, name):
-        return db.session.query(
-            exists().where(cls.name == name.lower())
-        ).scalar()
+        return db.session.query(exists().where(cls.name == name.lower())).scalar()
 
     @validates("name")
     def convert_lower(self, key, value):

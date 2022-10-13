@@ -11,7 +11,7 @@ Developing a template
 
 Please see the `Modules section <modules.html>`_ on how to structure a module.
 
-Having said that, this is the base file we are extending from. 
+Having said that, this is the base file we are extending from.
 
 
 .. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
@@ -34,7 +34,7 @@ Here is the contact form using the base:
    :lines: 1-53
 
 
-If you extend the base template, you will be able to use the 
+If you extend the base template, you will be able to use the
 notification mechanism used for shopyo api
 
 
@@ -56,7 +56,7 @@ here is a demo on returning template vars:
 
 .. code:: python
 
-  # 
+  #
   # ...
   @module_blueprint.route('/abc')
   def somefunc():
@@ -68,4 +68,3 @@ here is a demo on returning template vars:
           'module_name': module_name
       })
       return render_template('page/dashboard.html', **context)
-

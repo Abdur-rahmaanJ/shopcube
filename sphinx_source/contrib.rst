@@ -31,15 +31,15 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
    .. code-block:: bash
 
-      git clone https://github.com/<replace with your github username>/shopyo.git. 
+      git clone https://github.com/<replace with your github username>/shopyo.git.
 
    .. note::
-    
+
        You can also get the clone link by clicking the green ``code`` button on your cloned shopyo repo page.
 #. Next run:
 
    .. code-block:: bash
-   
+
       cd <your/local/cloned/repo/path/here>
 
    .. note::
@@ -47,17 +47,17 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
 #. Setup the python `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ based on your Operating System
 #. Activate the `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_. Now you should see something like:
-    
+
    .. code-block:: bash
 
-      (env) </my/path/to/shopyo> 
-    
+      (env) </my/path/to/shopyo>
+
    .. note::
       ``env`` is the name of virtual environment that you setup in step above.
       Make sure to always activate this ``env`` when working on ``shopyo``. If you are using
-      `VS Code <https://code.visualstudio.com/>`__  then you can also add the ``"python.pythonPath"`` by creating a ``.vscode`` 
+      `VS Code <https://code.visualstudio.com/>`__  then you can also add the ``"python.pythonPath"`` by creating a ``.vscode``
       folder at the root level and adding ``setting.json`` file to it with the content below.
-      You need to replace the path with your own path to the virtual environment's ``python.exe`` 
+      You need to replace the path with your own path to the virtual environment's ``python.exe``
       file and the example below is for a path in Windows OS hence the double backward slash.
       Now you can create a new terminal with virtual environment activated in VS Code using ``Ctrl`` + ``Shift`` + `````
 
@@ -72,19 +72,19 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
    .. code-block:: bash
 
       python -m pip install -r dev_requirements.txt
-    
+
    .. note::
-      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``dev_requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again 
+      This should start installing the packages required for shopyo app and might take a few seconds. If you get an error for unable to find ``dev_requirements.txt`` make sure you are in the cloned ``shopyo`` directory and try again
 
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
-    
+
    .. code-block:: bash
 
       cd <your/local/cloned/repo/path/here> # not needed if you are already inside your cloned shopyo directory
       git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
 
 #. Once upstream is setup, you can fetch the latest changes made to shopyo repo. Make sure to do this every time before you make branch to work on a feature. Run:
-   
+
    .. code-block:: bash
 
       git fetch upstream
@@ -93,7 +93,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
    .. code-block:: bash
 
-      cd shopyo 
+      cd shopyo
       # so now your path should be something likes <your path>/shopyo/shopyo
 
 #. Now initialize the app by running:
@@ -102,7 +102,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
       python manage.py initialise
 
-#. To start the app, run: 
+#. To start the app, run:
 
    .. code-block:: bash
 
@@ -117,28 +117,28 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
 #. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 9
 #. To create a branch and switch to that branch you run:
-   
+
    .. code-block:: bash
 
-      git checkout -b <name of branch> 
+      git checkout -b <name of branch>
       # example: git checkout -b add-form-validation
 
    .. note::
        You can do the above using 2 separate commands if that makes it easier:
 
        .. code-block:: bash
-          
+
           # First create a new branch from current branch
-          git branch <name of branch> 
-          
+          git branch <name of branch>
+
           # Next switch to this new branch
-          git checkout <name of branch to switch to> 
+          git checkout <name of branch to switch to>
 
 #. After git checkout command above, run ``git branch`` to make sure you are not working on ``dev`` branch but are on the newly created branch.
 #. Now you can start working on the feature for which you want to make PR
 #. Add tests for any new features that you add.
 #. Run the following to make sure all the existing and new tests pass. Check the `Testing <testing.html>`_ section for more details
-   
+
    .. code-block:: bash
 
       python -m pytest .
@@ -153,24 +153,24 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
    .. code-block:: bash
 
       flake8 <path of file that you want to check>
-      
-      # example to check the linting error for test_dashboard.py file 
+
+      # example to check the linting error for test_dashboard.py file
       # assuming you are in shopyo/shopyo directory, run
       flake8 ./modules/box__default/dashboard/tests/test_dashboard.py
 
    .. note::
-      If the command above returns without any output, then there are no 
+      If the command above returns without any output, then there are no
       linting errors, otherwise it will tell you the line number and type
       of linting error.
       If typing ``flake8`` gives error related to command not found, then you
       do not have ``flake8`` installed and it can be installed as follows:
 
       .. code-block:: bash
-         
+
          python -m pip install flake8
 
-      In addition, if you are using `VS Code <https://code.visualstudio.com/>`__ 
-      then you can create a ``.vscode`` folder at the root level and add ``setting.json`` 
+      In addition, if you are using `VS Code <https://code.visualstudio.com/>`__
+      then you can create a ``.vscode`` folder at the root level and add ``setting.json``
       file to it with the following content. This way it auto detects the
       linting errors for you
 
@@ -182,7 +182,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
       If you have already created the ``setting.json`` file as mentioned in :ref:`setup` step 6,
       then your json file will look similar to one below
-      
+
       .. code-block:: json
 
          {
@@ -200,20 +200,20 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
    .. code-block:: bash
 
-       git add . # to add all changes 
+       git add . # to add all changes
        git add <file1 name> <file2 name> # to only add desired files
-    
+
 #. Commit the changes. For the commit messages, follow the guidelines `here <https://udacity.github.io/git-styleguide/>`__
-   
+
    .. code-block:: bash
 
       git commit -m "<put your commit message here>"
 
 #. Finally push the committed changes from local repository to a remote repository (the one you forked)
-   
+
    .. code-block:: bash
-     
-      git push origin <the current branch name>    
+
+      git push origin <the current branch name>
 
 #. You can now make a PR. When you go to your forked repo or the owner's repo you will see a ``compare & pull request`` button. Click on it and mention the changes you made. Look at the `past PRs <https://github.com/Abdur-rahmaanJ/shopyo/pulls?q=is%3Apr+is%3Aclosed>`_ for examples of what to mention when submitting a PR. If a PR closes an issue, add ``Fixes #<issue number>``, as seen `here <https://github.com/Abdur-rahmaanJ/shopyo/pull/95>`_
 #. If you want you can request reviews when submitting PR.
@@ -253,4 +253,3 @@ Maintainers notes
 💬 Community: Discord
 ---------------------
 Join the Discord community `Discord Group <https://discord.com/invite/k37Ef6w>`_
-

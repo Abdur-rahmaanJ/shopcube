@@ -4,11 +4,12 @@
 
 """
 import datetime
-from sqlalchemy.ext.hybrid import hybrid_property
+
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
 from flask_login import login_manager
 from itsdangerous import URLSafeTimedSerializer
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 

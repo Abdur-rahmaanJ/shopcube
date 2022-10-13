@@ -2,7 +2,7 @@
 html {
     scroll-behavior: smooth;
 }
-    
+
 .suggest {
 
 }
@@ -25,7 +25,7 @@ html {
 }
 
 .card-menu{
-    display: inline-block; 
+    display: inline-block;
     min-width: 200px;
     margin-top: 10px;
 }

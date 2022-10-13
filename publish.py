@@ -1,6 +1,6 @@
-import sys
-import subprocess
 import argparse
+import subprocess
+import sys
 
 parser = argparse.ArgumentParser(description="Publish commands")
 parser.add_argument("commit_message", help="commit message")

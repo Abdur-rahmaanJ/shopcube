@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		
+
 		<style type="text/css">
 .carousel-item {
   height: 100vh;
@@ -31,7 +31,7 @@
 .fixed-top.scrolled {
   background-color: #5d3f3f !important;
   transition: background-color 400ms linear;
-}    
+}
 
 .fixed-top.scrolled .nav-link {
   color:#555;
@@ -118,7 +118,7 @@ $(function () {
 
 	<div>
 		<div class="row">
-		
+
 		{%for category in get_categories()%}
 			{%if category.name.upper() != 'UNCATEGORISED'%}
 			{%set filename_ = ''%}
@@ -133,7 +133,7 @@ $(function () {
 
 			  <!-- Card image -->
 			  <div style="background-image: url('{{img_url}}'); background-size: cover; height: 150px;">
-	        		
+
 	        	</div>
 
 			  <!-- Card content -->
@@ -145,11 +145,11 @@ $(function () {
 			    {%set sum_ = namespace(items=0) %}
 			    {%for subcategory in category.subcategories%}
 			    	{%set sum_.items =  sum_.items + len(subcategory.products) %}
-			    	
+
 			    {%endfor%}
 			    <p class="card-text">{{ sum_.items }} products</p>
 			    <!-- Button -->
-			    
+
 
 			  </div>
 
@@ -185,7 +185,7 @@ $(function () {
 	        {%set img_url = url_for('resource.product_image', filename=filename_) %}
 			  <!-- Card image -->
 			  <div style="background-image: url('{{img_url}}'); background-size: cover; height: 150px;">
-	        		
+
 	        	</div>
 
 			  <!-- Card content -->
@@ -194,10 +194,10 @@ $(function () {
 			    <!-- Title -->
 			    <h4 class="card-title"><a>{{ product.name }}</a></h4>
 			    <!-- Text -->
-			    
+
 			    <p class="card-text">Rs {{product.selling_price}}</p>
 			    <!-- Button -->
-			    
+
 
 			  </div>
 
@@ -205,7 +205,7 @@ $(function () {
 			<!-- Card -->
 			</div>
 		{%endfor%}
-		
+
 	</div>
 </div>
 
