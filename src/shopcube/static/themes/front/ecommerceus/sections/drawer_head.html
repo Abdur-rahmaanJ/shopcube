@@ -9,7 +9,7 @@ $(function() {
         $('body').toggleClass("offcanvas-active");
     });
 
-    // close if press ESC button 
+    // close if press ESC button
     $(document).on('keydown', function(event) {
         if (event.keyCode === 27) {
             $(".navbar-collapse").removeClass("show");
@@ -17,7 +17,7 @@ $(function() {
         }
     });
 
-    // close button 
+    // close button
     $(".btn-close").click(function(e) {
         $(".navbar-collapse").removeClass("show");
         $("body").removeClass("offcanvas-active");

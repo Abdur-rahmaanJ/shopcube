@@ -46,9 +46,7 @@ def test_announce_dashboard(test_client):
     assert response.status_code == 200
 
     # check response is valid
-    response = test_client.get(
-        url_for(module_info["module_name"] + ".dashboard")
-    )
+    response = test_client.get(url_for(module_info["module_name"] + ".dashboard"))
     assert response.status_code == 200
     assert b"New Announcement" in response.data
     assert b"Title" in response.data

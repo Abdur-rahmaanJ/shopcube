@@ -68,9 +68,7 @@ class Product(PkModel):
             return url_for("static", filename="default/default_product.jpg")
         else:
             resource = self.resources[0]
-            return url_for(
-                "static", filename=f"uploads/products/{resource.filename}"
-            )
+            return url_for("static", filename=f"uploads/products/{resource.filename}")
 
     def get_page_url(self):
         return url_for("shop.product", product_barcode=self.barcode)

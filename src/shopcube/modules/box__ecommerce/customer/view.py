@@ -59,9 +59,7 @@ def logout():
 @login_required
 def dashboard():
     context = mhelp.context()
-    context.update(
-        {"_hide_nav": True, "_logout_url": url_for("customer.logout")}
-    )
+    context.update({"_hide_nav": True, "_logout_url": url_for("customer.logout")})
     return mhelp.render("dashboard.html", **context)
 
 
@@ -90,9 +88,7 @@ def orders():
             "not_logged_in_orders": not_logged_in_orders,
         }
     )
-    context.update(
-        {"_hide_nav": True, "_logout_url": url_for("customer.logout")}
-    )
+    context.update({"_hide_nav": True, "_logout_url": url_for("customer.logout")})
     return mhelp.render("orders.html", **context)
 
 
@@ -102,9 +98,7 @@ def order_view(order_id):
     order = Order.query.get(order_id)
     context = mhelp.context()
     context.update({"order": order})
-    context.update(
-        {"_hide_nav": True, "_logout_url": url_for("customer.logout")}
-    )
+    context.update({"_hide_nav": True, "_logout_url": url_for("customer.logout")})
     return mhelp.render("order_item_view.html", **context)
 
 

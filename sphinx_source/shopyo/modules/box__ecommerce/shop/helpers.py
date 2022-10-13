@@ -1,8 +1,10 @@
 import json
 import os
+
 from flask import session
-from modules.box__ecommerce.product.models import Product
+
 from modules.box__default.settings.helpers import get_setting
+from modules.box__ecommerce.product.models import Product
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 box_path = os.path.dirname(dirpath)
@@ -34,9 +36,7 @@ def get_cart_data():
             for item in cart_data:
                 print(item)
                 product = Product.query.get(item)
-                cart_total_price += (
-                    int(cart_data[item]) * product.selling_price
-                )
+                cart_total_price += int(cart_data[item]) * product.selling_price
         except Exception as e:
             pass
 

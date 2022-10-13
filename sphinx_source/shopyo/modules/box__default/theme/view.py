@@ -9,9 +9,10 @@ from flask import url_for
 
 from flask_login import login_required
 
-from modules.box__default.settings.helpers import get_setting
 from shopyoapi.enhance import set_setting
 from shopyoapi.file import get_folders
+
+from modules.box__default.settings.helpers import get_setting
 
 # from flask import flash
 # from flask import request

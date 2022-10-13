@@ -143,9 +143,7 @@ class TestCategoryApi:
             data=dict(name="category"),
             follow_redirects=True,
         )
-        added_category = Category.query.filter(
-            Category.name == "category"
-        ).all()
+        added_category = Category.query.filter(Category.name == "category").all()
 
         assert response.status_code == 200
         assert b'Category "category" added successfully' in response.data
@@ -157,9 +155,7 @@ class TestCategoryApi:
             data=dict(name="CatEgorY"),
             follow_redirects=True,
         )
-        added_category = Category.query.filter(
-            Category.name == "category"
-        ).all()
+        added_category = Category.query.filter(Category.name == "category").all()
 
         assert response.status_code == 200
         assert b'Category "category" added successfully' in response.data
@@ -171,9 +167,7 @@ class TestCategoryApi:
             data=dict(name="   category   "),
             follow_redirects=True,
         )
-        added_category = Category.query.filter(
-            Category.name == "category"
-        ).all()
+        added_category = Category.query.filter(Category.name == "category").all()
 
         assert response.status_code == 200
         assert b'Category "category" added successfully' in response.data
@@ -216,8 +210,7 @@ class TestCategoryApi:
         assert response.status_code == 200
         assert request.path == url_for("category.dashboard")
         assert (
-            b'Please delete all subcategories for category "category"'
-            in response.data
+            b'Please delete all subcategories for category "category"' in response.data
         )
 
     def test_category_delete_cat_named_uncategorised_get(self, test_client):
@@ -246,14 +239,10 @@ class TestCategoryApi:
             data=dict(name="subcategory"),
             follow_redirects=True,
         )
-        subcat = SubCategory.query.filter(
-            SubCategory.name == "subcategory"
-        ).scalar()
+        subcat = SubCategory.query.filter(SubCategory.name == "subcategory").scalar()
 
         assert response.status_code == 200
-        assert request.path == url_for(
-            "category.manage_sub", category_name="category"
-        )
+        assert request.path == url_for("category.manage_sub", category_name="category")
         assert subcat is not None
         assert subcat.category is not None
         assert subcat.category.name == "category"

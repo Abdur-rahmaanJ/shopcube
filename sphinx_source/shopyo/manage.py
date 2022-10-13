@@ -1,13 +1,15 @@
 import subprocess
+
 import click
 
 from app import app
+
 from shopyoapi.cmd import clean
+from shopyoapi.cmd import collectstatic
 from shopyoapi.cmd import create_box
 from shopyoapi.cmd import create_module
 from shopyoapi.cmd import create_module_in_box
 from shopyoapi.cmd import initialise
-from shopyoapi.cmd import collectstatic
 from shopyoapi.database import autoload_models
 from shopyoapi.info import printinfo
 
