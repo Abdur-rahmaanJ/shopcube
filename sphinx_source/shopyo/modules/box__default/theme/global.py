@@ -1,16 +1,15 @@
+import json
+import os
+
 from flask import url_for
 
-import os
-import json
-
 from shopyoapi.path import themes_path
+
 from modules.box__default.settings.helpers import get_setting
 
 
 def get_front_theme_dir():
-    theme_dir = os.path.join(
-        themes_path, "front", get_setting("ACTIVE_FRONT_THEME")
-    )
+    theme_dir = os.path.join(themes_path, "front", get_setting("ACTIVE_FRONT_THEME"))
     return theme_dir
 
 
@@ -38,9 +37,7 @@ def get_active_front_theme_styles_url():
 
 
 def get_back_theme_dir():
-    theme_dir = os.path.join(
-        themes_path, "back", get_setting("ACTIVE_BACK_THEME")
-    )
+    theme_dir = os.path.join(themes_path, "back", get_setting("ACTIVE_BACK_THEME"))
     return theme_dir
 
 

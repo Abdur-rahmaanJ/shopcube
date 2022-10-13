@@ -113,9 +113,7 @@ def absdiroffile(filepath):
 
 
 def get_folders(path):
-    dirs = [
-        d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))
-    ]
+    dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
     return dirs
 
 

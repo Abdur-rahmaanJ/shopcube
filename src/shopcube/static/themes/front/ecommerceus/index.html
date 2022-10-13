@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		
+
 		<style type="text/css">
 .carousel-item {
   height: 100vh;
@@ -31,7 +31,7 @@
 .fixed-top.scrolled {
   background-color: #000 !important;
   transition: background-color 400ms linear;
-}    
+}
 
 .fixed-top.scrolled .nav-link {
   color:#555;
@@ -127,7 +127,7 @@ $(function () {
 
 	<div>
 		<div class="row">
-		
+
 		{%for category in get_categories()%}
 			{%if category.name.upper() != 'UNCATEGORISED'%}
 
@@ -138,7 +138,7 @@ $(function () {
 
 				  <!-- Card image -->
 				  <div style="background-image: url('{{category.get_one_image_url()}}'); background-size: cover; height: 150px;">
-		        		
+
 		        	</div>
 
 				  <!-- Card content -->
@@ -150,18 +150,18 @@ $(function () {
 				    {%set sum_ = namespace(items=0) %}
 				    {%for subcategory in category.subcategories%}
 				    	{%set sum_.items =  sum_.items + len(subcategory.products) %}
-				    	
+
 				    {%endfor%}
 				    <p class="card-text">{{ sum_.items }} products</p>
 				    <!-- Button -->
-				    
+
 
 				  </div>
 
 				</div>
 				<!-- Card -->
 		        </a>
-	        
+
 			</div>
 	        {%endif%}
 		{%endfor%}
@@ -183,14 +183,14 @@ $(function () {
 
 			{%set product = target_prds[i]%}
 			<div class="col-12 col-sm-6 col-md-3">
-	        
+
 	        <a href="{{product.get_page_url()}}">
 	        	<!-- Card -->
 				<div class="card" style="margin-bottom: 10px;">
 
 				  <!-- Card image -->
 				  <div style="background-image: url('{{product.get_one_image_url()}}'); background-size: cover; height: 150px;">
-		        		
+
 		        	</div>
 
 				  <!-- Card content -->
@@ -199,10 +199,10 @@ $(function () {
 				    <!-- Title -->
 				    <h4 class="card-title"><a>{{ product.name }}</a></h4>
 				    <!-- Text -->
-				    
+
 				    <p class="card-text">Rs {{product.selling_price}}</p>
 				    <!-- Button -->
-				    
+
 
 				  </div>
 
@@ -212,7 +212,7 @@ $(function () {
 
 			</div>
 		{%endfor%}
-		
+
 	</div>
 
 	<div class="separator">&nbsp;&nbsp;&nbsp;<b>FOLLOW US ON FB AND INSTAGRAM</b>&nbsp;&nbsp;&nbsp;</div>

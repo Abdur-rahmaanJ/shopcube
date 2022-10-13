@@ -103,7 +103,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-id-card"></i></span>
                                         </div>
-                                        
+
                                         {{ auth_login_form.email() }}
                                         {% if auth_login_form.email.errors %}
                                             <ul class="errors">
@@ -130,7 +130,7 @@
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                     <input type="submit" name="" value="submit" class="btn btn-info">
                                 </form>
-                                
+
                             </div>
                         </div>
                     </div>

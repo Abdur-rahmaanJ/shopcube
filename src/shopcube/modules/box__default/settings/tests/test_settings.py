@@ -80,9 +80,7 @@ class TestSettingsAPI:
     )
     def test_settings_edit(self, test_client, setting):
 
-        response = test_client.get(
-            f"{module_info['url_prefix']}/edit/{setting}"
-        )
+        response = test_client.get(f"{module_info['url_prefix']}/edit/{setting}")
         assert response.status_code == 200
 
     def test_settings_update(self, test_client):

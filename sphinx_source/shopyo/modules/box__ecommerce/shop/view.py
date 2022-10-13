@@ -28,9 +28,9 @@ from modules.box__ecommerce.shop.helpers import get_cart_data
 from modules.box__ecommerce.shop.models import BillingDetail
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem
+from modules.box__ecommerce.shopman.models import Coupon
 from modules.box__ecommerce.shopman.models import DeliveryOption
 from modules.box__ecommerce.shopman.models import PaymentOption
-from modules.box__ecommerce.shopman.models import Coupon
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -56,9 +56,7 @@ def homepage():
     context = mhelp.context()
     cart_info = get_cart_data()
     context.update(cart_info)
-    return render_template(
-        get_setting("ACTIVE_FRONT_THEME") + "/index.html", **context
-    )
+    return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html", **context)
 
 
 @module_blueprint.route("/page/<int:page>")
@@ -90,9 +88,7 @@ def index(page=1):
 def category(category_name):
 
     context = mhelp.context()
-    current_category = Category.query.filter(
-        Category.name == category_name
-    ).first()
+    current_category = Category.query.filter(Category.name == category_name).first()
 
     cart_info = get_cart_data()
 
@@ -114,9 +110,7 @@ def subcategory(subcategory_name, page=1):
     end = page * PAGINATION
     start = end - PAGINATION
 
-    subcategory = SubCategory.query.filter(
-        SubCategory.name == subcategory_name
-    ).first()
+    subcategory = SubCategory.query.filter(SubCategory.name == subcategory_name).first()
     products = subcategory.products[start:end]
     total_pages = (len(products) // PAGINATION) + 1
     current_category_name = subcategory.category.name
@@ -176,9 +170,7 @@ def cart_add(product_barcode):
                             "Products in cart cannot be greater than product in stock"
                         )
                     )
-                    return redirect(
-                        url_for("shop.product", product_barcode=barcode)
-                    )
+                    return redirect(url_for("shop.product", product_barcode=barcode))
                 data[barcode] = updated_quantity
                 session["cart"][0] = data
 
@@ -189,9 +181,7 @@ def cart_add(product_barcode):
     return mhelp.redirect_url("shop.product", product_barcode=barcode)
 
 
-@module_blueprint.route(
-    "/cart/remove/<product_barcode>", methods=["GET", "POST"]
-)
+@module_blueprint.route("/cart/remove/<product_barcode>", methods=["GET", "POST"])
 def cart_remove(product_barcode):
     if "cart" in session:
 
@@ -213,9 +203,7 @@ def cart():
     cart_info = get_cart_data()
     delivery_options = DeliveryOption.query.all()
 
-    context.update(
-        {"delivery_options": delivery_options, "get_product": get_product}
-    )
+    context.update({"delivery_options": delivery_options, "get_product": get_product})
     context.update(cart_info)
     return mhelp.render("view_cart.html", **context)
 
@@ -397,21 +385,15 @@ def checkout_process():
 
             order = Order()
             order.billing_detail = billing_detail
-            shipping_option = DeliveryOption.query.get(
-                request.form["deliveryoption"]
-            )
+            shipping_option = DeliveryOption.query.get(request.form["deliveryoption"])
             order.shipping_option = shipping_option
-            payment_option = PaymentOption.query.get(
-                request.form["paymentoption"]
-            )
+            payment_option = PaymentOption.query.get(request.form["paymentoption"])
             order.payment_option = payment_option
             if current_user.is_authenticated:
                 order.logged_in_customer_email = current_user.email
 
             if form.applyCoupon.data:
-                coupon = Coupon.query.filter(
-                    Coupon.string == form.coupon.data
-                ).first()
+                coupon = Coupon.query.filter(Coupon.string == form.coupon.data).first()
                 if coupon:
                     order.coupon = coupon
                 else:

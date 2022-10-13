@@ -12,3 +12,4 @@
 | 🇮🇳 | [@kumaryogesh17](https://github.com/kumaryogesh17) |
 | 🇻🇳 | [@taanguyen](https://github.com/taanguyen) |
 | 🇮🇳 | [@arch-cl0wn](https://github.com/arch-cl0wn) |
+| 🇳🇬 | [@yemiOdetola](https://github.com/yemiOdetola) |

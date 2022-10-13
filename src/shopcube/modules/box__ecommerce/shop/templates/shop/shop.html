@@ -16,7 +16,7 @@
     <script>
 
         $( function() {
-        
+
     $( "#slider-range" ).slider({
       range: true,
       min: {{min_max[0]}},
@@ -33,7 +33,7 @@
         //var pageURL = $(location).attr("href");
         // window.location.replace($(location).attr("href")+'?min='+$( "#slider-range" ).slider( "values", 0 )+'&max='+$( "#slider-range" ).slider( "values", 1 ));
         var url_part = $(location).attr("href");
-        
+
         if(url_part.includes("?")){
             url_part = url_part.split('?')[0];
         };
@@ -59,7 +59,7 @@
       <ol class="breadcrumb bg-white">
         <li class="breadcrumb-item"><a href="{{ url_for('www.index') }}">Home</a></li>
         <li class="breadcrumb-item active">Shop</li>
-        
+
       </ol>
     </nav>
     <div class="container">

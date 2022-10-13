@@ -33,7 +33,7 @@
                         <td></td>
                         <td><a href="{{url_for('customer.order_view', order_id=order.id)}}" class="btn btn-primary">view</a></td>
                     </tr>
-                
+
                 {%endfor%}
             </tbody>
             {% if prev_url %}
@@ -46,7 +46,7 @@
         <!-- Pagination-->
         <div class="text-right">
             <a href="{{ url_for('customer.orders', page=logged_in_orders.prev_num, page2=not_logged_in_orders.prev_num) }}"
-            class="btn btn-outline-dark 
+            class="btn btn-outline-dark
             {% if logged_in_orders.page == 1 %}disabled{% endif %}">
                 &laquo;
             </a>
@@ -67,9 +67,9 @@
                 {% else %}
                     ...
                 {% endif %}
-            {% endfor %}    
+            {% endfor %}
             <a href="{{ url_for('customer.orders', page=logged_in_orders.next_num, page2=not_logged_in_orders.next_num) }}"
-            class="btn btn-outline-dark 
+            class="btn btn-outline-dark
             {% if logged_in_orders.page == logged_in_orders.pages %}disabled{% endif %}">
                 &raquo;
             </a>

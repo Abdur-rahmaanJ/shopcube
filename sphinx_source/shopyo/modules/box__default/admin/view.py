@@ -7,24 +7,25 @@ import json
 import os
 
 from flask import Blueprint
+from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
-from flask import flash
 
 from flask_login import login_required
 from sqlalchemy import exists
 
-# from config import Config
-
+from shopyoapi.html import notify_success
+from shopyoapi.html import notify_warning
 from shopyoapi.init import db
 
 from modules.box__default.admin.admin import admin_required
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
-from shopyoapi.html import notify_warning
-from shopyoapi.html import notify_success
+
+# from config import Config
+
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -77,9 +78,7 @@ def user_add():
         else:
             is_admin = False
 
-        has_user = db.session.query(
-            exists().where(User.email == email)
-        ).scalar()
+        has_user = db.session.query(exists().where(User.email == email)).scalar()
 
         if not has_user:
             new_user = User()

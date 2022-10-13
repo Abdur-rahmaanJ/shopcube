@@ -57,8 +57,8 @@ class ModuleHelp:
         module_folder = os.path.basename(module_folder)
 
         print(module_parent, module_parent)
-        if module_parent.startswith('box__'):
-            boxormodule = '{}/{}'.format(module_parent, module_folder)
+        if module_parent.startswith("box__"):
+            boxormodule = "{}/{}".format(module_parent, module_folder)
         else:
             boxormodule = module_folder
         return get_static(boxormodule=boxormodule, filename=filename)

@@ -16,7 +16,8 @@ from shopyoapi.html import notify_danger
 from shopyoapi.html import notify_success
 
 from modules.box__default.admin.models import User
-from modules.box__default.auth.forms import LoginForm, RegistrationForm
+from modules.box__default.auth.forms import LoginForm
+from modules.box__default.auth.forms import RegistrationForm
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

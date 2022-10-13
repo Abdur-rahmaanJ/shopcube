@@ -16,9 +16,7 @@ class Config:
 
     UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
     UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "category")
-    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
-        STATIC, "uploads", "subcategory"
-    )
+    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "subcategory")
     UPLOADED_PRODUCTEXCEL_DEST = os.path.join(STATIC, "uploads")
     UPLOADED_PRODUCTEXCEL_ALLOW = ("xls", "xlsx", "xlsm", "xlsb", "odf")
     PASSWORD_SALT = "abcdefghi"
@@ -48,9 +46,7 @@ class DevelopmentConfig(Config):
     MAIL_USE_SSL = False
     MAIL_USERNAME = ""  # os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = ""  # os.environ.get("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = (
-        "ma@mail.com"  # os.environ.get("MAIL_DEFAULT_SENDER")
-    )
+    MAIL_DEFAULT_SENDER = "ma@mail.com"  # os.environ.get("MAIL_DEFAULT_SENDER")
 
 
 class TestingConfig(Config):
