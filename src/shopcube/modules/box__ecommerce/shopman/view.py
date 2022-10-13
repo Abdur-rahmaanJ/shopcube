@@ -258,9 +258,7 @@ def order_delete(order_id):
     return mhelp.redirect_url("shopman.order")
 
 
-@module_blueprint.route(
-    "/order/<order_id>/view/dashboard", methods=["GET", "POST"]
-)
+@module_blueprint.route("/order/<order_id>/view/dashboard", methods=["GET", "POST"])
 @login_required
 def order_view(order_id):
     order = Order.query.get(order_id)

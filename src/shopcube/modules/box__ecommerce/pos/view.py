@@ -1,5 +1,6 @@
 import json
 import os
+from operator import and_
 
 from flask import Blueprint
 from flask import jsonify
@@ -53,17 +54,25 @@ def index():
 def transaction():
     if request.method == "POST":
         json = request.get_json()
+        print(json)
         for key in json:
+            print(key)
             prod_id = key
             number_items = json[key]["count"]
-            product = Product.query.get(prod_id)
+            product = Product.query.filter_by(barcode=str(prod_id)).first()
+            print(product)
             product.in_stock -= number_items
 
             product.update()
 
         transaction = Transaction()
-        transaction.chashier_id = current_user.id
-        transaction.products = [Product.query.get(key) for key in json]
-        transaction.insert()
+        try:
+            transaction.chashier_id = current_user.id
+            transaction.products = [
+                Product.query.filter_by(barcode=key).first() for key in json
+            ]
+            transaction.insert()
+        except:
+            print("User not logged in")
 
     return jsonify({"message": "ok"})

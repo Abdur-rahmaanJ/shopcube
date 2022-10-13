@@ -15,7 +15,7 @@
         </li>
     </ul>
     <!-- Nav Links Right Aligned -->
-    <ul class="navbar-nav ml-auto">    
+    <ul class="navbar-nav ml-auto">
         {% if (active_page != 'login') and (active_page != 'register') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('auth.logout')}}" title="Logout">

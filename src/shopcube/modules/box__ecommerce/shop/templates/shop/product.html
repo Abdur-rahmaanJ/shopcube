@@ -228,8 +228,8 @@ $(function() {
                                 {%else%}
                                     {%set img_url = url_for('resource.product_image', filename='default') %}
                                 {%endif%}
-                                <div class="xzoom-container card text-center" style="padding-left: 10px; padding-right: 10px; padding-top: 10px;"> 
-                                    <img class="xzoom3" id="xzoom-default" src="{{ img_url }}" 
+                                <div class="xzoom-container card text-center" style="padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+                                    <img class="xzoom3" id="xzoom-default" src="{{ img_url }}"
                                     xoriginal="{{ img_url }}">
 
                                     <div class="xzoom-thumbs" id="slick-items">
@@ -237,7 +237,7 @@ $(function() {
                                         {%for resource in product.resources%}
                                             {%set img_url = url_for('resource.product_image', filename=resource.filename) %}
                                         <a href="{{img_url}}">
-                                            <img class="xzoom-gallery3" width="80" height="80" src="{{img_url}}" 
+                                            <img class="xzoom-gallery3" width="80" height="80" src="{{img_url}}"
                                             xpreview="{{img_url}}">
 
                                         </a>

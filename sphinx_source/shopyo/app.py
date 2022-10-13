@@ -1,13 +1,12 @@
 import importlib
-import os
 import json
+import os
 import sys
 
-from flask import Flask
-
 # from flask import redirect
-from flask import url_for
+from flask import Flask
 from flask import send_from_directory
+from flask import url_for
 
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
@@ -17,7 +16,7 @@ sys.path.append(".")
 import jinja2
 from flask_uploads import configure_uploads
 
-from modules.box__default.settings.helpers import get_setting
+from shopyoapi.file import trycopy
 from shopyoapi.init import categoryphotos
 from shopyoapi.init import db
 from shopyoapi.init import login_manager
@@ -26,19 +25,22 @@ from shopyoapi.init import migrate
 from shopyoapi.init import productphotos
 from shopyoapi.init import subcategoryphotos
 from shopyoapi.path import modules_path
-from shopyoapi.file import trycopy
+
+from modules.box__default.settings.helpers import get_setting
 
 try:
-    if not os.path.exists('config.py'):
-        trycopy('config_demo.py', 'config.py')
-    if not os.path.exists('config.json'):
-        trycopy('config_demo.json', 'config.json')
+    if not os.path.exists("config.py"):
+        trycopy("config_demo.py", "config.py")
+    if not os.path.exists("config.json"):
+        trycopy("config_demo.json", "config.json")
 except PermissionError as e:
-    print('Cannot continue, permission error'
-        'initialising config.py and config.json, '
-        'copy and rename them yourself!')
+    print(
+        "Cannot continue, permission error"
+        "initialising config.py and config.json, "
+        "copy and rename them yourself!"
+    )
     raise e
-    
+
 
 from config import app_config
 
@@ -59,7 +61,6 @@ def create_app(config_name):
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
-
 
     #
     # dev static
@@ -82,9 +83,7 @@ def create_app(config_name):
 
         if folder.startswith("box__"):
             # boxes
-            for sub_folder in os.listdir(
-                os.path.join(base_path, "modules", folder)
-            ):
+            for sub_folder in os.listdir(os.path.join(base_path, "modules", folder)):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
@@ -109,12 +108,8 @@ def create_app(config_name):
             # apps
             mod = importlib.import_module("modules.{}.view".format(folder))
             try:
-                mod_global = importlib.import_module(
-                    "modules.{}.global".format(folder)
-                )
-                available_everywhere_entities.update(
-                    mod_global.available_everywhere
-                )
+                mod_global = importlib.import_module("modules.{}.global".format(folder))
+                available_everywhere_entities.update(mod_global.available_everywhere)
             except ImportError as e:
                 # print(e)
                 pass
@@ -190,9 +185,9 @@ def create_app(config_name):
     # return response
 
 
-with open(os.path.join(base_path, 'config.json')) as f:
+with open(os.path.join(base_path, "config.json")) as f:
     config_json = json.load(f)
-environment = config_json['environment']
+environment = config_json["environment"]
 app = create_app(environment)
 
 

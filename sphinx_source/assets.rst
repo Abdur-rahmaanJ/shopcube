@@ -39,13 +39,13 @@ If DEBUG False, it will be served from main static folder. Make sure to run
 
 before
 
-You can test the difference by running 
+You can test the difference by running
 
 .. code:: bash
 
    python manage.py rundebug
 
-and 
+and
 
 .. code:: bash
 

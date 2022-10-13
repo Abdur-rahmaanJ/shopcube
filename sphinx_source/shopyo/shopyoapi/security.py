@@ -1,5 +1,9 @@
-from flask import request, g, redirect
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin
+from urllib.parse import urlparse
+
+from flask import g
+from flask import redirect
+from flask import request
 
 
 # from https://security.openstack.org/guidelines/dg_avoid-unvalidated-redirects.html

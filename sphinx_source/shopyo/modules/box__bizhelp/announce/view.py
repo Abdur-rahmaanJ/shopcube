@@ -39,9 +39,7 @@ def add_check():
         form = AnnounceForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return mhelp.redirect_url(
-                "{}.dashboard".format(mhelp.info["module_name"])
-            )
+            return mhelp.redirect_url("{}.dashboard".format(mhelp.info["module_name"]))
         toadd_announce = Announcement(
             content=form.content.data,
             title=form.title.data,
@@ -93,9 +91,7 @@ def edit_check(announce_id):
         form = AnnounceForm(obj=announcement)
         if not form.validate_on_submit():
             flash_errors(form)
-            return mhelp.redirect_url(
-                mhelp.method("edit"), announce_id=announce_id
-            )
+            return mhelp.redirect_url(mhelp.method("edit"), announce_id=announce_id)
         form.populate_obj(announcement)
         announcement.update()
         flash(notify_success("Announcement updated!"))

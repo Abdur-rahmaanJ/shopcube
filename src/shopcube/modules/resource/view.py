@@ -50,9 +50,7 @@ def index():
     return module_info["display_string"]
 
 
-@module_blueprint.route(
-    "/theme/front/<active_theme>/styles.css", methods=["GET"]
-)
+@module_blueprint.route("/theme/front/<active_theme>/styles.css", methods=["GET"])
 def active_front_theme_css(active_theme):
     theme_dir = os.path.join(
         current_app.config["BASE_DIR"],
@@ -65,9 +63,7 @@ def active_front_theme_css(active_theme):
     return send_from_directory(theme_dir, "styles.css")
 
 
-@module_blueprint.route(
-    "/theme/back/<active_theme>/styles.css", methods=["GET"]
-)
+@module_blueprint.route("/theme/back/<active_theme>/styles.css", methods=["GET"])
 def active_back_theme_css(active_theme):
     theme_dir = os.path.join(
         current_app.config["BASE_DIR"],
@@ -144,9 +140,7 @@ def upload_tinymce_image():
                 db.session.commit()
             except OSError:
                 output = make_response(404)
-                output.headers["Error"] = (
-                    "Cannot create thumbnail for " + filename
-                )
+                output.headers["Error"] = "Cannot create thumbnail for " + filename
                 return output
             return jsonify({"location": filename})
 
