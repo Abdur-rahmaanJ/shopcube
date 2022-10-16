@@ -28,7 +28,9 @@ class Product(PkModel):
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
     subcategory_name = db.relationship(
-        "SubCategory", backref=db.backref("subcategory", uselist=False)
+        "SubCategory",
+        backref=db.backref("subcategory", uselist=False),
+        overlaps="products,subcategory",
     )
     transactions = db.relationship(
         "Transaction",
@@ -68,7 +70,9 @@ class Product(PkModel):
             return url_for("static", filename="default/default_product.jpg")
         else:
             resource = self.resources[0]
-            return url_for("static", filename=f"uploads/products/{resource.filename}")
+            return url_for(
+                "static", filename=f"uploads/products/{resource.filename}"
+            )
 
     def get_page_url(self):
         return url_for("shop.product", product_barcode=self.barcode)
