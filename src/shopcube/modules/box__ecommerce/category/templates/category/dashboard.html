@@ -42,7 +42,7 @@ $(function() {
                 <!-- url_for('product.list', category_name=category.name) -->
                 <a href="{{url_for('category.choose_sub_dashboard', category_id=category.id)}}" style="text-decoration: none;">
                     <button style="" class="btn btn-info" type="">
-                        products
+                        products ({{category.get_num_subcategories()}})
                     </button>
                 </a>
                 &nbsp;&nbsp;

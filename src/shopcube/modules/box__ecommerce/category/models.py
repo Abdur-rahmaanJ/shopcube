@@ -32,6 +32,9 @@ class Category(PkModel):
     def convert_lower(self, key, value):
         return value.lower()
 
+    def get_num_subcategories(self):
+        return len(self.subcategories)
+ 
     def get_one_image_url(self):
         if len(self.resources) == 0:
             return url_for("static", filename="default/default_subcategory.jpg")
