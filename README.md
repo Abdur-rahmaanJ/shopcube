@@ -56,52 +56,6 @@ $ shopcube rundebug
 
 Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
-## 🎫 Some explanations
-
-Shopcube has two modes:
-
-- package mode if you want to just use the app as is
-- control mode if you want to see exactly what's going on
-
-Package mode has several commands to manage the json settings file
-
-```
-$ shopcube showjson # show settings
-$ shopcube copyjson # copy json file from site-packages in current directory
-$ shopcube applyjson # apply json file in current directory
-$ shopcube restorejson # restore original json file in site-packages
-$ shopcube create # create new project named shopcube in current directory
-$ shopcube packageinfo # path of project
-```
-
-Control mode allows you to use Shopyo commands as you would in any project
-
-```
-$ shopcube create
-$ ls shopcube/
-├── app.py
-├── config.example.json
-├── config.json
-├── config.py
-├── conftest.py
-├── file.log
-├── __init__.py
-├── init.py
-├── instance
-├── __main__.py
-├── modules
-├── __pycache__
-├── pyproject.toml
-├── requirements.txt
-├── setup.cfg
-├── static
-├── tests
-├── utils
-└── wsgi.py
-$ cd shopcube
-$ shopyo initialise
-$ shopyo rundebug
-```
 
 ## 🍼 First time setup
 
@@ -183,6 +137,55 @@ $ shopyo rundebug
         "password": "pass"
     }
   ```
+
+## 🎫 Some explanations
+
+Shopcube has two modes:
+
+- package mode if you want to just use the app as is
+- control mode if you want to see exactly what's going on
+
+Package mode has several commands to manage the json settings file
+
+```
+$ shopcube showjson # show settings
+$ shopcube copyjson # copy json file from site-packages in current directory
+$ shopcube applyjson # apply json file in current directory
+$ shopcube restorejson # restore original json file in site-packages
+$ shopcube create # create new project named shopcube in current directory
+$ shopcube packageinfo # path of project
+```
+
+Control mode allows you to use Shopyo commands as you would in any project
+
+```
+$ shopcube create
+$ ls shopcube/
+├── app.py
+├── config.example.json
+├── config.json
+├── config.py
+├── conftest.py
+├── file.log
+├── __init__.py
+├── init.py
+├── instance
+├── __main__.py
+├── modules
+├── __pycache__
+├── pyproject.toml
+├── requirements.txt
+├── setup.cfg
+├── static
+├── tests
+├── utils
+└── wsgi.py
+$ cd shopcube
+$ shopyo initialise
+$ shopyo rundebug
+```
+
+
 
 ## ↩ Pull Requests
 
