@@ -8,7 +8,8 @@ from flask import current_app
 from flask import send_from_directory
 
 from flask_login import login_required
-from PIL import Image as PILimage
+
+# from PIL import Image as PILimage
 
 # from modules.box__ecommerce.product.models import Product
 # from modules.resource.models import Image
