@@ -1,8 +1,0 @@
-{
-        "display_string": "Page",
-        "module_name":"page",
-        "type": "show",
-        "fa-icon": "fa fa-edit",
-        "url_prefix": "/page",
-        "dashboard": "/dashboard"
-}
