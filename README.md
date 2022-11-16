@@ -250,6 +250,18 @@ If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) 
 
   - Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs!
 
+
+## ✨ Useful commands
+
+```
+$ flask flight-info
+
+Python version: 3.10.7 (main, Sep  7 2022, 15:22:19) [GCC 9.4.0]
+Shopyo version: 4.5.8
+Shopcube version : 4.2.0
+SQLALCHEMY_DATABASE_URI: sqlite:///shopcube.db
+```
+
 ## 🍳 In Action
 
 ![](screenshots/new_screenshots/1.png)
