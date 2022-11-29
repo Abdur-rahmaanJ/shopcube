@@ -34,7 +34,7 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
     name="shopcube",  # Required
-    version="4.2.2",  # Required
+    version="4.3.0",  # Required
     description="E-commerce solution",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
@@ -65,7 +65,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
-    keywords="flask pos management shop ecommerce cms erp",  # Optional
+    keywords="flask pos management shop ecommerce cms erp e-commerce",  # Optional
     # You can just specify package directories manually here if your project is
     # simple. Or you can use find_packages().
     #
