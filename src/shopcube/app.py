@@ -17,20 +17,17 @@ sys.path.append(".")
 
 import jinja2
 import shopyo
-from flask_mailman import Mail
-from flask_uploads import configure_uploads
 from shopyo.api.file import trycopy
 
 from config import app_config
-from init import categoryphotos
+from init import configure_all_uploads
+from init import csrf
 from init import db
 from init import login_manager
 from init import ma
+from init import mail
 from init import migrate
 from init import modules_path
-from init import productexcel
-from init import productphotos
-from init import subcategoryphotos
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -89,14 +86,11 @@ def create_app(config_name, configs=None):
     db.init_app(app)
     ma.init_app(app)
     login_manager.init_app(app)
-    csrf = CSRFProtect(app)  # noqa
-    mail = Mail()
-    mail.init_app(app)
 
-    configure_uploads(app, categoryphotos)
-    configure_uploads(app, subcategoryphotos)
-    configure_uploads(app, productphotos)
-    configure_uploads(app, productexcel)
+    mail.init_app(app)
+    csrf.init_app(app)
+
+    configure_all_uploads(app)
 
     #
     # dev static
@@ -239,13 +233,13 @@ def create_app(config_name, configs=None):
         }
         base_context.update(available_everywhere_entities)
 
-        app.logger.info(available_everywhere_entities)
+        # app.logger.info(available_everywhere_entities)
 
         return base_context
 
-    print(
-        available_everywhere_entities, file=open("file.log", "a"), flush=True
-    )
+    # print(
+    #     available_everywhere_entities, file=open("file.log", "a"), flush=True
+    # )
 
     # commands
 
