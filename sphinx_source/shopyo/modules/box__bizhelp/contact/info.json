@@ -1,7 +1,0 @@
-{
-  "display_string": "Contact",
-  "type": "show",
-  "fa-icon": "fa fa-envelope",
-  "url_prefix": "/contact",
-  "dashboard": "/dashboard"
-}
