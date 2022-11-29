@@ -17,7 +17,7 @@ sys.path.append(".")
 
 import jinja2
 import shopyo
-from flask_mailman import Mail
+
 from flask_uploads import configure_uploads
 from shopyo.api.file import trycopy
 
@@ -31,6 +31,8 @@ from init import modules_path
 from init import productexcel
 from init import productphotos
 from init import subcategoryphotos
+from init import csrf 
+from init import mail
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -90,8 +92,9 @@ def create_app(config_name, configs=None):
     ma.init_app(app)
     login_manager.init_app(app)
     csrf = CSRFProtect(app)  # noqa
-    mail = Mail()
+    
     mail.init_app(app)
+    csrf.init_app(app)
 
     configure_uploads(app, categoryphotos)
     configure_uploads(app, subcategoryphotos)
