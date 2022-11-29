@@ -34,11 +34,11 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
     name="shopcube",  # Required
-    version="4.2.0",  # Required
+    version="4.2.2",  # Required
     description="E-commerce solution",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
-    url="https://github.com/shopyo/shopcube",  # Optional
+    url="https://github.com/Abdur-RahmaanJ/shopcube",  # Optional
     author="Abdur-Rahmaan Janhangeer & contributors",  # Optional
     author_email="arj.python@gmail.com",  # Optional
     # Classifiers help users find your project by categorizing it.
@@ -87,8 +87,8 @@ setup(
         .split("\n"),
     },
     project_urls={  # Optional
-        "Bug Reports": "https://github.com/shopyo/shopcube/issues",
-        "Source": "https://github.com/shopyo/shopcube/",
+        "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopcube/issues",
+        "Source": "https://github.com/Abdur-RahmaanJ/shopcube/",
     },
     packages=find_packages(),
     entry_points={"console_scripts": ["shopcube=shopcube.__main__:main"]},
