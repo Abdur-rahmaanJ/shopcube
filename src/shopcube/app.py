@@ -100,7 +100,9 @@ def create_app(config_name, configs=None):
     def devstatic(boxormodule, filename):
         if app.config["DEBUG"]:
             module_static = os.path.join(modules_path, boxormodule, "static")
-            return send_from_directory(module_static, filename=filename)
+            return send_from_directory(
+                os.path.normpath(module_static), filename=filename
+            )
 
     available_everywhere_entities = {}
 
