@@ -4,14 +4,15 @@ All initialisations like db = SQLAlchemy in this file
 import os
 
 from flask_login import LoginManager
+from flask_mailman import Mail
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import DOCUMENTS
 from flask_uploads import IMAGES
 from flask_uploads import UploadSet
+from flask_uploads import configure_uploads
 from flask_wtf.csrf import CSRFProtect
-from flask_mailman import Mail
 
 root_path = os.path.dirname(os.path.abspath(__file__))  # don't remove
 static_path = os.path.join(root_path, "static")  # don't remove
@@ -29,3 +30,10 @@ productphotos = UploadSet("productphotos", IMAGES)
 categoryphotos = UploadSet("categoryphotos", IMAGES)
 subcategoryphotos = UploadSet("subcategoryphotos", IMAGES)
 productexcel = UploadSet("productexcel", DOCUMENTS)
+
+
+def configure_all_uploads(app):
+    configure_uploads(app, categoryphotos)
+    configure_uploads(app, subcategoryphotos)
+    configure_uploads(app, productphotos)
+    configure_uploads(app, productexcel)
