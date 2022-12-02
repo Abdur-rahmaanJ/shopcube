@@ -42,8 +42,12 @@ class Resource(db.Model):
     )
 
     #
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=True)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
+    product_id = db.Column(
+        db.Integer, db.ForeignKey("product.id"), nullable=True
+    )
+    category_id = db.Column(
+        db.Integer, db.ForeignKey("categories.id"), nullable=True
+    )
     subcategory_id = db.Column(
         db.Integer, db.ForeignKey("subcategories.id"), nullable=True
     )
