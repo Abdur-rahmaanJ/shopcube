@@ -14,3 +14,4 @@
 | 🇮🇳 | [@arch-cl0wn](https://github.com/arch-cl0wn) |
 | 🇳🇬 | [@yemiOdetola](https://github.com/yemiOdetola) |
 | 🇬🇧 | [@Westsi](https://github.com/Westsi) |
+| IN | [@yadnu](https://github.com/Yadnu)|
