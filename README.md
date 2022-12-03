@@ -3,7 +3,7 @@
 
 
 
-<img src="https://github.com/shopyo/shopcube/blob/dev/assets/logo.png" width="250" />
+<img src="https://github.com/Abdur-rahmaanJ/shopcube/raw/dev/assets/logo.png" width="250" />
 
 [![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
 
