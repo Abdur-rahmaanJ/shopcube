@@ -8,11 +8,9 @@ for the proper behavior of the `admin` blueprint.
 import json
 import os
 
+import pytest
 from flask import request
 from flask import url_for
-
-import pytest
-
 from modules.box__default.admin.models import Role
 from modules.box__default.admin.models import User
 from modules.box__default.admin.models import role_user_link
