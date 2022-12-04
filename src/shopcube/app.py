@@ -15,6 +15,9 @@ from flask_wtf.csrf import CSRFProtect
 
 sys.path.append(".")
 
+import datetime
+
+import flask
 import jinja2
 import shopyo
 from config import app_config
@@ -247,6 +250,14 @@ def create_app(config_name, configs=None):
                 app.config["SQLALCHEMY_DATABASE_URI"]
             )
         )
+
+    # some stuffs
+
+    @app.before_request
+    def before_request():
+        flask.session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(minutes=20)
+        flask.session.modified = True
 
     # end of func
     return app
