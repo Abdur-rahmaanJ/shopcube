@@ -3,34 +3,59 @@ File conftest.py contains pytest fixtures that are used in numerous
 test functions. Refer to https://docs.pytest.org/en/stable/fixture.html
 for more details on pytest
 """
+import datetime
 import json
 import os
-
-from flask import url_for
+import shutil
+import sys
 
 import pytest
-
-from app import create_app
+from flask import url_for
 from init import db as _db
-
-from modules.box__default.admin.models import User
-from modules.box__default.settings.models import Settings
+from shopyo.api.file import tryrmtree
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v
+
+
+sys.path.append(".")
+from app import create_app
+from modules.box__default.admin.models import User
+from modules.box__default.settings.models import Settings
+
+# from shopyo.app import app as _app
+
+
+@pytest.fixture(scope="module")
+def temp_app():
+    return create_app("testing")
+
+
+@pytest.fixture
+def app(tmpdir, app_type, temp_app):
+    src = os.path.join(temp_app.instance_path, "config.py")
+    dest = tmpdir.join("temp_config.py")
+    dest.write("")
+    shutil.copy(src, dest)
+    tryrmtree(temp_app.instance_path)
+    dev_app = create_app(app_type)
+    yield dev_app
+    shutil.copy(dest, src)
+
 
 if os.path.exists("testing.db"):
     os.remove("testing.db")
 
 
 @pytest.fixture(scope="session")
-def new_user():
+def unconfirmed_user():
     """
-    A pytest fixture that returns a user model object
+    A pytest fixture that returns a non admin user
     """
-    user = User(email="newuser@domain.com", password="pass")
-    user.first_name = "New"
-    user.last_name = "User"
+    user = User()
+    user.email = "unconfirmed@domain.com"
+    user.password = "pass"
+    user.is_email_confirmed = False
     return user
 
 
@@ -39,7 +64,11 @@ def non_admin_user():
     """
     A pytest fixture that returns a non admin user
     """
-    user = User(email="admin1@domain.com", password="pass")
+    user = User()
+    user.email = "admin1@domain.com"
+    user.password = "pass"
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
     return user
 
 
@@ -48,7 +77,12 @@ def admin_user():
     """
     A pytest fixture that returns an admin user
     """
-    user = User(email="admin2@domain.com", is_admin=True, password="pass")
+    user = User()
+    user.email = "admin2@domain.com"
+    user.password = "pass"
+    user.is_admin = True
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
     return user
 
 
@@ -71,7 +105,7 @@ def test_client(flask_app):
 
 
 @pytest.fixture(scope="session")
-def db(test_client, non_admin_user, admin_user):
+def db(test_client, non_admin_user, admin_user, unconfirmed_user):
     """
     creates and returns the initial testing database
     """
@@ -79,9 +113,10 @@ def db(test_client, non_admin_user, admin_user):
     _db.app = test_client
     _db.create_all()
 
-    # Insert admin and non admin users
+    # Insert admin, non admin, and unconfirmed
     _db.session.add(non_admin_user)
     _db.session.add(admin_user)
+    _db.session.add(unconfirmed_user)
 
     # add the default settings
     with open("config.json") as config:
@@ -104,7 +139,6 @@ def db_session(db):
     Creates a new database session for a test. Note you must use this fixture
     if your test connects to db. Autouse is set to true which implies
     that the fixture will be setup before each test
-
     Here we not only support commit calls but also rollback calls in tests.
     """
     connection = db.engine.connect()
@@ -118,6 +152,14 @@ def db_session(db):
     transaction.rollback()
     connection.close()
     session.remove()
+
+
+@pytest.fixture
+def login_unconfirmed_user(auth, unconfirmed_user):
+    """Login with unconfirmed and logout during teadown"""
+    auth.login(unconfirmed_user)
+    yield
+    auth.logout()
 
 
 @pytest.fixture
@@ -154,42 +196,3 @@ class AuthActions:
 
     def logout(self):
         return self._client.get(url_for("auth.logout"), follow_redirects=True)
-
-
-# Want TO USE THE BELOW 2 FIXTURES TO DYNAMICALLY
-# GET THE ROUTES FOR A GIVEN MODULE BUT UNABLE TO
-# PARAMETERIZE THE LIST OF ROUTES RETURNED FROM THE FIXTURE
-# CURRENTLY THIS NOT POSSIBLE WITH FIXTURES IN PYTEST @rehmanis
-
-# @pytest.fixture(scope="module")
-# def get_module_routes(request, get_routes):
-#     module_prefix = getattr(request.module, "module_prefix", "/")
-#     return get_routes[module_prefix]
-
-
-# @pytest.fixture(scope="session")
-# def get_routes(flask_app):
-
-#     routes_dict = {}
-#     relative_path = "/"
-#     prefix = "/"
-
-#     for route in flask_app.url_map.iter_rules():
-#         split_route = list(filter(None, str(route).split("/", 2)))
-
-#         if len(split_route) == 0:
-#             prefix = "/"
-#             relative_path = ""
-#         elif len(split_route) == 1:
-#             prefix = "/" + split_route[0]
-#             relative_path = "/"
-#         else:
-#             prefix = "/" + split_route[0]
-#             relative_path = split_route[1]
-
-#         if prefix in routes_dict:
-#             routes_dict[prefix].append(relative_path)
-#         else:
-#             routes_dict[prefix] = [relative_path]
-
-#     return routes_dict
