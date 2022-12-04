@@ -48,6 +48,6 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: pip|${{ runner.os }}|${{ matrix.python }}|${{ hashFiles('setup.py') }}|${{ hashFiles('requirements/*.txt') }}|${{ hashFiles('requirements.txt') }}
       - run: pip install tox codecov
-      - run: python -m pytest ./src/shopcube/
+      - run: tox -e py
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
