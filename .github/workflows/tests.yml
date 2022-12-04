@@ -38,6 +38,7 @@ jobs:
       - name: install requirements
         run: |
           python -m pip install pytest
+          python -m pip install .
       - name: get pip cache dir
         id: pip-cache
         run: echo "::set-output name=dir::$(pip cache dir)"
