@@ -10,7 +10,6 @@ import os
 
 from flask import request
 from flask import url_for
-
 from modules.box__bizhelp.announce.models import Announcement
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -24,18 +23,8 @@ with open(os.path.join(module_path, "info.json")) as f:
 
 def test_announce_dashboard(test_client):
     """"""
-    response = test_client.get(url_for("auth.logout"), follow_redirects=True)
-    print(request.path)
-    assert response.status_code == 200
-    assert request.path == url_for("auth.login")
 
-    # check request to contact correctly redirects to login page
-    response = test_client.get(
-        module_info["url_prefix"] + "/dashboard", follow_redirects=True
-    )
-    assert request.path == url_for("auth.login")
-
-    # Login and try to access the contact dashboard. It should return OK
+    # Login and try to access the dashboard. It should return OK
     response = test_client.post(
         url_for("auth.login"),
         data=dict(email="admin1@domain.com", password="pass"),
@@ -46,7 +35,9 @@ def test_announce_dashboard(test_client):
     assert response.status_code == 200
 
     # check response is valid
-    response = test_client.get(url_for(module_info["module_name"] + ".dashboard"))
+    response = test_client.get(
+        url_for(module_info["module_name"] + ".dashboard")
+    )
     assert response.status_code == 200
     assert b"New Announcement" in response.data
     assert b"Title" in response.data
