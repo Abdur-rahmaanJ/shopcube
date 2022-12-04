@@ -105,7 +105,7 @@ def test_client(flask_app):
 
 
 @pytest.fixture(scope="session")
-def db(test_client, non_admin_user, admin_user, unconfirmed_user):
+def db(tmpdir, test_client, non_admin_user, admin_user, unconfirmed_user):
     """
     creates and returns the initial testing database
     """
@@ -119,7 +119,9 @@ def db(test_client, non_admin_user, admin_user, unconfirmed_user):
     _db.session.add(unconfirmed_user)
 
     # add the default settings
-    with open("config.json") as config:
+
+    cfg_json_path = os.path.join(os.getcwd(), "config.json")
+    with open(cfg_json_path) as config:
         config = json.load(config)
     for name, value in config["settings"].items():
         s = Settings(setting=name, value=value)
