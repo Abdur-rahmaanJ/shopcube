@@ -73,6 +73,17 @@ def non_admin_user():
 
 
 @pytest.fixture(scope="session")
+def new_user():
+    """
+    A pytest fixture that returns a user model object
+    """
+    user = User(email="newuser@domain.com", password="pass")
+    user.first_name = "New"
+    user.last_name = "User"
+    return user
+
+
+@pytest.fixture(scope="session")
 def admin_user():
     """
     A pytest fixture that returns an admin user
@@ -105,7 +116,7 @@ def test_client(flask_app):
 
 
 @pytest.fixture(scope="session")
-def db(test_client, non_admin_user, admin_user, unconfirmed_user):
+def db(test_client, non_admin_user, admin_user, unconfirmed_user, new_user):
     """
     creates and returns the initial testing database
     """
