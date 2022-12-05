@@ -1,6 +1,6 @@
 <div align="center">
 
-# shopcube [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S2GDNC7)
+
 
 <img src="https://github.com/Abdur-rahmaanJ/shopcube/raw/dev/assets/logo.png" width="250" />
 
@@ -17,7 +17,7 @@
 
 </div>
 
-# shopcube
+# shopcube [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S2GDNC7)
 
 shopcube is an e-commerce solution for shops. Complete with
 
