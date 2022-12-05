@@ -26,7 +26,7 @@ shopcube is an e-commerce solution for shops. Complete with
 - [x] 📑 orders
 - [x] 📤 upload by csv
 - [ ] 📊 charts
-
+- [x] 🖌️ theming
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy. Join [#shopcube](https://discord.gg/Gnys4C6xZX) if you get stuck or would just like to chat and say hi.
 
@@ -42,7 +42,6 @@ Powered by [Shopyo](https://github.com/shopyo/shopyo), a Python web framework bu
 
 ## ⚡ Quick try
 
-
 ```
 $ python -m pip install shopcube
 $ shopcube initialise
@@ -50,7 +49,6 @@ $ shopcube rundebug
 ```
 
 Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
-
 
 ## 🍼 First time setup
 
@@ -180,8 +178,6 @@ $ shopyo initialise
 $ shopyo rundebug
 ```
 
-
-
 ## ↩ Pull Requests
 
 --> Add flag to readme
@@ -222,14 +218,14 @@ If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) 
 
   In `config.py`, make sure you have a database URI
 
-    ```
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
-        username='shopcube',
-        password='pass1234-A',
-        server_name='localhost',
-        db_name='shopcube'
-    )
-    ```
+  ```
+  SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
+      username='shopcube',
+      password='pass1234-A',
+      server_name='localhost',
+      db_name='shopcube'
+  )
+  ```
 
   or paste the following into `config.py` inside of the `class DevelopmentConfig(Config)`:
 
@@ -244,7 +240,6 @@ If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) 
 - Additional development insights?
 
   - Read the [shopyo](https://shopyo.readthedocs.io/en/latest/) docs!
-
 
 ## ✨ Useful commands
 
