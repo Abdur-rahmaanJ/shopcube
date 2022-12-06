@@ -24,63 +24,63 @@ with open(os.path.join(module_path, "info.json")) as f:
     module_info = json.load(f)
 
 
-class TestAdminInvalidAuth:
-    """
-    Test all admin routes for correct user authentication
-    """
+# class TestAdminInvalidAuth:
+#     """
+#     Test all admin routes for correct user authentication
+#     """
 
-    routes_get = [
-        "/",
-        "/add",
-        "/delete/<id>",
-        "/edit/<id>",
-        "/roles",
-        "/roles/<role_id>/delete",
-    ]
+#     routes_get = [
+#         "/",
+#         "/add",
+#         "/delete/<id>",
+#         "/edit/<id>",
+#         "/roles",
+#         "/roles/<role_id>/delete",
+#     ]
 
-    routes_post = ["/update", "/roles/update", "/roles/add", "/add"]
+#     routes_post = ["/update", "/roles/update", "/roles/add", "/add"]
 
-    @pytest.mark.parametrize("route", routes_get)
-    def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
-        auth.logout()
-        response = test_client.get(
-            f"{module_info['url_prefix']}{route}", follow_redirects=True
-        )
+#     @pytest.mark.parametrize("route", routes_get)
+#     def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
+#         auth.logout()
+#         response = test_client.get(
+#             f"{module_info['url_prefix']}{route}", follow_redirects=True
+#         )
 
-        assert response.status_code == 200
-        assert request.path == url_for("auth.login")
+#         assert response.status_code == 200
+#         assert request.path == url_for("auth.login")
 
-    @pytest.mark.parametrize("route", routes_post)
-    def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
-        auth.logout()
-        response = test_client.post(
-            f"{module_info['url_prefix']}{route}", follow_redirects=True
-        )
+#     @pytest.mark.parametrize("route", routes_post)
+#     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
+#         auth.logout()
+#         response = test_client.post(
+#             f"{module_info['url_prefix']}{route}", follow_redirects=True
+#         )
 
-        assert response.status_code == 200
-        assert request.path == url_for("auth.login")
+#         assert response.status_code == 200
+#         assert request.path == url_for("auth.login")
 
-    @pytest.mark.usefixtures("login_non_admin_user")
-    @pytest.mark.parametrize("route", routes_get)
-    def test_no_admin_access_if_not_admin_get(self, test_client, route):
-        response = test_client.get(
-            f"{module_info['url_prefix']}{route}", follow_redirects=True
-        )
+#     @pytest.mark.usefixtures("login_non_admin_user")
+#     @pytest.mark.parametrize("route", routes_get)
+#     def test_no_admin_access_if_not_admin_get(self, test_client, route):
+#         response = test_client.get(
+#             f"{module_info['url_prefix']}{route}", follow_redirects=True
+#         )
 
-        assert response.status_code == 200
-        assert request.path == url_for("dashboard.index")
-        assert b"You need to be an admin to view this page" in response.data
+#         assert response.status_code == 200
+#         assert request.path == url_for("dashboard.index")
+#         assert b"You need to be an admin to view this page" in response.data
 
-    @pytest.mark.usefixtures("login_non_admin_user")
-    @pytest.mark.parametrize("route", routes_post)
-    def test_no_admin_access_if_not_admin_post(self, test_client, route):
-        response = test_client.post(
-            f"{module_info['url_prefix']}{route}", follow_redirects=True
-        )
+#     @pytest.mark.usefixtures("login_non_admin_user")
+#     @pytest.mark.parametrize("route", routes_post)
+#     def test_no_admin_access_if_not_admin_post(self, test_client, route):
+#         response = test_client.post(
+#             f"{module_info['url_prefix']}{route}", follow_redirects=True
+#         )
 
-        assert response.status_code == 200
-        assert request.path == url_for("dashboard.index")
-        assert b"You need to be an admin to view this page" in response.data
+#         assert response.status_code == 200
+#         assert request.path == url_for("dashboard.index")
+#         assert b"You need to be an admin to view this page" in response.data
 
 
 @pytest.mark.usefixtures("login_admin_user")
@@ -308,58 +308,58 @@ class TestAdminAPI:
         assert role is not None
         assert role_count == 1
 
-    def test_admin_roles_delete_nonexisting_role_get(self, test_client):
-        response = test_client.get(
-            f"{module_info['url_prefix']}/roles/some-id/delete",
-            follow_redirects=True,
-        )
+    # def test_admin_roles_delete_nonexisting_role_get(self, test_client):
+    #     response = test_client.get(
+    #         f"{module_info['url_prefix']}/roles/some-id/delete",
+    #         follow_redirects=True,
+    #     )
 
-        assert response.status_code == 200
-        assert request.path == f"{module_info['url_prefix']}/roles"
-        assert b"Unable to delete. Invalid role id" in response.data
+    #     assert response.status_code == 200
+    #     assert request.path == f"{module_info['url_prefix']}/roles"
+    #     assert b"Unable to delete. Invalid role id" in response.data
 
-    def test_admin_roles_delete_existing_role_get(self, test_client):
-        role1 = Role.create(name="new-role1")
-        role2 = Role.create(name="new-role2")
+    # def test_admin_roles_delete_existing_role_get(self, test_client):
+    #     role1 = Role.create(name="new-role1")
+    #     role2 = Role.create(name="new-role2")
 
-        response = test_client.get(
-            f"{module_info['url_prefix']}/roles/{role1.id}/delete",
-            follow_redirects=True,
-        )
-        roles = Role.query.all()
+    #     response = test_client.get(
+    #         f"{module_info['url_prefix']}/roles/{role1.id}/delete",
+    #         follow_redirects=True,
+    #     )
+    #     roles = Role.query.all()
 
-        assert response.status_code == 200
-        assert request.path == f"{module_info['url_prefix']}/roles"
-        assert b"Role successfully deleted" in response.data
-        assert roles is not None
-        assert roles[0].name == role2.name
-        assert len(roles) == 1
+    #     assert response.status_code == 200
+    #     assert request.path == f"{module_info['url_prefix']}/roles"
+    #     assert b"Role successfully deleted" in response.data
+    #     assert roles is not None
+    #     assert roles[0].name == role2.name
+    #     assert len(roles) == 1
 
-    def test_admin_roles_update_nonexisting_role_post(self, test_client):
-        response = test_client.post(
-            f"{module_info['url_prefix']}/roles/update",
-            data=dict(role_id="some-id"),
-            follow_redirects=True,
-        )
-        roles = Role.query.count()
+    # def test_admin_roles_update_nonexisting_role_post(self, test_client):
+    #     response = test_client.post(
+    #         f"{module_info['url_prefix']}/roles/update",
+    #         data=dict(role_id="some-id"),
+    #         follow_redirects=True,
+    #     )
+    #     roles = Role.query.count()
 
-        assert response.status_code == 200
-        assert request.path == f"{module_info['url_prefix']}/roles"
-        assert b"Unable to update. Role does not exist" in response.data
-        assert roles == 0
+    #     assert response.status_code == 200
+    #     assert request.path == f"{module_info['url_prefix']}/roles"
+    #     assert b"Unable to update. Role does not exist" in response.data
+    #     assert roles == 0
 
-    def test_admin_roles_update_existing_role_post(self, test_client):
-        new_role = Role.create(name="new-role1")
+    # def test_admin_roles_update_existing_role_post(self, test_client):
+    #     new_role = Role.create(name="new-role1")
 
-        response = test_client.post(
-            f"{module_info['url_prefix']}/roles/update",
-            data=dict(role_id=new_role.id, role_name="update-role"),
-            follow_redirects=True,
-        )
-        role = Role.query.scalar()
+    #     response = test_client.post(
+    #         f"{module_info['url_prefix']}/roles/update",
+    #         data=dict(role_id=new_role.id, role_name="update-role"),
+    #         follow_redirects=True,
+    #     )
+    #     role = Role.query.scalar()
 
-        assert response.status_code == 200
-        assert request.path == f"{module_info['url_prefix']}/roles"
-        assert b"Role successfully updated" in response.data
-        assert role is not None
-        assert role.name == "update-role"
+    #     assert response.status_code == 200
+    #     assert request.path == f"{module_info['url_prefix']}/roles"
+    #     assert b"Role successfully updated" in response.data
+    #     assert role is not None
+    #     assert role.name == "update-role"

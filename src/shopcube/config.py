@@ -63,8 +63,11 @@ class TestingConfig(Config):
     SERVER_NAME = "localhost.com"
     BCRYPT_LOG_ROUNDS = 4
     TESTING = True
+    ENV = "testing"
     LOGIN_DISABLED = False
     WTF_CSRF_ENABLED = False
+    PREFERRED_URL_SCHEME = "http"
+    SECRET_KEY = "abcd"
 
 
 app_config = {
