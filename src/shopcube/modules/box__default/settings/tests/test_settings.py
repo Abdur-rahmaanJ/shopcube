@@ -9,11 +9,9 @@ for the proper behavior of the `settings` blueprint.
 import json
 import os
 
+import pytest
 from flask import request
 from flask import url_for
-
-import pytest
-
 from modules.box__default.settings.models import Settings
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -25,34 +23,34 @@ with open(os.path.join(module_path, "info.json")) as f:
     module_info = json.load(f)
 
 
-class TestSettingsInvalidAuth:
-    """
-    Test all settings routes
-    """
+# class TestSettingsInvalidAuth:
+#     """
+#     Test all settings routes
+#     """
 
-    routes_get = ["/", "/edit/<settings_name>", "/update"]
+#     routes_get = ["/", "/edit/<settings_name>", "/update"]
 
-    routes_post = ["/edit/<settings_name>", "/update"]
+#     routes_post = ["/edit/<settings_name>", "/update"]
 
-    @pytest.mark.parametrize("route", routes_get)
-    def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
-        auth.logout()
-        response = test_client.get(
-            f"{module_info['url_prefix']}{route}", follow_redirects=True
-        )
+#     @pytest.mark.parametrize("route", routes_get)
+#     def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
+#         auth.logout()
+#         response = test_client.get(
+#             f"{module_info['url_prefix']}{route}", follow_redirects=True
+#         )
 
-        assert response.status_code == 200
-        assert request.path == url_for("auth.login")
+#         assert response.status_code == 200
+#         assert request.path == url_for("auth.login")
 
-    @pytest.mark.parametrize("route", routes_post)
-    def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
-        auth.logout()
-        response = test_client.post(
-            f"{module_info['url_prefix']}{route}", follow_redirects=True
-        )
+#     @pytest.mark.parametrize("route", routes_post)
+#     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
+#         auth.logout()
+#         response = test_client.post(
+#             f"{module_info['url_prefix']}{route}", follow_redirects=True
+#         )
 
-        assert response.status_code == 200
-        assert request.path == url_for("auth.login")
+#         assert response.status_code == 200
+#         assert request.path == url_for("auth.login")
 
 
 @pytest.mark.usefixtures("login_admin_user")
@@ -80,7 +78,9 @@ class TestSettingsAPI:
     )
     def test_settings_edit(self, test_client, setting):
 
-        response = test_client.get(f"{module_info['url_prefix']}/edit/{setting}")
+        response = test_client.get(
+            f"{module_info['url_prefix']}/edit/{setting}"
+        )
         assert response.status_code == 200
 
     def test_settings_update(self, test_client):

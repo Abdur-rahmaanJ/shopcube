@@ -16,7 +16,9 @@ class Config:
 
     UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
     UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "category")
-    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "subcategory")
+    UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
+        STATIC, "uploads", "subcategory"
+    )
     UPLOADED_PRODUCTEXCEL_DEST = os.path.join(STATIC, "uploads")
     UPLOADED_PRODUCTEXCEL_ALLOW = ("xls", "xlsx", "xlsm", "xlsb", "odf")
     PASSWORD_SALT = "abcdefghi"
@@ -36,7 +38,7 @@ class DevelopmentConfig(Config):
     ENV = "development"
     DEBUG = True
     # EXPLAIN_TEMPLATE_LOADING = True
-    LOGIN_DISABLED = True
+    # LOGIN_DISABLED = True
     # control email confirmation for user registration
     EMAIL_CONFIRMATION_DISABLED = False
     # flask-mailman configs
@@ -46,7 +48,9 @@ class DevelopmentConfig(Config):
     MAIL_USE_SSL = False
     MAIL_USERNAME = ""  # os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = ""  # os.environ.get("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = "ma@mail.com"  # os.environ.get("MAIL_DEFAULT_SENDER")
+    MAIL_DEFAULT_SENDER = (
+        "ma@mail.com"  # os.environ.get("MAIL_DEFAULT_SENDER")
+    )
 
 
 class TestingConfig(Config):
@@ -59,7 +63,11 @@ class TestingConfig(Config):
     SERVER_NAME = "localhost.com"
     BCRYPT_LOG_ROUNDS = 4
     TESTING = True
+    ENV = "testing"
+    LOGIN_DISABLED = False
     WTF_CSRF_ENABLED = False
+    PREFERRED_URL_SCHEME = "http"
+    SECRET_KEY = "abcd"
 
 
 app_config = {

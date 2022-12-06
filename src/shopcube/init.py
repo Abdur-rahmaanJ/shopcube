@@ -37,3 +37,13 @@ def configure_all_uploads(app):
     configure_uploads(app, subcategoryphotos)
     configure_uploads(app, productphotos)
     configure_uploads(app, productexcel)
+
+
+def load_extensions(app):
+    migrate.init_app(app, db)
+    db.init_app(app)
+    ma.init_app(app)
+    login_manager.init_app(app)
+
+    mail.init_app(app)
+    csrf.init_app(app)

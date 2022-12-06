@@ -258,3 +258,12 @@ SQLALCHEMY_DATABASE_URI: sqlite:///shopcube.db
 ![](screenshots/new_screenshots/2.png)
 ![](screenshots/new_screenshots/3.png)
 ![](screenshots/new_screenshots/4.png)
+
+# Tests
+
+In venv
+
+```
+cd src/shopcube
+python -m pytest ./
+```
