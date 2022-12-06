@@ -7,14 +7,15 @@ import datetime
 
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
-from flask_login import login_manager
+from init import db
+from init import login_manager
+
+# from flask_login import login_manager
 from itsdangerous import URLSafeTimedSerializer
 from shopyo.api.models import PkModel
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-
-from init import db
 
 role_user_link = db.Table(
     "role_user_link",

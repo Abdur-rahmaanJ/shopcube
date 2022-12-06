@@ -4,30 +4,27 @@ import logging
 import os
 import sys
 
+import click
+
 # from flask import redirect
 from flask import Flask
 from flask import send_from_directory
 from flask import url_for
-
-import click
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
 
 sys.path.append(".")
 
+import datetime
+
+import flask
 import jinja2
 import shopyo
-from shopyo.api.file import trycopy
-
 from config import app_config
 from init import configure_all_uploads
-from init import csrf
-from init import db
-from init import login_manager
-from init import ma
-from init import mail
-from init import migrate
+from init import load_extensions
 from init import modules_path
+from shopyo.api.file import trycopy
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -82,13 +79,7 @@ def create_app(config_name, configs=None):
 
     # app.logger.info(app.config)
 
-    migrate.init_app(app, db)
-    db.init_app(app)
-    ma.init_app(app)
-    login_manager.init_app(app)
-
-    mail.init_app(app)
-    csrf.init_app(app)
+    load_extensions(app)
 
     configure_all_uploads(app)
 
@@ -259,6 +250,14 @@ def create_app(config_name, configs=None):
                 app.config["SQLALCHEMY_DATABASE_URI"]
             )
         )
+
+    # some stuffs
+
+    @app.before_request
+    def before_request():
+        flask.session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(minutes=20)
+        flask.session.modified = True
 
     # end of func
     return app
