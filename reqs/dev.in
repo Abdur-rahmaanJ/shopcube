@@ -6,3 +6,4 @@ pytest-order
 tox
 pytest-cov
 codecov
+pip-tools
