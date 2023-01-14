@@ -112,7 +112,7 @@ Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 - Run shopcube:
 
   ```
-  $ shopyo rundebug
+  $ flask run
   ```
 
 - Go to the link http://127.0.0.1:5000/ and you should see the shopcube app running.
@@ -175,7 +175,7 @@ $ ls shopcube/
 └── wsgi.py
 $ cd shopcube
 $ shopyo initialise
-$ shopyo rundebug
+$ shopyo rundebug # or flask run
 ```
 
 ## ↩ Pull Requests
