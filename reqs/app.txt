@@ -88,19 +88,22 @@ pymysql==1.0.2
     # via -r reqs/app.in
 python-dateutil==2.8.2
     # via pandas
+pythoncms==1.2.1
+    # via -r reqs/app.in
 pytz==2022.2.1
     # via pandas
-shopyo==4.5.8
-    # via -r reqs/app.in
+shopyo==4.8.6
+    # via pythoncms
 six==1.16.0
     # via
     #   flask-marshmallow
     #   python-dateutil
-sqlalchemy==1.4.27
+sqlalchemy==1.4.46
     # via
     #   alembic
     #   flask-sqlalchemy
     #   marshmallow-sqlalchemy
+    #   pythoncms
     #   shopyo
 werkzeug==2.2.2
     # via

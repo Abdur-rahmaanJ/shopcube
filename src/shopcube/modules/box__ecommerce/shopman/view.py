@@ -18,7 +18,7 @@ from shopyo.api.module import ModuleHelp
 
 from utils.enhance import set_setting
 
-from modules.box__default.auth.email import send_async_email
+from shopyo.api.email import send_async_email
 from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.shop.models import Order

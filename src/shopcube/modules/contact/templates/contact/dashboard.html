@@ -1,0 +1,70 @@
+{%extends get_active_back_theme()+'/base.html'%}
+
+
+{%block content%}
+<br>
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th>Name</th>
+                    <th>Mail</th>
+                    <th>Date</th>
+                    <th>Info</th>
+                </thead>
+                <tbody>
+                    {%for message in messages.items%}
+                    <tr>
+                        <td>{{message.name}}</td>
+                        <td>{{message.email}}</td>
+                        <td>{{message.created_date}}</td>
+                        <td>
+                            <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modal-{{message.id}}"
+                            >
+                            view message
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-{{message.id}}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Message</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                            </div>
+                            <div class="modal-body">
+                                {{message.message}}
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{%endblock%}

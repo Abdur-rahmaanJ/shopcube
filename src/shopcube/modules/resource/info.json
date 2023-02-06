@@ -2,7 +2,10 @@
         "display_string": "Files",
         "module_name":"resource",
         "type": "hide",
-        "fa-icon": "fa fa-store",
+        "icons":{
+            "fa": "fa fa-edit",
+            "boxicons": "bx bx-pen"
+        },
         "url_prefix": "/resource",
         "author": {
             "name":"",

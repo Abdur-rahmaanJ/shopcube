@@ -6,42 +6,18 @@ for more details on pytest
 import datetime
 import json
 import os
-import shutil
-import sys
 
 import pytest
+from app import create_app
 from flask import url_for
+from flask_login import current_user as _current_user
 from init import db as _db
-from shopyo.api.file import tryrmtree
+from modules.box__default.auth.models import User
+from modules.box__default.settings.models import Settings
+from sqlalchemy import event
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v
-
-
-sys.path.append(".")
-from app import create_app
-from modules.box__default.admin.models import User
-from modules.box__default.settings.models import Settings
-
-# from shopyo.app import app as _app
-
-
-@pytest.fixture(scope="module")
-def temp_app():
-    return create_app("testing")
-
-
-@pytest.fixture
-def app(tmpdir, app_type, temp_app):
-    src = os.path.join(temp_app.instance_path, "config.py")
-    dest = tmpdir.join("temp_config.py")
-    dest.write("")
-    shutil.copy(src, dest)
-    tryrmtree(temp_app.instance_path)
-    dev_app = create_app(app_type)
-    yield dev_app
-    shutil.copy(dest, src)
-
 
 if os.path.exists("testing.db"):
     os.remove("testing.db")
@@ -73,17 +49,6 @@ def non_admin_user():
 
 
 @pytest.fixture(scope="session")
-def new_user():
-    """
-    A pytest fixture that returns a user model object
-    """
-    user = User(email="newuser@domain.com", password="pass")
-    user.first_name = "New"
-    user.last_name = "User"
-    return user
-
-
-@pytest.fixture(scope="session")
 def admin_user():
     """
     A pytest fixture that returns an admin user
@@ -104,6 +69,19 @@ def flask_app():
 
 
 @pytest.fixture(scope="session")
+def app(request):
+    """
+    Returns session-wide application.
+    """
+    return create_app("testing")
+
+
+@pytest.fixture(scope="session")
+def current_user():
+    return _current_user
+
+
+@pytest.fixture(scope="session")
 def test_client(flask_app):
     """
     setups up and returns the flask testing app
@@ -116,7 +94,7 @@ def test_client(flask_app):
 
 
 @pytest.fixture(scope="session")
-def db(test_client, non_admin_user, admin_user, unconfirmed_user, new_user):
+def db(test_client, non_admin_user, admin_user, unconfirmed_user):
     """
     creates and returns the initial testing database
     """
@@ -130,25 +108,8 @@ def db(test_client, non_admin_user, admin_user, unconfirmed_user, new_user):
     _db.session.add(unconfirmed_user)
 
     # add the default settings
-
-    # cfg_json_path = os.path.join(os.getcwd(), "config.json")
-    # with open(cfg_json_path) as config:
-    #     config = json.load(config)
-
-    config = {
-        "environment": "development",
-        "admin_user": {"email": "admin@domain.com", "password": "pass"},
-        "settings": {
-            "APP_NAME": "Demo",
-            "SECTION_NAME": "Category",
-            "SECTION_ITEMS": "Products",
-            "ACTIVE_FRONT_THEME": "ecommerceus",
-            "ACTIVE_BACK_THEME": "boogle",
-            "CURRENCY": "MUR",
-        },
-        "configs": {"development": {}, "production": {}, "testing": {}},
-    }
-
+    with open("config.json") as config:
+        config = json.load(config)
     for name, value in config["settings"].items():
         s = Settings(setting=name, value=value)
         _db.session.add(s)
@@ -167,12 +128,16 @@ def db_session(db):
     Creates a new database session for a test. Note you must use this fixture
     if your test connects to db. Autouse is set to true which implies
     that the fixture will be setup before each test
+
     Here we not only support commit calls but also rollback calls in tests.
     """
     connection = db.engine.connect()
     transaction = connection.begin()
     options = dict(bind=connection, binds={})
-    session = db.create_scoped_session(options=options)
+    try:
+        session = db._make_scoped_session(options=options)
+    except:
+        session = db.create_scoped_session(options=options)
     db.session = session
 
     yield session
@@ -180,6 +145,41 @@ def db_session(db):
     transaction.rollback()
     connection.close()
     session.remove()
+
+
+# @pytest.fixture(scope="function", autouse=True)
+# def db_session(app, db, request):
+#     """
+#     Returns function-scoped session.
+#     """
+#     with app.app_context():
+#         conn = _db.engine.connect()
+#         txn = conn.begin()
+
+#         options = dict(bind=conn, binds={})
+#         sess = _db.create_scoped_session(options=options)
+
+#         # establish  a SAVEPOINT just before beginning the test
+#         # (http://docs.sqlalchemy.org/en/latest/orm/session_transaction.html#using-savepoint)
+#         sess.begin_nested()
+
+#         @event.listens_for(sess(), "after_transaction_end")
+#         def restart_savepoint(sess2, trans):
+#             # Detecting whether this is indeed the nested transaction of the test
+#             if trans.nested and not trans._parent.nested:
+#                 # The test should have normally called session.commit(),
+#                 # but to be safe we explicitly expire the session
+#                 sess2.expire_all()
+#                 sess.begin_nested()
+
+#         _db.session = sess
+#         yield sess
+
+#         # Cleanup
+#         sess.remove()
+#         # This instruction rollsback any commit that were executed in the tests.
+#         txn.rollback()
+#         conn.close()
 
 
 @pytest.fixture
@@ -224,3 +224,42 @@ class AuthActions:
 
     def logout(self):
         return self._client.get(url_for("auth.logout"), follow_redirects=True)
+
+
+# Want TO USE THE BELOW 2 FIXTURES TO DYNAMICALLY
+# GET THE ROUTES FOR A GIVEN MODULE BUT UNABLE TO
+# PARAMETERIZE THE LIST OF ROUTES RETURNED FROM THE FIXTURE
+# CURRENTLY THIS NOT POSSIBLE WITH FIXTURES IN PYTEST @rehmanis
+
+# @pytest.fixture(scope="module")
+# def get_module_routes(request, get_routes):
+#     module_prefix = getattr(request.module, "module_prefix", "/")
+#     return get_routes[module_prefix]
+
+
+# @pytest.fixture(scope="session")
+# def get_routes(flask_app):
+
+#     routes_dict = {}
+#     relative_path = "/"
+#     prefix = "/"
+
+#     for route in flask_app.url_map.iter_rules():
+#         split_route = list(filter(None, str(route).split("/", 2)))
+
+#         if len(split_route) == 0:
+#             prefix = "/"
+#             relative_path = ""
+#         elif len(split_route) == 1:
+#             prefix = "/" + split_route[0]
+#             relative_path = "/"
+#         else:
+#             prefix = "/" + split_route[0]
+#             relative_path = split_route[1]
+
+#         if prefix in routes_dict:
+#             routes_dict[prefix].append(relative_path)
+#         else:
+#             routes_dict[prefix] = [relative_path]
+
+#     return routes_dict

@@ -1,6 +1,10 @@
 {
 	"display_string": "Login",
 	"type": "hidden",
-	"fa-icon": "fas fa-clock",
+	"icons":{
+		"fa": "fas fa-user-lock",
+		"boxicons": ""
+	},
+	"module_name": "auth",
 	"url_prefix": "/auth"
 }

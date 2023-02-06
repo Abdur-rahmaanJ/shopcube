@@ -1,6 +1,11 @@
 {
 	"display_string": "Settings",
-	"type": "show",
-	"fa-icon": "fa fa-cog",
-	"url_prefix": "/settings"
+	"type": "hide",
+	"icons":{
+		"fa": "fa fa-envelope",
+		"boxicons": "bx bxs-leaf",
+		"file": "icon.svg"
+	},
+	"url_prefix": "/settings",
+	"module_name": "settings"
 }

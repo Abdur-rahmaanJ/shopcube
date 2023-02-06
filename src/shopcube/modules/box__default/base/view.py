@@ -1,17 +1,32 @@
-import json
-import os
+from shopyo.api.module import ModuleHelp
 
-from flask import Blueprint
+# from flask import render_template
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
+# from flask import request
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
+# from shopyo.api.html import notify_success
+# from shopyo.api.forms import flash_errors
 
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
-base_blueprint = Blueprint(
-    "base",
-    __name__,
-    url_prefix=module_info["url_prefix"],
-    template_folder="templates",
-)
+
+@module_blueprint.route("/")
+def index():
+    return mhelp.info["display_string"]
+
+
+# If "dashboard": "/dashboard" is set in info.json
+#
+# @module_blueprint.route("/dashboard", methods=["GET"])
+# def dashboard():
+
+#     context = mhelp.context()
+
+#     context.update({
+
+#         })
+#     return mhelp.render('dashboard.html', **context)

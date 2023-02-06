@@ -1,130 +1,145 @@
-import json
-import os
+import datetime
 
-from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
-from flask import session
 from flask import url_for
+from flask_login import current_user
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
-from flask_login import user_logged_out
-from flask_login.utils import _get_user
-from modules.box__default.admin.models import User
-from modules.box__default.auth.forms import LoginForm
-from modules.box__default.auth.forms import RegistrationForm
+from modules.box__default.theme.helpers import get_active_back_theme
+from shopyo.api.email import send_async_email
 from shopyo.api.html import notify_danger
 from shopyo.api.html import notify_success
+from shopyo.api.html import notify_warning
+from shopyo.api.module import ModuleHelp
+from shopyo.api.security import get_safe_redirect
+from sqlalchemy import func
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-auth_blueprint = Blueprint(
-    "auth",
-    __name__,
-    url_prefix=module_info["url_prefix"],
-    template_folder="templates",
-)
+from .forms import LoginForm
+from .forms import RegistrationForm
+from .models import User
 
 
-@auth_blueprint.route("/register", methods=["GET", "POST"])
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
+
+
+@module_blueprint.route("/register", methods=["GET", "POST"])
 def register():
 
     context = {}
     reg_form = RegistrationForm()
+
+    if reg_form.validate_on_submit():
+        email = reg_form.email.data
+        password = reg_form.password.data
+        user = User.create(email=email, password=password)
+        login_user(user)
+
+        is_disabled = False
+
+        if "EMAIL_CONFIRMATION_DISABLED" in current_app.config:
+            is_disabled = current_app.config["EMAIL_CONFIRMATION_DISABLED"]
+
+        if is_disabled is True:
+            user.is_email_confirmed = True
+            user.email_confirm_date = datetime.datetime.now()
+            user.update()
+        else:
+            token = user.generate_confirmation_token()
+            template = "auth/emails/activate_user"
+            subject = "Please confirm your email"
+            context.update({"token": token, "user": user})
+            send_async_email(email, subject, template, **context)
+            flash("A confirmation email has been sent via email.", "ok")
+
+        return redirect(url_for("dashboard.index"))
+
     context["form"] = reg_form
-
-    if request.method == "POST":
-
-        if reg_form.validate_on_submit():
-
-            email = reg_form.email.data
-            password = reg_form.password.data
-
-            # add the user to the db
-            User.create(email=email, password=password)
-
-            flash(notify_success("Registered successfully! Please Log In"))
-            return redirect(url_for("auth.login"))
-
-    return render_template("auth/register.html", **context)
+    return render_template(f"{get_active_back_theme()}/register.html", **context)
 
 
-@auth_blueprint.route("/login", methods=["GET", "POST"])
+@module_blueprint.route("/confirm/<token>")
+@login_required
+def confirm(token):
+
+    if current_user.is_email_confirmed:
+        flash("Account already confirmed.", "warning")
+        return redirect(url_for("dashboard.index"))
+
+    if current_user.confirm_token(token):
+        flash("You have confirmed your account. Thanks!", "ok")
+        return redirect(url_for("dashboard.index"))
+
+    flash("The confirmation link is invalid/expired.", "warning")
+    return redirect(url_for("auth.unconfirmed"))
+
+
+@module_blueprint.route("/resend")
+@login_required
+def resend():
+
+    if current_user.is_email_confirmed:
+        return redirect(url_for("dashboard.index"))
+
+    token = current_user.generate_confirmation_token()
+    template = "auth/emails/activate_user"
+    subject = "Please confirm your email"
+    context = {"token": token, "user": current_user}
+    send_async_email(current_user.email, subject, template, **context)
+    flash("A new confirmation email has been sent.", "ok")
+    return redirect(url_for("auth.unconfirmed"))
+
+
+@module_blueprint.route("/unconfirmed")
+@login_required
+def unconfirmed():
+    if current_user.is_email_confirmed:
+        return redirect(url_for("dashboard.index"))
+    flash("Please confirm your account!", "ok")
+    return render_template(f"{get_active_back_theme()}/unconfirmed.html")
+
+
+@module_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     context = {}
     login_form = LoginForm()
     context["form"] = login_form
-    if request.method == "POST":
-        if login_form.validate_on_submit():
-            email = login_form.email.data
-            password = login_form.password.data
-            user = User.query.filter(User.email == email).first()
-            if user is None or not user.check_hash(password):
-                flash("")
-                flash(notify_danger("please check your user id and password"))
-                return redirect(url_for("www.index"))
-            login_user(user)
-            if user.is_admin:
-                flash(notify_success("Successfully logged in!"))
-                return redirect(url_for("dashboard.index"))
-            elif user.is_customer:
-                flash(notify_success("Successfully logged in!"))
-                return redirect(url_for("shop.homepage"))
+    if login_form.validate_on_submit():
+        email = login_form.email.data
+        password = login_form.password.data
+        user = User.query.filter(func.lower(User.email) == func.lower(email)).first()
+        if user is None or not user.check_password(password):
+            flash("please check your user id and password", "error")
+            return redirect(url_for("auth.login"))
+        login_user(user)
+        if "next" not in request.form:
+            next_url = url_for("dashboard.index")
 
-    return render_template("auth/login.html", **context)
-
-
-@auth_blueprint.route("/shop", methods=["GET", "POST"])
-def shop_login():
-    context = {}
-    login_form = LoginForm()
-    context["form"] = login_form
-    if request.method == "POST":
-        if login_form.validate_on_submit():
-            email = login_form.email.data
-            password = login_form.password.data
-            user = User.query.filter_by(email=email).first()
-            if user is None or not user.check_hash(password):
-                flash(notify_danger("please check your user id and password"))
-                return redirect(url_for("shop.checkout"))
-            login_user(user)
-            return redirect(url_for("shop.checkout"))
-    return render_template("auth/shop_login.html", **context)
+        else:
+            if request.form["next"] == "":
+                next_url = url_for("dashboard.index")
+            else:
+                next_url = get_safe_redirect(request.form["next"])
+        return redirect(next_url)
+    return render_template(f"{get_active_back_theme()}/login.html", **context)
 
 
-@auth_blueprint.route("/logout")
+@module_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
-    user = _get_user()
 
-    if "_user_id" in session:
-        session.pop("_user_id")
-
-    if "_fresh" in session:
-        session.pop("_fresh")
-
-    if "_id" in session:
-        session.pop("_id")
-
-    cookie_name = current_app.config.get("REMEMBER_COOKIE_NAME")
-    if cookie_name in request.cookies:
-        session["_remember"] = "clear"
-    if "_remember_seconds" in session:
-        session.pop("_remember_seconds")
-
-    user_logged_out.send(current_app._get_current_object(), user=user)
-
-    current_app.login_manager._update_request_context_with_user()
-
-    flash(notify_success("Successfully logged out"))
-    return redirect(url_for("www.index"))
-    # return redirect(url_for("auth.login"))
+    if "next" not in request.args:
+        next_url = url_for("www.index")
+    else:
+        if request.args.get("next") == "":
+            next_url = url_for("www.index")
+        else:
+            next_url = get_safe_redirect(request.args.get("next"))
+    return redirect(next_url)

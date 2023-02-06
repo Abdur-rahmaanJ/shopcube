@@ -1,0 +1,46 @@
+{%extends 'hyperspace/base.html'%}
+
+
+{%block body%}
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+	<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<!-- Form -->
+                    <section>
+                        <h2>Form</h2>
+                        <form action="{{url_for('contact.validate_message')}}" method="POST">
+                            <div class="row gtr-uniform">
+                                <div class="col-6 col-12-xsmall">
+                                    {{form.name.label}}
+                                    {{ form.name }}
+                                </div>
+                                <div class="col-6 col-12-xsmall">
+                                    {{form.email.label}}
+                                    {{ form.email }}
+                                </div>
+
+                                <div class="col-12">
+                                    {{form.message.label}}
+                                    {{ form.message }}
+                                </div>
+                                <div class="col-12">
+                                    <ul class="actions">
+                                        <li><input type="submit" value="Send Message" class="primary" /></li>
+                                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+			</div>
+		</section>
+
+</div>
+
+
+
+{%endblock%}

@@ -7,6 +7,8 @@ from flask import url_for
 from flask_login import current_user
 from flask_login import login_required
 from flask_login import logout_user
+from flask_login import login_user
+from flask import current_app
 from shopyo.api.forms import flash_errors
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
@@ -14,11 +16,14 @@ from shopyo.api.module import ModuleHelp
 
 from init import db
 
-from modules.box__default.admin.models import User
-from modules.box__default.auth.forms import RegisterCustomerForm
+from modules.box__default.auth.models import User
+from modules.box__default.auth.models import Role
+from shopyo.api.email import send_async_email
+from modules.box__ecommerce.shop.forms import RegisterCustomerForm
 from modules.box__ecommerce.shop.models import BillingDetail
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem
+
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -26,26 +31,36 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 
 @module_blueprint.route("/register", methods=["POST"])
-@login_required
 def register():
     if request.method == "POST":
         form = RegisterCustomerForm()
         if not form.validate_on_submit():
             flash_errors(form)
-        user = User()
-        if User.query.filter(User.email == form.email.data).first():
-            flash(notify_warning("Email exists"))
-            return mhelp.redirect_url("shop.homepage")
-        user.email = form.email.data
-        password1 = form.password.data
-        password2 = form.reconfirm_password.data
-        if not password1 == password2:
-            flash(notify_warning("Passwords don't match"))
-            return mhelp.redirect_url("shop.homepage")
-        user.password = password1
-        user.is_customer = True
-        user.save()
-        flash(notify_success("Successfully registered, please log in!"))
+            return redirect('/')
+        context = {}
+        email = form.email.data
+        password = form.password.data
+        user = User.create(email=email, password=password)
+        login_user(user)
+
+        is_disabled = False
+
+        if "EMAIL_CONFIRMATION_DISABLED" in current_app.config:
+            is_disabled = current_app.config["EMAIL_CONFIRMATION_DISABLED"]
+
+        if is_disabled is True:
+            user.is_email_confirmed = True
+            user.email_confirm_date = datetime.datetime.now()
+            user.update()
+        else:
+            token = user.generate_confirmation_token()
+            template = "auth/emails/activate_user"
+            subject = "Please confirm your email"
+            context.update({"token": token, "user": user})
+            send_async_email(email, subject, template, **context)
+            flash("A confirmation email has been sent via email.", "ok")
+
+        # return redirect(url_for("dashboard.index"))
         return mhelp.redirect_url("shop.homepage")
 
 

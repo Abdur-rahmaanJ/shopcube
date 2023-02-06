@@ -27,4 +27,10 @@
     {% endif %}
 </div>
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+<input
+    type="hidden"
+    name="next"
+    value="{{ request.args.get('next', '') }}"
+/>
 <input type="submit" name="" value="submit" class="btn btn-info">

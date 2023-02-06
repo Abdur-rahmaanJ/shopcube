@@ -1,0 +1,15 @@
+{
+    "author": {
+        "mail": "",
+        "name": "",
+        "website": ""
+    },
+    "display_string": "I18n",
+    "icons":{
+		"fa": "fas fa-user-lock",
+		"boxicons": ""
+	},
+    "module_name": "i18n",
+    "type": "hide",
+    "url_prefix": "/i18n"
+}

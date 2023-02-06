@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from sqlalchemy import func
 from wtforms import PasswordField
 from wtforms.fields import EmailField
 from wtforms.validators import DataRequired
@@ -8,13 +9,13 @@ from wtforms.validators import InputRequired
 from wtforms.validators import Length
 from wtforms.validators import ValidationError
 
-from modules.box__default.admin.models import User
+from .models import User
 
 
 class LoginForm(FlaskForm):
     email = EmailField(
         "email",
-        [DataRequired(), Email(message=("Not a valid email address."))],
+        [DataRequired(), Email(message="Not a valid email address.")],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     password = PasswordField(
@@ -28,8 +29,8 @@ class RegistrationForm(FlaskForm):
     """Registration Form"""
 
     email = EmailField(
-        "email_label",
-        [DataRequired(), Email(message=("Not a valid email address."))],
+        "Email",
+        [DataRequired(), Email(message="Not a valid email address.")],
     )
 
     password = PasswordField(
@@ -60,25 +61,11 @@ class RegistrationForm(FlaskForm):
             ValidationError: if the username entered in the field is already
             in the database
         """
-        user = User.query.filter_by(email=field.data).scalar()
+        user = User.query.filter(
+            func.lower(User.email) == func.lower(field.data)
+        ).scalar()
 
         if user is not None:
             raise ValidationError(f"email '{field.data}' is already in use.")
 
 
-class RegisterCustomerForm(FlaskForm):
-    email = EmailField(
-        "Email",
-        [DataRequired(), Email(message=("Not a valid email address."))],
-        render_kw={"class": "form-control", "autocomplete": "off"},
-    )
-    password = PasswordField(
-        "Password",
-        [DataRequired()],
-        render_kw={"class": "form-control", "autocomplete": "off"},
-    )
-    reconfirm_password = PasswordField(
-        "Password",
-        [DataRequired()],
-        render_kw={"class": "form-control", "autocomplete": "off"},
-    )
