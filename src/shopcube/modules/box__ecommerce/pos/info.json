@@ -2,7 +2,10 @@
         "display_string": "Pos",
         "module_name":"pos",
         "type": "show",
-        "fa-icon": "fa fa-cash-register",
+        "icons":{
+            "fa": "fa fa-edit",
+            "boxicons": "bx bx-pen"
+        },
         "url_prefix": "/pos",
         "author": {
             "name":"",

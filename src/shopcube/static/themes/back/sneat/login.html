@@ -1,0 +1,57 @@
+{%extends 'sneat/authbase.html' %}
+
+{%block content%}
+<h4 class="mb-2">Welcome to PythonCMS! 👋</h4>
+              <p class="mb-4">Please sign-in to your account and start the adventure</p>
+
+              <form id="formAuthentication" class="mb-3" action="{{url_for('auth.login')}}" method="POST">
+                <div class="mb-3">
+                  {{ form.email.label }}
+                  {{ form.email() }}
+    {% if form.email.errors %}
+        <ul class="errors">
+            {% for error in form.user_id.errors %}
+	            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+                </div>
+                <div class="mb-3 form-password-toggle">
+                  <div class="d-flex justify-content-between">
+                    {{form.password.label}}
+                    <a href="auth-forgot-password-basic.html">
+                      <small>Forgot Password?</small>
+                    </a>
+                  </div>
+                  <div class="input-group input-group-merge">
+                    {{ form.password() }}
+                    {% if form.password.errors %}
+                        <ul class="errors">
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember-me" />
+                    <label class="form-check-label" for="remember-me"> Remember Me </label>
+                  </div>
+                </div>
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="mb-3">
+                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                </div>
+              </form>
+
+              <p class="text-center">
+                <span>New on our platform?</span>
+                <a href="{{ url_for('auth.register') }}">
+                  <span>Create an account</span>
+                </a>
+              </p>
+{%endblock%}

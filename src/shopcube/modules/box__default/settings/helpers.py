@@ -1,4 +1,11 @@
-from modules.box__default.settings.models import Settings
+from .models import Settings
+
+
+def set_setting(key, value):
+    setting = Settings.query.filter(Settings.setting == key).first()
+    if setting:
+        setting.value = value
+        setting.update()
 
 
 def get_setting(name):

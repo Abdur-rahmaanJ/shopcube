@@ -21,8 +21,8 @@ from shopyo.api.security import get_safe_redirect
 
 from utils.session import Cart
 
-from modules.box__default.admin.models import User
-from modules.box__default.auth.email import send_async_email
+from modules.box__default.auth.models import User
+from shopyo.api.email import send_async_email
 from modules.box__default.settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
@@ -36,6 +36,8 @@ from modules.box__ecommerce.shop.models import OrderItem
 from modules.box__ecommerce.shopman.models import Coupon
 from modules.box__ecommerce.shopman.models import DeliveryOption
 from modules.box__ecommerce.shopman.models import PaymentOption
+
+from .forms import LoginForm
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -484,3 +486,21 @@ def wishlist():
     context = mhelp.context()
     context.update({"Product": Product})
     return mhelp.render("wishlist.html", **context)
+
+
+@module_blueprint.route("/login", methods=["GET", "POST"])
+def shop_login():
+    context = {}
+    login_form = LoginForm()
+    context["form"] = login_form
+    if request.method == "POST":
+        if login_form.validate_on_submit():
+            email = login_form.email.data
+            password = login_form.password.data
+            user = User.query.filter_by(email=email).first()
+            if user is None or not user.check_hash(password):
+                flash(notify_danger("please check your user id and password"))
+                return redirect(url_for("shop.checkout"))
+            login_user(user)
+            return redirect(url_for("shop.checkout"))
+    return render_template("shop/shop_login.html", **context)

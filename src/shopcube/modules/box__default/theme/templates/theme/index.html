@@ -1,25 +1,10 @@
-{% extends "base/module_base.html" %}
-
-{% set active_page ='' %}
-
-{% block pagehead %}
-<title></title>
-<style>
-
-</style>
-{% endblock %}
+{%extends get_active_back_theme()+'/base.html'%}
 
 
+{%block content%}
+<br>
+<div class="container">
 
-
-{% block sidebar %}
-  {%include '{}/blocks/sidebar.html'.format(module_info['module_name'])%}
-{%endblock%}
-
-
-
-
-{% block content %}
 <br>
     <div class="card" style="color: black">
         <div class="card-header">
@@ -41,9 +26,15 @@
                             <td>{{all_front_info[key]['author']}}</td>
                             <td>
                                 {%if active_front_theme != key%}
-                                    <a class="btn btn-info" href="{{url_for('theme.activate_front_theme', theme_name=key)}}">activate</a>
+                                    <a class="" href="{{url_for('theme.activate_front_theme', theme_name=key)}}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" value=""  disabled="">
+                                          </div>
+                                    </a>
                                 {%else%}
-                                active
+                                <div class="form-check">
+                                    <input name="" class="form-check-input" type="radio" value="" id="defaultRadio2" checked="">
+                                  </div>
                                 {%endif%}
                             </td>
                         </tr>
@@ -73,9 +64,15 @@
                             <td>{{all_back_info[key]['author']}}</td>
                             <td>
                                 {%if active_back_theme != key%}
-                                    <a class="btn btn-info" href="{{url_for('theme.activate_back_theme', theme_name=key)}}">activate</a>
+                                    <a class="" href="{{url_for('theme.activate_back_theme', theme_name=key)}}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" value=""  disabled="">
+                                          </div>
+                                    </a>
                                 {%else%}
-                                active
+                                <div class="form-check">
+                                    <input name="" class="form-check-input" type="radio" value="" checked="">
+                                  </div>
                                 {%endif%}
                             </td>
                         </tr>
@@ -85,6 +82,8 @@
         </div>
     </div>
 <div>
+
+</div>
 
 </div>
 

@@ -52,6 +52,10 @@ Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## 🍼 First time setup
 
+- Install maildev
+
+- Run `maildev`, go to the webapp url shown
+
 - Download and install the [latest version of git](https://git-scm.com/downloads).
 
 - Configure git with your [username](https://docs.github.com/en/github/using-git/setting-your-username-in-git) and [email](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address).

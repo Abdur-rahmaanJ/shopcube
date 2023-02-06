@@ -58,7 +58,7 @@
                 {%else%}
                     {%if current_user.is_admin%}
                         <a class="nav-link" href="{{url_for('dashboard.index')}}" ><i class="fa fa-user" style="color: green;"></i></a>
-                    {%elif current_user.is_customer%}
+                    {%else%}
                         <a class="nav-link" href="{{ url_for('customer.dashboard') }}"><i class="fa fa-user" style="color: green;"></i></a>
                     {%endif%}
                 {%endif%}

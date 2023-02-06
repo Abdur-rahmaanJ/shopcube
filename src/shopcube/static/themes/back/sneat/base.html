@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="/static/themes/back/assets"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {%if category == 'error'%}
+            {%set alert_class = 'bg-danger'%}
+          {%elif category == 'warning'%}
+            {%set alert_class = 'bg-warning'%}
+          {%elif category in ['warning']%}
+            {%set alert_class = 'bg-warning'%}
+          {%else%}
+            {%set alert_class = 'bg-primary'%}
+          {%endif%}
+        <div class="bs-toast toast toast-placement-ex m-2 fade {{alert_class}} top-0 end-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+          <div class="toast-header">
+            <!-- <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Bootstrap</div>
+            <small>11 mins ago</small> -->
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{message | safe}}
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Icons. Uncomment required icon fonts -->
+
+    {% if get_setting('ACTIVE_ICONSET') == 'fa'%}
+      <link rel="stylesheet" link="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    {%else%}
+      <link rel="stylesheet" href="{{url_for('static', filename='themes/back/sneat/assets/vendor/fonts/boxicons.css')}}" />
+    {%endif%}
+
+    {%include 'sneat/sections/resource_head.html'%}
+      {%block head%}{%endblock%}
+  </head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="/" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <img width=40 height=40 src="{{ url_for('static', filename='logo.svg') }}">
+              </span>
+              <span class="app-brand-text demo menu-text fw-bolder ms-2">PythonCMS</span>
+            </a>
+
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
+          </div>
+
+          <div class="menu-inner-shadow"></div>
+
+          {% set all_info = get_modules_info() %}
+          <ul class="menu-inner py-1">
+            <!-- Dashboard -->
+            <li class="menu-item {{'active' if get_url_prefix() == '/dashboard'}}"> <!--active-->
+              <a href="/dashboard" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Dashboard">Dashboard</div>
+              </a>
+            </li>
+
+            {% for info in all_info %}
+            {% if all_info[info]['type'] == 'show'%}
+              {%set moduleinfo = all_info[info]%}
+              {%if 'dashboard' in all_info[info]%}
+                {% set link = all_info[info]['url_prefix'] + all_info[info]['dashboard'] %}
+              {%else%}
+                {% set link = all_info[info]['url_prefix'] %}
+              {%endif%}
+              {%if 'menu-type' not in moduleinfo %}
+                {%set menu_type="no-menu"%}
+              {%endif%}
+
+              {%if 'menu' in moduleinfo%}
+                {%set menu_type='show-menu'%}
+              {%endif%}
+              {%if 'menu-type' in moduleinfo %}
+                {%set menu_type=all_info['menu-type']%}
+              {%endif%}
+
+              {%if menu_type == 'no-menu'%}
+                <li class="menu-item {{'active' if get_url_prefix() == moduleinfo['url_prefix']}}">
+                  <a href="{{link}}" class="menu-link">
+                    {%if 'file' in moduleinfo['icons']%}
+                    <img class="menu-icon" src="{{get_static(moduleinfo['static_name'], moduleinfo['icons']['file'])}}">
+                    {%else%}
+                      {%if get_setting('ACTIVE_ICONSET') == 'fa'%}
+                      <i class="menu-icon {{moduleinfo['icons']['fa']}}"></i>
+                      {%else%}
+                      <i class="menu-icon tf-icons {{moduleinfo['icons']['boxicons']}}"></i>
+                      {%endif%}
+                    {%endif%}
+                    <div data-i18n="{{moduleinfo['display_string']}}">{{moduleinfo['display_string']}}</div>
+                  </a>
+                </li>
+              {%elif menu_type == 'show-menu'%}
+                <li class="menu-item {{'open active' if get_url_prefix() == moduleinfo['url_prefix']}}">
+                  <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    {%if 'file' in moduleinfo['icons']%}
+                      <img class="menu-icon" src="{{get_static(moduleinfo['static_name'], moduleinfo['icons']['file'])}}">
+                    {%else%}
+                      {%if get_setting('ACTIVE_ICONSET') == 'fa'%}
+                      <i class="menu-icon {{moduleinfo['icons']['fa']}}"></i>
+                      {%else%}
+                      <i class="menu-icon tf-icons {{moduleinfo['icons']['boxicons']}}"></i>
+                      {%endif%}
+                    {%endif%}
+                    <div data-i18n="{{moduleinfo['display_string']}}">{{moduleinfo['display_string']}}</div>
+                  </a>
+
+                  <ul class="menu-sub">
+
+                    {%for menu in moduleinfo['menu'] %}
+                    {%set menuname = menu%}
+                    {%set menulink = moduleinfo['menu'][menu]%}
+                    {%set subprefix = moduleinfo['url_prefix'] + menulink%}
+
+                    <li class="menu-item {{'active' if get_url_prefix(parts=1, as_str=1) == moduleinfo['url_prefix']+menulink}}">
+                      <a href="{{moduleinfo['url_prefix']+menulink}}" class="menu-link">
+                        <div data-i18n="{{menuname}}">{{menuname}}</div>
+                      </a>
+                    </li>
+                    {%endfor%}
+                  </ul>
+                </li>
+
+              {%endif%}
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </aside>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+          >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <!-- Search -->
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <i class="bx bx-search fs-4 lh-0"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                  />
+                </div>
+              </div>
+              <!-- /Search -->
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- Place this tag where you want the button to render. -->
+                <li class="nav-item lh-1 me-3">
+                  <a
+                    class="github-button"
+                    href="https://github.com/shopyo/pythoncms"
+                    data-icon="octicon-star"
+                    data-size="large"
+                    data-show-count="true"
+                    aria-label="Star pythoncms on GitHub"
+                    >Star</a
+                  >
+                </li>
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block">John Doe</span>
+                            <small class="text-muted">Admin</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{url_for('appadmin.admin_edit', id=current_user.id)}}">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <!-- <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-cog me-2"></i>
+                        <span class="align-middle">Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <span class="d-flex align-items-center align-middle">
+                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                          <span class="flex-grow-1 align-middle">Billing</span>
+                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                        </span>
+                      </a>
+                    </li>
+                    <li> -->
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{url_for('auth.logout')}}">
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div>
+                {%block content%}
+
+                {%endblock%}
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with ❤️ by
+                  <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+                </div>
+                <div>
+                  <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
+                  <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+
+                  <a
+                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                    target="_blank"
+                    class="footer-link me-4"
+                    >Documentation</a
+                  >
+
+                  <a
+                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                    target="_blank"
+                    class="footer-link me-4"
+                    >Support</a
+                  >
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    {%include 'sneat/sections/resource_end_body.html' %}
+
+  </body>
+</html>

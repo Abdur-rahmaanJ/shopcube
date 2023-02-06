@@ -2,7 +2,10 @@
         "display_string": "Www",
         "module_name":"www",
         "type": "show",
-        "fa-icon": "fa fa-globe-asia",
+        "icons":{
+            "fa": "fa fa-globe-asia",
+            "boxicons": "bx bx-planet"
+        },
         "url_prefix": "/",
         "author": {
             "name":"",

@@ -1,0 +1,11 @@
+{
+	"display_string": "dashboard",
+	"type": "show",
+	"url_prefix": "/dashboard",
+	"icons":{
+		"fa": "fas fa-user-lock",
+		"boxicons": "bx bx-planet"
+	},
+	"menu_type": "no-menu",
+	"module_name": "dashboard"
+}

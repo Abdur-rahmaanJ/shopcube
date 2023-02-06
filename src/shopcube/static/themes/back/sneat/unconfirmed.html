@@ -1,0 +1,22 @@
+{%extends 'sneat/authbase.html' %}
+
+{%block content%}
+<h4 class="mb-2">Welcome to PythonCMS! 👋</h4>
+<!-- <p class="mb-4">Please sign-in to your account and start the adventure</p> -->
+<div >
+
+
+  </div>
+<p class="text-center">
+  <img src="/static/shopyo.svg" width="175" height="150">
+  <p>You have not confirmed your account. Email confirmation link was sent to <span class="mark">{{ current_user.email }}</span>. Please check your inbox and your spam folder.</p>
+
+  Didn't get the email?<a href="{{ url_for('auth.resend',_external=True) }}"> Resend</a>
+  <br>
+  <span>New on our platform?</span>
+  <a href="{{ url_for('auth.register') }}">
+    <span>Create an account</span>
+  </a>
+
+</p>
+{%endblock%}

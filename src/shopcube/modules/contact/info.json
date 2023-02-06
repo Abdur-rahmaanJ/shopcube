@@ -1,0 +1,15 @@
+{
+  "display_string": "Contact",
+  "type": "show",
+  "icons":{
+		"fa": "fa fa-envelope",
+		"boxicons": "bx bx-envelope"
+	},
+  "url_prefix": "/contact",
+  "dashboard": "/dashboard",
+  "author": {
+    "name":"Abdur-Rahmaan Janhangeer",
+    "website":"https://www.pythonkitchen.com/about-me/",
+    "mail":"arj.python@gmail.com"
+    }
+}
