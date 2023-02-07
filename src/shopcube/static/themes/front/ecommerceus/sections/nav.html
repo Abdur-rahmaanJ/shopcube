@@ -131,6 +131,44 @@
                                     <input type="submit" name="" value="submit" class="btn btn-info">
                                 </form>
 
+                                <hr>
+                                Send OTP
+                                <form action="{{url_for('customer.send_otp')}}" method="post">
+  
+                                    <p>Phone Number</p>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                        </div>
+
+                                        <input name="phone-number" name="phone-number">
+                                    </div>
+                    
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input type="submit" name="" value="submit" class="btn btn-info">
+                                </form>
+                                <hr>
+                                Login by OTP
+                                <form action="{{url_for('customer.login_otp')}}" method="post">
+  
+                                    <p>Phone Number</p>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                        </div>
+
+                                        <input name="phone-number" >
+                                    </div>
+                                    <p>OTP</p>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-key"></i></i></span>
+                                        </div>
+                                        <input placeholder="OTP" name="otp" >
+                                    </div>
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input type="submit" name="" value="submit" class="btn btn-info">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -160,6 +198,13 @@
                                                 <span class="input-group-text"><i class="fa fa-key"></i></span>
                                             </div>
                                             {{ register_customer_form.reconfirm_password() }}
+                                        </div>
+                                        <p>{{ register_customer_form.phone.label }}</p>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-mobile"></i></span>
+                                            </div>
+                                            {{ register_customer_form.phone() }}
                                         </div>
                                         <input type="submit" name="" class="btn btn-info">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

@@ -224,3 +224,8 @@ class RegisterCustomerForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
+    phone = StringField(
+        "Phone Number",
+        [DataRequired()],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
