@@ -79,6 +79,8 @@ class User(UserMixin, PkModel):
     )
     is_email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
+    phone_number = db.Column(db.String)
+    otp_token = db.Column(db.String, default='')
 
     # A user can have many roles and a role can have many users
     roles = db.relationship(

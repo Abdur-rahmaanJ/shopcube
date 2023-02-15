@@ -3,7 +3,8 @@
 from flask import flash
 from flask import request
 from flask import url_for
-
+from flask import redirect
+import datetime
 from flask_login import current_user
 from flask_login import login_required
 from flask_login import logout_user
@@ -24,6 +25,7 @@ from modules.box__ecommerce.shop.models import BillingDetail
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem
 
+from .helpers import send_verify_code
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -33,6 +35,7 @@ module_blueprint = globals()[mhelp.blueprint_str]
 @module_blueprint.route("/register", methods=["POST"])
 def register():
     if request.method == "POST":
+        
         form = RegisterCustomerForm()
         if not form.validate_on_submit():
             flash_errors(form)
@@ -40,7 +43,12 @@ def register():
         context = {}
         email = form.email.data
         password = form.password.data
-        user = User.create(email=email, password=password)
+        phone_number = form.phone.data
+        user = User.create(
+            email=email, 
+            password=password, 
+            phone_number=phone_number)
+        
         login_user(user)
 
         is_disabled = False
@@ -63,6 +71,37 @@ def register():
         # return redirect(url_for("dashboard.index"))
         return mhelp.redirect_url("shop.homepage")
 
+
+@module_blueprint.route("/send-otp", methods=["POST"])
+def send_otp():
+    if request.method == 'POST':
+        print(request.form.listvalues)
+        phone_number = request.form['phone-number']
+        user = db.session.query(User).filter(User.phone_number==phone_number).first()
+        if user is None:
+            return redirect('/')
+        token = send_verify_code(phone_number)
+        user.otp_token = send_verify_code(phone_number)
+        user.update()
+        flash('otp sent')
+        print(token)
+        return redirect('/')
+
+
+@module_blueprint.route("/login-otp", methods=["POST"])
+def login_otp():
+    if request.method == 'POST':
+        phone_number = request.form['phone-number']
+        user = db.session.query(User).filter(User.phone_number==phone_number).first()
+        if user is None:
+            return redirect('/')
+        token = request.form['otp']
+        
+        if token == user.otp_token:
+            login_user(user)
+            flash('good otp')
+            return redirect('/')
+        
 
 @module_blueprint.route("/logout", methods=["GET", "POST"])
 def logout():
