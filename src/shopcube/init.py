@@ -49,10 +49,6 @@ migrate = Migrate()
 csrf = CSRFProtect()
 mail = Mail()
 
-SENDLK_TOKEN = os.environ.get("SENDLK_TOKEN")
-SECRET = os.environ.get("SECRET")
-sendlk.initialize(SENDLK_TOKEN, SECRET)
-
 productphotos = UploadSet("productphotos", IMAGES)
 categoryphotos = UploadSet("categoryphotos", IMAGES)
 subcategoryphotos = UploadSet("subcategoryphotos", IMAGES)
