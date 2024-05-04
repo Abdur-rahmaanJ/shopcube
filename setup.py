@@ -78,14 +78,9 @@ setup(
     # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
     python_requires=">=3.4",
     include_package_data=True,
-    install_requires=open(os.path.join(here, "reqs", "app.txt"), encoding="utf-8")
+    install_requires=open(os.path.join(here, "reqs", "app.in"), encoding="utf-8")
     .read()
     .split("\n"),  # Optional
-    extras_require={
-        "dev": open(os.path.join(here, "reqs", "dev.txt"), encoding="utf-8")
-        .read()
-        .split("\n"),
-    },
     project_urls={  # Optional
         "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopcube/issues",
         "Source": "https://github.com/Abdur-RahmaanJ/shopcube/",
