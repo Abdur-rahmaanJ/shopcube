@@ -52,7 +52,7 @@ Go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## 🍼 First time setup
 
-- Install maildev
+- Install [maildev](https://www.npmjs.com/package/maildev)
 
 - Run `maildev`, go to the webapp url shown
 
