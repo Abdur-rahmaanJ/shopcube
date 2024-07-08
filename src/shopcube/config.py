@@ -39,8 +39,9 @@ class BaseConfig:
     )
     UPLOADED_PRODUCTEXCEL_DEST = os.path.join(STATIC, "uploads")
     UPLOADED_PRODUCTEXCEL_ALLOW = ("xls", "xlsx", "xlsm", "xlsb", "odf")
-    PASSWORD_SALT = "abcdefghi"
-
+    
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    SALT = os.environ.get('SALT')
 
 class ProductionConfig(BaseConfig):
     """Configurations for production"""
@@ -61,10 +62,6 @@ class ProductionConfig(BaseConfig):
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
 
-    # database configs
-    SQLALCHEMY_DATABASE_URI = (
-        os.environ.get("SQLALCHEMY_DATABASE_URI") or "sqlite:///shopyo.db"
-    )
 
 
 class DevelopmentConfig(BaseConfig):
@@ -87,12 +84,6 @@ class DevelopmentConfig(BaseConfig):
     MAIL_USERNAME = ""
     MAIL_PASSWORD = ""
     MAIL_DEFAULT_SENDER = "ma@mail.com"
-
-    # database configs
-    SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
-
-    # unknown configs
-    PASSWORD_SALT = "some pasword salt"
 
 
 class TestingConfig(BaseConfig):

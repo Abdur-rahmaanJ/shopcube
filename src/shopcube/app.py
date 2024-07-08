@@ -39,7 +39,8 @@ from shopyo_admin import MyAdminIndexView
 
 
 def create_app(config_name="development"):
-
+    from dotenv import load_dotenv
+    load_dotenv()
     global_template_variables = {}
     global_configs = {}
     app = Flask(
