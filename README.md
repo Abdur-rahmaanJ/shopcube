@@ -220,7 +220,7 @@ If you need further assistance, ping [@contributor](https://discord.gg/k37Ef6w) 
 
 - When I initialise the app, I get an error related to MySQL (ie: a Connection Error)
 
-  In `config.py`, make sure you have a database URI
+  In `instance/config.py`, make sure you have a database URI
 
   ```
   SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{server_name}/{db_name}".format(
