@@ -6,11 +6,7 @@ from init import db
 
 # from modules.box__ecommerce.pos.models import Transaction
 
-transaction_helpers = db.Table(
-    "transaction_helpers",
-    db.Column("product_barcode", db.Integer, db.ForeignKey("product.id")),
-    db.Column("transaction_id", db.Integer, db.ForeignKey("transactions.id")),
-)
+
 
 
 class Product(PkModel):
@@ -24,7 +20,7 @@ class Product(PkModel):
     in_stock = db.Column(db.Integer)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Float)
-
+    transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
     subcategory_name = db.relationship(
@@ -32,12 +28,7 @@ class Product(PkModel):
         backref=db.backref("subcategory", uselist=False),
         overlaps="products,subcategory",
     )
-    transactions = db.relationship(
-        "Transaction",
-        secondary=transaction_helpers,
-        backref="products",
-        cascade="all, delete",
-    )
+
     resources = db.relationship(
         "Resource", backref="resources", lazy=True, cascade="all, delete"
     )
@@ -106,5 +97,7 @@ class Size(PkModel):
     __tablename__ = "size"
 
     name = db.Column(db.String(100))
+
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
 
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
