@@ -1,31 +1,40 @@
-[tool.commitizen]
-name = "cz_conventional_commits"
-version = "4.1.0"
-tag_format = "v$major.$minor.$patch$prerelease"
-version_files = [
-    "pyproject.toml:version"
+[project]
+name = "shopcube"
+version = "4.5.0"
+description = "E-commerce solution"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Abdur-Rahmaan Janhangeer & contributors", email = "arj.python@gmail.com"}
 ]
-style = [
-    ["qmark", "fg:#ff9d00 bold"],
-    ["question", "bold"],
-    ["answer", "fg:#ff9d00 bold"],
-    ["pointer", "fg:#ff9d00 bold"],
-    ["highlighted", "fg:#ff9d00 bold"],
-    ["selected", "fg:#cc5454"],
-    ["separator", "fg:#cc5454"],
-    ["instruction", ""],
-    ["text", ""],
-    ["disabled", "fg:#858585 italic"]
+keywords = ["flask", "pos", "management", "shop", "ecommerce", "cms", "erp", "e-commerce"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["reqs/app.txt"]}
+
+[project.urls]
+"Bug Reports" = "https://github.com/Abdur-RahmaanJ/shopcube/issues"
+"Source" = "https://github.com/Abdur-RahmaanJ/shopcube/"
 
 
+[options]
+include_package_data = true
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 88
-force_single_line = true
-skip = ["db-utils", "venv"]
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.scripts]
+shopcube = "shopcube.__main__:main"
