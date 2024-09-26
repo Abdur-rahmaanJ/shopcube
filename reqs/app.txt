@@ -32,7 +32,7 @@ flask-login==0.6.2
     #   shopyo
 flask-mailman==0.3.0
     # via shopyo
-flask-marshmallow==0.14.0
+flask-marshmallow==1.0.0
     # via shopyo
 flask-migrate==3.1.0
     # via shopyo
@@ -71,7 +71,9 @@ marshmallow==3.14.1
     #   marshmallow-sqlalchemy
     #   shopyo
 marshmallow-sqlalchemy==0.26.1
-    # via shopyo
+    # via
+    #   -r reqs/app.in
+    #   shopyo
 mkdocs-material-extensions==1.0.3
     # via flask-mailman
 numpy==2.1.1
@@ -80,6 +82,8 @@ numpy==2.1.1
     #   pandas
 openpyxl==3.0.10
     # via -r reqs/app.in
+packaging==24.1
+    # via flask-marshmallow
 pandas==2.2.2
     # via -r reqs/app.in
 pillow==10.4.0
@@ -95,9 +99,7 @@ pytz==2022.2.1
 shopyo==4.8.6
     # via pythoncms
 six==1.16.0
-    # via
-    #   flask-marshmallow
-    #   python-dateutil
+    # via python-dateutil
 sqlalchemy==1.4.46
     # via
     #   alembic

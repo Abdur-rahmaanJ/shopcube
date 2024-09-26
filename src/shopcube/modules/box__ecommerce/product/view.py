@@ -19,7 +19,6 @@ from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
 from init import db
-from init import ma
 from init import productphotos
 
 from modules.box__ecommerce.category.models import SubCategory
@@ -27,6 +26,9 @@ from modules.box__ecommerce.product.models import Color
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
 from modules.resource.models import Resource
+
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
+
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -42,23 +44,23 @@ globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
     url_prefix=module_info["url_prefix"],
 )
 
-
-class Productchema(ma.Schema):
+class ProductSchema(SQLAlchemySchema):
     class Meta:
-        # Fields to expose
-        fields = (
-            "barcode",
-            "name",
-            "description",
-            "price",
-            "selling_price",
-            "in_stock",
-            "discontinued",
-        )
+        model = Product
+        load_instance = True  # Optional: deserialize to model instances
+
+        barcode = auto_field()
+        name = auto_field()
+        description = auto_field()
+        price = auto_field()
+        selling_price = auto_field()
+        in_stock = auto_field()
+        discontinued = auto_field()
 
 
-product_schema = Productchema()
-product_schema = Productchema(many=True)
+
+product_schema = ProductSchema()
+product_schema = ProductSchema(many=True)
 
 module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
