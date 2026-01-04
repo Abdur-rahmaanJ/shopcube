@@ -48,7 +48,7 @@ dependencies = [
     "packaging==24.1",
     "pandas==2.2.2",
     "pillow==10.4.0",
-    "pymysql==1.0.2",
+    "pymysql==1.1.1",
     "python-dateutil==2.8.2",
     "pytz==2022.2.1",
     "shopyo==4.13.1",
