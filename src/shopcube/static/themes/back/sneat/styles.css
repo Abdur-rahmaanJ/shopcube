@@ -26,12 +26,40 @@ html {
 
 .card-menu{
     display: inline-block;
-    min-width: 200px;
-    margin-top: 10px;
+    width: 200px;
+    margin: 15px;
+    border-radius: 20px;
+    background: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden;
+    text-decoration: none !important;
 }
+
+.card-menu:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
 .card-menu-icon{
-    font-size: 40px;
-    color: #3f497d;
+    font-size: 32px;
+    margin-bottom: 0;
+    transition: transform 0.3s ease;
+}
+
+.card-menu:hover .card-menu-icon {
+    transform: scale(1.1);
+}
+
+.card-footer {
+    background: transparent;
+    border-top: 1px solid rgba(0,0,0,0.03);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1d1d1f;
+    padding: 15px;
+    text-align: center;
 }
 
 .shopyo-alert{
