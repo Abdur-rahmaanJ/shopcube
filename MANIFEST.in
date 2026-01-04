@@ -1,7 +1,14 @@
 include README.md
+include LICENSE
+include wsgi.py
 recursive-include reqs *
 recursive-include src/shopcube/modules *
+recursive-include src/shopcube/static *
+recursive-include src/shopcube/utils *
+recursive-include src/shopcube/migrations *
 include src/shopcube/config.example.json
 include src/shopcube/config.json
+include src/shopcube/config_demo.json
+include src/shopcube/.test.prod.env
 global-exclude *.py[cod]
 global-exclude __pycache__
