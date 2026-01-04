@@ -40,7 +40,7 @@ dependencies = [
     "jinja2==3.0.1",
     "mako==1.1.5",
     "markupsafe==2.1.1",
-    "marshmallow==3.14.1",
+    "marshmallow==3.26.2",
     "marshmallow-sqlalchemy==0.26.1",
     "mkdocs-material-extensions==1.0.3",
     "numpy==2.1.1",
