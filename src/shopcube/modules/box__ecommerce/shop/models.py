@@ -72,12 +72,7 @@ class Order(db.Model):
         return f"{int(self.id) * 19}#{self.get_std_formatted_time()}"
 
     def get_total_amount(self):
-        prices = []
-        for item in self.order_items:
-            product = item.get_product()
-            price = product.selling_price * item.quantity
-            prices.append(price)
-        total_prices = sum(prices)
+        total_prices = sum(item.unit_price * item.quantity for item in self.order_items)
         return total_prices
 
 
@@ -86,6 +81,7 @@ class OrderItem(PkModel):
 
     time = db.Column(db.DateTime, default=datetime.now)
     quantity = db.Column(db.Integer)
+    unit_price = db.Column(db.Numeric(10, 2), nullable=False, default=0.0)
     color = db.Column(db.String(100))
     size = db.Column(db.String(100))
     status = db.Column(db.String(120), default="pending")

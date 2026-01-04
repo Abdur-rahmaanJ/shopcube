@@ -11,8 +11,8 @@ class Transaction(db.Model):
     chashier_id = db.Column(db.Integer)
     time = db.Column(db.DateTime, default=datetime.now)
     quantity = db.Column(db.Integer)
-    price = db.Column(db.Float)
-    total_amount = db.Column(db.Float)
+    price = db.Column(db.Numeric(10, 2))
+    total_amount = db.Column(db.Numeric(10, 2))
     method_of_payment = db.Column(db.String(50))
 
     product = db.relationship('Product', backref='transaction', lazy=True)
