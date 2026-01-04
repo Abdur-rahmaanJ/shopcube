@@ -25,19 +25,22 @@ class BaseConfig:
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BASE_DIR = base_path
+    
+    # Persistent data should live in the CWD or instance folder
+    DATA_DIR = os.environ.get("SHOPCUBE_DATA_DIR", os.getcwd())
+    
     STATIC = os.path.join(base_path, "static")
-    UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
-    UPLOADED_PATH_THUMB = os.path.join(STATIC, "uploads", "thumbs")
+    
+    # Uploads move to a data directory, outside of site-packages
+    UPLOADED_PATH_IMAGE = os.path.join(DATA_DIR, "uploads", "images")
+    UPLOADED_PATH_THUMB = os.path.join(DATA_DIR, "uploads", "thumbs")
 
-    UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
-    UPLOADED_PATH_THUM = os.path.join(STATIC, "uploads", "thumbs")
-
-    UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(STATIC, "uploads", "products")
-    UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(STATIC, "uploads", "category")
+    UPLOADED_PRODUCTPHOTOS_DEST = os.path.join(DATA_DIR, "uploads", "products")
+    UPLOADED_CATEGORYPHOTOS_DEST = os.path.join(DATA_DIR, "uploads", "category")
     UPLOADED_SUBCATEGORYPHOTOS_DEST = os.path.join(
-        STATIC, "uploads", "subcategory"
+        DATA_DIR, "uploads", "subcategory"
     )
-    UPLOADED_PRODUCTEXCEL_DEST = os.path.join(STATIC, "uploads")
+    UPLOADED_PRODUCTEXCEL_DEST = os.path.join(DATA_DIR, "uploads")
     UPLOADED_PRODUCTEXCEL_ALLOW = ("xls", "xlsx", "xlsm", "xlsb", "odf")
     PASSWORD_SALT = "abcdefghi"
 
@@ -47,23 +50,25 @@ class ProductionConfig(BaseConfig):
 
     # built in flask configs
     ENV = "production"
-    SECRET_KEY = os.environ.get("SECRET_KEY")
+    SECRET_KEY = os.environ.get("SECRET_KEY", "prod-secret-key")
 
     # control email confirmation for user registration
     EMAIL_CONFIRMATION_DISABLED = False
 
     # flask-mailman configs
-    MAIL_SERVER = "smtp.googlemail.com"
-    MAIL_PORT = 465
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
+    MAIL_SERVER = os.environ.get("MAIL_SERVER", "smtp.googlemail.com")
+    MAIL_PORT = int(os.environ.get("MAIL_PORT", 465))
+    MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS", "False") == "True"
+    MAIL_USE_SSL = os.environ.get("MAIL_USE_SSL", "True") == "True"
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
 
     # database configs
+    # Use absolute path for sqlite if not provided via URI
+    DEFAULT_DB = os.path.join(BaseConfig.DATA_DIR, "shopcube.db")
     SQLALCHEMY_DATABASE_URI = (
-        os.environ.get("SQLALCHEMY_DATABASE_URI") or "sqlite:///shopyo.db"
+        os.environ.get("SQLALCHEMY_DATABASE_URI") or f"sqlite:///{DEFAULT_DB}"
     )
 
 
@@ -89,7 +94,8 @@ class DevelopmentConfig(BaseConfig):
     MAIL_DEFAULT_SENDER = "ma@mail.com"
 
     # database configs
-    SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
+    DEFAULT_DB = os.path.join(BaseConfig.DATA_DIR, "shopcube_dev.db")
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DEFAULT_DB}"
 
     # unknown configs
     PASSWORD_SALT = "some pasword salt"
@@ -119,7 +125,8 @@ class TestingConfig(BaseConfig):
     MAIL_DEFAULT_SENDER = "shopyofrom@test.com"
 
     # flask sqlalchemy configs
-    SQLALCHEMY_DATABASE_URI = "sqlite:///testing.db"
+    DEFAULT_DB = os.path.join(BaseConfig.DATA_DIR, "shopcube_test.db")
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DEFAULT_DB}"
 
     # flask bycrpt configs
     BCRYPT_LOG_ROUNDS = 4

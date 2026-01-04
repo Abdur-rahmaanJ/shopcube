@@ -1,5 +1,6 @@
 include README.md
 include LICENSE
+include wsgi.py
 recursive-include reqs *
 recursive-include src/shopcube/modules *
 recursive-include src/shopcube/static *
