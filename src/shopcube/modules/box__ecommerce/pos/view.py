@@ -11,7 +11,7 @@ from flask_login import current_user
 from flask_login import login_required
 
 from modules.box__ecommerce.category.models import Category
-from modules.box__ecommerce.pos.models import Transaction
+from modules.box__ecommerce.pos.models import Transaction, TransactionItem
 from modules.box__ecommerce.product.models import Product
 
 # from flask import url_for
@@ -53,26 +53,28 @@ def index():
 @login_required
 def transaction():
     if request.method == "POST":
-        json = request.get_json()
-        print(json)
-        for key in json:
-            print(key)
-            prod_id = key
-            number_items = json[key]["count"]
-            product = Product.query.filter_by(barcode=str(prod_id)).first()
-            print(product)
-            product.in_stock -= number_items
-
-            product.update()
-
+        data = request.get_json()
+        
         transaction = Transaction()
-        try:
-            transaction.chashier_id = current_user.id
-            transaction.products = [
-                Product.query.filter_by(barcode=key).first() for key in json
-            ]
-            transaction.insert()
-        except:
-            print("User not logged in")
+        transaction.chashier_id = current_user.id
+        transaction.total_amount = 0
+        
+        for barcode in data:
+            quantity = data[barcode]["count"]
+            product = Product.query.filter_by(barcode=str(barcode)).first()
+            
+            if product:
+                product.in_stock -= quantity
+                product.update()
+                
+                item = TransactionItem(
+                    product_barcode=barcode,
+                    quantity=quantity,
+                    unit_price=product.selling_price
+                )
+                transaction.items.append(item)
+                transaction.total_amount += product.selling_price * quantity
+
+        transaction.insert()
 
     return jsonify({"message": "ok"})

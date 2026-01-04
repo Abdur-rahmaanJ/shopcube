@@ -20,7 +20,6 @@ class Product(PkModel):
     in_stock = db.Column(db.Integer)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Numeric(10, 2))
-    transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
     subcategory_name = db.relationship(
