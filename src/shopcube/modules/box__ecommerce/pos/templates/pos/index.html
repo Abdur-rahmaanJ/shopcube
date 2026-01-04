@@ -1,84 +1,479 @@
 {% extends "base/main_base.html" %}
 {% set active_page ='pos' %}
 {% block pagehead %}
-<link rel="stylesheet" type="text/css" href="/static/css/b4vtabs.min.css">
 <style type="text/css">
-#checkout-panel {
-    min-height: 300px;
-    max-height: 300px;
-    overflow-y: scroll;
-}
+    .pos-container {
+        height: calc(100vh - 100px); /* Adjusted height */
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    
+    /* Left Panel: Products */
+    .product-section {
+        background-color: transparent;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
-.product-item {
-    cursor: pointer;
-    user-select: none;
-}
+    .search-bar-container {
+        margin-bottom: 25px;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: rgba(251, 251, 253, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 10px 0;
+    }
+
+    .search-input {
+        border: 1px solid rgba(0,0,0,0.1) !important;
+        border-radius: 12px !important;
+        height: 50px;
+        font-size: 1.1rem;
+        padding-left: 45px !important;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        transition: all 0.3s;
+    }
+
+    .search-input:focus {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-color: #6c5ce7 !important;
+        background: white;
+    }
+
+    .search-icon-overlay {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        color: #999;
+        font-size: 1.1rem;
+    }
+
+
+    .category-pills-container {
+        margin-bottom: 15px;
+    }
+
+    .category-pills .nav-link {
+        border-radius: 20px;
+        padding: 8px 16px;
+        color: #555;
+        background: #e9ecef;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+    }
+
+    .category-pills .nav-link.active, .category-pills .nav-link:hover {
+        background-color: #6c5ce7;
+        color: white;
+        box-shadow: 0 4px 6px rgba(108, 92, 231, 0.2);
+    }
+
+    .product-grid-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-right: 5px;
+        padding-bottom: 20px;
+    }
+
+    .product-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        transition: all 0.2s ease;
+        height: 100%;
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+        border: 1px solid #6c5ce7;
+        cursor: pointer;
+    }
+
+    .product-img-wrapper {
+        height: 140px;
+        overflow: hidden;
+        position: relative;
+        background: #f8f9fa;
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+    
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .product-card-body {
+        padding: 12px;
+    }
+
+    .product-title {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2d3436;
+    }
+
+    .stock-badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: #f0f0f0;
+        color: #666;
+    }
+
+    /* Right Panel: Cart */
+    .cart-panel {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border: none;
+    }
+
+    .cart-header {
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        background: #fff;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .cart-items-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    .cart-table {
+        margin-bottom: 0;
+    }
+
+    .cart-table th {
+        border-top: none;
+        border-bottom: 2px solid #f0f0f0;
+        color: #888;
+        font-weight: 500;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cart-table td {
+        vertical-align: middle;
+        border-top: 1px solid #f8f9fa;
+        padding: 12px 15px;
+    }
+
+    .cart-item-title {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    .qty-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 2px;
+        width: fit-content;
+        margin: 0 auto;
+    }
+
+    .qty-btn {
+        border: none;
+        background: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        color: #555;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .qty-btn:hover {
+        background: #6c5ce7;
+        color: white;
+    }
+
+    .qty-input {
+        width: 30px;
+        text-align: center;
+        border: none;
+        background: transparent;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0;
+        margin: 0 5px;
+        -moz-appearance: textfield;
+    }
+    
+    .qty-input::-webkit-outer-spin-button,
+    .qty-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .btn-remove {
+        color: #ff7675;
+        background: rgba(255, 118, 117, 0.1);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        transition: all 0.2s;
+    }
+
+    .btn-remove:hover {
+        background: #ff7675;
+        color: white;
+    }
+
+    .cart-footer {
+        padding: 20px;
+        background: #fdfdfd;
+        border-top: 1px solid #eee;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    .total-label {
+        color: #555;
+        font-weight: 500;
+    }
+
+    .total-amount {
+        color: #2d3436;
+        font-weight: 800;
+        font-size: 1.5rem;
+    }
+
+    .payment-input {
+        border-radius: 8px;
+        border: 2px solid #eee;
+        height: 45px;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .payment-input:focus {
+        border-color: #00b894;
+    }
+
+    .btn-checkout {
+        background: #00b894;
+        border: none;
+        height: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+        transition: all 0.2s;
+    }
+
+    .btn-checkout:hover {
+        background: #00a383;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 184, 148, 0.4);
+    }
+
+    .btn-clear {
+        height: 50px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent; 
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #dcdde1; 
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #b2bec3; 
+    }
 </style>
 {% endblock %}
-{% block content %}
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Total $<span id='checkout-total'>0</span></span>
-                        <span class="badge badge-secondary badge-pill"><span id="checkout-item-count">0</span></span>
-                    </h4>
-                    <div id="checkout-panel" class="list-group">
-                    </div>
-                    <div>
-                        <label for="user-change">User Change</label>
-                        <input type="number" id="user-change" type="" class="form-control" name="">
-                        <p>Return $<span id="change-return">---</span></p>
-                        <p class="d-flex justify-content-between align-items-center mb-3">
-                            <button id="calculate-change" class="btn btn-primary">Calculate</button>
-                            <button id="confirm-transaction" class="btn btn-success">Confirm</button>
-                        </p>
+
+{% block main_container %}
+<div class="container-fluid px-3 pos-container">
+    <div class="row h-100">
+        <!-- LEFT COLUMN: Products -->
+        <div class="col-lg-8 col-md-7 h-100 product-section">
+            
+            <!-- Search -->
+            <div class="search-bar-container">
+                <div class="position-relative">
+                    <i class="fa fa-search search-icon-overlay"></i>
+                    <input type="text" id="product-search" class="form-control search-input" placeholder="Scan barcode or search product..." autocomplete="off">
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="category-pills-container">
+                <ul class="nav nav-pills category-pills" id="category-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" onclick="filterCategory('all')">
+                            <i class="fa fa-th-large mr-1"></i> All Items
+                        </a>
+                    </li>
+                    {% for category in categories %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" onclick="filterCategory('{{category.id}}')">
+                            {{category.name}}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid-container" id="product-list">
+                <div class="row">
+                    {% for category in categories %}
+                        {% for subcategory in category.subcategories %}
+                            {% for product in subcategory.products %}
+                                {% if product.in_stock > 0 %}
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 mb-4 product-item-wrapper" 
+                                     data-category-id="{{category.id}}" 
+                                     data-name="{{product.name|lower}}" 
+                                     data-barcode="{{product.barcode}}">
+                                    <div class="card product-card" onclick="addToCart('{{product.barcode}}', '{{product.name|replace("'", "\\'")|replace("'", "\\'") }}', {{product.selling_price}}, {{product.in_stock}})">
+                                        <div class="product-img-wrapper">
+                                            <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy">
+                                        </div>
+                                        <div class="product-card-body">
+                                            <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <span class="product-price">$
+                                                    {{product.selling_price}}
+                                                </span>
+                                                <span class="stock-badge">{{product.in_stock}} in stock</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Cart -->
+        <div class="col-lg-4 col-md-5 h-100 pl-0">
+            <div class="card cart-panel">
+                <div class="cart-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 font-weight-bold">Current Order</h5>
+                        <span class="badge badge-pill badge-primary" id="cart-count-badge" style="background: #6c5ce7; padding: 6px 12px;">0 Items</span>
                     </div>
                 </div>
-                <div class="col-sm-9">
-                    <div>
-                        <div class="row">
-                            <ul class="nav nav-tabs left-tabs">
-                                {%for category in categories%}
-                                <li class="nav-item">
-                                    <a class="nav-link
-              {{'active' if loop.index==1}}" href="#tab-panel-{{category.id}}" data-toggle="tab">{{category.name}}</a>
-                                </li>
-                                {%endfor%}
-                                <!-- use the title attribute to show a tooltip with the full long name
-                   in case the tab is trucated-->
-                                <!--
-            <li class="nav-item">
+                
+                <div class="cart-items-container">
+                    <table class="table cart-table">
+                        <thead>
+                            <tr>
+                                <th style="padding-left: 20px;">Product</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-right" style="padding-right: 20px;">Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-table-body">
+                            <!-- Items injected here -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="empty-cart-msg" class="text-center p-5">
+                        <div style="background: #f8f9fa; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <i class="fa fa-shopping-basket" style="font-size: 2rem; color: #dcdde1;"></i>
+                        </div>
+                        <h6 class="text-muted">Cart is empty</h6>
+                        <p class="small text-muted mb-0">Select items from the left</p>
+                    </div>
+                </div>
 
-              <a
-                class="nav-link"
-                href="#tab-panel-3"
-                title="More Description Here"
-                data-toggle="tab"
-                >Tab 3</a
-              >
-            </li>-->
-                            </ul>
-                            <div class="tab-content">
-                                {%for category in categories%}
-                                <article class="tab-pane container
-            {{'active' if loop.index==1}}" id="tab-panel-{{category.id}}">
-                                    {%for subcategory in category.subcategories%}
-                                    <p><b>{{subcategory.name}}</b></p>
-                                    {%for product in subcategory.products%}
-                                    {%if product.in_stock > 0%}
-                                    <p style="border: 2px solid black; padding: 5px; margin: 5px; display: inline-block">
-                                        <span class="product-item" id="product_{{product.barcode}}">{{product.name}} - {{product.selling_price}}</span>
-                                        <span class="badge badge-secondary">{{product.in_stock}}</span>
-                                    </p>
-                                    {%endif%}
-                                    {%endfor%}
-                                    {%endfor%}
-                                </article>
-                                {%endfor%}
+                <div class="cart-footer">
+                    <div class="total-row">
+                        <span class="total-label">Subtotal</span>
+                        <span class="total-amount" id="cart-total">$0.00</span>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label class="small text-muted font-weight-bold text-uppercase">Amount Received</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white font-weight-bold">$
+                                </span>
                             </div>
+                            <input type="number" id="amount-paid" class="form-control payment-input" placeholder="0.00">
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 px-1">
+                            <small class="text-muted">Change Due:</small>
+                            <small class="font-weight-bold" id="change-due">$0.00</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <button class="btn btn-outline-secondary btn-block btn-clear" onclick="clearCart()">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <button class="btn btn-primary btn-block btn-checkout" id="btn-checkout" onclick="processCheckout()">
+                                Pay Now <i class="fa fa-arrow-right ml-2"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -86,90 +481,223 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-function checkout_item(id, name, price) {
-    var prod_name = decodeURI(name);
-    var prod_price = decodeURI(price);
 
-    //truncate product name in the checkout menu and display the full name as tooltip
-    if(prod_name.length > 12){
-        prod_name = prod_name.substring(0,12);
-        prod_name = prod_name + '...';
+<script>
+    // State
+    let cart = {}; 
+    
+    // --- Cart Logic ---
+
+    function addToCart(barcode, name, price, stock) {
+        if (cart[barcode]) {
+            if (cart[barcode].qty < stock) {
+                cart[barcode].qty++;
+            } else {
+                alert("Not enough stock!");
+                return;
+            }
+        } else {
+            cart[barcode] = {
+                name: name,
+                price: parseFloat(price),
+                qty: 1,
+                stock: parseInt(stock)
+            };
+        }
+        updateCartUI();
     }
 
-    return `<li data-prod-name="${name}" product-id="checkout_${id}" class="checkout-item close-parent list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0" class="checkout-item-name">${prod_name}</h6>
-                <small class="text-muted"></small>
-              </div>
-              <span class="text-muted ">$<span class="checkout-item-price">${prod_price}</span></span>
-              <button type="button" class="close close-but" aria-label="Close" >
-                <span aria-hidden="true">&times;</span>
-              </button>
-    </li>`
-}
+    function removeFromCart(barcode) {
+        delete cart[barcode];
+        updateCartUI();
+    }
 
-function update_checkout() {
-
-    // price
-    var total = 0;
-    var item_count = 0;
-    $(".checkout-item").each(function(i, obj) {
-        var price = $(this).find('.checkout-item-price').text();
-        var price_s = String(price).trim().trim('$');
-        total += int(price_s);
-        item_count += 1;
-    });
-    $('#checkout-total').text(total);
-    $('#checkout-item-count').text(item_count);
-
-}
-$(document).ready(function() {
-
-    $('.product-item').click(function() {
-        var id = $(this).attr('id');
-        var name = encodeURI($(this).text().split('-')[0].trim());
-        var price = encodeURI($(this).text().split('-')[1].trim());
-
-        $('#checkout-panel').append(checkout_item(id, name, price));
-        update_checkout();
-    });
-
-    $('#calculate-change').click(function() {
-        var user_change = int($('#user-change').val().trim());
-        var total = int($('#checkout-total').text().trim());
-        if (user_change > total) {
-            $('#change-return').text(user_change - total);
+    function updateQty(barcode, newQty) {
+        newQty = parseInt(newQty);
+        if (isNaN(newQty) || newQty < 1) {
+            newQty = 1;
         }
-    });
+        
+        if (newQty > cart[barcode].stock) {
+            alert("Not enough stock! Max available: " + cart[barcode].stock);
+            newQty = cart[barcode].stock;
+        }
 
-    $('#confirm-transaction').click(function() {
-        var items = {};
-        $(".checkout-item").each(function(i, obj) {
-            var id = $(this).attr('product-id').split('_')[2];
-            if (!(id in items)) {
-                items[id] = { 'count': 1 }
-            } else
-            if (id in items) {
-                items[id]['count'] += 1;
+        cart[barcode].qty = newQty;
+        updateCartUI();
+    }
+
+    function changeQty(barcode, delta) {
+        if (cart[barcode]) {
+            let newQty = cart[barcode].qty + delta;
+            updateQty(barcode, newQty);
+        }
+    }
+
+    function clearCart() {
+        if (Object.keys(cart).length > 0 && confirm("Clear current order?")) {
+            cart = {};
+            updateCartUI();
+            $('#amount-paid').val('');
+            $('#change-due').text('$0.00').removeClass('text-success text-danger');
+        }
+    }
+
+    function updateCartUI() {
+        const tbody = $('#cart-table-body');
+        tbody.empty();
+
+        let total = 0;
+        let count = 0;
+        const barcodes = Object.keys(cart);
+
+        if (barcodes.length === 0) {
+            $('#empty-cart-msg').show();
+            $('#btn-checkout').prop('disabled', true);
+        } else {
+            $('#empty-cart-msg').hide();
+            $('#btn-checkout').prop('disabled', false);
+            
+            barcodes.forEach(code => {
+                const item = cart[code];
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                count += item.qty;
+
+                const row = `
+                    <tr>
+                        <td style="padding-left: 20px;">
+                            <div class="cart-item-title text-truncate" style="max-width: 130px;" title="${item.name}">${item.name}</div>
+                            <small class="text-muted">$${item.price.toFixed(2)}</small>
+                        </td>
+                        <td class="text-center">
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="changeQty('${code}', -1)">-</button>
+                                <input type="number" class="qty-input" value="${item.qty}" 
+                                       onchange="updateQty('${code}', this.value)" min="1" max="${item.stock}">
+                                <button class="qty-btn" onclick="changeQty('${code}', 1)">+</button>
+                            </div>
+                        </td>
+                        <td class="text-right" style="padding-right: 20px;">
+                            <span class="font-weight-bold">$${itemTotal.toFixed(2)}</span>
+                        </td>
+                        <td>
+                            <button class="btn-remove" onclick="removeFromCart('${code}')">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        }
+
+        $('#cart-total').text('$' + total.toFixed(2));
+        $('#cart-count-badge').text(count + ' Items');
+        calculateChange();
+    }
+
+    function calculateChange() {
+        const total = parseFloat($('#cart-total').text().replace('$',''));
+        const paid = parseFloat($('#amount-paid').val()) || 0;
+        
+        if (paid === 0 && total === 0) {
+             $('#change-due').text('$0.00').removeClass('text-success text-danger');
+             return;
+        }
+
+        const change = paid - total;
+        
+        const changeEl = $('#change-due');
+        if (change >= 0) {
+            changeEl.text('$' + change.toFixed(2)).removeClass('text-danger').addClass('text-success');
+        } else {
+             // Optional: show how much is missing
+            changeEl.text('-$' + Math.abs(change).toFixed(2)).removeClass('text-success').addClass('text-danger');
+        }
+    }
+
+    // --- Search & Filter ---
+
+    function filterCategory(catId) {
+        const rows = $('.product-item-wrapper');
+        
+        // Update active tab styling
+        $('.category-pills .nav-link').removeClass('active');
+        if(catId === 'all') {
+            $('#pills-all-tab').addClass('active');
+        } else {
+            $('#pills-' + catId + '-tab').addClass('active');
+        }
+
+        applySearch();
+    }
+
+    function applySearch() {
+        const term = $('#product-search').val().toLowerCase();
+        // Determine active category from the UI state or logic
+        // Simplified: check which tab has 'active' class
+        let activeCategory = 'all';
+        $('.category-pills .nav-link.active').each(function() {
+             const href = $(this).attr('href');
+             if(href) activeCategory = href.replace('#pills-', '');
+        });
+        
+        $('.product-item-wrapper').each(function() {
+            const el = $(this);
+            const name = el.data('name');
+            const barcode = String(el.data('barcode'));
+            const catId = el.data('category-id');
+            
+            const matchesSearch = name.includes(term) || barcode.includes(term);
+            const matchesCat = (activeCategory === 'all' || catId == activeCategory);
+
+            if (matchesSearch && matchesCat) {
+                el.fadeIn(200);
+            } else {
+                el.hide();
             }
         });
+    }
 
-        var json_submit = items;
+    // --- Checkout ---
+
+    function processCheckout() {
+        const barcodes = Object.keys(cart);
+        if (barcodes.length === 0) return;
+
+        const total = parseFloat($('#cart-total').text().replace('$',''));
+        const paid = parseFloat($('#amount-paid').val()) || 0;
+
+        if (paid < total) {
+            if (!confirm(`Amount paid ($${paid.toFixed(2)}) is less than total ($${total.toFixed(2)}). Proceed anyway?`)) {
+                return;
+            }
+        }
+
+        const data = {};
+        barcodes.forEach(code => {
+            data[code] = { count: cart[code].qty };
+        });
+
+        const btn = $('#btn-checkout');
+        const originalText = btn.html();
+        btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+
         $.ajax({
             type: "POST",
             url: "{{url_for('pos.transaction')}}",
-            // The key needs to match your method's input parameter (case-sensitive).
-            data: JSON.stringify(json_submit),
+            data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(data) {
-                // alert(data);
+            success: function(response) {
+                // Ideally show a success modal or toast instead of alert
+                alert("Transaction Completed Successfully!"); 
                 window.location.reload();
-                return false;
             },
-            failure: function(errMsg) {
-                alert(errMsg);
+            error: function(xhr, status, error) {
+                alert("Error: " + error);
+                btn.prop('disabled', false).html(originalText);
             },
             beforeSend: function(xhr, settings) {
                 if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -177,23 +705,20 @@ $(document).ready(function() {
                 }
             }
         });
+    }
+
+    // --- Events ---
+
+    $(document).ready(function() {
+        $('#product-search').on('keyup', applySearch);
+        $('#amount-paid').on('input', calculateChange);
+        
+        // Focus search on load
+        $('#product-search').focus();
+        
+        // Initial empty state check
+        updateCartUI();
     });
 
-
-
-
-
-    $(document).on("click", ".close", function() {
-        $(this).closest('.close-parent').remove();
-        update_checkout();
-    });
-
-    // display full product name as tooltip when hovering the checkout menu
-    $(document).on("mouseenter", ".checkout-item", function() {
-        full_name = $(this).data('prod-name');
-        full_name = decodeURI(full_name);
-        $(".checkout-item").attr('title', full_name);
-    });
-});
 </script>
 {% endblock %}

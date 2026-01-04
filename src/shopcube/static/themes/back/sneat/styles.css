@@ -80,12 +80,23 @@ html {
 }
 
 .shopyo-main-area{
-    background: rgb(131,58,180);
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 30%, rgba(252,176,69,1) 100%);
+    background-color: #fbfbfd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1d1d1f;
 }
 
 #page-content-wrapper{
-    background: rgb(131,58,180);
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,75,29,1) 0%, rgba(252,176,69,1) 100%);
-    color: black;
+    background-color: #fbfbfd;
+    color: #1d1d1f;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 12px rgba(0,0,0,0.1);
 }
