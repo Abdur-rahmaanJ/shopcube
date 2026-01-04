@@ -12,6 +12,7 @@ def main():
         print("Commands:")
         print("  initialise  Initialize the database and assets")
         print("  run         Run the development server")
+        print("  wsgi        Show WSGI deployment info")
         print("  manage      Run a shopyo/flask management command")
         print("  create <dir> Copy shopcube to a new directory")
         return
@@ -23,18 +24,32 @@ def main():
     env = os.environ.copy()
     bin_dir = str(Path(sys.executable).parent)
     env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
-    env["FLASK_APP"] = "app.py"
+    env["FLASK_APP"] = "shopcube.app"
 
     if cmd == "initialise":
-        print("Initializing ShopCube...")
-        subprocess.run([sys.executable, str(pkg_dir / "manage.py"), "initialise"], cwd=str(pkg_dir), env=env)
+        print("Initializing ShopCube in CWD...")
+        subprocess.run([sys.executable, str(pkg_dir / "manage.py"), "initialise"], env=env)
 
     elif cmd == "run":
         print("Running ShopCube...")
-        subprocess.run([sys.executable, str(pkg_dir / "manage.py"), "runserver"], cwd=str(pkg_dir), env=env)
+        subprocess.run([sys.executable, str(pkg_dir / "manage.py"), "runserver"], env=env)
+
+    elif cmd == "wsgi":
+        print("ShopCube WSGI Deployment Info")
+        print("----------------------------")
+        print("To deploy with Gunicorn, run from your project directory:")
+        print("  gunicorn shopcube.wsgi:application")
+        print("")
+        print("Important Environment Variables:")
+        print("  SHOPCUBE_CONFIG: 'production' (default), 'development', or 'testing'")
+        print("  SHOPCUBE_INSTANCE_PATH: Path to your project instance folder (defaults to ./instance)")
+        print("  SHOPCUBE_DATA_DIR: Where shopcube.db and uploads/ will live (defaults to CWD)")
+        print("  SECRET_KEY: Set a strong secret key for production!")
+        return
 
     elif cmd == "manage":
-        subprocess.run([sys.executable, str(pkg_dir / "manage.py")] + args[1:], cwd=str(pkg_dir), env=env)
+        env["FLASK_APP"] = "shopcube.app"
+        subprocess.run([sys.executable, str(pkg_dir / "manage.py")] + args[1:], env=env)
 
     elif cmd == "create":
         if len(args) < 2:
@@ -47,9 +62,8 @@ def main():
 
     else:
         # Fallback to shopyo-like behavior or manage.py
-        env = os.environ.copy()
-        env["FLASK_APP"] = "app.py"
-        subprocess.run([sys.executable, str(pkg_dir / "manage.py")] + args, cwd=str(pkg_dir), env=env)
+        env["FLASK_APP"] = "shopcube.app"
+        subprocess.run([sys.executable, str(pkg_dir / "manage.py")] + args, env=env)
 
 if __name__ == "__main__":
     main()
