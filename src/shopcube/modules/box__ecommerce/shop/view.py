@@ -434,6 +434,7 @@ def checkout_process():
                     product = Product.query.filter_by(barcode=barcode).first()
                     order_item.barcode = barcode
                     order_item.quantity = int(item["quantity"])
+                    order_item.unit_price = product.selling_price
                     order_item.size = item["size"]
                     order_item.color = item["color"]
                     order.order_items.append(order_item)

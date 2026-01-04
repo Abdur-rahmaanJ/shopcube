@@ -13,13 +13,13 @@ class Product(PkModel):
     __tablename__ = "product"
 
     barcode = db.Column(db.String(100))
-    price = db.Column(db.Float)
+    price = db.Column(db.Numeric(10, 2))
     name = db.Column(db.String(100))
     description = db.Column(db.String(300))
     date = db.Column(db.String(100))
     in_stock = db.Column(db.Integer)
     discontinued = db.Column(db.Boolean)
-    selling_price = db.Column(db.Float)
+    selling_price = db.Column(db.Numeric(10, 2))
     transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
