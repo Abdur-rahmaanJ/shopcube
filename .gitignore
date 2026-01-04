@@ -134,3 +134,4 @@ shopyo/static/modules/
 shopcube.db
 
 uploads/
+*.db
