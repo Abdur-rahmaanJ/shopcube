@@ -5,6 +5,5 @@ pytest==6.1.1
 pytest-order
 tox
 pytest-cov
-codecov
 pip-tools
 -r app.in
