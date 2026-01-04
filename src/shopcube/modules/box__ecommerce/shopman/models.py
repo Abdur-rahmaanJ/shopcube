@@ -6,7 +6,7 @@ class DeliveryOption(db.Model):
     __tablename__ = "deliveryoptions"
     id = db.Column(db.Integer, primary_key=True)
     option = db.Column(db.String(300))
-    price = db.Column(db.Float)
+    price = db.Column(db.Numeric(10, 2))
 
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
 
