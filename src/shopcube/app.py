@@ -38,13 +38,18 @@ from init import configure_all_uploads
 from shopyo_admin import MyAdminIndexView
 
 
-def create_app(config_name="development"):
+def create_app(config_name="development", instance_path=None):
 
     global_template_variables = {}
     global_configs = {}
+    
+    if instance_path is None:
+        # Default to 'instance' in current working directory for deployments
+        instance_path = os.path.join(os.getcwd(), "instance")
+    
     app = Flask(
         __name__,
-        instance_path=os.path.join(base_path, "instance"),
+        instance_path=instance_path,
         instance_relative_config=True,
     )
 
