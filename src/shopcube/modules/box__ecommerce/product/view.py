@@ -309,10 +309,9 @@ def search(subcategory_id, user_input):
         field = request.args["field"]
         global_search = request.args["global_search"]
         if global_search == "True":
-            subcategory_name = subcategory.name
             all_p = Product.query.filter(
                 (getattr(Product, field).like("%" + user_input + "%"))
-                & (Product.subcategory_name == subcategory_name)
+                & (Product.subcategory == subcategory)
             ).all()
             result = product_schema.dump(all_p)
         else:

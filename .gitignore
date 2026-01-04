@@ -117,9 +117,6 @@ shopyo.db
 *.bat
 *.vbs
 
-#migrations
-migrations/
-
 #vscode
 .vscode
 workspace.code-workspace

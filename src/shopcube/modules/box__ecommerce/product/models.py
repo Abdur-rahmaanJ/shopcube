@@ -22,11 +22,6 @@ class Product(PkModel):
     selling_price = db.Column(db.Numeric(10, 2))
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
-    subcategory_name = db.relationship(
-        "SubCategory",
-        backref=db.backref("subcategory", uselist=False),
-        overlaps="products,subcategory",
-    )
 
     resources = db.relationship(
         "Resource", backref="resources", lazy=True, cascade="all, delete"
