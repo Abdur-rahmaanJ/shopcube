@@ -75,7 +75,7 @@ class User(UserMixin, PkModel):
     is_admin = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     date_registered = db.Column(
-        db.DateTime, nullable=False, default=datetime.datetime.now()
+        db.DateTime, nullable=False, default=datetime.datetime.now
     )
     is_email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)

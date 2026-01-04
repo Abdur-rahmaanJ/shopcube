@@ -11,7 +11,7 @@ class Order(db.Model):
     __tablename__ = "orders"
 
     id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime, default=datetime.now())
+    time = db.Column(db.DateTime, default=datetime.now)
 
     logged_in_customer_email = db.Column(db.String(120), default="")
 
@@ -84,7 +84,7 @@ class Order(db.Model):
 class OrderItem(PkModel):
     __tablename__ = "order_items"
 
-    time = db.Column(db.DateTime, default=datetime.now())
+    time = db.Column(db.DateTime, default=datetime.now)
     quantity = db.Column(db.Integer)
     color = db.Column(db.String(100))
     size = db.Column(db.String(100))

@@ -9,7 +9,7 @@ class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     chashier_id = db.Column(db.Integer)
-    time = db.Column(db.DateTime, default=datetime.now())
+    time = db.Column(db.DateTime, default=datetime.now)
     quantity = db.Column(db.Integer)
     price = db.Column(db.Float)
     total_amount = db.Column(db.Float)
