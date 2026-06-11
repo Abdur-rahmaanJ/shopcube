@@ -429,3 +429,11 @@ def bundle_remove_component(bc_id):
     bc.delete()
     flash(notify_success("Component removed"))
     return redirect(url_for("product.edit_dashboard", barcode=barcode))
+
+
+@module_blueprint.route("/labels")
+@login_required
+@admin_required
+def labels():
+    products = Product.query.order_by(Product.name).all()
+    return render_template("product/labels.html", **products)

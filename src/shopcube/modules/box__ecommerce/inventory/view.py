@@ -79,3 +79,18 @@ def delete(count_id):
     db.session.commit()
     flash(notify_success(f"Count #{count_id} deleted"))
     return redirect(url_for("inventory.dashboard"))
+
+
+@module_blueprint.route("/reports")
+@login_required
+@admin_required
+def reports():
+    context = mhelp.context()
+    products = Product.query.order_by(Product.name).all()
+    total_cost = sum(float(p.cost_price or 0) * (p.in_stock or 0) for p in products)
+    total_retail = sum(float(p.selling_price or 0) * (p.in_stock or 0) for p in products)
+    low_stock = [p for p in products if p.min_stock and p.in_stock and p.in_stock <= p.min_stock]
+    out_of_stock = [p for p in products if not p.in_stock or p.in_stock == 0]
+    context.update({"products": products, "total_cost": total_cost, "total_retail": total_retail,
+                     "low_stock": low_stock, "out_of_stock": out_of_stock})
+    return mhelp.render("reports.html", **context)
