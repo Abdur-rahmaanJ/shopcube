@@ -135,6 +135,9 @@ def add(subcategory_id):
                 p.price = 0
             if selling_price:
                 p.selling_price = selling_price.strip()
+            cost_price = request.form.get("cost_price")
+            if cost_price:
+                p.cost_price = cost_price.strip()
 
             sizes = sizes.strip().strip("\n")
             sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
@@ -247,6 +250,7 @@ def update(subcategory_id):
         p.date = date
         p.price = price
         p.selling_price = selling_price
+        p.cost_price = request.form.get("cost_price", 0)
         p.in_stock = in_stock
         p.min_stock = min_stock
         p.discontinued = discontinued
