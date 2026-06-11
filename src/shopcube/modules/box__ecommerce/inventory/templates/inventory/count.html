@@ -1,0 +1,49 @@
+{% extends "base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% set sidebar_bgtrigger = 'inv_home' %}
+{% block pagehead %}<title>Count #{{ count.id }}</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Inventory Count #{{ count.id }}</h2>
+        <p class="text-muted">{{ count.created_at.strftime('%Y-%m-%d %H:%M') if count.created_at else '' }} | Status: <strong>{{ count.status }}</strong></p>
+        <a class="btn btn-primary mb-3" href="{{ url_for('inventory.dashboard') }}">< BACK</a>
+        {% if count.status == 'draft' %}
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <table class="table table-striped">
+                <thead><tr><th>Product</th><th>Barcode</th><th>Expected</th><th>Actual</th><th>Variance</th></tr></thead>
+                <tbody>
+                    {% for item in count.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.barcode }}</td>
+                        <td>{{ item.expected_qty }}</td>
+                        <td><input type="number" name="qty_{{ item.id }}" value="{{ item.actual_qty or item.expected_qty }}" class="form-control" style="width:100px;"></td>
+                        <td class="{{ 'text-danger' if item.variance < 0 else 'text-success' if item.variance > 0 }}">{{ item.variance }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-success">Complete Count</button>
+        </form>
+        {% else %}
+        <table class="table table-striped">
+            <thead><tr><th>Product</th><th>Expected</th><th>Actual</th><th>Variance</th></tr></thead>
+            <tbody>
+                {% for item in count.items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.expected_qty }}</td>
+                    <td>{{ item.actual_qty }}</td>
+                    <td class="{{ 'text-danger' if item.variance < 0 else 'text-success' if item.variance > 0 }}">{{ item.variance }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
