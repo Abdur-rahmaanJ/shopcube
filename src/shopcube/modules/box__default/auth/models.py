@@ -30,6 +30,7 @@ role_user_bridge = db.Table(
         db.ForeignKey("roles.id", ondelete="CASCADE"),
         primary_key=True,
     ),
+    extend_existing=True,
 )
 
 
