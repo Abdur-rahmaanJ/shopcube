@@ -4,8 +4,9 @@ from flask import jsonify
 from flask import render_template
 from flask import request
 
-from flask_login import current_user
-from flask_login import login_required
+from flask import flash, redirect, url_for
+from flask_login import current_user, login_required
+from shopyo.api.html import notify_success, notify_warning
 from shopyo.api.module import ModuleHelp
 from shopyo_appadmin.admin import admin_required
 from shopyo_auth.decorators import check_confirmed
@@ -14,6 +15,7 @@ from sqlalchemy.orm import subqueryload
 from init import db
 from modules.box__ecommerce.category.models import Category, SubCategory
 from modules.box__ecommerce.pos.models import Transaction, TransactionItem
+from modules.box__ecommerce.pos.models import Shift
 from modules.box__ecommerce.product.models import Product
 
 mhelp = ModuleHelp(__file__, __name__)
@@ -131,3 +133,46 @@ def reports():
         by_method[m] = by_method.get(m, 0) + float(t.total_amount or 0)
     context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx, "by_method": by_method, "days": days})
     return mhelp.render("reports.html", **context)
+
+
+@module_blueprint.route("/shifts/dashboard")
+@login_required
+@admin_required
+def shifts():
+    context = mhelp.context()
+    context["shifts"] = Shift.query.order_by(Shift.opened_at.desc()).all()
+    active = Shift.query.filter_by(status="open").first()
+    context["active_shift"] = active
+    return mhelp.render("shifts.html", **context)
+
+
+@module_blueprint.route("/shift/open", methods=["POST"])
+@login_required
+@admin_required
+def shift_open():
+    if Shift.query.filter_by(status="open").first():
+        flash("A shift is already open", "warning")
+        return redirect(url_for("pos.shifts"))
+    s = Shift(user_id=current_user.id, starting_cash=request.form.get("starting_cash", 0, type=float))
+    s.insert()
+    flash("Shift opened", "success")
+    return redirect(url_for("pos.shifts"))
+
+
+@module_blueprint.route("/shift/<int:shift_id>/close", methods=["POST"])
+@login_required
+@admin_required
+def shift_close(shift_id):
+    s = Shift.query.get_or_404(shift_id)
+    if s.status != "open":
+        flash("Shift already closed", "warning")
+        return redirect(url_for("pos.shifts"))
+    actual = request.form.get("actual_cash", 0, type=float)
+    s.actual_cash = actual
+    s.closed_at = datetime.now()
+    s.expected_cash = float(s.starting_cash) + s.total_sales()
+    s.variance_cash = actual - float(s.expected_cash)
+    s.status = "closed"
+    s.update()
+    flash(f"Shift closed. Variance: ${float(s.variance_cash):.2f}", "success")
+    return redirect(url_for("pos.shifts"))

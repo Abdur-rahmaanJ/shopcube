@@ -55,3 +55,30 @@ class TransactionItem(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+
+class Shift(db.Model):
+    __tablename__ = "shifts"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+    opened_at = db.Column(db.DateTime, default=datetime.now)
+    closed_at = db.Column(db.DateTime, nullable=True)
+    starting_cash = db.Column(db.Numeric(10, 2), default=0)
+    expected_cash = db.Column(db.Numeric(10, 2), default=0)
+    actual_cash = db.Column(db.Numeric(10, 2), nullable=True)
+    variance_cash = db.Column(db.Numeric(10, 2), nullable=True)
+    notes = db.Column(db.Text)
+    status = db.Column(db.String(20), default="open")
+
+    def total_sales(self):
+        q = Transaction.query.filter(Transaction.time >= self.opened_at)
+        if self.closed_at:
+            q = q.filter(Transaction.time <= self.closed_at)
+        return sum(float(t.total_amount or 0) for t in q.all())
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
