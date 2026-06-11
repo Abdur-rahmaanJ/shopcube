@@ -122,6 +122,18 @@
                 </div>
                 <input required name="in_stock" autocomplete="off" id="stock" type="number" step="1" class="form-control" placeholder="Stock" value="{{product.in_stock}}">
             </div>
+            <label>vendor</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-truck"></i></span>
+                </div>
+                <select name="vendor_id" class="form-control">
+                    <option value="">-- None --</option>
+                    {% for v in vendors %}
+                    <option value="{{ v.id }}" {{ 'selected' if product.vendor_id == v.id }}>{{ v.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <label>min stock (alert when at or below)</label>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">

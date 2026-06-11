@@ -26,6 +26,7 @@ from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Color
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
+from modules.box__ecommerce.vendor.models import Vendor
 from modules.resource.models import Resource
 
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
@@ -78,6 +79,7 @@ def add_dashboard(subcategory_id):
     context["subcategory"] = subcategory
     context["has_product"] = str(has_product)
     context["barcodestr"] = uuid.uuid1()
+    context["vendors"] = Vendor.query.order_by(Vendor.name).all()
     return render_template("product/add.html", **context)
 
 
@@ -117,6 +119,10 @@ def add(subcategory_id):
                 min_stock=min_stock,
                 discontinued=discontinued,
             )
+            vendor_id = request.form.get("vendor_id")
+            if vendor_id:
+                p.vendor_id = int(vendor_id)
+
             if description:
                 p.description = description.strip()
             if date:
@@ -195,6 +201,7 @@ def edit_dashboard(barcode):
     context.update(
         {"len": len, "product": product, "subcategory": product.subcategory}
     )
+    context["vendors"] = Vendor.query.order_by(Vendor.name).all()
     return render_template("product/edit.html", **context)
 
 
@@ -240,6 +247,8 @@ def update(subcategory_id):
         p.in_stock = in_stock
         p.min_stock = min_stock
         p.discontinued = discontinued
+        vendor_id = request.form.get("vendor_id")
+        p.vendor_id = int(vendor_id) if vendor_id else None
 
         with db.session.no_autoflush:
             p.sizes.clear()

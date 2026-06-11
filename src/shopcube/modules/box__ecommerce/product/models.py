@@ -40,7 +40,8 @@ class Product(PkModel):
         cascade="all, delete, delete-orphan",
     )
 
-    #
+    vendor_id = db.Column(db.Integer, db.ForeignKey("vendors.id"), nullable=True)
+
     subcategory_id = db.Column(
         db.Integer, db.ForeignKey("subcategories.id"), nullable=False
     )
