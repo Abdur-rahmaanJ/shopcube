@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{OUR_APP_NAME}}</title>
+    {% include 'base/blocks/resources.html'%}
+    {% include 'base/blocks/default_styles.html'%}
+    <style>
+        body {
+            background-color: #fbfbfd;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            transition: all 0.3s ease;
+        }
+        .main-content {
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+        * {
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+    </style>
+    {% block pagehead %}{% endblock %}
+</head>
+<body class="shopyo-main-area">
+    {% include "base/nav_base.html" %}
+    {% include 'base/blocks/flashed_messages.html'%}
+
+    <main class="main-content">
+        {% block main_container %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+        {% endblock %}
+    </main>
+
+    {% block body_scripts %}{% endblock %}
+</body>
+</html>
