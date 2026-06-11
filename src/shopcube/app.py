@@ -201,14 +201,14 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                         f"modules.{folder}.{sub_folder}.view"
                     )
                     app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
-                except AttributeError:
+                except (AttributeError, ModuleNotFoundError):
                     pass
                 try:
                     mod_global = importlib.import_module(
                         f"modules.{folder}.{sub_folder}.global"
                     )
                     global_template_variables.update(mod_global.available_everywhere)
-                except ImportError as e:
+                except (ImportError, AttributeError) as e:
                     if is_yo_debug():
                         print("[ ] skipped", e)
 
