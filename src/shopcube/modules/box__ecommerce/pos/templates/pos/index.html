@@ -143,8 +143,8 @@
         font-size: 0.75rem;
         padding: 4px 8px;
         border-radius: 4px;
-        background-color: #f0f0f0;
-        color: #555;
+        background-color: #e8e8e8;
+        color: #2d2d2d;
     }
 
     .out-of-stock {
@@ -541,6 +541,15 @@
 
 <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
 
+<div id="loading-overlay" style="display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.7); z-index: 9998; align-items: center; justify-content: center;">
+    <div style="text-align: center;">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Processing...</span>
+        </div>
+        <p class="mt-2 text-muted">Processing transaction...</p>
+    </div>
+</div>
+
 <script>
     // State
     let cart = {}; 
@@ -827,9 +836,7 @@
         const paymentMethod = $('input[name="payment_method"]:checked').val() || 'cash';
         const payload = JSON.stringify({ items: items, amount_paid: paid, payment_method: paymentMethod });
 
-        const btn = $('#btn-checkout');
-        const originalText = btn.html();
-        btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+        $('#loading-overlay').css('display', 'flex');
 
         $.ajax({
             type: "POST",
@@ -842,9 +849,9 @@
                 window.location.reload();
             },
             error: function(xhr, status, error) {
+                $('#loading-overlay').hide();
                 const msg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
                 showToast("Transaction failed: " + msg, 'error');
-                btn.prop('disabled', false).html(originalText);
             },
             beforeSend: function(xhr, settings) {
                 if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
