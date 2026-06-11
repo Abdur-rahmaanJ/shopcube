@@ -9,6 +9,7 @@ from sqlalchemy import and_
 from init import db
 from modules.box__ecommerce.product.models import Product
 from .models import InventoryCount, InventoryCountItem
+from .models import Location, StockPerLocation, StockTransfer, StockTransferItem
 from .forms import InventoryCountForm
 
 mhelp = ModuleHelp(__file__, __name__)
@@ -94,3 +95,122 @@ def reports():
     context.update({"products": products, "total_cost": total_cost, "total_retail": total_retail,
                      "low_stock": low_stock, "out_of_stock": out_of_stock})
     return mhelp.render("reports.html", **context)
+
+
+# --- Locations ---
+
+
+@module_blueprint.route("/locations")
+@login_required
+@admin_required
+def locations():
+    context = mhelp.context()
+    context["locations"] = Location.query.order_by(Location.name).all()
+    return mhelp.render("locations.html", **context)
+
+
+@module_blueprint.route("/locations/add", methods=["POST"])
+@login_required
+@admin_required
+def location_add():
+    name = request.form.get("name", "").strip()
+    address = request.form.get("address", "").strip()
+    if name:
+        Location(name=name, address=address).insert()
+        flash(notify_success(f"Location '{name}' added"))
+    return redirect(url_for("inventory.locations"))
+
+
+@module_blueprint.route("/locations/<int:loc_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def location_delete(loc_id):
+    loc = Location.query.get_or_404(loc_id)
+    loc.delete()
+    flash(notify_success("Location deleted"))
+    return redirect(url_for("inventory.locations"))
+
+
+# --- Stock Transfers ---
+
+
+@module_blueprint.route("/transfers")
+@login_required
+@admin_required
+def transfers():
+    context = mhelp.context()
+    context["transfers"] = StockTransfer.query.order_by(StockTransfer.created_at.desc()).all()
+    context["locations"] = Location.query.filter_by(is_active=True).all()
+    context["products"] = Product.query.order_by(Product.name).all()
+    return mhelp.render("transfers.html", **context)
+
+
+@module_blueprint.route("/transfers/create", methods=["POST"])
+@login_required
+@admin_required
+def transfer_create():
+    from_id = request.form.get("from_location_id", type=int)
+    to_id = request.form.get("to_location_id", type=int)
+    if not from_id or not to_id or from_id == to_id:
+        flash(notify_warning("Select two different locations"))
+        return redirect(url_for("inventory.transfers"))
+    t = StockTransfer(from_location_id=from_id, to_location_id=to_id)
+    t.insert()
+    flash(notify_success("Transfer created. Add items."))
+    return redirect(url_for("inventory.transfers"))
+
+
+@module_blueprint.route("/transfers/<int:t_id>/add-item", methods=["POST"])
+@login_required
+@admin_required
+def transfer_add_item(t_id):
+    t = StockTransfer.query.get_or_404(t_id)
+    if t.status != "draft":
+        flash(notify_warning("Cannot modify a non-draft transfer"))
+        return redirect(url_for("inventory.transfers"))
+    product_id = request.form.get("product_id", type=int)
+    qty = request.form.get("quantity", 0, type=int)
+    if not product_id or qty < 1:
+        flash(notify_warning("Invalid product or quantity"))
+        return redirect(url_for("inventory.transfers"))
+    StockTransferItem(transfer_id=t_id, product_id=product_id, quantity=qty).insert()
+    flash(notify_success("Item added"))
+    return redirect(url_for("inventory.transfers"))
+
+
+@module_blueprint.route("/transfers/<int:t_id>/complete", methods=["POST"])
+@login_required
+@admin_required
+def transfer_complete(t_id):
+    t = StockTransfer.query.get_or_404(t_id)
+    if t.status != "draft":
+        flash(notify_warning("Already completed"))
+        return redirect(url_for("inventory.transfers"))
+    for item in t.items:
+        prod = Product.query.get(item.product_id)
+        if prod:
+            prod.in_stock = (prod.in_stock or 0) - item.quantity
+            prod.log_adjustment(-item.quantity, "stock transfer out", f"Transfer #{t.id}")
+    t.status = "completed"
+    t.update()
+    flash(notify_success("Transfer completed. Stock deducted from source."))
+    return redirect(url_for("inventory.transfers"))
+
+
+@module_blueprint.route("/transfers/<int:t_id>/receive", methods=["POST"])
+@login_required
+@admin_required
+def transfer_receive(t_id):
+    t = StockTransfer.query.get_or_404(t_id)
+    if t.status != "completed":
+        flash(notify_warning("Transfer must be completed first"))
+        return redirect(url_for("inventory.transfers"))
+    for item in t.items:
+        prod = Product.query.get(item.product_id)
+        if prod:
+            prod.in_stock = (prod.in_stock or 0) + item.quantity
+            prod.log_adjustment(item.quantity, "stock transfer in", f"Transfer #{t.id}")
+    t.status = "received"
+    t.update()
+    flash(notify_success("Transfer received. Stock added to destination."))
+    return redirect(url_for("inventory.transfers"))
