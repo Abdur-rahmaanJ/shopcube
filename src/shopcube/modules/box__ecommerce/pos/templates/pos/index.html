@@ -399,13 +399,13 @@
             <div class="category-pills-container">
                 <ul class="nav nav-pills category-pills" id="category-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" onclick="filterCategory('all')">
+                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" data-cat-id="all">
                             <i class="fa fa-th-large mr-1"></i> All Items
                         </a>
                     </li>
                     {% for category in categories %}
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" onclick="filterCategory('{{category.id}}')">
+                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" data-cat-id="{{category.id}}">
                             {{category.name}}
                         </a>
                     </li>
@@ -523,12 +523,12 @@
 
                     <div class="row">
                         <div class="col-4">
-                            <button class="btn btn-outline-secondary btn-block btn-clear" onclick="clearCart()" aria-label="Clear cart">
+                            <button class="btn btn-outline-secondary btn-block btn-clear" id="btn-clear" aria-label="Clear cart">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <div class="col-8">
-                            <button class="btn btn-primary btn-block btn-checkout" id="btn-checkout" onclick="processCheckout()">
+                            <button class="btn btn-primary btn-block btn-checkout" id="btn-checkout">
                                 Pay Now <i class="fa fa-arrow-right ml-2"></i>
                             </button>
                         </div>
@@ -577,6 +577,14 @@
         card.addClass('added-flash');
         setTimeout(function() { card.removeClass('added-flash'); }, 400);
     });
+
+    $(document).on('click', '.category-pills .nav-link', function() {
+        filterCategory($(this).data('cat-id'));
+    });
+
+    $(document).on('click', '#btn-clear', clearCart);
+
+    $(document).on('click', '#btn-checkout', processCheckout);
 
     function addToCart(barcode, name, price, stock) {
         stock = parseInt(stock);
