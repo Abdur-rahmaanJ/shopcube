@@ -12,6 +12,7 @@ class Transaction(db.Model):
     time = db.Column(db.DateTime, default=datetime.now)
     total_amount = db.Column(db.Numeric(10, 2), default=0.0)
     method_of_payment = db.Column(db.String(50))
+    notes = db.Column(db.String(500))
 
     items = db.relationship('TransactionItem', backref='transaction', lazy=True, cascade="all, delete-orphan")
 

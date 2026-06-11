@@ -44,6 +44,7 @@ def transaction():
     items_data = data["items"]
     amount_paid = data.get("amount_paid")
     payment_method = data.get("payment_method", "")
+    notes = data.get("notes", "")
 
     if amount_paid is None or not isinstance(amount_paid, (int, float)) or amount_paid < 0:
         return jsonify({"success": False, "message": "Invalid or missing amount paid"}), 400
@@ -79,6 +80,7 @@ def transaction():
     transaction.cashier_id = current_user.id
     transaction.total_amount = computed_total
     transaction.method_of_payment = payment_method
+    transaction.notes = notes
 
     for barcode, item_data in items_data.items():
         quantity = item_data["count"]
