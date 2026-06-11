@@ -399,13 +399,13 @@
             <div class="category-pills-container">
                 <ul class="nav nav-pills category-pills" id="category-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" data-cat-id="all">
+                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" data-cat-id="all" tabindex="0">
                             <i class="fa fa-th-large mr-1"></i> All Items
                         </a>
                     </li>
                     {% for category in categories %}
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" data-cat-id="{{category.id}}">
+                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" data-cat-id="{{category.id}}" tabindex="0">
                             {{category.name}}
                         </a>
                     </li>
@@ -423,7 +423,7 @@
                                      data-category-id="{{category.id}}" 
                                      data-name="{{product.name|lower}}" 
                                      data-barcode="{{product.barcode}}">
-                                    <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}">
+                                    <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
                                         <div class="product-img-wrapper">
                                             <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
                                         </div>
@@ -567,7 +567,9 @@
 
     // --- Cart Logic ---
 
-    $(document).on('click', '.product-card:not(.out-of-stock)', function() {
+    $(document).on('click keydown', '.product-card:not(.out-of-stock)', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
         const card = $(this);
         const barcode = card.data('barcode');
         const name = card.data('display-name');
@@ -578,13 +580,45 @@
         setTimeout(function() { card.removeClass('added-flash'); }, 400);
     });
 
-    $(document).on('click', '.category-pills .nav-link', function() {
+    $(document).on('click keydown', '.category-pills .nav-link', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
         filterCategory($(this).data('cat-id'));
     });
 
-    $(document).on('click', '#btn-clear', clearCart);
+    $(document).on('click keydown', '.qty-decrease', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        changeQty($(this).data('barcode'), -1);
+    });
 
-    $(document).on('click', '#btn-checkout', processCheckout);
+    $(document).on('click keydown', '.qty-increase', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        changeQty($(this).data('barcode'), 1);
+    });
+
+    $(document).on('change', '.qty-input', function() {
+        updateQty($(this).data('barcode'), this.value);
+    });
+
+    $(document).on('click keydown', '.btn-remove', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        removeFromCart($(this).data('barcode'));
+    });
+
+    $(document).on('click keydown', '#btn-clear', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        clearCart();
+    });
+
+    $(document).on('click keydown', '#btn-checkout', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        processCheckout();
+    });
 
     function addToCart(barcode, name, price, stock) {
         stock = parseInt(stock);
@@ -672,17 +706,17 @@
                         </td>
                         <td class="text-center">
                             <div class="qty-control">
-                                <button class="qty-btn" onclick="changeQty('${code}', -1)" aria-label="Decrease quantity">-</button>
+                                <button class="qty-btn qty-decrease" data-barcode="${code}" aria-label="Decrease quantity">-</button>
                                 <input type="number" class="qty-input" value="${item.qty}" 
-                                       onchange="updateQty('${code}', this.value)" min="1" max="${item.stock}" aria-label="Quantity">
-                                <button class="qty-btn" onclick="changeQty('${code}', 1)" aria-label="Increase quantity">+</button>
+                                       data-barcode="${code}" min="1" max="${item.stock}" aria-label="Quantity">
+                                <button class="qty-btn qty-increase" data-barcode="${code}" aria-label="Increase quantity">+</button>
                             </div>
                         </td>
                         <td class="text-right" style="padding-right: 20px;">
                             <span class="font-weight-bold">$${itemTotal.toFixed(2)}</span>
                         </td>
                         <td>
-                            <button class="btn-remove" onclick="removeFromCart('${code}')" aria-label="Remove item">
+                            <button class="btn-remove" data-barcode="${code}" aria-label="Remove item">
                                 <i class="fa fa-times"></i>
                             </button>
                         </td>
