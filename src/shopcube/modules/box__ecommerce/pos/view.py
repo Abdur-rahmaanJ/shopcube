@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from flask import jsonify
 from flask import render_template
 from flask import request
@@ -111,3 +113,21 @@ def transaction():
     db.session.commit()
 
     return jsonify({"success": True, "message": "Transaction completed successfully"})
+
+
+@module_blueprint.route("/reports/dashboard")
+@login_required
+@admin_required
+def reports():
+    context = mhelp.context()
+    days = request.args.get("days", 7, type=int)
+    since = datetime.now() - timedelta(days=days)
+    txs = Transaction.query.filter(Transaction.time >= since).order_by(Transaction.time.desc()).all()
+    total_sales = sum(float(t.total_amount or 0) for t in txs)
+    total_tx = len(txs)
+    by_method = {}
+    for t in txs:
+        m = t.method_of_payment or "unknown"
+        by_method[m] = by_method.get(m, 0) + float(t.total_amount or 0)
+    context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx, "by_method": by_method, "days": days})
+    return mhelp.render("reports.html", **context)
