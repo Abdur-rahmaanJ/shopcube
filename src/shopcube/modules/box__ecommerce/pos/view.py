@@ -7,9 +7,10 @@ from flask_login import login_required
 from shopyo.api.module import ModuleHelp
 from shopyo_appadmin.admin import admin_required
 from shopyo_auth.decorators import check_confirmed
+from sqlalchemy.orm import subqueryload
 
 from init import db
-from modules.box__ecommerce.category.models import Category
+from modules.box__ecommerce.category.models import Category, SubCategory
 from modules.box__ecommerce.pos.models import Transaction, TransactionItem
 from modules.box__ecommerce.product.models import Product
 
@@ -24,7 +25,9 @@ module_blueprint = globals()[mhelp.blueprint_str]
 @admin_required
 def index():
     context = mhelp.context()
-    categories = Category.query.all()
+    categories = Category.query.options(
+        subqueryload(Category.subcategories).subqueryload(SubCategory.products)
+    ).all()
     context.update({"categories": categories})
     return render_template("pos/index.html", **context)
 
