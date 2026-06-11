@@ -79,6 +79,7 @@
     .product-grid-container {
         flex-grow: 1;
         overflow-y: auto;
+        overflow-x: hidden;
         padding-right: 5px;
         padding-bottom: 20px;
     }
@@ -143,8 +144,29 @@
         font-size: 0.75rem;
         padding: 4px 8px;
         border-radius: 4px;
-        background-color: #f0f0f0;
-        color: #666;
+        background-color: #e8e8e8;
+        color: #2d2d2d;
+    }
+
+    .out-of-stock {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .out-of-stock-badge {
+        background-color: #ffe0e0;
+        color: #c0392b;
+        font-weight: 600;
+    }
+
+    .low-stock {
+        border: 1px solid #fdcb6e !important;
+    }
+
+    .low-stock-badge {
+        background-color: #fff3cd;
+        color: #856404;
+        font-weight: 600;
     }
 
     /* Right Panel: Cart */
@@ -302,6 +324,18 @@
         border-color: #00b894;
     }
 
+    .payment-method.active {
+        background-color: #6c5ce7;
+        border-color: #6c5ce7;
+        color: white;
+    }
+
+    .payment-method:hover:not(.active) {
+        background-color: #f0edff;
+        border-color: #6c5ce7;
+        color: #6c5ce7;
+    }
+
     .btn-checkout {
         background: #00b894;
         border: none;
@@ -340,6 +374,50 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #b2bec3; 
     }
+
+    .added-flash {
+        animation: addPulse 0.4s ease;
+    }
+
+    @keyframes addPulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4); }
+        50% { transform: scale(0.97); box-shadow: 0 0 0 8px rgba(108, 92, 231, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    .quick-keys-bar {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 8px 0;
+        margin-bottom: 10px;
+        flex-wrap: nowrap;
+    }
+    .quick-key-btn {
+        flex: 0 0 auto;
+        min-width: 70px;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        background: white;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+    }
+    .quick-key-btn:hover {
+        background: #6c5ce7;
+        color: white;
+        border-color: #6c5ce7;
+        transform: translateY(-1px);
+    }
 </style>
 {% endblock %}
 
@@ -357,17 +435,28 @@
                 </div>
             </div>
 
+            <!-- Quick Keys -->
+            {% if quick_keys %}
+            <div class="quick-keys-bar">
+                {% for k in quick_keys %}
+                <div class="quick-key-btn" data-barcode="{{ k.product.barcode }}" data-display-name="{{ k.label or k.product.name }}" data-price="{{ k.product.selling_price }}" data-stock="{{ k.product.in_stock }}" role="button" tabindex="0">
+                    {{ k.label or k.product.name[:12] }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <!-- Categories -->
             <div class="category-pills-container">
                 <ul class="nav nav-pills category-pills" id="category-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" onclick="filterCategory('all')">
+                        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" data-cat-id="all" tabindex="0">
                             <i class="fa fa-th-large mr-1"></i> All Items
                         </a>
                     </li>
                     {% for category in categories %}
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" onclick="filterCategory('{{category.id}}')">
+                        <a class="nav-link" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" data-cat-id="{{category.id}}" tabindex="0">
                             {{category.name}}
                         </a>
                     </li>
@@ -381,14 +470,14 @@
                     {% for category in categories %}
                         {% for subcategory in category.subcategories %}
                             {% for product in subcategory.products %}
-                                {% if product.in_stock > 0 %}
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 mb-4 product-item-wrapper" 
                                      data-category-id="{{category.id}}" 
                                      data-name="{{product.name|lower}}" 
                                      data-barcode="{{product.barcode}}">
-                                    <div class="card product-card" onclick="addToCart('{{product.barcode}}', '{{product.name|replace("'", "\\'")|replace("'", "\\'") }}', {{product.selling_price}}, {{product.in_stock}})">
+                                    {% set is_low = product.min_stock and product.min_stock > 0 and product.in_stock <= product.min_stock and product.in_stock > 0 %}
+                                    <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
                                         <div class="product-img-wrapper">
-                                            <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy">
+                                            <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
                                         </div>
                                         <div class="product-card-body">
                                             <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
@@ -396,12 +485,19 @@
                                                 <span class="product-price">$
                                                     {{product.selling_price}}
                                                 </span>
-                                                <span class="stock-badge">{{product.in_stock}} in stock</span>
+                                                <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock-badge{% elif is_low %} low-stock-badge{% endif %}">
+                                                    {%- if product.in_stock == 0 -%}
+                                                        Out of stock
+                                                    {%- elif is_low -%}
+                                                        {{product.in_stock}} left
+                                                    {%- else -%}
+                                                        {{product.in_stock}} in stock
+                                                    {%- endif -%}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {% endif %}
                             {% endfor %}
                         {% endfor %}
                     {% endfor %}
@@ -448,7 +544,44 @@
                         <span class="total-label">Subtotal</span>
                         <span class="total-amount" id="cart-total">$0.00</span>
                     </div>
-                    
+
+                    <div class="form-group mb-3" id="discount-section">
+                        <label class="small text-muted font-weight-bold text-uppercase">Discount</label>
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <select id="discount-type" class="form-control form-control-sm" style="font-size:0.85rem;width:auto;">
+                                    <option value="percentage">%</option>
+                                    <option value="fixed">$</option>
+                                </select>
+                            </div>
+                            <input type="number" id="discount-value" class="form-control" placeholder="0" step="0.01" min="0" style="font-size:0.9rem;">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
+                            </div>
+                        </div>
+                        <small class="text-muted" id="discount-display" style="display:none;">Discount: -$0.00</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="small text-muted font-weight-bold text-uppercase">Payment Method</label>
+                        <div class="d-flex">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill mr-1 payment-method active" data-method="cash" onclick="selectPaymentMethod(this, 'cash')">
+                                <input type="radio" name="payment_method" value="cash" checked hidden> Cash
+                            </label>
+                            <label class="btn btn-outline-secondary btn-sm flex-fill mx-1 payment-method" data-method="card" onclick="selectPaymentMethod(this, 'card')">
+                                <input type="radio" name="payment_method" value="card" hidden> Card
+                            </label>
+                            <label class="btn btn-outline-secondary btn-sm flex-fill ml-1 payment-method" data-method="other" onclick="selectPaymentMethod(this, 'other')">
+                                <input type="radio" name="payment_method" value="other" hidden> Other
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="small text-muted font-weight-bold text-uppercase">Order Notes</label>
+                        <textarea id="order-notes" class="form-control" rows="2" placeholder="Optional note for this transaction" style="font-size: 0.9rem;"></textarea>
+                    </div>
+
                     <div class="form-group mb-4">
                         <label class="small text-muted font-weight-bold text-uppercase">Amount Received</label>
                         <div class="input-group">
@@ -456,7 +589,7 @@
                                 <span class="input-group-text bg-white font-weight-bold">$
                                 </span>
                             </div>
-                            <input type="number" id="amount-paid" class="form-control payment-input" placeholder="0.00">
+                            <input type="number" id="amount-paid" class="form-control payment-input" placeholder="0.00" step="0.01" min="0">
                         </div>
                         <div class="d-flex justify-content-between mt-2 px-1">
                             <small class="text-muted">Change Due:</small>
@@ -466,12 +599,12 @@
 
                     <div class="row">
                         <div class="col-4">
-                            <button class="btn btn-outline-secondary btn-block btn-clear" onclick="clearCart()">
+                            <button class="btn btn-outline-secondary btn-block btn-clear" id="btn-clear" aria-label="Clear cart">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <div class="col-8">
-                            <button class="btn btn-primary btn-block btn-checkout" id="btn-checkout" onclick="processCheckout()">
+                            <button class="btn btn-primary btn-block btn-checkout" id="btn-checkout">
                                 Pay Now <i class="fa fa-arrow-right ml-2"></i>
                             </button>
                         </div>
@@ -482,18 +615,116 @@
     </div>
 </div>
 
+<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+<div id="loading-overlay" style="display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.7); z-index: 9998; align-items: center; justify-content: center;">
+    <div style="text-align: center;">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Processing...</span>
+        </div>
+        <p class="mt-2 text-muted">Processing transaction...</p>
+    </div>
+</div>
+
 <script>
     // State
     let cart = {}; 
-    
+
+    // --- Toast Notifications ---
+
+    function showToast(message, type) {
+        type = type || 'info';
+        const bgColor = type === 'success' ? '#00b894' :
+                        type === 'error' ? '#ff7675' :
+                        type === 'warning' ? '#fdcb6e' : '#6c5ce7';
+        const id = 'toast-' + Date.now();
+        const html = `
+            <div id="${id}" role="alert" style="background: ${bgColor}; color: white; min-width: 280px;
+                 padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                 display: flex; justify-content: space-between; align-items: center; animation: slideIn 0.3s ease;">
+                <span>${message}</span>
+                <button type="button" style="background: none; border: none; color: white; font-size: 1.2rem;
+                    cursor: pointer; opacity: 0.8; padding: 0 0 0 12px;" onclick="document.getElementById('${id}').remove()">&times;</button>
+            </div>`;
+        $('#toast-container').append(html);
+        setTimeout(function() { $('#' + id).remove(); }, 3500);
+    }
+
     // --- Cart Logic ---
 
+    $(document).on('click keydown', '.product-card:not(.out-of-stock)', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        const card = $(this);
+        const barcode = card.data('barcode');
+        const name = card.data('display-name');
+        const price = parseFloat(card.data('price')) || 0;
+        const stock = parseInt(card.data('stock')) || 0;
+        addToCart(barcode, name, price, stock, card);
+    });
+
+    $(document).on('click keydown', '.quick-key-btn', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        const btn = $(this);
+        const barcode = btn.data('barcode');
+        const name = btn.data('display-name');
+        const price = parseFloat(btn.data('price')) || 0;
+        const stock = parseInt(btn.data('stock')) || 0;
+        addToCart(barcode, name, price, stock, btn);
+    });
+
+    $(document).on('click keydown', '.category-pills .nav-link', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        filterCategory($(this).data('cat-id'));
+    });
+
+    $(document).on('click keydown', '.qty-decrease', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        changeQty($(this).data('barcode'), -1);
+    });
+
+    $(document).on('click keydown', '.qty-increase', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        changeQty($(this).data('barcode'), 1);
+    });
+
+    $(document).on('change', '.qty-input', function() {
+        updateQty($(this).data('barcode'), this.value);
+    });
+
+    $(document).on('input change', '#discount-value, #discount-type', function() {
+        updateCartUI();
+    });
+
+    $(document).on('click keydown', '.btn-remove', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        removeFromCart($(this).data('barcode'));
+    });
+
+    $(document).on('click keydown', '#btn-clear', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        clearCart();
+    });
+
+    $(document).on('click keydown', '#btn-checkout', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        processCheckout();
+    });
+
     function addToCart(barcode, name, price, stock) {
+        stock = parseInt(stock);
         if (cart[barcode]) {
             if (cart[barcode].qty < stock) {
                 cart[barcode].qty++;
             } else {
-                alert("Not enough stock!");
+                showToast("Not enough stock!", 'warning');
                 return;
             }
         } else {
@@ -501,7 +732,7 @@
                 name: name,
                 price: parseFloat(price),
                 qty: 1,
-                stock: parseInt(stock)
+                stock: stock
             };
         }
         updateCartUI();
@@ -519,7 +750,7 @@
         }
         
         if (newQty > cart[barcode].stock) {
-            alert("Not enough stock! Max available: " + cart[barcode].stock);
+            showToast("Not enough stock! Max available: " + cart[barcode].stock, 'warning');
             newQty = cart[barcode].stock;
         }
 
@@ -537,6 +768,8 @@
     function clearCart() {
         if (Object.keys(cart).length > 0 && confirm("Clear current order?")) {
             cart = {};
+            $('#discount-value').val('');
+            $('#discount-display').hide();
             updateCartUI();
             $('#amount-paid').val('');
             $('#change-due').text('$0.00').removeClass('text-success text-danger');
@@ -554,6 +787,7 @@
         if (barcodes.length === 0) {
             $('#empty-cart-msg').show();
             $('#btn-checkout').prop('disabled', true);
+            $('#discount-display').hide();
         } else {
             $('#empty-cart-msg').hide();
             $('#btn-checkout').prop('disabled', false);
@@ -568,21 +802,22 @@
                     <tr>
                         <td style="padding-left: 20px;">
                             <div class="cart-item-title text-truncate" style="max-width: 130px;" title="${item.name}">${item.name}</div>
-                            <small class="text-muted">$${item.price.toFixed(2)}</small>
+                            <small class="text-muted">$${item.price.toFixed(2)} ea</small>
+                            <small class="text-muted d-block">$${(item.price * item.qty).toFixed(2)} subtotal</small>
                         </td>
                         <td class="text-center">
                             <div class="qty-control">
-                                <button class="qty-btn" onclick="changeQty('${code}', -1)">-</button>
+                                <button class="qty-btn qty-decrease" data-barcode="${code}" aria-label="Decrease quantity">-</button>
                                 <input type="number" class="qty-input" value="${item.qty}" 
-                                       onchange="updateQty('${code}', this.value)" min="1" max="${item.stock}">
-                                <button class="qty-btn" onclick="changeQty('${code}', 1)">+</button>
+                                       data-barcode="${code}" min="1" max="${item.stock}" aria-label="Quantity">
+                                <button class="qty-btn qty-increase" data-barcode="${code}" aria-label="Increase quantity">+</button>
                             </div>
                         </td>
                         <td class="text-right" style="padding-right: 20px;">
                             <span class="font-weight-bold">$${itemTotal.toFixed(2)}</span>
                         </td>
                         <td>
-                            <button class="btn-remove" onclick="removeFromCart('${code}')">
+                            <button class="btn-remove" data-barcode="${code}" aria-label="Remove item">
                                 <i class="fa fa-times"></i>
                             </button>
                         </td>
@@ -592,13 +827,37 @@
             });
         }
 
+        const disc = getDiscount(total);
+        const netTotal = total - disc.amount;
         $('#cart-total').text('$' + total.toFixed(2));
+        if (disc.amount > 0) {
+            $('#discount-display').text('Discount: -$' + disc.amount.toFixed(2)).show();
+        } else {
+            $('#discount-display').hide();
+        }
         $('#cart-count-badge').text(count + ' Items');
+        $('#cart-total').data('net-total', netTotal.toFixed(2));
         calculateChange();
     }
 
+    function getDiscount(subtotal) {
+        const val = parseFloat($('#discount-value').val()) || 0;
+        if (val <= 0) return { type: 'none', amount: 0 };
+        const type = $('#discount-type').val();
+        if (type === 'percentage') {
+            const amount = subtotal * (Math.min(val, 100) / 100);
+            return { type: 'percentage', value: Math.min(val, 100), amount: amount };
+        } else {
+            return { type: 'fixed', value: val, amount: Math.min(val, subtotal) };
+        }
+    }
+
+    function getNetTotal() {
+        return parseFloat($('#cart-total').data('net-total') || $('#cart-total').text().replace('$',''));
+    }
+
     function calculateChange() {
-        const total = parseFloat($('#cart-total').text().replace('$',''));
+        const total = getNetTotal();
         const paid = parseFloat($('#amount-paid').val()) || 0;
         
         if (paid === 0 && total === 0) {
@@ -660,44 +919,62 @@
         });
     }
 
+    // --- Payment Method ---
+
+    function selectPaymentMethod(el, method) {
+        $('.payment-method').removeClass('active');
+        $(el).addClass('active');
+        $(el).find('input[type="radio"]').prop('checked', true);
+    }
+
     // --- Checkout ---
 
     function processCheckout() {
         const barcodes = Object.keys(cart);
         if (barcodes.length === 0) return;
 
-        const total = parseFloat($('#cart-total').text().replace('$',''));
+        const subtotal = parseFloat($('#cart-total').text().replace('$',''));
+        const disc = getDiscount(subtotal);
+        const netTotal = subtotal - disc.amount;
         const paid = parseFloat($('#amount-paid').val()) || 0;
 
-        if (paid < total) {
-            if (!confirm(`Amount paid ($${paid.toFixed(2)}) is less than total ($${total.toFixed(2)}). Proceed anyway?`)) {
-                return;
-            }
+        if (paid < netTotal) {
+            showToast(
+                `Insufficient payment. Total: $${netTotal.toFixed(2)}, Received: $${paid.toFixed(2)}`,
+                'error'
+            );
+            return;
         }
 
-        const data = {};
+        const items = {};
         barcodes.forEach(code => {
-            data[code] = { count: cart[code].qty };
+            items[code] = { count: cart[code].qty };
         });
 
-        const btn = $('#btn-checkout');
-        const originalText = btn.html();
-        btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+        const paymentMethod = $('input[name="payment_method"]:checked').val() || 'cash';
+        const notes = $('#order-notes').val().trim();
+        const payload = JSON.stringify({
+            items: items, amount_paid: paid, payment_method: paymentMethod, notes: notes,
+            discount_type: disc.type === 'none' ? '' : disc.type,
+            discount_value: disc.value || 0
+        });
+
+        $('#loading-overlay').css('display', 'flex');
 
         $.ajax({
             type: "POST",
             url: "{{url_for('pos.transaction')}}",
-            data: JSON.stringify(data),
+            data: payload,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(response) {
-                // Ideally show a success modal or toast instead of alert
-                alert("Transaction Completed Successfully!"); 
+                showToast("Transaction completed successfully!", 'success');
                 window.location.reload();
             },
             error: function(xhr, status, error) {
-                alert("Error: " + error);
-                btn.prop('disabled', false).html(originalText);
+                $('#loading-overlay').hide();
+                const msg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                showToast("Transaction failed: " + msg, 'error');
             },
             beforeSend: function(xhr, settings) {
                 if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -709,8 +986,20 @@
 
     // --- Events ---
 
+    let searchTimeout;
     $(document).ready(function() {
-        $('#product-search').on('keyup', applySearch);
+        $('#product-search').on('keyup', function(e) {
+            clearTimeout(searchTimeout);
+            const val = $(this).val();
+            if (e.key === 'Enter') {
+                const card = $('.product-card:not(.out-of-stock)[data-barcode="' + val + '"]');
+                if (card.length) {
+                    card.click();
+                    $(this).val('');
+                }
+            }
+            searchTimeout = setTimeout(applySearch, 200);
+        });
         $('#amount-paid').on('input', calculateChange);
         
         // Focus search on load

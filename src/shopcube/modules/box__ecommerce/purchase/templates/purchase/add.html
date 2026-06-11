@@ -1,0 +1,26 @@
+{% extends "base/module_base.html" %}
+{% set active_page = 'purchase' %}
+{% set sidebar_bgtrigger = 'add_po' %}
+{% block pagehead %}<title>New Purchase Order</title>{% endblock %}
+{% block sidebar %}{% include 'purchase/blocks/sidebar.html' %}{% endblock %}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>New Purchase Order</h2>
+        <a class="btn btn-primary mb-3" href="{{ url_for('purchase.dashboard') }}">< BACK</a>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="form-group">
+                <label>Vendor</label>
+                {{ form.vendor_id(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                {{ form.notes(class="form-control", rows=3) }}
+            </div>
+            {{ form.submit(class="btn btn-info") }}
+        </form>
+    </div>
+</div>
+{% endblock %}

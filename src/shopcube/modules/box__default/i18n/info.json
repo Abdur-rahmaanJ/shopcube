@@ -5,11 +5,12 @@
         "website": ""
     },
     "display_string": "I18n",
-    "icons":{
-		"fa": "fas fa-user-lock",
-		"boxicons": ""
-	},
+    "icons": {
+        "fa": "fas fa-user-lock",
+        "boxicons": ""
+    },
     "module_name": "i18n",
     "type": "hide",
-    "url_prefix": "/i18n"
+    "url_prefix": "/i18n",
+    "fa-icon": "fas fa-user-lock"
 }

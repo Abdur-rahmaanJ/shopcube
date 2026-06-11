@@ -57,7 +57,7 @@
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i></a>
                 {%else%}
                     {%if current_user.is_admin%}
-                        <a class="nav-link" href="{{url_for('dashboard.index')}}" ><i class="fa fa-user" style="color: green;"></i></a>
+                        <a class="nav-link" href="{{url_for('shopyo_dashboard.index')}}" ><i class="fa fa-user" style="color: green;"></i></a>
                     {%else%}
                         <a class="nav-link" href="{{ url_for('customer.dashboard') }}"><i class="fa fa-user" style="color: green;"></i></a>
                     {%endif%}
@@ -96,7 +96,7 @@
                         <br>
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{url_for('auth.login')}}" method="post">
+                                <form action="{{url_for('shopyo_auth.login')}}" method="post">
                                     {%set auth_login_form = get_auth_login_form()%}
                                     <p>{{auth_login_form.email.label}}</p>
                                     <div class="input-group mb-3">

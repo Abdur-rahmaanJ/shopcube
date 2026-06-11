@@ -1,0 +1,3 @@
+FLASK_APP=wsgi.py
+FLASK_DEBUG=1
+SHOPCUBE_CONFIG=development

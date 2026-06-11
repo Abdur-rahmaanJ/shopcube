@@ -1,0 +1,47 @@
+{% extends "base/module_base.html" %}
+{% set active_page = 'customer' %}
+{% block pagehead %}<title>Customer Management</title>{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2>Customers</h2>
+                <table class="table table-striped">
+                    <thead><tr><th>Email</th><th>Orders</th><th>Total Spent</th><th>Last Purchase</th><th>Group</th></tr></thead>
+                    <tbody>
+                        {% for u in customers %}
+                        <tr><td>{{ u.email }}</td><td>{{ u.order_count or 0 }}</td><td>${{ '%.2f'|format(u.total_spent or 0) }}</td><td>{{ u.last_purchase.strftime('%Y-%m-%d') if u.last_purchase else '-' }}</td><td>{{ u.group.name if u.group else '-' }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4>Customer Groups</h4>
+                <form action="{{ url_for('customer.admin_group_add') }}" method="POST" class="mb-3">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <div class="form-group"><input type="text" name="name" class="form-control" placeholder="Group name" required></div>
+                    <div class="form-group"><input type="number" name="discount_percent" class="form-control" placeholder="Discount %" step="0.01" value="0"></div>
+                    <button type="submit" class="btn btn-info btn-sm">Add Group</button>
+                </form>
+                <ul class="list-group">
+                    {% for g in groups %}
+                    <li class="list-group-item d-flex justify-content-between">{{ g.name }} ({{ g.discount_percent }}% off)
+                        <form action="{{ url_for('customer.admin_group_delete', group_id=g.id) }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </li>
+                    {% else %}<li class="list-group-item text-muted">No groups</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

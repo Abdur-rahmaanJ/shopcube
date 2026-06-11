@@ -1,0 +1,34 @@
+{% extends "base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Locations</title>{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Locations / Warehouses</h2>
+        <form method="POST" action="{{ url_for('inventory.location_add') }}" class="form-inline mb-3">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="text" name="name" class="form-control mr-2" placeholder="Name" required>
+            <input type="text" name="address" class="form-control mr-2" placeholder="Address" style="flex:1;">
+            <button type="submit" class="btn btn-info">Add</button>
+        </form>
+        <table class="table table-striped">
+            <thead><tr><th>Name</th><th>Address</th><th>Active</th><th>Actions</th></tr></thead>
+            <tbody>
+                {% for l in locations %}
+                <tr><td>{{ l.name }}</td><td>{{ l.address or '-' }}</td><td>{{ 'Yes' if l.is_active else 'No' }}</td>
+                    <td>
+                        <form action="{{ url_for('inventory.location_delete', loc_id=l.id) }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}<tr><td colspan="4" class="text-muted">No locations</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

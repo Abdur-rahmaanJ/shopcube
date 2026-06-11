@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from flask import url_for
+from flask_login import current_user
 
 from shopyo.api.models import PkModel
 
@@ -18,6 +21,8 @@ class Product(PkModel):
     description = db.Column(db.String(300))
     date = db.Column(db.String(100))
     in_stock = db.Column(db.Integer)
+    min_stock = db.Column(db.Integer, default=0)
+    cost_price = db.Column(db.Numeric(10, 2), default=0)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Numeric(10, 2))
     is_onsale = db.Column(db.Boolean, default=False)
@@ -39,9 +44,18 @@ class Product(PkModel):
         cascade="all, delete, delete-orphan",
     )
 
-    #
+    vendor_id = db.Column(db.Integer, db.ForeignKey("vendors.id"), nullable=True)
+
     subcategory_id = db.Column(
         db.Integer, db.ForeignKey("subcategories.id"), nullable=False
+    )
+
+    bundle_components = db.relationship(
+        "BundleComponent",
+        foreign_keys="BundleComponent.bundle_product_id",
+        backref="bundle_product",
+        lazy=True,
+        cascade="all, delete-orphan",
     )
 
     def get_color_string(self):
@@ -77,6 +91,32 @@ class Product(PkModel):
         db.session.commit()
 
 
+    def log_adjustment(self, quantity_change, reason, reference=""):
+        adj = StockAdjustment(
+            product_id=self.id,
+            quantity_change=quantity_change,
+            reason=reason,
+            reference=reference,
+            user_id=current_user.id if current_user.is_authenticated else None,
+        )
+        adj.save()
+
+
+class StockAdjustment(PkModel):
+    __tablename__ = "stock_adjustments"
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
+    quantity_change = db.Column(db.Integer, nullable=False)
+    reason = db.Column(db.String(200), nullable=False)
+    reference = db.Column(db.String(200), default="")
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+    product = db.relationship("Product", backref="stock_adjustments", lazy=True)
+
+    def __repr__(self):
+        return f"StockAdjustment(product={self.product_id}, change={self.quantity_change})"
+
+
 class Color(PkModel):
 
     __tablename__ = "color"
@@ -86,12 +126,16 @@ class Color(PkModel):
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
 
 
+class BundleComponent(PkModel):
+    __tablename__ = "bundle_components"
+    bundle_product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
+    component_product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
+    quantity = db.Column(db.Integer, default=1)
+
+    component = db.relationship("Product", foreign_keys=[component_product_id], lazy=True)
+
+
 class Size(PkModel):
-
     __tablename__ = "size"
-
     name = db.Column(db.String(100))
-
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
-
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))

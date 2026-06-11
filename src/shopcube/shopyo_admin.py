@@ -16,7 +16,7 @@ class DefaultModelView(flask_admin_sqla.ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for("auth.login", next=request.url))
+        return redirect(url_for("shopyo_auth.login", next=request.url))
 
 
 class MyAdminIndexView(AdminIndexView):
@@ -25,16 +25,16 @@ class MyAdminIndexView(AdminIndexView):
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for("auth.login", next=request.url))
+        return redirect(url_for("shopyo_auth.login", next=request.url))
 
     @expose("/")
     def index(self):
         if not current_user.is_authenticated and current_user.is_admin:
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("shopyo_auth.login"))
         return super().index()
 
     @expose("/dashboard")
     def indexs(self):
         if not current_user.is_authenticated and current_user.is_admin:
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("shopyo_auth.login"))
         return super().index()

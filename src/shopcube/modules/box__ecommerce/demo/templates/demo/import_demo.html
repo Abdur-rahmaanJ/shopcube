@@ -1,7 +1,6 @@
-{% extends get_active_back_theme() + '/base.html' %}
-
+{% extends "base/module_base.html" %}
 {% set active_page ='import demo' %}
-
+{% block sidebar %}{% endblock %}
 {% block content %}
 <div class="row justify-content-center align-items-center py-5" style="min-height: 70vh;">
     <div class="col-md-8 text-center">
@@ -22,7 +21,7 @@
                     </button>
                 </form>
                 <div class="mt-4">
-                    <a href="{{ url_for('dashboard.index') }}" class="text-secondary" style="text-decoration: none; font-weight: 500;">Maybe later</a>
+                    <a href="{{ url_for('shopyo_dashboard.index') }}" class="text-secondary" style="text-decoration: none; font-weight: 500;">Maybe later</a>
                 </div>
             </div>
         </div>

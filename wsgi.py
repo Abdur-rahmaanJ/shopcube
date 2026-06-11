@@ -15,3 +15,26 @@ instance_path = os.environ.get("SHOPCUBE_INSTANCE_PATH", os.path.join(os.getcwd(
 config_name = os.environ.get("SHOPCUBE_CONFIG", "production")
 
 application = create_app(config_name=config_name, instance_path=instance_path)
+
+# Auto-initialize database on first run (development only)
+if config_name in ("development",):
+    with application.app_context():
+        import sqlalchemy as sa
+        from flask import current_app
+        db = current_app.extensions["sqlalchemy"]
+        if hasattr(db, "db"):
+            db = db.db
+        inspector = sa.inspect(db.engine)
+        if not inspector.has_table("settings"):
+            print("Initialising database...")
+            from flask_migrate import upgrade as migrate_upgrade
+            import shopcube
+            pkg_dir = os.path.dirname(shopcube.__file__)
+            migrate_upgrade(directory=os.path.join(pkg_dir, "migrations"))
+            from modules.box__default.settings.upload import upload as settings_upload
+            settings_upload()
+            from shopyo_auth.upload import upload as auth_upload
+            application.config['SHOPYO_AUTH_SEED_ADMIN_EMAIL'] = 'admin@domain.com'
+            application.config['SHOPYO_AUTH_SEED_ADMIN_PASSWORD'] = 'pass'
+            auth_upload()
+            print("Database initialised.")

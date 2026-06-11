@@ -12,8 +12,8 @@ from app import create_app
 from flask import url_for
 from flask_login import current_user as _current_user
 from init import db as _db
-from modules.box__default.auth.models import User
-from modules.box__default.settings.models import Settings
+from shopyo_auth.models import User
+from shopyo_settings.models import Settings
 from sqlalchemy import event
 
 # run in shopyo/shopyo
@@ -217,13 +217,13 @@ class AuthActions:
 
     def login(self, user, password="pass"):
         return self._client.post(
-            url_for("auth.login"),
+            url_for("shopyo_auth.login"),
             data=dict(email=user.email, password=password),
             follow_redirects=True,
         )
 
     def logout(self):
-        return self._client.get(url_for("auth.logout"), follow_redirects=True)
+        return self._client.get(url_for("shopyo_auth.logout"), follow_redirects=True)
 
 
 # Want TO USE THE BELOW 2 FIXTURES TO DYNAMICALLY

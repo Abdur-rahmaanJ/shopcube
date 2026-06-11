@@ -1,15 +1,16 @@
 {
-        "display_string": "Customer",
-        "module_name":"customer",
-        "type": "hide",
-        "icons":{
-            "fa": "fa fa-edit",
-            "boxicons": "bx bx-pen"
-        },
-        "url_prefix": "/customer",
-        "author": {
-            "name":"",
-            "website":"",
-            "mail":""
-        }
+    "display_string": "Customer",
+    "module_name": "customer",
+    "type": "hide",
+    "icons": {
+        "fa": "fa fa-edit",
+        "boxicons": "bx bx-pen"
+    },
+    "url_prefix": "/customer",
+    "author": {
+        "name": "",
+        "website": "",
+        "mail": ""
+    },
+    "fa-icon": "fa fa-edit"
 }

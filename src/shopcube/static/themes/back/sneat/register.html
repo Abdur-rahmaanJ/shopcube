@@ -5,7 +5,7 @@
 <h4 class="mb-2">Adventure starts here 🚀</h4>
 <p class="mb-4">Make your app management easy and fun!</p>
 
-<form id="formAuthentication" class="mb-3" action="{{url_for('auth.register')}}" method="post">
+<form id="formAuthentication" class="mb-3" action="{{url_for('shopyo_auth.register')}}" method="post">
   <div class="mb-3">
 
     <label class="form-label">{{ form.email.label }}</label>
@@ -60,7 +60,7 @@
 
 <p class="text-center">
   <span>Already have an account?</span>
-  <a href="{{ url_for('auth.login') }}">
+  <a href="{{ url_for('shopyo_auth.login') }}">
     <span>Sign in instead</span>
   </a>
 </p>
