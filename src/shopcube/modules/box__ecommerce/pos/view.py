@@ -135,6 +135,42 @@ def reports():
     return mhelp.render("reports.html", **context)
 
 
+@module_blueprint.route("/return", methods=["GET", "POST"])
+@login_required
+@admin_required
+def returns():
+    context = mhelp.context()
+    tx = None
+    if request.method == "POST":
+        receipt_id = request.form.get("receipt_id", type=int)
+        tx = Transaction.query.get(receipt_id)
+        if not tx:
+            flash("Transaction not found", "warning")
+    context["tx"] = tx
+    return mhelp.render("return.html", **context)
+
+
+@module_blueprint.route("/return/<int:tx_id>/process", methods=["POST"])
+@login_required
+@admin_required
+def process_return(tx_id):
+    tx = Transaction.query.get_or_404(tx_id)
+    refund_tx = Transaction(
+        cashier_id=current_user.id,
+        total_amount=-float(tx.total_amount or 0),
+        method_of_payment="refund",
+        notes=f"Return of transaction #{tx.id}",
+    )
+    refund_tx.insert()
+    for item in tx.items:
+        product = Product.query.filter_by(barcode=item.product_barcode).first()
+        if product:
+            product.in_stock = (product.in_stock or 0) + item.quantity
+            product.log_adjustment(item.quantity, "return", f"Return of TX #{tx.id}")
+    flash(f"Return processed. Refund: ${float(tx.total_amount or 0):.2f}", "success")
+    return redirect(url_for("pos.returns"))
+
+
 @module_blueprint.route("/shifts/dashboard")
 @login_required
 @admin_required
