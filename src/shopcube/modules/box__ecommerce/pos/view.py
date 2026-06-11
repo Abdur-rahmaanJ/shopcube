@@ -130,10 +130,14 @@ def reports():
     total_sales = sum(float(t.total_amount or 0) for t in txs)
     total_tx = len(txs)
     by_method = {}
+    by_cashier = {}
     for t in txs:
         m = t.method_of_payment or "unknown"
         by_method[m] = by_method.get(m, 0) + float(t.total_amount or 0)
-    context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx, "by_method": by_method, "days": days})
+        c = t.cashier_id or 0
+        by_cashier[c] = by_cashier.get(c, 0) + 1
+    context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx,
+                     "by_method": by_method, "by_cashier": by_cashier, "days": days})
     return mhelp.render("reports.html", **context)
 
 

@@ -23,6 +23,21 @@
             {% for method, amt in by_method.items() %}
             <tr><td>{{ method|capitalize }}</td><td><strong>${{ '%.2f'|format(amt) }}</strong></td></tr>
             {% endfor %}
+            <tr class="font-weight-bold"><td>Total</td><td>${{ '%.2f'|format(total_sales) }}</td></tr>
+        </table>
+
+        <h4>By Cashier (tx count)</h4>
+        <table class="table table-sm mb-4">
+            {% for cid, count in by_cashier.items() %}
+            <tr><td>Cashier #{{ cid }}</td><td>{{ count }} tx(s)</td></tr>
+            {% endfor %}
+        </table>
+
+        <h4>Tax Summary (estimated 10%)</h4>
+        <table class="table table-sm mb-4">
+            <tr><td>Taxable Sales</td><td>${{ '%.2f'|format(total_sales) }}</td></tr>
+            <tr><td>Tax (10%)</td><td>${{ '%.2f'|format(total_sales * 0.1) }}</td></tr>
+            <tr><td>Net Sales</td><td>${{ '%.2f'|format(total_sales * 0.9) }}</td></tr>
         </table>
         <h4>Recent Transactions</h4>
         <table class="table table-striped">
