@@ -1,0 +1,57 @@
+{% extends "base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% set sidebar_bgtrigger = 'quick_keys' %}
+{% block pagehead %}<title>Quick Keys</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Quick Keys / Speed Buttons</h2>
+        <p class="text-muted">Assign products to numbered grid positions for one-tap add at POS.</p>
+        <table class="table table-striped">
+            <thead><tr><th>Position</th><th>Product</th><th>Label</th><th>Actions</th></tr></thead>
+            <tbody>
+                {% for key in keys %}
+                <tr>
+                    <td>{{ key.position }}</td>
+                    <td>{{ key.product.name if key.product else '-' }}</td>
+                    <td>{{ key.label or '-' }}</td>
+                    <td>
+                        <form action="{{ url_for('pos.quick_key_delete', key_id=key.id) }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <button class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4" class="text-muted">No quick keys configured.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        <h4>Add Quick Key</h4>
+        <form method="POST" action="{{ url_for('pos.quick_key_add') }}" class="form-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="form-group mr-2">
+                <label class="mr-1">Position:</label>
+                <input type="number" name="position" class="form-control" style="width:80px;" min="1" max="30" required>
+            </div>
+            <div class="form-group mr-2">
+                <label class="mr-1">Product:</label>
+                <select name="product_id" class="form-control" required>
+                    <option value="">-- Select --</option>
+                    {% for p in products %}
+                    <option value="{{ p.id }}">{{ p.name }} ({{ p.barcode }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group mr-2">
+                <label class="mr-1">Label:</label>
+                <input type="text" name="label" class="form-control" placeholder="Optional label" style="width:120px;">
+            </div>
+            <button type="submit" class="btn btn-info">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

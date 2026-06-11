@@ -5,12 +5,13 @@
         "website": ""
     },
     "display_string": "Import Demo",
-    "icons":{
-            "fa": "fas fa-magic",
-            "boxicons": "bx bx-pen"
+    "icons": {
+        "fa": "fas fa-magic",
+        "boxicons": "bx bx-pen"
     },
     "module_name": "demo",
     "type": "show",
     "url_prefix": "/demo",
-    "dashboard": "/dashboard"
+    "dashboard": "/dashboard",
+    "fa-icon": "fas fa-magic"
 }

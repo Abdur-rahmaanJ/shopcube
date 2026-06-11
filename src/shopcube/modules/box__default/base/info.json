@@ -1,10 +1,11 @@
 {
     "display_string": "Base",
     "type": "hidden",
-    "icons":{
-		"fa": "fas fa-user-lock",
-		"boxicons": ""
-	},
+    "icons": {
+        "fa": "fas fa-user-lock",
+        "boxicons": ""
+    },
     "url_prefix": "/base",
-    "module_name": "base"
+    "module_name": "base",
+    "fa-icon": "fas fa-user-lock"
 }

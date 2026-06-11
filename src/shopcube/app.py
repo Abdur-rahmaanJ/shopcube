@@ -10,8 +10,12 @@ Need help?
 Hope it helps! We welcome all questions and even requests for walkthroughs
 """
 import importlib
+import json
 import os
 import sys
+import warnings
+warnings.filterwarnings("ignore", message=".*pkg_resources.*deprecated.*")
+warnings.filterwarnings("ignore", message=".*Using the in-memory storage.*")
 
 import jinja2
 from flask import Flask
@@ -22,8 +26,6 @@ from shopyo.api.assets import get_static
 from shopyo.api.assets import register_devstatic
 from shopyo.api.debug import is_yo_debug
 from shopyo.api.file import trycopy
-
-
 base_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, base_path)
 from config import app_config
@@ -36,6 +38,22 @@ from init import configure_all_uploads
 
 
 from shopyo_admin import MyAdminIndexView
+from shopyo_auth import ShopyoAuth
+from shopyo_base import ShopyoBase
+from shopyo_dashboard import ShopyoDashboard
+from shopyo_theme import ShopyoTheme
+from shopyo_theme import (
+    get_active_front_theme,
+    get_active_front_theme_version,
+    get_active_front_theme_styles_url,
+    get_active_back_theme,
+    get_active_back_theme_version,
+    get_active_back_theme_styles_url,
+)
+from shopyo_appadmin import ShopyoAppAdmin
+from shopyo_page import ShopyoPage
+from shopyo_settings import ShopyoSettings
+from shopyo_settings.helpers import get_setting, set_setting
 
 
 def create_app(config_name="development", instance_path=None):
@@ -58,6 +76,13 @@ def create_app(config_name="development", instance_path=None):
     load_config_from_instance(app, config_name)
     create_config_json()
     load_extensions(app)
+    shopyo_base = ShopyoBase(app)
+    shopyo_dashboard = ShopyoDashboard(app)
+    shopyo_auth = ShopyoAuth(app)
+    shopyo_theme = ShopyoTheme(app)
+    shopyo_appadmin = ShopyoAppAdmin(app)
+    shopyo_page = ShopyoPage(app)
+    shopyo_settings = ShopyoSettings(app)
     setup_flask_admin(app)
     register_devstatic(app, modules_path)
     load_blueprints(app, config_name, global_template_variables, global_configs)
@@ -135,7 +160,10 @@ def load_config_from_instance(app, config_name):
 
 def create_config_json():
     if not os.path.exists("config.json"):
-        trycopy("config_demo.json", "config.json")
+        config_src = os.path.join(base_path, "config_demo.json")
+        config_dst = os.path.join(os.getcwd(), "config.json")
+        if os.path.exists(config_src):
+            trycopy(config_src, config_dst)
 
 
 def setup_flask_admin(app):
@@ -146,7 +174,7 @@ def setup_flask_admin(app):
         index_view=MyAdminIndexView(),
     )
     # admin.add_view(DefaultModelView(Settings, db.session))
-    admin.add_link(MenuLink(name="Logout", category="", url="/auth/logout?next=/admin"))
+    admin.add_link(MenuLink(name="Logout", category="", endpoint="shopyo_auth.logout"))
 
 
 def load_blueprints(app, config_name, global_template_variables, global_configs):
@@ -165,6 +193,8 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
+                    continue
+                elif sub_folder == "dashboard":  # old dashboard replaced by shopyo_dashboard
                     continue
                 try:
                     sys_mod = importlib.import_module(
@@ -259,6 +289,49 @@ def setup_theme_paths(app):
             app.jinja_loader = my_loader
 
 
+def get_modules_info():
+    all_info = {}
+    modules_dir = os.path.join(base_path, "modules")
+    if not os.path.exists(modules_dir):
+        return all_info
+    for folder in os.listdir(modules_dir):
+        if folder.startswith("__"):
+            continue
+        elif folder.startswith("box__"):
+            for sub_folder in os.listdir(os.path.join(modules_dir, folder)):
+                if sub_folder.startswith("__") or sub_folder.endswith(".json"):
+                    continue
+                info_path = os.path.join(modules_dir, folder, sub_folder, "info.json")
+                if os.path.exists(info_path):
+                    with open(info_path) as f:
+                        module_info = json.load(f)
+                    if "fa-icon" not in module_info and "icons" in module_info:
+                        module_info["fa-icon"] = module_info["icons"].get("fa", "")
+                    module_info["static_name"] = f"{folder}/{sub_folder}"
+                    all_info[sub_folder] = module_info
+        else:
+            info_path = os.path.join(modules_dir, folder, "info.json")
+            if os.path.exists(info_path):
+                with open(info_path) as f:
+                    module_info = json.load(f)
+                if "fa-icon" not in module_info and "icons" in module_info:
+                    module_info["fa-icon"] = module_info["icons"].get("fa", "")
+                module_info["static_name"] = folder
+                all_info[folder] = module_info
+    return all_info
+
+
+def get_url_prefix(parts=False, as_str=False):
+    from flask import request
+    if parts:
+        if as_str:
+            return str(request.url_rule)
+        else:
+            return str(request.url_rule).split("/")
+    else:
+        return "/" + str(request.url_rule).split("/")[1]
+
+
 def inject_global_vars(app, global_template_variables):
     @app.context_processor
     def inject_global_vars():
@@ -269,6 +342,16 @@ def inject_global_vars(app, global_template_variables):
             "len": len,
             "current_user": current_user,
             "get_static": get_static,
+            "get_modules_info": get_modules_info,
+            "get_url_prefix": get_url_prefix,
+            "get_active_front_theme": get_active_front_theme,
+            "get_active_front_theme_version": get_active_front_theme_version,
+            "get_active_front_theme_styles_url": get_active_front_theme_styles_url,
+            "get_active_back_theme": get_active_back_theme,
+            "get_active_back_theme_version": get_active_back_theme_version,
+            "get_active_back_theme_styles_url": get_active_back_theme_styles_url,
+            "get_setting": get_setting,
+            "set_setting": set_setting,
         }
         base_context.update(global_template_variables)
 

@@ -17,88 +17,131 @@
 
 </div>
 
-# shopcube
+# ShopCube
 
-shopcube is an e-commerce solution for shops. Complete with
+ShopCube is a high-performance, minimalist e-commerce and POS solution. Designed for clarity, speed, and ease of use.
 
-- cart
-- wishlist
-- orders
-- upload by csv
-- charts
-- theming
+## Installation
 
-If you want to contribute, go ahead, we welcome it. We follow a 100% first-timers-friendly policy. Join #shopcube on Discord if you get stuck or would just like to chat and say hi.
-
-Powered by Shopyo, a Python web framework built on top of Flask.
-
-## Quick Start
-
-### Installation
-
-Clone the repository and set up a virtual environment:
+### 1. Install via PyPI
+You can install ShopCube directly into your virtual environment without cloning the repository.
 
 ```bash
-git clone https://github.com/shopyo/shopcube.git
-cd shopcube
 python3 -m venv venv
 source venv/bin/activate
-pip install --upgrade pip setuptools
-pip install -e .
+pip install shopcube
 ```
 
-### Initialisation
-
-To set up the database and default settings without clearing existing migrations:
+### 2. Initialise Workspace
+Once installed, use the `shopcube` command to set up your database and assets in your current directory.
 
 ```bash
-cd src/shopcube
-shopyo initialise --no-clear-migration
+shopcube initialise
 ```
 
-### Running the Application
-
-To run the development server:
+### 3. Run Locally
+Launch the development server directly from the CLI.
 
 ```bash
-flask run
+shopcube run
 ```
 
-Access the application at http://127.0.0.1:5000
+Access the dashboard at [http://127.0.0.1:5000/dashboard](http://127.0.0.1:5000/dashboard)
+- **Email:** `admin@admin.com`
+- **Password:** `admin`
 
-Login as administrator:
-- Email: admin@domain.com
-- Password: pass
+## Production Deployment
 
-The dashboard is available at http://127.0.0.1:5000/dashboard/
+When installed via pip, you can deploy using **Gunicorn** by referencing the internal WSGI entry point.
 
-## Deployment
-
-For production deployment, use a WSGI server like Gunicorn.
-
-### Example with Gunicorn
+### Running with Gunicorn
 
 ```bash
-gunicorn --bind 0.0.0.0:8000 wsgi:application
+pip install gunicorn
+gunicorn --bind 0.0.0.0:8000 shopcube.wsgi:application
 ```
 
-Ensure you have a `config.json` in your execution directory. You can copy the demo config:
+## Advanced Usage
+
+### Custom Project Directory
+If you want to create a full editable copy of the shopcube source in a specific folder:
 
 ```bash
-cp src/shopcube/config_demo.json config.json
+shopcube create my_store
+cd my_store
+# You now have the full source code and templates to customize
 ```
 
-## Development
+### Environment Variables
+Configure your production environment:
 
-### Running Tests
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `SHOPCUBE_CONFIG` | Environment type (`production`, `development`, `testing`) | `production` |
+| `SECRET_KEY` | Secret key for session encryption | *Required* |
+| `SHOPCUBE_DATA_DIR` | Directory for database and uploads | Current Directory |
 
-```bash
-cd src/shopcube
-python -m pytest
-```
+---
 
-### Useful Commands
+Designed with precision for the modern shop.
 
-```bash
-flask flight-info
-```
+## Features
+
+### Inventory Management
+- **Product catalog** with barcode, images, colors, sizes, categories, and subcategories
+- **Low-stock alerts** — configurable `min_stock` threshold per product; visual badge in POS
+- **Stock adjustments with reason codes** — audit trail for all stock changes (manual edit, POS sale, return, count, PO receive)
+- **Purchase Orders** — full PO lifecycle (draft → ordered → received); vendor-linked; auto-updates stock on receipt
+- **Vendor/Supplier management** — CRUD with contact info; link products to vendors
+- **Physical inventory counts** — generate count sheets; record actual qty; auto-apply variances
+- **Multi-location inventory** — warehouses/stores with location management
+- **Stock transfers** — move inventory between locations with draft → complete → receive workflow
+- **Kit/Bundle management** — assemble products from components; track component stock
+- **Barcode label printing** — print-ready label sheets
+- **Cost price & margin tracking** — per-product cost tracking; potential margin reports
+- **Inventory reports** — valuation at cost and retail; low-stock and out-of-stock views; per-product margin table
+
+### Point of Sale (POS)
+- **Intuitive grid layout** with category filtering, search, and barcode scanning
+- **Cart management** with quantity controls, line-item display, and running total
+- **Discount at POS** — percentage or fixed amount; server-side validated
+- **Order notes** — optional text memo attached to each transaction
+- **Payment method selector** — Cash, Card, Other
+- **Change calculation** — auto-computed from amount received
+- **Quick keys / Speed buttons** — assign products to numbered grid positions for one-tap add
+- **Transaction history** with full audit trail
+- **Sales reports** — date-filtered summaries by total, transaction count, and payment method
+- **Cashier performance** — per-cashier transaction counts
+- **Tax summary** — estimated tax on reportable sales
+- **Return with receipt lookup** — search by receipt number; reverses stock
+- **Shift management** — open/close workflow; tracks starting cash, expected vs actual, variance
+- **Low-stock visual warning** — gold border + quantity badge in product grid
+- **Cashier role** — non-admin staff can access POS via `cashier` role assignment
+
+### Customer Management
+- **Customer accounts** with registration, email confirmation, login/logout
+- **Order history** — per-customer view of past orders
+- **Customer groups/tiers** — configurable groups with % discount
+- **Customer Lifetime Value (CLV)** — total spent, order count, average order value, last purchase date
+
+### Admin Dashboard
+- **Product CRUD** — add/edit/delete with images, colors, sizes, vendor assignment
+- **Category management** — hierarchical categories and subcategories
+- **Coupon management** — configurable discount coupons
+- **Delivery & Payment options** — configure available methods
+- **Order management** — status tracking (pending → processing → shipped → cancelled/refunded); email notifications
+- **Bulk product upload** — via Excel spreadsheet
+- **Role-based access** — `@admin_required` on all management routes
+
+### Security
+- **CSRF protection** on all POST routes
+- **Admin-only access** enforced via `admin_required` decorator
+- **Login required** for all management endpoints
+- **File upload validation** — type and size restrictions
+- **SQLAlchemy ORM** with parameterized queries (no raw SQL)
+
+### Modular Architecture
+- Built on [Shopyo](https://shopyo.org) framework
+- Fully isolated modules (`box__ecommerce/*`) with independent models, views, and templates
+- Event-driven inter-module communication
+- Extensible — add custom modules via `shopyo startapp`

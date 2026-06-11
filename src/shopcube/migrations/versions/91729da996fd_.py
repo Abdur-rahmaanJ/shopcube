@@ -94,10 +94,26 @@ def upgrade():
     sa.Column('date_registered', sa.DateTime(), nullable=False),
     sa.Column('is_email_confirmed', sa.Boolean(), nullable=False),
     sa.Column('email_confirm_date', sa.DateTime(), nullable=True),
+    sa.Column('last_password_change', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    op.create_table('user_tokens',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('token_hash', sa.String(length=64), nullable=False),
+    sa.Column('token_salt', sa.String(length=64), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('last_used_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('token_hash')
+    )
+    with op.batch_alter_table('user_tokens', schema=None) as batch_op:
+        batch_op.create_index('ix_user_tokens_token_hash', ['token_hash'])
+
     op.create_table('billing_details',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=100), nullable=True),
@@ -234,6 +250,7 @@ def downgrade():
     op.drop_table('deliveryoptions')
     op.drop_table('coupons')
     op.drop_table('billing_details')
+    op.drop_table('user_tokens')
     op.drop_table('users')
     op.drop_table('transactions')
     op.drop_table('settings')

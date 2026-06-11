@@ -5,7 +5,7 @@ from flask import session
 
 from utils.session import Cart
 
-from modules.box__default.settings.helpers import get_setting
+from shopyo_settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product

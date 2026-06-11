@@ -5,7 +5,7 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from flask_login import login_required
-from modules.box__default.theme.helpers import get_active_front_theme
+from shopyo_theme import get_active_front_theme
 from shopyo.api.html import notify_success
 
 from .forms import ContactForm

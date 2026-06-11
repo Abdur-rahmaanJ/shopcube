@@ -1,5 +1,5 @@
 from flask import render_template
-from modules.box__default.theme.helpers import get_active_front_theme
+from shopyo_theme import get_active_front_theme
 from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
 

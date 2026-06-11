@@ -115,12 +115,38 @@
                 </div>
                 <input required name="selling_price" autocomplete="off" id="selling_price" type="number" step="0.01" class="form-control" placeholder="Selling Price" value="{{product.selling_price}}">
             </div>
+            <label>cost price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
+                </div>
+                <input name="cost_price" autocomplete="off" type="number" step="0.01" class="form-control" placeholder="Cost Price" value="{{product.cost_price or 0}}">
+            </div>
             <label>in stock</label>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-list-alt"></i></span>
                 </div>
                 <input required name="in_stock" autocomplete="off" id="stock" type="number" step="1" class="form-control" placeholder="Stock" value="{{product.in_stock}}">
+            </div>
+            <label>vendor</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-truck"></i></span>
+                </div>
+                <select name="vendor_id" class="form-control">
+                    <option value="">-- None --</option>
+                    {% for v in vendors %}
+                    <option value="{{ v.id }}" {{ 'selected' if product.vendor_id == v.id }}>{{ v.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <label>min stock (alert when at or below)</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-exclamation-triangle"></i></span>
+                </div>
+                <input name="min_stock" autocomplete="off" type="number" step="1" class="form-control" placeholder="Min stock (0 = no alert)" value="{{product.min_stock or 0}}">
             </div>
             <label>discontinued</label>
             <div class="form-check">
@@ -179,6 +205,48 @@
                 document.getElementById("noHistoricDates").setAttribute("min", new Date().toISOString().split("T")[0]);
             })();*/
             </script>
+        </form>
+    </div>
+</div>
+
+<br>
+<div class="card">
+    <div class="card-body">
+        <h4>Stock Adjustment</h4>
+        <form action="{{ url_for('product.adjust_stock', barcode=product.barcode) }}" method="POST" style="display:flex;gap:8px;align-items:center;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="number" name="quantity" class="form-control" style="width:100px;" placeholder="+/- Qty" required>
+            <input type="text" name="reason" class="form-control" style="flex:1;" placeholder="Reason for adjustment" required>
+            <button type="submit" class="btn btn-warning">Adjust</button>
+            <a href="{{ url_for('product.adjustments', barcode=product.barcode) }}" class="btn btn-info">History</a>
+        </form>
+    </div>
+<br>
+<div class="card">
+    <div class="card-body">
+        <h4>Bundle Components</h4>
+        {% if product.bundle_components %}
+        <table class="table table-sm">
+            <thead><tr><th>Component</th><th>Qty</th><th></th></tr></thead>
+            <tbody>
+                {% for bc in product.bundle_components %}
+                <tr><td>{{ bc.component.name if bc.component else '?' }}</td><td>{{ bc.quantity }}</td>
+                    <td><form action="{{ url_for('product.bundle_remove_component', bc_id=bc.id) }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="btn btn-danger btn-sm">Remove</button>
+                    </form></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">Not a bundle. Add components below.</p>
+        {% endif %}
+        <form action="{{ url_for('product.bundle_add_component', barcode=product.barcode) }}" method="POST" class="form-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="text" name="component_barcode" class="form-control mr-2" placeholder="Component barcode" required>
+            <input type="number" name="quantity" class="form-control mr-2" value="1" min="1" style="width:70px;">
+            <button type="submit" class="btn btn-info btn-sm">Add Component</button>
         </form>
     </div>
 </div>

@@ -31,8 +31,43 @@ def main():
         subprocess.run([sys.executable, str(pkg_dir / "manage.py"), "initialise"], env=env)
 
     elif cmd == "run":
+        data_dir = os.getcwd()
+        src_dir = str(pkg_dir.parent)
+        env["SHOPCUBE_DATA_DIR"] = data_dir
+        env["SHOPCUBE_CONFIG"] = "development"
+        env["FLASK_APP"] = "wsgi.py"
+        env["PYTHONPATH"] = src_dir + os.pathsep + env.get("PYTHONPATH", "")
+
+        db_path = os.path.join(data_dir, "shopcube_dev.db")
+        if not os.path.exists(db_path):
+            print("Initialising ShopCube...")
+            migrations_dir = os.path.join(pkg_dir, "migrations")
+            subprocess.run(
+                [sys.executable, "-m", "flask", "db", "upgrade", "--directory", migrations_dir],
+                env=env
+            )
+            # Seed settings and admin user
+            subprocess.run([
+                sys.executable, "-c", rf"""
+import os, sys
+os.environ['SHOPCUBE_DATA_DIR'] = '{data_dir}'
+os.environ['SHOPCUBE_CONFIG'] = 'development'
+sys.path.insert(0, '{src_dir}')
+from shopcube.app import create_app
+app = create_app()
+with app.app_context():
+    app.config['SHOPYO_AUTH_SEED_ADMIN_EMAIL'] = 'admin@domain.com'
+    app.config['SHOPYO_AUTH_SEED_ADMIN_PASSWORD'] = 'pass'
+    from shopyo_settings.upload import upload
+    upload()
+    from shopyo_auth.upload import upload as auth_upload
+    auth_upload()
+    print('  Settings and admin user created')
+"""
+            ], env=env)
+
         print("Running ShopCube...")
-        subprocess.run([sys.executable, str(pkg_dir / "manage.py"), "runserver"], env=env)
+        subprocess.run([sys.executable, "-m", "flask", "--debug", "run"], env=env)
 
     elif cmd == "wsgi":
         print("ShopCube WSGI Deployment Info")

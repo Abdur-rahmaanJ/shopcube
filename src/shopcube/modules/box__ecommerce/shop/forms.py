@@ -150,7 +150,7 @@ from wtforms.validators import InputRequired
 from wtforms.validators import Length
 from wtforms.validators import ValidationError
 
-from modules.box__default.auth.models import User
+from shopyo_auth.models import User
 
 
 class LoginForm(FlaskForm):

@@ -4,7 +4,7 @@
 <h4 class="mb-2">Welcome to PythonCMS! 👋</h4>
               <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-              <form id="formAuthentication" class="mb-3" action="{{url_for('auth.login')}}" method="POST">
+              <form id="formAuthentication" class="mb-3" action="{{url_for('shopyo_auth.login')}}" method="POST">
                 <div class="mb-3">
                   {{ form.email.label }}
                   {{ form.email() }}
@@ -50,7 +50,7 @@
 
               <p class="text-center">
                 <span>New on our platform?</span>
-                <a href="{{ url_for('auth.register') }}">
+                <a href="{{ url_for('shopyo_auth.register') }}">
                   <span>Create an account</span>
                 </a>
               </p>

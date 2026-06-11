@@ -21,9 +21,9 @@ from shopyo.api.security import get_safe_redirect
 
 from utils.session import Cart
 
-from modules.box__default.auth.models import User
+from shopyo_auth.models import User
 from shopyo.api.email import send_async_email
-from modules.box__default.settings.helpers import get_setting
+from shopyo_settings.helpers import get_setting
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Product

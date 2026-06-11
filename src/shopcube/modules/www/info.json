@@ -1,15 +1,16 @@
 {
-        "display_string": "Www",
-        "module_name":"www",
-        "type": "show",
-        "icons":{
-            "fa": "fa fa-globe-asia",
-            "boxicons": "bx bx-planet"
-        },
-        "url_prefix": "/",
-        "author": {
-            "name":"",
-            "website":"",
-            "mail":""
-        }
+    "display_string": "Www",
+    "module_name": "www",
+    "type": "show",
+    "icons": {
+        "fa": "fa fa-globe-asia",
+        "boxicons": "bx bx-planet"
+    },
+    "url_prefix": "/",
+    "author": {
+        "name": "",
+        "website": "",
+        "mail": ""
+    },
+    "fa-icon": "fa fa-globe-asia"
 }
