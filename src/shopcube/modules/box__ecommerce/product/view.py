@@ -96,6 +96,7 @@ def add(subcategory_id):
         price = request.form["price"]
         selling_price = request.form["selling_price"]
         in_stock = request.form["in_stock"]
+        min_stock = request.form.get("min_stock", 0)
         colors = request.form["colors"]
         sizes = request.form["sizes"]
 
@@ -104,9 +105,6 @@ def add(subcategory_id):
         else:
             discontinued = False
 
-        # category = Category.query.filter(
-        #     Category.name == category_name).first()
-        # print(category, category_name, category.name)
         has_product = db.session.query(
             exists().where(Product.barcode == barcode)
         ).scalar()
@@ -116,6 +114,7 @@ def add(subcategory_id):
                 barcode=barcode,
                 name=name,
                 in_stock=in_stock,
+                min_stock=min_stock,
                 discontinued=discontinued,
             )
             if description:
@@ -222,6 +221,7 @@ def update(subcategory_id):
             price = 0
         selling_price = request.form["selling_price"]
         in_stock = request.form["in_stock"]
+        min_stock = request.form.get("min_stock", 0)
         colors = request.form["colors"]
         sizes = request.form["sizes"]
 
@@ -238,6 +238,7 @@ def update(subcategory_id):
         p.price = price
         p.selling_price = selling_price
         p.in_stock = in_stock
+        p.min_stock = min_stock
         p.discontinued = discontinued
 
         with db.session.no_autoflush:

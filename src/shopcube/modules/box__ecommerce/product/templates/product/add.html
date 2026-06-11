@@ -100,6 +100,13 @@ $(function() {
                 </div>
                 <input required name="in_stock" autocomplete="off" id="stock" type="number" step="1" class="form-control" placeholder="Stock">
             </div>
+            <label>min stock (alert when at or below)</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-exclamation-triangle"></i></span>
+                </div>
+                <input name="min_stock" autocomplete="off" type="number" step="1" class="form-control" placeholder="Min stock (0 = no alert)" value="0">
+            </div>
             <label>discontinued</label>
             <div class="form-check">
                 <input required name="discontinued" autocomplete="off" class="form-check-input" type="radio" value="True" id="defaultCheck1">

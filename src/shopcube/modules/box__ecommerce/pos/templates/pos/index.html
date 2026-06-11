@@ -158,6 +158,16 @@
         font-weight: 600;
     }
 
+    .low-stock {
+        border: 1px solid #fdcb6e !important;
+    }
+
+    .low-stock-badge {
+        background-color: #fff3cd;
+        color: #856404;
+        font-weight: 600;
+    }
+
     /* Right Panel: Cart */
     .cart-panel {
         background: white;
@@ -423,7 +433,8 @@
                                      data-category-id="{{category.id}}" 
                                      data-name="{{product.name|lower}}" 
                                      data-barcode="{{product.barcode}}">
-                                    <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
+                                    {% set is_low = product.min_stock and product.min_stock > 0 and product.in_stock <= product.min_stock and product.in_stock > 0 %}
+                                    <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
                                         <div class="product-img-wrapper">
                                             <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
                                         </div>
@@ -433,11 +444,13 @@
                                                 <span class="product-price">$
                                                     {{product.selling_price}}
                                                 </span>
-                                                <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock-badge{% endif %}">
-                                                    {%- if product.in_stock > 0 -%}
-                                                        {{product.in_stock}} in stock
-                                                    {%- else -%}
+                                                <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock-badge{% elif is_low %} low-stock-badge{% endif %}">
+                                                    {%- if product.in_stock == 0 -%}
                                                         Out of stock
+                                                    {%- elif is_low -%}
+                                                        {{product.in_stock}} left
+                                                    {%- else -%}
+                                                        {{product.in_stock}} in stock
                                                     {%- endif -%}
                                                 </span>
                                             </div>
