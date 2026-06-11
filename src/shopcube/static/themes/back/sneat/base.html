@@ -157,13 +157,13 @@
               {%if menu_type == 'no-menu'%}
                 <li class="menu-item {{'active' if get_url_prefix() == moduleinfo['url_prefix']}}">
                   <a href="{{link}}" class="menu-link">
-                    {%if 'file' in moduleinfo['icons']%}
+                    {%if 'file' in moduleinfo.get('icons', {})%}
                     <img class="menu-icon" src="{{get_static(moduleinfo['static_name'], moduleinfo['icons']['file'])}}">
                     {%else%}
                       {%if get_setting('ACTIVE_ICONSET') == 'fa'%}
-                      <i class="menu-icon {{moduleinfo['icons']['fa']}}"></i>
+                      <i class="menu-icon {{moduleinfo.get('icons', {}).get('fa', '')}}"></i>
                       {%else%}
-                      <i class="menu-icon tf-icons {{moduleinfo['icons']['boxicons']}}"></i>
+                      <i class="menu-icon tf-icons {{moduleinfo.get('icons', {}).get('boxicons', '')}}"></i>
                       {%endif%}
                     {%endif%}
                     <div data-i18n="{{moduleinfo['display_string']}}">{{moduleinfo['display_string']}}</div>
@@ -172,21 +172,16 @@
               {%elif menu_type == 'show-menu'%}
                 <li class="menu-item {{'open active' if get_url_prefix() == moduleinfo['url_prefix']}}">
                   <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    {%if 'file' in moduleinfo['icons']%}
+                    {%if 'file' in moduleinfo.get('icons', {})%}
                       <img class="menu-icon" src="{{get_static(moduleinfo['static_name'], moduleinfo['icons']['file'])}}">
                     {%else%}
                       {%if get_setting('ACTIVE_ICONSET') == 'fa'%}
                       <i class="menu-icon {{moduleinfo['icons']['fa']}}"></i>
                       {%else%}
-                      <i class="menu-icon tf-icons {{moduleinfo['icons']['boxicons']}}"></i>
+                      <i class="menu-icon tf-icons {{moduleinfo.get('icons', {}).get('boxicons', '')}}"></i>
                       {%endif%}
                     {%endif%}
                     <div data-i18n="{{moduleinfo['display_string']}}">{{moduleinfo['display_string']}}</div>
-                  </a>
-
-                  <ul class="menu-sub">
-
-                    {%for menu in moduleinfo['menu'] %}
                     {%set menuname = menu%}
                     {%set menulink = moduleinfo['menu'][menu]%}
                     {%set subprefix = moduleinfo['url_prefix'] + menulink%}
