@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-white border-bottom py-2 px-4 shadow-sm">
     <div class="container-fluid">
         <!-- Brand/logo -->
-        <a class="navbar-brand d-flex align-items-center" href="{{url_for('dashboard.index')}}" style="font-weight: 600; letter-spacing: -0.5px;">
+        <a class="navbar-brand d-flex align-items-center" href="{{url_for('shopyo_dashboard.index')}}" style="font-weight: 600; letter-spacing: -0.5px;">
             <img src="/static/shopyo.svg" width="30" height="30" class="mr-2">
             <span class="text-dark">{{OUR_APP_NAME}}</span>
             {% if active_page != 'none' %}
@@ -20,7 +20,7 @@
             <!-- Nav Links Left Aligned -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="{{url_for('dashboard.index')}}" title="Dashboard">
+                    <a class="nav-link text-dark" href="{{url_for('shopyo_dashboard.index')}}" title="Dashboard">
                         <i class="fas fa-th-large mr-1" style="font-size: 1.1rem; opacity: 0.7;"></i> Dashboard
                     </a>
                 </li>
@@ -37,17 +37,17 @@
                             <i class="fas fa-chevron-down text-muted" style="font-size: 0.7rem;"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right border-0 shadow-lg mt-2" style="border-radius: 12px;">
-                            <a class="dropdown-item py-2" href="{{url_for('auth.logout', next=request.url)}}">
+                            <a class="dropdown-item py-2" href="{{url_for('shopyo_auth.logout', next=request.url)}}">
                                 <i class="fas fa-sign-out-alt mr-2 text-danger"></i> Logout
                             </a>
                         </div>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link text-dark font-weight-medium" href="{{url_for('auth.login')}}">Login</a>
+                        <a class="nav-link text-dark font-weight-medium" href="{{url_for('shopyo_auth.login')}}">Login</a>
                     </li>
                     <li class="nav-item ml-lg-2">
-                        <a class="nav-link btn btn-dark text-white px-4 py-2" href="{{url_for('auth.register')}}" style="border-radius: 20px;">Get Started</a>
+                        <a class="nav-link btn btn-dark text-white px-4 py-2" href="{{url_for('shopyo_auth.register')}}" style="border-radius: 20px;">Get Started</a>
                     </li>
                 {% endif %}
             </ul>

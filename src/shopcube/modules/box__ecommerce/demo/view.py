@@ -4,8 +4,8 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 from flask_login import login_required
-from modules.box__default.appadmin.admin import admin_required
-from modules.box__default.auth.decorators import check_confirmed
+from shopyo_appadmin.admin import admin_required
+from shopyo_auth.decorators import check_confirmed
 from shopyo.api.module import ModuleHelp
 
 from init import db
@@ -91,4 +91,4 @@ def do_import():
         db.session.rollback()
         flash(f"Error importing demo data: {str(e)}", "danger")
     
-    return redirect(url_for("dashboard.index"))
+    return redirect(url_for("shopyo_dashboard.index"))

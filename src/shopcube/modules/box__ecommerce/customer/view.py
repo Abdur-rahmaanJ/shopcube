@@ -16,8 +16,8 @@ from shopyo.api.module import ModuleHelp
 
 from init import db
 
-from modules.box__default.auth.models import User
-from modules.box__default.auth.models import Role
+from shopyo_auth.models import User
+from shopyo_auth.models import Role
 from shopyo.api.email import send_async_email
 from modules.box__ecommerce.shop.forms import RegisterCustomerForm
 from modules.box__ecommerce.shop.models import BillingDetail

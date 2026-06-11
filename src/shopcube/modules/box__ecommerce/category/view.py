@@ -28,7 +28,7 @@ from init import productexcel
 from init import subcategoryphotos
 from utils.file import unique_sec_filename
 
-from modules.box__default.settings.helpers import get_setting
+from shopyo_settings.helpers import get_setting
 from modules.box__ecommerce.category.forms import UploadProductForm
 from modules.box__ecommerce.category.models import Category
 from modules.box__ecommerce.category.models import SubCategory

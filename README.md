@@ -17,88 +17,70 @@
 
 </div>
 
-# shopcube
+# ShopCube
 
-shopcube is an e-commerce solution for shops. Complete with
+ShopCube is a high-performance, minimalist e-commerce and POS solution. Designed for clarity, speed, and ease of use.
 
-- cart
-- wishlist
-- orders
-- upload by csv
-- charts
-- theming
+## Installation
 
-If you want to contribute, go ahead, we welcome it. We follow a 100% first-timers-friendly policy. Join #shopcube on Discord if you get stuck or would just like to chat and say hi.
-
-Powered by Shopyo, a Python web framework built on top of Flask.
-
-## Quick Start
-
-### Installation
-
-Clone the repository and set up a virtual environment:
+### 1. Install via PyPI
+You can install ShopCube directly into your virtual environment without cloning the repository.
 
 ```bash
-git clone https://github.com/shopyo/shopcube.git
-cd shopcube
 python3 -m venv venv
 source venv/bin/activate
-pip install --upgrade pip setuptools
-pip install -e .
+pip install shopcube
 ```
 
-### Initialisation
-
-To set up the database and default settings without clearing existing migrations:
+### 2. Initialise Workspace
+Once installed, use the `shopcube` command to set up your database and assets in your current directory.
 
 ```bash
-cd src/shopcube
-shopyo initialise --no-clear-migration
+shopcube initialise
 ```
 
-### Running the Application
-
-To run the development server:
+### 3. Run Locally
+Launch the development server directly from the CLI.
 
 ```bash
-flask run
+shopcube run
 ```
 
-Access the application at http://127.0.0.1:5000
+Access the dashboard at [http://127.0.0.1:5000/dashboard](http://127.0.0.1:5000/dashboard)
+- **Email:** `admin@admin.com`
+- **Password:** `admin`
 
-Login as administrator:
-- Email: admin@domain.com
-- Password: pass
+## Production Deployment
 
-The dashboard is available at http://127.0.0.1:5000/dashboard/
+When installed via pip, you can deploy using **Gunicorn** by referencing the internal WSGI entry point.
 
-## Deployment
-
-For production deployment, use a WSGI server like Gunicorn.
-
-### Example with Gunicorn
+### Running with Gunicorn
 
 ```bash
-gunicorn --bind 0.0.0.0:8000 wsgi:application
+pip install gunicorn
+gunicorn --bind 0.0.0.0:8000 shopcube.wsgi:application
 ```
 
-Ensure you have a `config.json` in your execution directory. You can copy the demo config:
+## Advanced Usage
+
+### Custom Project Directory
+If you want to create a full editable copy of the shopcube source in a specific folder:
 
 ```bash
-cp src/shopcube/config_demo.json config.json
+shopcube create my_store
+cd my_store
+# You now have the full source code and templates to customize
 ```
 
-## Development
+### Environment Variables
+Configure your production environment:
 
-### Running Tests
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `SHOPCUBE_CONFIG` | Environment type (`production`, `development`, `testing`) | `production` |
+| `SECRET_KEY` | Secret key for session encryption | *Required* |
+| `SHOPCUBE_DATA_DIR` | Directory for database and uploads | Current Directory |
 
-```bash
-cd src/shopcube
-python -m pytest
-```
+---
 
-### Useful Commands
-
-```bash
-flask flight-info
-```
+Designed with precision for the modern shop.

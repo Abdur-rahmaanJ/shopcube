@@ -1,0 +1,15 @@
+{
+    "admin_user": {
+      "email": "admin@domain.com",
+      "password": "pass"
+    },
+    "settings": {
+      "APP_NAME": "Demo",
+      "ACTIVE_FRONT_THEME": "ecommerceus",
+      "ACTIVE_BACK_THEME": "sneat",
+      "SECTION_NAME": "Category",
+      "SECTION_ITEMS": "Products",
+      "CURRENCY": "MUR",
+      "ACTIVE_ICONSET": "boxicons"
+    }
+}
