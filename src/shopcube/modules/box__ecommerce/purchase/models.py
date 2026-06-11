@@ -20,6 +20,11 @@ class PurchaseOrder(PkModel):
     def __repr__(self):
         return f"PO #{self.id} ({self.status})"
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class PurchaseOrderItem(PkModel):
     __tablename__ = "purchase_order_items"

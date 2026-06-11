@@ -11,6 +11,11 @@ class Location(PkModel):
     def __repr__(self):
         return f"Location: {self.name}"
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class StockPerLocation(PkModel):
     __tablename__ = "stock_per_location"
@@ -35,6 +40,11 @@ class StockTransfer(PkModel):
     to_location = db.relationship("Location", foreign_keys=[to_location_id], lazy=True)
     items = db.relationship("StockTransferItem", backref="transfer", lazy=True, cascade="all, delete-orphan")
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class StockTransferItem(PkModel):
     __tablename__ = "stock_transfer_items"
@@ -43,6 +53,11 @@ class StockTransferItem(PkModel):
     quantity = db.Column(db.Integer, default=0)
 
     product = db.relationship("Product", lazy=True)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
 
 
 class InventoryCount(PkModel):
@@ -57,6 +72,11 @@ class InventoryCount(PkModel):
     def __repr__(self):
         return f"InventoryCount #{self.id} ({self.status})"
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class InventoryCountItem(PkModel):
     __tablename__ = "inventory_count_items"
@@ -66,6 +86,11 @@ class InventoryCountItem(PkModel):
     actual_qty = db.Column(db.Integer, default=0)
 
     product = db.relationship("Product", lazy=True)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
 
     @property
     def variance(self):
