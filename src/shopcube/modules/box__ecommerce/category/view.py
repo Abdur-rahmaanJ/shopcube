@@ -1,7 +1,5 @@
-import json
 import os
 
-from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import jsonify
@@ -18,8 +16,10 @@ from flask_sqlalchemy import sqlalchemy
 from shopyo.api.file import delete_file
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
+from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
 from shopyo.api.validators import is_empty_str
+from shopyo_appadmin.admin import admin_required
 from sqlalchemy import and_
 
 from init import categoryphotos
@@ -37,26 +37,14 @@ from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
 from modules.resource.models import Resource
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
-
-module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
-
-module_name = module_info["module_name"]
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
 
-@module_blueprint.route(module_info["dashboard"])
+@module_blueprint.route(mhelp.info["dashboard"])
 @login_required
+@admin_required
 def dashboard():
     context = {}
     context["categorys"] = Category.query.all()
@@ -66,6 +54,7 @@ def dashboard():
 
 @module_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
+@admin_required
 def add():
 
     context = {}
@@ -112,8 +101,8 @@ def add():
                         category="category_image",
                     )
                 )
-        except flask_uploads.UploadNotAllowed as e:
-            pass
+        except flask_uploads.UploadNotAllowed:
+            flash(notify_warning("File type not allowed for category photo"))
 
         category.save()
         flash(notify_success(f'Category "{name}" added successfully'))
@@ -123,8 +112,9 @@ def add():
     return render_template("category/add.html", **context)
 
 
-@module_blueprint.route("<name>/delete", methods=["GET"])
+@module_blueprint.route("<name>/delete", methods=["POST"])
 @login_required
+@admin_required
 def delete(name):
 
     if is_empty_str(name):
@@ -153,8 +143,9 @@ def delete(name):
     return redirect(url_for("category.dashboard"))
 
 
-@module_blueprint.route("/<category_name>/img/<filename>/delete", methods=["GET"])
+@module_blueprint.route("/<category_name>/img/<filename>/delete", methods=["POST"])
 @login_required
+@admin_required
 def category_image_delete(category_name, filename):
     resource = Resource.query.filter(Resource.filename == filename).first()
     category = Category.query.filter(Category.name == category_name).first()
@@ -169,6 +160,7 @@ def category_image_delete(category_name, filename):
 
 @module_blueprint.route("/update", methods=["GET", "POST"])
 @login_required
+@admin_required
 def update():
     context = {}
 
@@ -192,8 +184,8 @@ def update():
                             category="category_image",
                         )
                     )
-            except flask_uploads.UploadNotAllowed as e:
-                pass
+            except flask_uploads.UploadNotAllowed:
+                flash(notify_warning("File type not allowed for category photo"))
 
             category.name = name
             category.update()
@@ -205,10 +197,11 @@ def update():
 
 
 @module_blueprint.route(
-    "{}/edit/<category_name>".format(module_info["dashboard"]),
+    "{}/edit/<category_name>".format(mhelp.info["dashboard"]),
     methods=["GET"],
 )
 @login_required
+@admin_required
 def edit_dashboard(category_name):
     context = {}
     category = Category.query.filter(Category.name == category_name).first()
@@ -220,6 +213,7 @@ def edit_dashboard(category_name):
 # api
 @module_blueprint.route("/check/<category_name>", methods=["GET"])
 @login_required
+@admin_required
 def check(category_name):
     has_category = Category.category_exists(category_name)
     return jsonify({"exists": has_category})
@@ -231,10 +225,11 @@ def check(category_name):
 
 
 @module_blueprint.route(
-    "{}/<category_name>/sub/".format(module_info["dashboard"]),
+    "{}/<category_name>/sub/".format(mhelp.info["dashboard"]),
     methods=["GET"],
 )
 @login_required
+@admin_required
 def manage_sub(category_name):
     """
 
@@ -251,10 +246,11 @@ def manage_sub(category_name):
 
 
 @module_blueprint.route(
-    "{}/<category_name>/sub/add".format(module_info["dashboard"]),
+    "{}/<category_name>/sub/add".format(mhelp.info["dashboard"]),
     methods=["GET", "POST"],
 )
 @login_required
+@admin_required
 def add_sub(category_name):
     if request.method == "POST":
 
@@ -315,8 +311,8 @@ def add_sub(category_name):
                         category="subcategory_image",
                     )
                 )
-        except flask_uploads.UploadNotAllowed as e:
-            pass
+        except flask_uploads.UploadNotAllowed:
+            flash(notify_warning("File type not allowed for subcategory photo"))
 
         category.subcategories.append(subcategory)
         category.update()
@@ -324,10 +320,11 @@ def add_sub(category_name):
 
 
 @module_blueprint.route(
-    "{}/sub/<subcategory_id>/img/edit".format(module_info["dashboard"]),
+    "{}/sub/<subcategory_id>/img/edit".format(mhelp.info["dashboard"]),
     methods=["GET"],
 )
 @login_required
+@admin_required
 def edit_sub_img_dashboard(subcategory_id):
     context = {}
     subcategory = SubCategory.query.get(subcategory_id)
@@ -337,6 +334,7 @@ def edit_sub_img_dashboard(subcategory_id):
 
 @module_blueprint.route("/sub/<subcategory_id>/name/edit", methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_sub_name(subcategory_id):
     if request.method == "POST":
         subcategory = SubCategory.query.get(subcategory_id)
@@ -371,6 +369,7 @@ def edit_sub_name(subcategory_id):
 
 @module_blueprint.route("/sub/<subcategory_id>/img/edit", methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_sub_img(subcategory_id):
     if request.method == "POST":
         subcategory = SubCategory.query.get(subcategory_id)
@@ -388,8 +387,8 @@ def edit_sub_img(subcategory_id):
                         category="subcategory_image",
                     )
                 )
-        except flask_uploads.UploadNotAllowed as e:
-            pass
+        except flask_uploads.UploadNotAllowed:
+            flash(notify_warning("File type not allowed for subcategory photo"))
         subcategory.update()
         return redirect(
             url_for(
@@ -399,8 +398,9 @@ def edit_sub_img(subcategory_id):
         )
 
 
-@module_blueprint.route("/sub/<subcategory_id>/img/<filename>/delete", methods=["GET"])
+@module_blueprint.route("/sub/<subcategory_id>/img/<filename>/delete", methods=["POST"])
 @login_required
+@admin_required
 def subcategory_image_delete(subcategory_id, filename):
     resource = Resource.query.filter(Resource.filename == filename).first()
     subcategory = SubCategory.query.get(subcategory_id)
@@ -415,8 +415,9 @@ def subcategory_image_delete(subcategory_id, filename):
     )
 
 
-@module_blueprint.route("/sub/<subcategory_id>/delete", methods=["GET"])
+@module_blueprint.route("/sub/<subcategory_id>/delete", methods=["POST"])
 @login_required
+@admin_required
 def sub_delete(subcategory_id):
     subcategory = SubCategory.query.get(subcategory_id)
     category_name = subcategory.category.name
@@ -467,10 +468,11 @@ def sub_delete(subcategory_id):
 
 
 @module_blueprint.route(
-    "<category_id>/{}/sub".format(module_info["dashboard"]),
+    "<category_id>/{}/sub".format(mhelp.info["dashboard"]),
     methods=["GET"],
 )
 @login_required
+@admin_required
 def choose_sub_dashboard(category_id):
     context = {}
     category = Category.query.get(category_id)
@@ -486,6 +488,7 @@ def choose_sub_dashboard(category_id):
 
 @module_blueprint.route("/sub/file/<filename>", methods=["GET"])
 @login_required
+@admin_required
 def subcategory_image(filename):
     if filename == "default":
         return send_from_directory(
@@ -499,6 +502,7 @@ def subcategory_image(filename):
 
 @module_blueprint.route("/file/<filename>", methods=["GET"])
 @login_required
+@admin_required
 def category_image(filename):
 
     return send_from_directory(
@@ -513,6 +517,7 @@ def category_image(filename):
 
 @module_blueprint.route("/upload/", methods=["GET", "POST"])
 @login_required
+@admin_required
 def upload():
     product_form = UploadProductForm()
     return yo_render("category/upload.html", locals())
@@ -530,6 +535,7 @@ def isdiscontinued(cell_value):
 
 @module_blueprint.route("/upload/check", methods=["GET", "POST"])
 @login_required
+@admin_required
 def upload_check():
     form = UploadProductForm()
     if request.method == "POST":
