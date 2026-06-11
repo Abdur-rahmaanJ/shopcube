@@ -144,7 +144,18 @@
         padding: 4px 8px;
         border-radius: 4px;
         background-color: #f0f0f0;
-        color: #666;
+        color: #555;
+    }
+
+    .out-of-stock {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .out-of-stock-badge {
+        background-color: #ffe0e0;
+        color: #c0392b;
+        font-weight: 600;
     }
 
     /* Right Panel: Cart */
@@ -386,12 +397,11 @@
                     {% for category in categories %}
                         {% for subcategory in category.subcategories %}
                             {% for product in subcategory.products %}
-                                {% if product.in_stock > 0 %}
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 mb-4 product-item-wrapper" 
                                      data-category-id="{{category.id}}" 
                                      data-name="{{product.name|lower}}" 
                                      data-barcode="{{product.barcode}}">
-                                    <div class="card product-card" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}">
+                                    <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}">
                                         <div class="product-img-wrapper">
                                             <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy">
                                         </div>
@@ -401,12 +411,17 @@
                                                 <span class="product-price">$
                                                     {{product.selling_price}}
                                                 </span>
-                                                <span class="stock-badge">{{product.in_stock}} in stock</span>
+                                                <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock-badge{% endif %}">
+                                                    {%- if product.in_stock > 0 -%}
+                                                        {{product.in_stock}} in stock
+                                                    {%- else -%}
+                                                        Out of stock
+                                                    {%- endif -%}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {% endif %}
                             {% endfor %}
                         {% endfor %}
                     {% endfor %}
