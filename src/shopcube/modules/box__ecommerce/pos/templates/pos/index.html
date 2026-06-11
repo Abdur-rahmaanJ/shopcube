@@ -425,7 +425,7 @@
                                      data-barcode="{{product.barcode}}">
                                     <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}">
                                         <div class="product-img-wrapper">
-                                            <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy">
+                                            <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
                                         </div>
                                         <div class="product-card-body">
                                             <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
@@ -523,7 +523,7 @@
 
                     <div class="row">
                         <div class="col-4">
-                            <button class="btn btn-outline-secondary btn-block btn-clear" onclick="clearCart()">
+                            <button class="btn btn-outline-secondary btn-block btn-clear" onclick="clearCart()" aria-label="Clear cart">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
@@ -659,21 +659,22 @@
                     <tr>
                         <td style="padding-left: 20px;">
                             <div class="cart-item-title text-truncate" style="max-width: 130px;" title="${item.name}">${item.name}</div>
-                            <small class="text-muted">$${item.price.toFixed(2)}</small>
+                            <small class="text-muted">$${item.price.toFixed(2)} ea</small>
+                            <small class="text-muted d-block">$${(item.price * item.qty).toFixed(2)} subtotal</small>
                         </td>
                         <td class="text-center">
                             <div class="qty-control">
-                                <button class="qty-btn" onclick="changeQty('${code}', -1)">-</button>
+                                <button class="qty-btn" onclick="changeQty('${code}', -1)" aria-label="Decrease quantity">-</button>
                                 <input type="number" class="qty-input" value="${item.qty}" 
-                                       onchange="updateQty('${code}', this.value)" min="1" max="${item.stock}">
-                                <button class="qty-btn" onclick="changeQty('${code}', 1)">+</button>
+                                       onchange="updateQty('${code}', this.value)" min="1" max="${item.stock}" aria-label="Quantity">
+                                <button class="qty-btn" onclick="changeQty('${code}', 1)" aria-label="Increase quantity">+</button>
                             </div>
                         </td>
                         <td class="text-right" style="padding-right: 20px;">
                             <span class="font-weight-bold">$${itemTotal.toFixed(2)}</span>
                         </td>
                         <td>
-                            <button class="btn-remove" onclick="removeFromCart('${code}')">
+                            <button class="btn-remove" onclick="removeFromCart('${code}')" aria-label="Remove item">
                                 <i class="fa fa-times"></i>
                             </button>
                         </td>
@@ -815,8 +816,16 @@
 
     let searchTimeout;
     $(document).ready(function() {
-        $('#product-search').on('keyup', function() {
+        $('#product-search').on('keyup', function(e) {
             clearTimeout(searchTimeout);
+            const val = $(this).val();
+            if (e.key === 'Enter') {
+                const card = $('.product-card:not(.out-of-stock)[data-barcode="' + val + '"]');
+                if (card.length) {
+                    card.click();
+                    $(this).val('');
+                }
+            }
             searchTimeout = setTimeout(applySearch, 200);
         });
         $('#amount-paid').on('input', calculateChange);
