@@ -388,6 +388,35 @@
         from { transform: translateX(100%); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
     }
+
+    .quick-keys-bar {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 8px 0;
+        margin-bottom: 10px;
+        flex-wrap: nowrap;
+    }
+    .quick-key-btn {
+        flex: 0 0 auto;
+        min-width: 70px;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        background: white;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+    }
+    .quick-key-btn:hover {
+        background: #6c5ce7;
+        color: white;
+        border-color: #6c5ce7;
+        transform: translateY(-1px);
+    }
 </style>
 {% endblock %}
 
@@ -404,6 +433,17 @@
                     <input type="text" id="product-search" class="form-control search-input" placeholder="Scan barcode or search product..." autocomplete="off">
                 </div>
             </div>
+
+            <!-- Quick Keys -->
+            {% if quick_keys %}
+            <div class="quick-keys-bar">
+                {% for k in quick_keys %}
+                <div class="quick-key-btn" data-barcode="{{ k.product.barcode }}" data-display-name="{{ k.label or k.product.name }}" data-price="{{ k.product.selling_price }}" data-stock="{{ k.product.in_stock }}" role="button" tabindex="0">
+                    {{ k.label or k.product.name[:12] }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
             <!-- Categories -->
             <div class="category-pills-container">
@@ -617,11 +657,20 @@
         const card = $(this);
         const barcode = card.data('barcode');
         const name = card.data('display-name');
-        const price = card.data('price');
-        const stock = card.data('stock');
-        addToCart(barcode, name, price, stock);
-        card.addClass('added-flash');
-        setTimeout(function() { card.removeClass('added-flash'); }, 400);
+        const price = parseFloat(card.data('price')) || 0;
+        const stock = parseInt(card.data('stock')) || 0;
+        addToCart(barcode, name, price, stock, card);
+    });
+
+    $(document).on('click keydown', '.quick-key-btn', function(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.type === 'keydown') e.preventDefault();
+        const btn = $(this);
+        const barcode = btn.data('barcode');
+        const name = btn.data('display-name');
+        const price = parseFloat(btn.data('price')) || 0;
+        const stock = parseInt(btn.data('stock')) || 0;
+        addToCart(barcode, name, price, stock, btn);
     });
 
     $(document).on('click keydown', '.category-pills .nav-link', function(e) {

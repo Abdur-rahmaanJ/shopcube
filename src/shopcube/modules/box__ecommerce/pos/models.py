@@ -82,3 +82,20 @@ class Shift(db.Model):
 
     def update(self):
         db.session.commit()
+
+
+class QuickKey(db.Model):
+    __tablename__ = "quick_keys"
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
+    position = db.Column(db.Integer, nullable=False)
+    label = db.Column(db.String(50))
+    product = db.relationship("Product", lazy=True)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()

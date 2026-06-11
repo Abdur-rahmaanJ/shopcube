@@ -16,6 +16,7 @@ from init import db
 from modules.box__ecommerce.category.models import Category, SubCategory
 from modules.box__ecommerce.pos.models import Transaction, TransactionItem
 from modules.box__ecommerce.pos.models import Shift
+from modules.box__ecommerce.pos.models import QuickKey
 from modules.box__ecommerce.product.models import Product
 
 mhelp = ModuleHelp(__file__, __name__)
@@ -32,7 +33,8 @@ def index():
     categories = Category.query.options(
         subqueryload(Category.subcategories).subqueryload(SubCategory.products)
     ).all()
-    context.update({"categories": categories})
+    quick_keys = QuickKey.query.order_by(QuickKey.position).all()
+    context.update({"categories": categories, "quick_keys": quick_keys})
     return render_template("pos/index.html", **context)
 
 
@@ -212,3 +214,46 @@ def shift_close(shift_id):
     s.update()
     flash(f"Shift closed. Variance: ${float(s.variance_cash):.2f}", "success")
     return redirect(url_for("pos.shifts"))
+
+
+@module_blueprint.route("/quick-keys/dashboard")
+@login_required
+@admin_required
+def quick_keys():
+    context = mhelp.context()
+    keys = QuickKey.query.order_by(QuickKey.position).all()
+    products = Product.query.filter_by(discontinued=False).order_by(Product.name).all()
+    context.update({"keys": keys, "products": products})
+    return mhelp.render("quick_keys.html", **context)
+
+
+@module_blueprint.route("/quick-keys/add", methods=["POST"])
+@login_required
+@admin_required
+def quick_key_add():
+    product_id = request.form.get("product_id", type=int)
+    position = request.form.get("position", type=int)
+    label = request.form.get("label", "").strip()
+    if not product_id or position is None:
+        flash("Product and position are required", "warning")
+        return redirect(url_for("pos.quick_keys"))
+    existing = QuickKey.query.filter_by(position=position).first()
+    if existing:
+        existing.product_id = product_id
+        existing.label = label or None
+        existing.update()
+    else:
+        qk = QuickKey(product_id=product_id, position=position, label=label or None)
+        qk.insert()
+    flash("Quick key saved", "success")
+    return redirect(url_for("pos.quick_keys"))
+
+
+@module_blueprint.route("/quick-keys/<int:key_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def quick_key_delete(key_id):
+    qk = QuickKey.query.get_or_404(key_id)
+    qk.delete()
+    flash("Quick key removed", "success")
+    return redirect(url_for("pos.quick_keys"))
