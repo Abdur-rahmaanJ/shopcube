@@ -274,3 +274,28 @@ def quick_key_delete(key_id):
     qk.delete()
     flash("Quick key removed", "success")
     return redirect(url_for("pos.quick_keys"))
+
+
+@module_blueprint.route("/transactions/dashboard")
+@login_required
+@pos_required
+def transactions_list():
+    page = request.args.get("page", 1, type=int)
+    q = request.args.get("q", "", type=str)
+    query = Transaction.query
+    if q:
+        query = query.filter(Transaction.id == int(q)) if q.isdigit() else query
+    txs = query.order_by(Transaction.time.desc()).paginate(page=page, per_page=25, error_out=False)
+    context = mhelp.context()
+    context.update({"txs": txs, "q": q})
+    return mhelp.render("transactions.html", **context)
+
+
+@module_blueprint.route("/transactions/<int:tx_id>/view")
+@login_required
+@pos_required
+def transaction_view(tx_id):
+    tx = Transaction.query.get_or_404(tx_id)
+    context = mhelp.context()
+    context.update({"tx": tx})
+    return mhelp.render("transaction_view.html", **context)
