@@ -340,6 +340,11 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #b2bec3; 
     }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
 </style>
 {% endblock %}
 
@@ -497,15 +502,14 @@
                         type === 'warning' ? '#fdcb6e' : '#6c5ce7';
         const id = 'toast-' + Date.now();
         const html = `
-            <div id="${id}" class="toast" style="background: ${bgColor}; color: white; min-width: 280px;"
-                 data-delay="3000">
-                <div class="toast-body d-flex justify-content-between align-items-center">
-                    <span>${message}</span>
-                    <button type="button" class="close text-white ml-3" style="opacity: 1;" onclick="$('#${id}').toast('hide')">&times;</button>
-                </div>
+            <div id="${id}" role="alert" style="background: ${bgColor}; color: white; min-width: 280px;
+                 padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                 display: flex; justify-content: space-between; align-items: center; animation: slideIn 0.3s ease;">
+                <span>${message}</span>
+                <button type="button" style="background: none; border: none; color: white; font-size: 1.2rem;
+                    cursor: pointer; opacity: 0.8; padding: 0 0 0 12px;" onclick="document.getElementById('${id}').remove()">&times;</button>
             </div>`;
         $('#toast-container').append(html);
-        $('#' + id).toast('show');
         setTimeout(function() { $('#' + id).remove(); }, 3500);
     }
 
@@ -702,15 +706,19 @@
         const paid = parseFloat($('#amount-paid').val()) || 0;
 
         if (paid < total) {
-            if (!confirm(`Amount paid ($${paid.toFixed(2)}) is less than total ($${total.toFixed(2)}). Proceed anyway?`)) {
-                return;
-            }
+            showToast(
+                `Insufficient payment. Total: $${total.toFixed(2)}, Received: $${paid.toFixed(2)}`,
+                'error'
+            );
+            return;
         }
 
-        const data = {};
+        const items = {};
         barcodes.forEach(code => {
-            data[code] = { count: cart[code].qty };
+            items[code] = { count: cart[code].qty };
         });
+
+        const payload = JSON.stringify({ items: items, amount_paid: paid });
 
         const btn = $('#btn-checkout');
         const originalText = btn.html();
@@ -719,7 +727,7 @@
         $.ajax({
             type: "POST",
             url: "{{url_for('pos.transaction')}}",
-            data: JSON.stringify(data),
+            data: payload,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(response) {

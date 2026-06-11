@@ -35,11 +35,18 @@ def index():
 @admin_required
 def transaction():
     data = request.get_json()
-    if not data:
-        return jsonify({"success": False, "message": "No data provided"}), 400
+    if not data or "items" not in data:
+        return jsonify({"success": False, "message": "Invalid request data"}), 400
+
+    items_data = data["items"]
+    amount_paid = data.get("amount_paid")
+
+    if amount_paid is None or not isinstance(amount_paid, (int, float)) or amount_paid < 0:
+        return jsonify({"success": False, "message": "Invalid or missing amount paid"}), 400
 
     errors = []
-    for barcode, item_data in data.items():
+    computed_total = 0
+    for barcode, item_data in items_data.items():
         quantity = item_data.get("count", 0)
         if not isinstance(quantity, int) or quantity < 1:
             errors.append(f"Invalid quantity for barcode {barcode}")
@@ -52,15 +59,23 @@ def transaction():
                 f"Insufficient stock for {product.name}: "
                 f"requested {quantity}, available {product.in_stock}"
             )
+        else:
+            computed_total += product.selling_price * quantity
 
     if errors:
         return jsonify({"success": False, "message": "; ".join(errors)}), 400
 
+    if amount_paid < computed_total:
+        return jsonify({
+            "success": False,
+            "message": f"Insufficient payment. Total: ${computed_total:.2f}, Received: ${amount_paid:.2f}"
+        }), 400
+
     transaction = Transaction()
     transaction.cashier_id = current_user.id
-    transaction.total_amount = 0
+    transaction.total_amount = computed_total
 
-    for barcode, item_data in data.items():
+    for barcode, item_data in items_data.items():
         quantity = item_data["count"]
         product = Product.query.filter_by(barcode=str(barcode)).first()
         product.in_stock -= quantity
@@ -70,7 +85,6 @@ def transaction():
             unit_price=product.selling_price,
         )
         transaction.items.append(item)
-        transaction.total_amount += product.selling_price * quantity
 
     db.session.add(transaction)
     db.session.commit()
