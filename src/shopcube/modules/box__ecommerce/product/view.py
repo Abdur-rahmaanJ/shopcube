@@ -27,6 +27,7 @@ from modules.box__ecommerce.product.models import Color
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
 from modules.box__ecommerce.product.models import StockAdjustment
+from modules.box__ecommerce.product.models import BundleComponent
 from modules.box__ecommerce.vendor.models import Vendor
 from modules.resource.models import Resource
 
@@ -400,4 +401,31 @@ def adjust_stock(barcode):
     product.log_adjustment(qty, reason, "Manual adjustment")
     product.update()
     flash(notify_success(f"Stock adjusted by {qty}. New stock: {product.in_stock}"))
+    return redirect(url_for("product.edit_dashboard", barcode=barcode))
+
+
+@module_blueprint.route("/<barcode>/bundle/add", methods=["POST"])
+@login_required
+@admin_required
+def bundle_add_component(barcode):
+    product = Product.query.filter_by(barcode=barcode).first_or_404()
+    comp_barcode = request.form.get("component_barcode", "").strip()
+    qty = request.form.get("quantity", 1, type=int)
+    comp = Product.query.filter_by(barcode=comp_barcode).first()
+    if not comp:
+        flash(notify_warning("Component product not found"))
+        return redirect(url_for("product.edit_dashboard", barcode=barcode))
+    BundleComponent(bundle_product_id=product.id, component_product_id=comp.id, quantity=qty).insert()
+    flash(notify_success(f"Added {comp.name} x{qty} to bundle"))
+    return redirect(url_for("product.edit_dashboard", barcode=barcode))
+
+
+@module_blueprint.route("/bundle/<int:bc_id>/remove", methods=["POST"])
+@login_required
+@admin_required
+def bundle_remove_component(bc_id):
+    bc = BundleComponent.query.get_or_404(bc_id)
+    barcode = bc.component.barcode if bc.component else ""
+    bc.delete()
+    flash(notify_success("Component removed"))
     return redirect(url_for("product.edit_dashboard", barcode=barcode))

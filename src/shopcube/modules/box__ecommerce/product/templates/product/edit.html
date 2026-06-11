@@ -214,5 +214,33 @@
             <a href="{{ url_for('product.adjustments', barcode=product.barcode) }}" class="btn btn-info">History</a>
         </form>
     </div>
+<br>
+<div class="card">
+    <div class="card-body">
+        <h4>Bundle Components</h4>
+        {% if product.bundle_components %}
+        <table class="table table-sm">
+            <thead><tr><th>Component</th><th>Qty</th><th></th></tr></thead>
+            <tbody>
+                {% for bc in product.bundle_components %}
+                <tr><td>{{ bc.component.name if bc.component else '?' }}</td><td>{{ bc.quantity }}</td>
+                    <td><form action="{{ url_for('product.bundle_remove_component', bc_id=bc.id) }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="btn btn-danger btn-sm">Remove</button>
+                    </form></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">Not a bundle. Add components below.</p>
+        {% endif %}
+        <form action="{{ url_for('product.bundle_add_component', barcode=product.barcode) }}" method="POST" class="form-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="text" name="component_barcode" class="form-control mr-2" placeholder="Component barcode" required>
+            <input type="number" name="quantity" class="form-control mr-2" value="1" min="1" style="width:70px;">
+            <button type="submit" class="btn btn-info btn-sm">Add Component</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

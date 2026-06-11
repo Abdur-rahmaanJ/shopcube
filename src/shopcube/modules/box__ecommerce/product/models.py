@@ -22,6 +22,7 @@ class Product(PkModel):
     date = db.Column(db.String(100))
     in_stock = db.Column(db.Integer)
     min_stock = db.Column(db.Integer, default=0)
+    cost_price = db.Column(db.Numeric(10, 2), default=0)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Numeric(10, 2))
     is_onsale = db.Column(db.Boolean, default=False)
@@ -47,6 +48,14 @@ class Product(PkModel):
 
     subcategory_id = db.Column(
         db.Integer, db.ForeignKey("subcategories.id"), nullable=False
+    )
+
+    bundle_components = db.relationship(
+        "BundleComponent",
+        foreign_keys="BundleComponent.bundle_product_id",
+        backref="bundle_product",
+        lazy=True,
+        cascade="all, delete-orphan",
     )
 
     def get_color_string(self):
@@ -117,12 +126,16 @@ class Color(PkModel):
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
 
 
+class BundleComponent(PkModel):
+    __tablename__ = "bundle_components"
+    bundle_product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
+    component_product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
+    quantity = db.Column(db.Integer, default=1)
+
+    component = db.relationship("Product", foreign_keys=[component_product_id], lazy=True)
+
+
 class Size(PkModel):
-
     __tablename__ = "size"
-
     name = db.Column(db.String(100))
-
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
-
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
