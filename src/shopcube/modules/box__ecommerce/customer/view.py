@@ -13,6 +13,7 @@ from shopyo.api.forms import flash_errors
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
 from shopyo.api.module import ModuleHelp
+from shopyo_appadmin.admin import admin_required
 
 from init import db
 
@@ -23,6 +24,7 @@ from modules.box__ecommerce.shop.forms import RegisterCustomerForm
 from modules.box__ecommerce.shop.models import BillingDetail
 from modules.box__ecommerce.shop.models import Order
 from modules.box__ecommerce.shop.models import OrderItem
+from modules.box__ecommerce.customer.models import Customer, CustomerGroup
 
 
 mhelp = ModuleHelp(__file__, __name__)
@@ -128,3 +130,37 @@ def order_view(order_id):
 
 #         })
 #     return mhelp.render('dashboard.html', **context)
+
+
+@module_blueprint.route("/admin/dashboard")
+@login_required
+@admin_required
+def admin_dashboard():
+    context = mhelp.context()
+    customers = db.session.query(User).order_by(User.email).all()
+    groups = CustomerGroup.query.all()
+    context.update({"customers": customers, "groups": groups})
+    return mhelp.render("admin_dashboard.html", **context)
+
+
+@module_blueprint.route("/admin/group/add", methods=["POST"])
+@login_required
+@admin_required
+def admin_group_add():
+    name = request.form.get("name", "").strip()
+    discount = request.form.get("discount_percent", 0, type=float)
+    if name:
+        CustomerGroup(name=name, discount_percent=discount).insert()
+        flash(notify_success(f"Group '{name}' added"))
+    return redirect(url_for("customer.admin_dashboard"))
+
+
+@module_blueprint.route("/admin/group/<int:group_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def admin_group_delete(group_id):
+    g = CustomerGroup.query.get_or_404(group_id)
+    g.delete()
+    flash(notify_success("Group deleted"))
+    return redirect(url_for("customer.admin_dashboard"))
+
