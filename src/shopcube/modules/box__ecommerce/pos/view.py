@@ -99,6 +99,7 @@ def transaction():
         quantity = item_data["count"]
         product = Product.query.filter_by(barcode=str(barcode)).first()
         product.in_stock -= quantity
+        product.log_adjustment(-quantity, "POS sale", f"Transaction via {payment_method}")
         item = TransactionItem(
             product_barcode=barcode,
             quantity=quantity,

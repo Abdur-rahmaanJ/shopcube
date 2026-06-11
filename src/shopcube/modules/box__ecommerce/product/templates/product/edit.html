@@ -201,4 +201,18 @@
         </form>
     </div>
 </div>
+
+<br>
+<div class="card">
+    <div class="card-body">
+        <h4>Stock Adjustment</h4>
+        <form action="{{ url_for('product.adjust_stock', barcode=product.barcode) }}" method="POST" style="display:flex;gap:8px;align-items:center;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="number" name="quantity" class="form-control" style="width:100px;" placeholder="+/- Qty" required>
+            <input type="text" name="reason" class="form-control" style="flex:1;" placeholder="Reason for adjustment" required>
+            <button type="submit" class="btn btn-warning">Adjust</button>
+            <a href="{{ url_for('product.adjustments', barcode=product.barcode) }}" class="btn btn-info">History</a>
+        </form>
+    </div>
+</div>
 {% endblock %}

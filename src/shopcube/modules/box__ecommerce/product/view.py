@@ -26,6 +26,7 @@ from modules.box__ecommerce.category.models import SubCategory
 from modules.box__ecommerce.product.models import Color
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.product.models import Size
+from modules.box__ecommerce.product.models import StockAdjustment
 from modules.box__ecommerce.vendor.models import Vendor
 from modules.resource.models import Resource
 
@@ -238,6 +239,7 @@ def update(subcategory_id):
             discontinued = False
 
         p = Product.query.get(product_id)
+        old_stock = p.in_stock
         p.barcode = barcode
         p.name = name
         p.description = description
@@ -249,6 +251,14 @@ def update(subcategory_id):
         p.discontinued = discontinued
         vendor_id = request.form.get("vendor_id")
         p.vendor_id = int(vendor_id) if vendor_id else None
+
+        stock_diff = int(in_stock) - old_stock
+        if stock_diff != 0:
+            p.log_adjustment(
+                stock_diff,
+                "manual edit",
+                f"Stock changed from {old_stock} to {in_stock} via product edit"
+            )
 
         with db.session.no_autoflush:
             p.sizes.clear()
@@ -359,4 +369,35 @@ def image_delete(filename, barcode):
         )
     )
 
+    return redirect(url_for("product.edit_dashboard", barcode=barcode))
+
+
+@module_blueprint.route("/<barcode>/adjustments", methods=["GET"])
+@login_required
+@admin_required
+def adjustments(barcode):
+    product = Product.query.filter(Product.barcode == barcode).first_or_404()
+    context = {"product": product}
+    context["adjustments"] = StockAdjustment.query.filter_by(product_id=product.id)\
+        .order_by(StockAdjustment.created_at.desc()).all()
+    return render_template("product/adjustments.html", **context)
+
+
+@module_blueprint.route("/<barcode>/adjust", methods=["POST"])
+@login_required
+@admin_required
+def adjust_stock(barcode):
+    product = Product.query.filter(Product.barcode == barcode).first_or_404()
+    qty = request.form.get("quantity", type=int)
+    reason = request.form.get("reason", "").strip()
+    if qty is None or qty == 0:
+        flash(notify_warning("Quantity change must be non-zero"))
+        return redirect(url_for("product.edit_dashboard", barcode=barcode))
+    if not reason:
+        flash(notify_warning("Reason is required"))
+        return redirect(url_for("product.edit_dashboard", barcode=barcode))
+    product.in_stock += qty
+    product.log_adjustment(qty, reason, "Manual adjustment")
+    product.update()
+    flash(notify_success(f"Stock adjusted by {qty}. New stock: {product.in_stock}"))
     return redirect(url_for("product.edit_dashboard", barcode=barcode))
