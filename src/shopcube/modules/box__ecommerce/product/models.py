@@ -18,6 +18,7 @@ class Product(PkModel):
     description = db.Column(db.String(300))
     date = db.Column(db.String(100))
     in_stock = db.Column(db.Integer)
+    min_stock = db.Column(db.Integer, default=0)
     discontinued = db.Column(db.Boolean)
     selling_price = db.Column(db.Numeric(10, 2))
     is_onsale = db.Column(db.Boolean, default=False)
