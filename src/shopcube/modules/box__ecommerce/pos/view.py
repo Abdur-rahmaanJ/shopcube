@@ -45,6 +45,8 @@ def transaction():
     amount_paid = data.get("amount_paid")
     payment_method = data.get("payment_method", "")
     notes = data.get("notes", "")
+    discount_type = data.get("discount_type", "")
+    discount_value = data.get("discount_value", 0)
 
     if amount_paid is None or not isinstance(amount_paid, (int, float)) or amount_paid < 0:
         return jsonify({"success": False, "message": "Invalid or missing amount paid"}), 400
@@ -70,10 +72,19 @@ def transaction():
     if errors:
         return jsonify({"success": False, "message": "; ".join(errors)}), 400
 
-    if amount_paid < computed_total:
+    discount_amount = 0
+    if discount_type == "percentage":
+        pct = min(float(discount_value), 100)
+        discount_amount = computed_total * (pct / 100)
+    elif discount_type == "fixed":
+        discount_amount = min(float(discount_value), computed_total)
+
+    net_total = computed_total - discount_amount
+
+    if amount_paid < net_total:
         return jsonify({
             "success": False,
-            "message": f"Insufficient payment. Total: ${computed_total:.2f}, Received: ${amount_paid:.2f}"
+            "message": f"Insufficient payment. Total: ${net_total:.2f}, Received: ${amount_paid:.2f}"
         }), 400
 
     transaction = Transaction()
@@ -81,6 +92,8 @@ def transaction():
     transaction.total_amount = computed_total
     transaction.method_of_payment = payment_method
     transaction.notes = notes
+    transaction.discount_type = discount_type
+    transaction.discount_value = discount_value
 
     for barcode, item_data in items_data.items():
         quantity = item_data["count"]

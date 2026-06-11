@@ -503,7 +503,24 @@
                         <span class="total-label">Subtotal</span>
                         <span class="total-amount" id="cart-total">$0.00</span>
                     </div>
-                    
+
+                    <div class="form-group mb-3" id="discount-section">
+                        <label class="small text-muted font-weight-bold text-uppercase">Discount</label>
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <select id="discount-type" class="form-control form-control-sm" style="font-size:0.85rem;width:auto;">
+                                    <option value="percentage">%</option>
+                                    <option value="fixed">$</option>
+                                </select>
+                            </div>
+                            <input type="number" id="discount-value" class="form-control" placeholder="0" step="0.01" min="0" style="font-size:0.9rem;">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
+                            </div>
+                        </div>
+                        <small class="text-muted" id="discount-display" style="display:none;">Discount: -$0.00</small>
+                    </div>
+
                     <div class="form-group mb-3">
                         <label class="small text-muted font-weight-bold text-uppercase">Payment Method</label>
                         <div class="d-flex">
@@ -629,6 +646,10 @@
         updateQty($(this).data('barcode'), this.value);
     });
 
+    $(document).on('input change', '#discount-value, #discount-type', function() {
+        updateCartUI();
+    });
+
     $(document).on('click keydown', '.btn-remove', function(e) {
         if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
         if (e.type === 'keydown') e.preventDefault();
@@ -697,6 +718,8 @@
     function clearCart() {
         if (Object.keys(cart).length > 0 && confirm("Clear current order?")) {
             cart = {};
+            $('#discount-value').val('');
+            $('#discount-display').hide();
             updateCartUI();
             $('#amount-paid').val('');
             $('#change-due').text('$0.00').removeClass('text-success text-danger');
@@ -714,6 +737,7 @@
         if (barcodes.length === 0) {
             $('#empty-cart-msg').show();
             $('#btn-checkout').prop('disabled', true);
+            $('#discount-display').hide();
         } else {
             $('#empty-cart-msg').hide();
             $('#btn-checkout').prop('disabled', false);
@@ -753,13 +777,37 @@
             });
         }
 
+        const disc = getDiscount(total);
+        const netTotal = total - disc.amount;
         $('#cart-total').text('$' + total.toFixed(2));
+        if (disc.amount > 0) {
+            $('#discount-display').text('Discount: -$' + disc.amount.toFixed(2)).show();
+        } else {
+            $('#discount-display').hide();
+        }
         $('#cart-count-badge').text(count + ' Items');
+        $('#cart-total').data('net-total', netTotal.toFixed(2));
         calculateChange();
     }
 
+    function getDiscount(subtotal) {
+        const val = parseFloat($('#discount-value').val()) || 0;
+        if (val <= 0) return { type: 'none', amount: 0 };
+        const type = $('#discount-type').val();
+        if (type === 'percentage') {
+            const amount = subtotal * (Math.min(val, 100) / 100);
+            return { type: 'percentage', value: Math.min(val, 100), amount: amount };
+        } else {
+            return { type: 'fixed', value: val, amount: Math.min(val, subtotal) };
+        }
+    }
+
+    function getNetTotal() {
+        return parseFloat($('#cart-total').data('net-total') || $('#cart-total').text().replace('$',''));
+    }
+
     function calculateChange() {
-        const total = parseFloat($('#cart-total').text().replace('$',''));
+        const total = getNetTotal();
         const paid = parseFloat($('#amount-paid').val()) || 0;
         
         if (paid === 0 && total === 0) {
@@ -835,12 +883,14 @@
         const barcodes = Object.keys(cart);
         if (barcodes.length === 0) return;
 
-        const total = parseFloat($('#cart-total').text().replace('$',''));
+        const subtotal = parseFloat($('#cart-total').text().replace('$',''));
+        const disc = getDiscount(subtotal);
+        const netTotal = subtotal - disc.amount;
         const paid = parseFloat($('#amount-paid').val()) || 0;
 
-        if (paid < total) {
+        if (paid < netTotal) {
             showToast(
-                `Insufficient payment. Total: $${total.toFixed(2)}, Received: $${paid.toFixed(2)}`,
+                `Insufficient payment. Total: $${netTotal.toFixed(2)}, Received: $${paid.toFixed(2)}`,
                 'error'
             );
             return;
@@ -853,7 +903,11 @@
 
         const paymentMethod = $('input[name="payment_method"]:checked').val() || 'cash';
         const notes = $('#order-notes').val().trim();
-        const payload = JSON.stringify({ items: items, amount_paid: paid, payment_method: paymentMethod, notes: notes });
+        const payload = JSON.stringify({
+            items: items, amount_paid: paid, payment_method: paymentMethod, notes: notes,
+            discount_type: disc.type === 'none' ? '' : disc.type,
+            discount_value: disc.value || 0
+        });
 
         $('#loading-overlay').css('display', 'flex');
 

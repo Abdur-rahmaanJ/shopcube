@@ -13,6 +13,8 @@ class Transaction(db.Model):
     total_amount = db.Column(db.Numeric(10, 2), default=0.0)
     method_of_payment = db.Column(db.String(50))
     notes = db.Column(db.String(500))
+    discount_type = db.Column(db.String(10))  # 'percentage' or 'fixed'
+    discount_value = db.Column(db.Numeric(10, 2), default=0)
 
     items = db.relationship('TransactionItem', backref='transaction', lazy=True, cascade="all, delete-orphan")
 
