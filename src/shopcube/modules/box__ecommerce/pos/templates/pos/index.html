@@ -386,7 +386,7 @@
                                      data-category-id="{{category.id}}" 
                                      data-name="{{product.name|lower}}" 
                                      data-barcode="{{product.barcode}}">
-                                    <div class="card product-card" onclick="addToCart('{{product.barcode}}', '{{product.name|replace("'", "\\'")|replace("'", "\\'") }}', {{product.selling_price}}, {{product.in_stock}})">
+                                    <div class="card product-card" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}">
                                         <div class="product-img-wrapper">
                                             <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy">
                                         </div>
@@ -482,18 +482,50 @@
     </div>
 </div>
 
+<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
 <script>
     // State
     let cart = {}; 
-    
+
+    // --- Toast Notifications ---
+
+    function showToast(message, type) {
+        type = type || 'info';
+        const bgColor = type === 'success' ? '#00b894' :
+                        type === 'error' ? '#ff7675' :
+                        type === 'warning' ? '#fdcb6e' : '#6c5ce7';
+        const id = 'toast-' + Date.now();
+        const html = `
+            <div id="${id}" class="toast" style="background: ${bgColor}; color: white; min-width: 280px;"
+                 data-delay="3000">
+                <div class="toast-body d-flex justify-content-between align-items-center">
+                    <span>${message}</span>
+                    <button type="button" class="close text-white ml-3" style="opacity: 1;" onclick="$('#${id}').toast('hide')">&times;</button>
+                </div>
+            </div>`;
+        $('#toast-container').append(html);
+        $('#' + id).toast('show');
+        setTimeout(function() { $('#' + id).remove(); }, 3500);
+    }
+
     // --- Cart Logic ---
 
+    $(document).on('click', '.product-card', function() {
+        const barcode = $(this).data('barcode');
+        const name = $(this).data('display-name');
+        const price = $(this).data('price');
+        const stock = $(this).data('stock');
+        addToCart(barcode, name, price, stock);
+    });
+
     function addToCart(barcode, name, price, stock) {
+        stock = parseInt(stock);
         if (cart[barcode]) {
             if (cart[barcode].qty < stock) {
                 cart[barcode].qty++;
             } else {
-                alert("Not enough stock!");
+                showToast("Not enough stock!", 'warning');
                 return;
             }
         } else {
@@ -501,7 +533,7 @@
                 name: name,
                 price: parseFloat(price),
                 qty: 1,
-                stock: parseInt(stock)
+                stock: stock
             };
         }
         updateCartUI();
@@ -519,7 +551,7 @@
         }
         
         if (newQty > cart[barcode].stock) {
-            alert("Not enough stock! Max available: " + cart[barcode].stock);
+            showToast("Not enough stock! Max available: " + cart[barcode].stock, 'warning');
             newQty = cart[barcode].stock;
         }
 
@@ -691,12 +723,12 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(response) {
-                // Ideally show a success modal or toast instead of alert
-                alert("Transaction Completed Successfully!"); 
+                showToast("Transaction completed successfully!", 'success');
                 window.location.reload();
             },
             error: function(xhr, status, error) {
-                alert("Error: " + error);
+                const msg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                showToast("Transaction failed: " + msg, 'error');
                 btn.prop('disabled', false).html(originalText);
             },
             beforeSend: function(xhr, settings) {

@@ -8,7 +8,7 @@ class Transaction(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    chashier_id = db.Column(db.Integer)
+    cashier_id = db.Column(db.Integer)
     time = db.Column(db.DateTime, default=datetime.now)
     total_amount = db.Column(db.Numeric(10, 2), default=0.0)
     method_of_payment = db.Column(db.String(50))
