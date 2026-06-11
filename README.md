@@ -94,10 +94,12 @@ Designed with precision for the modern shop.
 - **Purchase Orders** — full PO lifecycle (draft → ordered → received); vendor-linked; auto-updates stock on receipt
 - **Vendor/Supplier management** — CRUD with contact info; link products to vendors
 - **Physical inventory counts** — generate count sheets; record actual qty; auto-apply variances
+- **Multi-location inventory** — warehouses/stores with location management
+- **Stock transfers** — move inventory between locations with draft → complete → receive workflow
 - **Kit/Bundle management** — assemble products from components; track component stock
 - **Barcode label printing** — print-ready label sheets
 - **Cost price & margin tracking** — per-product cost tracking; potential margin reports
-- **Inventory reports** — valuation at cost and retail; low-stock and out-of-stock views
+- **Inventory reports** — valuation at cost and retail; low-stock and out-of-stock views; per-product margin table
 
 ### Point of Sale (POS)
 - **Intuitive grid layout** with category filtering, search, and barcode scanning
@@ -106,11 +108,15 @@ Designed with precision for the modern shop.
 - **Order notes** — optional text memo attached to each transaction
 - **Payment method selector** — Cash, Card, Other
 - **Change calculation** — auto-computed from amount received
+- **Quick keys / Speed buttons** — assign products to numbered grid positions for one-tap add
 - **Transaction history** with full audit trail
 - **Sales reports** — date-filtered summaries by total, transaction count, and payment method
+- **Cashier performance** — per-cashier transaction counts
+- **Tax summary** — estimated tax on reportable sales
 - **Return with receipt lookup** — search by receipt number; reverses stock
 - **Shift management** — open/close workflow; tracks starting cash, expected vs actual, variance
 - **Low-stock visual warning** — gold border + quantity badge in product grid
+- **Cashier role** — non-admin staff can access POS via `cashier` role assignment
 
 ### Customer Management
 - **Customer accounts** with registration, email confirmation, login/logout

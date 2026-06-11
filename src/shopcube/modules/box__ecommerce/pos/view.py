@@ -89,6 +89,8 @@ def transaction():
     if errors:
         return jsonify({"success": False, "message": "; ".join(errors)}), 400
 
+    computed_total = float(computed_total)
+
     discount_amount = 0
     if discount_type == "percentage":
         pct = min(float(discount_value), 100)

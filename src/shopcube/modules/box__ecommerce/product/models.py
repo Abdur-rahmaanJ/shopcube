@@ -99,7 +99,7 @@ class Product(PkModel):
             reference=reference,
             user_id=current_user.id if current_user.is_authenticated else None,
         )
-        adj.insert()
+        adj.save()
 
 
 class StockAdjustment(PkModel):

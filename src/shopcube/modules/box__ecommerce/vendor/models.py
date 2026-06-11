@@ -15,3 +15,8 @@ class Vendor(PkModel):
 
     def __repr__(self):
         return f"Vendor: {self.name}"
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
