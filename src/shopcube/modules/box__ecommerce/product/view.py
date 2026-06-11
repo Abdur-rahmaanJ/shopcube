@@ -1,10 +1,8 @@
-import json
 import os
 import uuid
 
-# from flask import flash
-from flask import Blueprint
 from flask import current_app
+from flask import flash
 from flask import jsonify
 from flask import redirect
 from flask import render_template
@@ -15,6 +13,9 @@ import flask_uploads
 from flask_login import login_required
 from shopyo.api.file import delete_file
 from shopyo.api.file import unique_filename
+from shopyo.api.html import notify_warning
+from shopyo.api.module import ModuleHelp
+from shopyo_appadmin.admin import admin_required
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
@@ -29,20 +30,8 @@ from modules.resource.models import Resource
 
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
 
 class ProductSchema(SQLAlchemySchema):
     class Meta:
@@ -62,13 +51,12 @@ class ProductSchema(SQLAlchemySchema):
 product_schema = ProductSchema()
 product_schema = ProductSchema(many=True)
 
-module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
-
-module_name = module_info["module_name"]
+module_blueprint = globals()[mhelp.blueprint_str]
 
 
 @module_blueprint.route("/sub/<subcategory_id>/dashboard")
 @login_required
+@admin_required
 def list(subcategory_id):
     context = {}
     subcategory = SubCategory.query.get(subcategory_id)
@@ -81,6 +69,7 @@ def list(subcategory_id):
     "/sub/<subcategory_id>/add/dashboard", methods=["GET", "POST"]
 )
 @login_required
+@admin_required
 def add_dashboard(subcategory_id):
     context = {}
 
@@ -94,6 +83,7 @@ def add_dashboard(subcategory_id):
 
 @module_blueprint.route("/sub/<subcategory_id>/add", methods=["GET", "POST"])
 @login_required
+@admin_required
 def add(subcategory_id):
 
     if request.method == "POST":
@@ -167,8 +157,8 @@ def add(subcategory_id):
                                 category="product_image",
                             )
                         )
-            except flask_uploads.UploadNotAllowed as e:
-                pass
+            except flask_uploads.UploadNotAllowed:
+                flash(notify_warning("File type not allowed for product photo"))
 
             subcategory.products.append(p)
             subcategory.update()
@@ -177,8 +167,9 @@ def add(subcategory_id):
             )
 
 
-@module_blueprint.route("/<barcode>/delete", methods=["GET", "POST"])
+@module_blueprint.route("/<barcode>/delete", methods=["POST"])
 @login_required
+@admin_required
 def delete(barcode):
     product = Product.query.filter(Product.barcode == barcode).first()
     subcategory = product.subcategory
@@ -196,6 +187,7 @@ def delete(barcode):
 
 @module_blueprint.route("/<barcode>/edit/dashboard", methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_dashboard(barcode):
     context = {}
 
@@ -211,6 +203,7 @@ def edit_dashboard(barcode):
     "/sub/<subcategory_id>/update", methods=["GET", "POST"]
 )
 @login_required
+@admin_required
 def update(subcategory_id):
     # this block is only entered when the form is submitted
     if request.method == "POST":
@@ -275,14 +268,15 @@ def update(subcategory_id):
                             category="product_image",
                         )
                     )
-        except flask_uploads.UploadNotAllowed as e:
-            pass
+        except flask_uploads.UploadNotAllowed:
+            flash(notify_warning("File type not allowed for product photo"))
         db.session.commit()
         return redirect(url_for("product.list", subcategory_id=subcategory.id))
 
 
 @module_blueprint.route("sub/<subcategory_id>/lookup")
 @login_required
+@admin_required
 def lookup(subcategory_id):
     context = {}
 
@@ -302,6 +296,7 @@ def lookup(subcategory_id):
     "sub/<subcategory_id>/search/<user_input>", methods=["GET"]
 )
 @login_required
+@admin_required
 def search(subcategory_id, user_input):
     if request.method == "GET":
         subcategory = SubCategory.query.get(subcategory_id)
@@ -325,6 +320,7 @@ def search(subcategory_id, user_input):
 # api
 @module_blueprint.route("/check/<barcode>", methods=["GET"])
 @login_required
+@admin_required
 def check(barcode):
     has_product = db.session.query(
         exists().where(Product.barcode == barcode)
@@ -338,8 +334,10 @@ def check(barcode):
 
 
 @module_blueprint.route(
-    "/<filename>/product/<barcode>/delete", methods=["GET"]
+    "/<filename>/product/<barcode>/delete", methods=["POST"]
 )
+@login_required
+@admin_required
 def image_delete(filename, barcode):
     resource = Resource.query.filter(Resource.filename == filename).first()
     product = Product.query.filter(Product.barcode == barcode).first()
