@@ -131,6 +131,41 @@ def location_delete(loc_id):
     return redirect(url_for("inventory.locations"))
 
 
+@module_blueprint.route("/locations/<int:loc_id>/stock")
+@login_required
+@admin_required
+def location_stock(loc_id):
+    context = mhelp.context()
+    loc = Location.query.get_or_404(loc_id)
+    products = Product.query.order_by(Product.name).all()
+    stock_data = []
+    for p in products:
+        spl = StockPerLocation.query.filter_by(product_id=p.id, location_id=loc_id).first()
+        stock_data.append({"product": p, "qty": spl.quantity if spl else 0})
+    context.update({"loc": loc, "stock_data": stock_data})
+    return mhelp.render("location_stock.html", **context)
+
+
+@module_blueprint.route("/locations/<int:loc_id>/stock/update", methods=["POST"])
+@login_required
+@admin_required
+def location_stock_update(loc_id):
+    from modules.box__ecommerce.product.models import Product as Prod
+    for key, value in request.form.items():
+        if key.startswith("qty_"):
+            pid = int(key.replace("qty_", ""))
+            qty = int(value) if value else 0
+            prod = Prod.query.get(pid)
+            if prod:
+                old = prod.stock_at(loc_id)
+                prod.set_stock(loc_id, qty)
+                diff = qty - old
+                if diff != 0:
+                    prod.log_adjustment(diff, "location stock edit", f"Location #{loc_id}")
+    flash(notify_success("Stock updated"))
+    return redirect(url_for("inventory.location_stock", loc_id=loc_id))
+
+
 # --- Stock Transfers ---
 
 
