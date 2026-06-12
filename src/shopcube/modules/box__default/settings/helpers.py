@@ -1,4 +1,5 @@
 from .models import Settings
+from init import db
 
 
 def set_setting(key, value):
@@ -6,6 +7,10 @@ def set_setting(key, value):
     if setting:
         setting.value = value
         setting.update()
+    else:
+        s = Settings(setting=key, value=value)
+        db.session.add(s)
+        db.session.commit()
 
 
 def get_setting(name):
@@ -23,4 +28,6 @@ def get_setting(name):
         value of key
     """
     s = Settings.query.get(name)
-    return s.value
+    if s:
+        return s.value
+    return None
