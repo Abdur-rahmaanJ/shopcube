@@ -20,15 +20,6 @@ themes_path = os.path.join(static_path, "themes")  # don't remove
 installed_packages = []
 
 db = SQLAlchemy()
-
-# Patch Flask-SQLAlchemy to allow redefining existing tables (needed after merge)
-_original_table_cls = db.Model.__table_cls__
-
-def _extending_table_cls(*args, **kwargs):
-    kwargs["extend_existing"] = True
-    return _original_table_cls(*args, **kwargs)
-
-db.Model.__table_cls__ = _extending_table_cls
  
 login_manager = LoginManager()
 migrate = Migrate()
@@ -52,6 +43,14 @@ def configure_all_uploads(app):
 def load_extensions(app):
     migrate.init_app(app, db)
     db.init_app(app)
+
+    # Patch after init_app so it doesn't get overwritten
+    _original_table_cls = db.Model.__table_cls__
+    def _extending_table_cls(*args, **kwargs):
+        kwargs["extend_existing"] = True
+        return _original_table_cls(*args, **kwargs)
+    db.Model.__table_cls__ = _extending_table_cls
+
     mail.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)

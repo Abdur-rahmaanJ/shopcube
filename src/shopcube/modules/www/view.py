@@ -2,6 +2,7 @@ from flask import render_template
 from shopyo_theme import get_active_front_theme
 from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
+from modules.box__default.settings.helpers import get_setting
 
 # from flask import url_for
 # from flask import redirect
@@ -21,8 +22,11 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 @module_blueprint.route("/")
 def index():
+    theme = get_active_front_theme()
+    if theme == "blogus":
+        theme = get_setting("ACTIVE_FRONT_THEME") or "ecommerceus"
     return render_template(
-        f"{get_active_front_theme()}/index.html", get_static=get_static
+        f"{theme}/index.html", get_static=get_static
     )
 
 
