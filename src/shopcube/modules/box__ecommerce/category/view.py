@@ -26,6 +26,7 @@ from init import categoryphotos
 from init import db
 from init import productexcel
 from init import subcategoryphotos
+from utils.file import is_safe_path_component
 from utils.file import unique_sec_filename
 
 from shopyo_settings.helpers import get_setting
@@ -495,6 +496,8 @@ def subcategory_image(filename):
             os.path.join(current_app.config["BASE_DIR"], "static"),
             "logo.png",
         )
+    if not is_safe_path_component(filename):
+        return "Invalid filename", 400
     return send_from_directory(
         current_app.config["UPLOADED_SUBCATEGORYPHOTOS_DEST"], filename
     )
@@ -505,6 +508,8 @@ def subcategory_image(filename):
 @admin_required
 def category_image(filename):
 
+    if not is_safe_path_component(filename):
+        return "Invalid filename", 400
     return send_from_directory(
         current_app.config["UPLOADED_CATEGORYPHOTOS_DEST"], filename
     )

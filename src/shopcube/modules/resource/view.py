@@ -28,6 +28,8 @@ from flask_login import login_required
 # from shopyo.api.html import notify_success
 # from shopyo.api.forms import flash_errors
 
+from utils.file import is_safe_path_component
+
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -55,6 +57,8 @@ def index():
     "/theme/front/<active_theme>/styles.css", methods=["GET"]
 )
 def active_front_theme_css(active_theme):
+    if not is_safe_path_component(active_theme):
+        return "Invalid theme name", 400
     theme_dir = os.path.join(
         current_app.config["BASE_DIR"],
         "static",
@@ -62,7 +66,6 @@ def active_front_theme_css(active_theme):
         "front",
         active_theme,
     )
-    # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
 
 
@@ -70,6 +73,8 @@ def active_front_theme_css(active_theme):
     "/theme/back/<active_theme>/styles.css", methods=["GET"]
 )
 def active_back_theme_css(active_theme):
+    if not is_safe_path_component(active_theme):
+        return "Invalid theme name", 400
     theme_dir = os.path.join(
         current_app.config["BASE_DIR"],
         "static",
@@ -77,19 +82,19 @@ def active_back_theme_css(active_theme):
         "back",
         active_theme,
     )
-    # return theme_dir
     return send_from_directory(theme_dir, "styles.css")
 
 
 @module_blueprint.route("/product/<filename>", methods=["GET"])
 def product_image(filename):
 
-    # return theme_dir
     if filename == "default":
         return send_from_directory(
             os.path.join(current_app.config["BASE_DIR"], "static", "default"),
             "default_product.jpg",
         )
+    if not is_safe_path_component(filename):
+        return "Invalid filename", 400
     return send_from_directory(
         current_app.config["UPLOADED_PRODUCTPHOTOS_DEST"], filename
     )
