@@ -48,6 +48,10 @@ def index():
     ).all()
     quick_keys = QuickKey.query.order_by(QuickKey.position).all()
     locations = Location.query.filter_by(is_active=True).all()
+    if not locations:
+        loc = Location(name="Main Store", address="Default", is_active=True)
+        loc.insert()
+        locations = [loc]
     context.update({"categories": categories, "quick_keys": quick_keys, "locations": locations})
     return render_template("pos/index.html", **context)
 
