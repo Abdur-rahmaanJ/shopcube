@@ -38,3 +38,14 @@ if config_name in ("development",):
             application.config['SHOPYO_AUTH_SEED_ADMIN_PASSWORD'] = 'pass'
             auth_upload()
             print("Database initialised.")
+
+    # Ensure required settings exist
+    with application.app_context():
+        from modules.box__default.settings.helpers import set_setting
+        from shopyo_settings.helpers import get_setting
+        if get_setting("ACTIVE_FRONT_THEME") is None:
+            set_setting("ACTIVE_FRONT_THEME", "ecommerceus")
+            print("Seeded ACTIVE_FRONT_THEME")
+        if get_setting("ACTIVE_BACK_THEME") is None:
+            set_setting("ACTIVE_BACK_THEME", "sneat")
+            print("Seeded ACTIVE_BACK_THEME")

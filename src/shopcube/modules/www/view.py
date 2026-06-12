@@ -21,16 +21,6 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 @module_blueprint.route("/")
 def index():
-    # cant be defined above but must be manually set each time
-    # active_theme_dir = os.path.join(
-    #     dirpath, "..", "..", "themes", get_setting("ACTIVE_FRONT_THEME")
-    # )
-    # module_blueprint.template_folder = active_theme_dir
-
-    # return str(module_blueprint.template_folder)
-
-    # return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html")
-
     return render_template(
         f"{get_active_front_theme()}/index.html", get_static=get_static
     )
