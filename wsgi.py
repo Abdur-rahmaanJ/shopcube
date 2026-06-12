@@ -31,7 +31,16 @@ if config_name in ("development",):
             import shopcube
             pkg_dir = os.path.dirname(shopcube.__file__)
             migrate_upgrade(directory=os.path.join(pkg_dir, "migrations"))
-            from modules.box__default.settings.upload import upload as settings_upload
+            application.config['SEED_SETTINGS'] = {
+                'ACTIVE_FRONT_THEME': 'ecommerceus',
+                'ACTIVE_BACK_THEME': 'sneat',
+                'SECTION_NAME': 'ShopCube',
+                'CURRENCY': 'usd',
+                'ACTIVE_ICONSET': 'fa',
+                'APP_NAME': 'ShopCube',
+                'SECTION_ITEMS': 'Products',
+            }
+            from shopyo_settings.upload import upload as settings_upload
             settings_upload()
             from shopyo_auth.upload import upload as auth_upload
             application.config['SHOPYO_AUTH_SEED_ADMIN_EMAIL'] = 'admin@domain.com'
@@ -41,8 +50,7 @@ if config_name in ("development",):
 
     # Ensure required settings exist
     with application.app_context():
-        from modules.box__default.settings.helpers import set_setting
-        from shopyo_settings.helpers import get_setting
+        from shopyo_settings.helpers import set_setting, get_setting
         if get_setting("ACTIVE_FRONT_THEME") is None:
             set_setting("ACTIVE_FRONT_THEME", "ecommerceus")
             print("Seeded ACTIVE_FRONT_THEME")

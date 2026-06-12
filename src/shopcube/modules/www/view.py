@@ -2,7 +2,7 @@ from flask import render_template
 from shopyo_theme import get_active_front_theme
 from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
-from modules.box__default.settings.helpers import get_setting
+from shopyo_settings.helpers import get_setting
 
 # from flask import url_for
 # from flask import redirect
