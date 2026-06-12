@@ -11,6 +11,7 @@ from shopyo.api.module import ModuleHelp
 from init import db
 from modules.box__ecommerce.product.models import Product
 from modules.box__ecommerce.category.models import Category, SubCategory
+from modules.box__ecommerce.inventory.models import Location, StockPerLocation
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -53,6 +54,13 @@ def do_import():
     ]
 
     try:
+        # Create default location if none exists
+        loc = Location.query.first()
+        if not loc:
+            loc = Location(name="Main Store", address="Default location", is_active=True)
+            loc.insert()
+            flash(f"Created location: {loc.name}", "success")
+
         for cat_name, subcats in demo_categories.items():
             category = Category.query.filter_by(name=cat_name.lower()).first()
             if not category:
@@ -84,6 +92,7 @@ def do_import():
                     discontinued=False
                 )
                 db.session.add(product)
+                product.set_stock(loc.id, p['stock'])
         
         db.session.commit()
         flash("Demo data imported successfully!", "success")
