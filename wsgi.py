@@ -1,5 +1,6 @@
 import os
 import sys
+import click
 
 # Ensure the shopcube package can be imported if running from source
 # But if installed via pip, it will be in site-packages
@@ -57,3 +58,27 @@ if config_name in ("development",):
         if get_setting("ACTIVE_BACK_THEME") is None:
             set_setting("ACTIVE_BACK_THEME", "sneat")
             print("Seeded ACTIVE_BACK_THEME")
+
+
+@application.cli.command("createadmin")
+@click.argument("email")
+@click.argument("password")
+def create_admin(email, password):
+    """Create an admin user."""
+    with application.app_context():
+        from init import db
+        from shopyo_auth.models import User
+        u = User.query.filter_by(email=email).first()
+        if u:
+            print(f"User {email} already exists")
+            return
+        u = User()
+        u.email = email
+        u.password = password
+        u.is_admin = True
+        u.is_email_confirmed = True
+        u.username = email.split("@")[0]
+        db.session.add(u)
+        db.session.commit()
+        print(f"Admin {email} created")
+
