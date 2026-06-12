@@ -55,6 +55,7 @@ from shopyo_appadmin import ShopyoAppAdmin
 from shopyo_page import ShopyoPage
 from shopyo_settings import ShopyoSettings
 from shopyo_settings.helpers import get_setting, set_setting
+import click
 
 
 def create_app(config_name="development", instance_path=None):

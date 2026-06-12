@@ -316,6 +316,15 @@ def lookup(subcategory_id):
     return render_template("product/lookup.html", **context)
 
 
+# Allowlist of searchable Product column names — prevents attribute injection
+# via getattr() with user-controlled field names
+_SEARCHABLE_FIELDS = {
+    "barcode", "name", "description", "date", "price",
+    "selling_price", "in_stock", "min_stock", "cost_price",
+    "discontinued", "is_onsale", "is_featured",
+}
+
+
 # api
 @module_blueprint.route(
     "sub/<subcategory_id>/search/<user_input>", methods=["GET"]
@@ -325,20 +334,28 @@ def lookup(subcategory_id):
 def search(subcategory_id, user_input):
     if request.method == "GET":
         subcategory = SubCategory.query.get(subcategory_id)
-        print(request.args["field"], request.args["global_search"])
-        field = request.args["field"]
-        global_search = request.args["global_search"]
+        field = request.args.get("field", "")
+        global_search = request.args.get("global_search", "False")
+
+        # Normalize display names (e.g. "selling price") to column names
+        field = field.replace(" ", "_")
+
+        # Validate against allowlist before passing to getattr()
+        if field not in _SEARCHABLE_FIELDS:
+            return jsonify({"error": f"Invalid search field: {field}"}), 400
+
+        column_attr = getattr(Product, field)
+
         if global_search == "True":
             all_p = Product.query.filter(
-                (getattr(Product, field).like("%" + user_input + "%"))
+                (column_attr.like(f"%{user_input}%"))
                 & (Product.subcategory == subcategory)
             ).all()
-            result = product_schema.dump(all_p)
         else:
             all_p = Product.query.filter(
-                getattr(Product, field).like("%" + user_input + "%")
+                column_attr.like(f"%{user_input}%")
             ).all()
-            result = product_schema.dump(all_p)
+        result = product_schema.dump(all_p)
     return jsonify(result)
 
 
