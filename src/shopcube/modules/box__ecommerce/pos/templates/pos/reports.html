@@ -19,6 +19,13 @@
             <div class="col-md-4"><div class="card bg-success text-white p-3"><h5>Transactions</h5><h3>{{ total_tx }}</h3></div></div>
             <div class="col-md-4"><div class="card bg-warning text-white p-3"><h5>Avg per Tx</h5><h3>${{ '%.2f'|format(total_sales / total_tx) if total_tx else '0.00' }}</h3></div></div>
         </div>
+        <h4>By Location</h4>
+        <table class="table table-sm mb-4">
+            {% for loc_id, amt in by_location.items() %}
+            <tr><td>Location #{{ loc_id }}</td><td><strong>${{ '%.2f'|format(amt) }}</strong></td></tr>
+            {% endfor %}
+        </table>
+
         <h4>By Payment Method</h4>
         <table class="table table-sm mb-4">
             {% for method, amt in by_method.items() %}

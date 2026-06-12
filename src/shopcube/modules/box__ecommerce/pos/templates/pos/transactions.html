@@ -13,7 +13,7 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
         <table class="table table-striped">
-            <thead><tr><th>Receipt #</th><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Discount</th><th></th></tr></thead>
+            <thead><tr><th>Receipt #</th><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Location</th><th>Discount</th><th></th></tr></thead>
             <tbody>
                 {% for t in txs.items %}
                 <tr>
@@ -22,6 +22,7 @@
                     <td>${{ '%.2f'|format(t.total_amount|float) }}</td>
                     <td>{{ t.method_of_payment }}</td>
                     <td>{{ t.cashier_id }}</td>
+                    <td>{{ t.location_id or '-' }}</td>
                     <td>{% if t.discount_type %}{{ t.discount_type }} {{ t.discount_value }}{% endif %}</td>
                     <td><a href="{{ url_for('pos.transaction_view', tx_id=t.id) }}" class="btn btn-sm btn-info">View</a></td>
                 </tr>

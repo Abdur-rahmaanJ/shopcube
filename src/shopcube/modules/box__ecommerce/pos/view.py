@@ -121,6 +121,7 @@ def transaction():
     transaction.notes = notes
     transaction.discount_type = discount_type
     transaction.discount_value = discount_value
+    transaction.location_id = location_id
 
     for barcode, item_data in items_data.items():
         quantity = item_data["count"]
@@ -155,13 +156,16 @@ def reports():
     total_tx = len(txs)
     by_method = {}
     by_cashier = {}
+    by_location = {}
     for t in txs:
         m = t.method_of_payment or "unknown"
         by_method[m] = by_method.get(m, 0) + float(t.total_amount or 0)
         c = t.cashier_id or 0
         by_cashier[c] = by_cashier.get(c, 0) + 1
+        loc_id = t.location_id or 0
+        by_location[loc_id] = by_location.get(loc_id, 0) + float(t.total_amount or 0)
     context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx,
-                     "by_method": by_method, "by_cashier": by_cashier, "days": days})
+                     "by_method": by_method, "by_cashier": by_cashier, "by_location": by_location, "days": days})
     return mhelp.render("reports.html", **context)
 
 
