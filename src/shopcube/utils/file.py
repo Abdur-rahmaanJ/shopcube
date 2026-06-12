@@ -1,8 +1,21 @@
 import os
+import re
 import shutil
 import uuid
 
 from werkzeug.utils import secure_filename
+
+
+def is_safe_path_component(component):
+    """
+    Validate that a path component (filename or directory name) does not
+    contain path traversal sequences like '..', '/', or '\\'.
+
+    Returns True if the component is safe, False otherwise.
+    """
+    if not component:
+        return False
+    return bool(re.match(r"^[a-zA-Z0-9_.\-]+$", component))
 
 
 def trycopytree(source, dest):
