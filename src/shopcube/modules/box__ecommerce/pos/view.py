@@ -15,6 +15,7 @@ from sqlalchemy.orm import subqueryload
 
 from init import db
 from modules.box__ecommerce.category.models import Category, SubCategory
+from modules.box__ecommerce.inventory.models import Location, StockPerLocation
 from modules.box__ecommerce.pos.models import Transaction, TransactionItem
 from modules.box__ecommerce.pos.models import Shift
 from modules.box__ecommerce.pos.models import QuickKey
@@ -46,7 +47,8 @@ def index():
         subqueryload(Category.subcategories).subqueryload(SubCategory.products)
     ).all()
     quick_keys = QuickKey.query.order_by(QuickKey.position).all()
-    context.update({"categories": categories, "quick_keys": quick_keys})
+    locations = Location.query.filter_by(is_active=True).all()
+    context.update({"categories": categories, "quick_keys": quick_keys, "locations": locations})
     return render_template("pos/index.html", **context)
 
 
@@ -65,6 +67,7 @@ def transaction():
     notes = data.get("notes", "")
     discount_type = data.get("discount_type", "")
     discount_value = data.get("discount_value", 0)
+    location_id = data.get("location_id")
 
     if amount_paid is None or not isinstance(amount_paid, (int, float)) or amount_paid < 0:
         return jsonify({"success": False, "message": "Invalid or missing amount paid"}), 400
@@ -119,6 +122,9 @@ def transaction():
         quantity = item_data["count"]
         product = Product.query.filter_by(barcode=str(barcode)).first()
         product.in_stock -= quantity
+        if location_id:
+            current = product.stock_at(location_id)
+            product.set_stock(location_id, current - quantity)
         product.log_adjustment(-quantity, "POS sale", f"Transaction via {payment_method}")
         item = TransactionItem(
             product_barcode=barcode,
