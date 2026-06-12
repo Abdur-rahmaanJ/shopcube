@@ -1,1 +1,6 @@
+{{ sidebar_item('POS', icon='fas fa-cash-register', url=url_for('pos.index'), bgtrigger=sidebar_bgtrigger, bgid='pos_home') }}
+{{ sidebar_item('Transactions', icon='fas fa-receipt', url=url_for('pos.transactions_list'), bgtrigger=sidebar_bgtrigger, bgid='pos_tx') }}
+{{ sidebar_item('Reports', icon='fas fa-chart-bar', url=url_for('pos.reports'), bgtrigger=sidebar_bgtrigger, bgid='pos_reports') }}
+{{ sidebar_item('Shifts', icon='fas fa-clock', url=url_for('pos.shifts'), bgtrigger=sidebar_bgtrigger, bgid='pos_shifts') }}
+{{ sidebar_item('Returns', icon='fas fa-undo', url=url_for('pos.returns'), bgtrigger=sidebar_bgtrigger, bgid='pos_returns') }}
 {{ sidebar_item('Quick Keys', icon='fas fa-keyboard', url=url_for('pos.quick_keys'), bgtrigger=sidebar_bgtrigger, bgid='quick_keys') }}
