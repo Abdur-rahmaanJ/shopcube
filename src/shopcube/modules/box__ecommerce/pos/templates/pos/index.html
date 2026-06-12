@@ -573,6 +573,17 @@
                         <small class="text-muted" id="discount-display" style="display:none;">Discount: -$0.00</small>
                     </div>
 
+                    {% if locations %}
+                    <div class="form-group mb-3">
+                        <label class="small text-muted font-weight-bold text-uppercase">Location</label>
+                        <select id="pos-location" class="form-control" style="font-size:0.9rem;">
+                            {% for l in locations %}
+                            <option value="{{ l.id }}">{{ l.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
                     <div class="form-group mb-3">
                         <label class="small text-muted font-weight-bold text-uppercase">Payment Method</label>
                         <div class="d-flex">
@@ -967,7 +978,8 @@
         const payload = JSON.stringify({
             items: items, amount_paid: paid, payment_method: paymentMethod, notes: notes,
             discount_type: disc.type === 'none' ? '' : disc.type,
-            discount_value: disc.value || 0
+            discount_value: disc.value || 0,
+            location_id: $('#pos-location').val() || null
         });
 
         $('#loading-overlay').css('display', 'flex');
