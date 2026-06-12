@@ -7,8 +7,14 @@
 <br>
 <div class="card">
     <div class="card-body">
-        <h2>Inventory Counts</h2>
-        <a href="{{ url_for('inventory.new') }}" class="btn btn-info mb-3">New Count</a>
+        <h2>Inventory Management</h2>
+        <div class="mb-4">
+            <a href="{{ url_for('inventory.new') }}" class="btn btn-info mb-3">New Count</a>
+            <a href="{{ url_for('inventory.locations') }}" class="btn btn-success mb-3">Locations</a>
+            <a href="{{ url_for('inventory.transfers') }}" class="btn btn-warning mb-3">Transfers</a>
+            <a href="{{ url_for('inventory.reports') }}" class="btn btn-secondary mb-3">Reports</a>
+        </div>
+        <h4>Recent Counts</h4>
         {% if counts %}
         <table class="table table-striped">
             <thead><tr><th>#</th><th>Date</th><th>Items</th><th>Status</th><th>Actions</th></tr></thead>
