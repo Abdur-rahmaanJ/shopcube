@@ -9,6 +9,7 @@ from flask import flash, redirect, url_for
 from flask_login import current_user, login_required
 from shopyo.api.html import notify_success, notify_warning
 from shopyo.api.module import ModuleHelp
+from shopyo_appadmin.admin import admin_required
 from shopyo_auth.decorators import check_confirmed
 from sqlalchemy.orm import subqueryload
 
@@ -134,7 +135,7 @@ def transaction():
 
 @module_blueprint.route("/reports/dashboard")
 @login_required
-@pos_required
+@admin_required
 def reports():
     context = mhelp.context()
     days = request.args.get("days", 7, type=int)
@@ -156,7 +157,7 @@ def reports():
 
 @module_blueprint.route("/return", methods=["GET", "POST"])
 @login_required
-@pos_required
+@admin_required
 def returns():
     context = mhelp.context()
     tx = None
@@ -171,7 +172,7 @@ def returns():
 
 @module_blueprint.route("/return/<int:tx_id>/process", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def process_return(tx_id):
     tx = Transaction.query.get_or_404(tx_id)
     refund_tx = Transaction(
@@ -192,7 +193,7 @@ def process_return(tx_id):
 
 @module_blueprint.route("/shifts/dashboard")
 @login_required
-@pos_required
+@admin_required
 def shifts():
     context = mhelp.context()
     context["shifts"] = Shift.query.order_by(Shift.opened_at.desc()).all()
@@ -203,7 +204,7 @@ def shifts():
 
 @module_blueprint.route("/shift/open", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def shift_open():
     if Shift.query.filter_by(status="open").first():
         flash("A shift is already open", "warning")
@@ -216,7 +217,7 @@ def shift_open():
 
 @module_blueprint.route("/shift/<int:shift_id>/close", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def shift_close(shift_id):
     s = Shift.query.get_or_404(shift_id)
     if s.status != "open":
@@ -235,7 +236,7 @@ def shift_close(shift_id):
 
 @module_blueprint.route("/quick-keys/dashboard")
 @login_required
-@pos_required
+@admin_required
 def quick_keys():
     context = mhelp.context()
     keys = QuickKey.query.order_by(QuickKey.position).all()
@@ -246,7 +247,7 @@ def quick_keys():
 
 @module_blueprint.route("/quick-keys/add", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def quick_key_add():
     product_id = request.form.get("product_id", type=int)
     position = request.form.get("position", type=int)
@@ -268,7 +269,7 @@ def quick_key_add():
 
 @module_blueprint.route("/quick-keys/<int:key_id>/delete", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def quick_key_delete(key_id):
     qk = QuickKey.query.get_or_404(key_id)
     qk.delete()
@@ -278,7 +279,7 @@ def quick_key_delete(key_id):
 
 @module_blueprint.route("/transactions/dashboard")
 @login_required
-@pos_required
+@admin_required
 def transactions_list():
     page = request.args.get("page", 1, type=int)
     q = request.args.get("q", "", type=str)
@@ -293,7 +294,7 @@ def transactions_list():
 
 @module_blueprint.route("/transactions/<int:tx_id>/view")
 @login_required
-@pos_required
+@admin_required
 def transaction_view(tx_id):
     tx = Transaction.query.get_or_404(tx_id)
     context = mhelp.context()
