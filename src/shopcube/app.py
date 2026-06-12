@@ -80,7 +80,15 @@ def create_app(config_name="development", instance_path=None):
     shopyo_base = ShopyoBase(app)
     shopyo_dashboard = ShopyoDashboard(app)
     shopyo_auth = ShopyoAuth(app)
-    shopyo_auth.login_redirect_url = lambda user: url_for("pos.index") if any(r.name == "cashier" for r in user.roles) else None
+
+    def _login_redirect(user):
+        if user.is_admin:
+            return url_for("shopyo_dashboard.index")
+        if any(r.name == "cashier" for r in user.roles):
+            return url_for("pos.index")
+        return url_for("customer.dashboard")
+
+    shopyo_auth.login_redirect_url = _login_redirect
     shopyo_theme = ShopyoTheme(app)
     shopyo_appadmin = ShopyoAppAdmin(app)
     shopyo_page = ShopyoPage(app)
