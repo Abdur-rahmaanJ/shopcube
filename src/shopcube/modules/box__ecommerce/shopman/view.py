@@ -126,7 +126,7 @@ def delivery_option_update():
 @login_required
 @admin_required
 def delivery_option_delete(option_id):
-    option = DeliveryOption.query.get(option_id)
+    option = DeliveryOption.query.get_or_404(option_id)
     option.delete()
 
     flash(notify_success("Option Deleted!"))
@@ -185,7 +185,7 @@ def payment_option_update():
 @login_required
 @admin_required
 def payment_option_delete(option_id):
-    option = PaymentOption.query.get(option_id)
+    option = PaymentOption.query.get_or_404(option_id)
     option.delete()
 
     flash(notify_success("Option Deleted!"))
@@ -226,7 +226,7 @@ def coupon_add():
 @login_required
 @admin_required
 def coupon_delete(coupon_id):
-    coupon = Coupon.query.get(coupon_id)
+    coupon = Coupon.query.get_or_404(coupon_id)
     coupon.delete()
 
     flash(notify_success("Coupon Deleted!"))
@@ -241,7 +241,7 @@ def coupon_update():
         form = CouponForm()
         if form.validate_on_submit():
             coupon_id = request.form["id"]
-            coupon = Coupon.query.get(coupon_id)
+            coupon = Coupon.query.get_or_404(coupon_id)
             coupon.string = form.string.data
             coupon.type = form.type.data
             coupon.value = form.value.data
@@ -268,7 +268,7 @@ def order():
 @login_required
 @admin_required
 def order_delete(order_id):
-    order = Order.query.get(order_id)
+    order = Order.query.get_or_404(order_id)
     order.delete()
     return mhelp.redirect_url("shopman.order")
 
@@ -277,7 +277,7 @@ def order_delete(order_id):
 @login_required
 @admin_required
 def order_view(order_id):
-    order = Order.query.get(order_id)
+    order = Order.query.get_or_404(order_id)
     context = mhelp.context()
     context.update({"dir": dir, "order": order})
     return mhelp.render("order_view.html", **context)
@@ -289,7 +289,7 @@ def order_view(order_id):
 def order_status_change(order_id):
     if request.method == "POST":
         order_status = request.form["order_status"]
-        order = Order.query.get(order_id)
+        order = Order.query.get_or_404(order_id)
         valid_status = [
             "pending",
             "processing",
