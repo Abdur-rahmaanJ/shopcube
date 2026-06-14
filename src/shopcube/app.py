@@ -19,6 +19,7 @@ warnings.filterwarnings("ignore", message=".*Using the in-memory storage.*")
 
 import jinja2
 from flask import Flask
+from flask import url_for
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_login import current_user
@@ -54,6 +55,7 @@ from shopyo_appadmin import ShopyoAppAdmin
 from shopyo_page import ShopyoPage
 from shopyo_settings import ShopyoSettings
 from shopyo_settings.helpers import get_setting, set_setting
+import click
 
 
 def create_app(config_name="development", instance_path=None):
@@ -79,6 +81,15 @@ def create_app(config_name="development", instance_path=None):
     shopyo_base = ShopyoBase(app)
     shopyo_dashboard = ShopyoDashboard(app)
     shopyo_auth = ShopyoAuth(app)
+
+    def _login_redirect(user):
+        if user.is_admin:
+            return url_for("shopyo_dashboard.index")
+        if any(r.name == "cashier" for r in user.roles):
+            return url_for("pos.index")
+        return url_for("customer.dashboard")
+
+    shopyo_auth.login_redirect_url = _login_redirect
     shopyo_theme = ShopyoTheme(app)
     shopyo_appadmin = ShopyoAppAdmin(app)
     shopyo_page = ShopyoPage(app)

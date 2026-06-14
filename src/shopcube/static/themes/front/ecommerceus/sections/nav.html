@@ -58,6 +58,8 @@
                 {%else%}
                     {%if current_user.is_admin%}
                         <a class="nav-link" href="{{url_for('shopyo_dashboard.index')}}" ><i class="fa fa-user" style="color: green;"></i></a>
+                    {%elif "cashier" in current_user.roles|map(attribute="name")|list%}
+                        <a class="nav-link" href="{{url_for('pos.index')}}" ><i class="fa fa-user" style="color: green;"></i></a>
                     {%else%}
                         <a class="nav-link" href="{{ url_for('customer.dashboard') }}"><i class="fa fa-user" style="color: green;"></i></a>
                     {%endif%}

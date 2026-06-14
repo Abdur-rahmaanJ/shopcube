@@ -36,6 +36,70 @@ from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 
+# Allowlist of Product fields that can be set from form data.
+# Any field not in this set will be ignored, preventing mass assignment.
+_ALLOWED_PRODUCT_FIELDS = {
+    "barcode", "name", "description", "date", "price",
+    "selling_price", "cost_price", "in_stock", "min_stock",
+    "discontinued", "vendor_id",
+}
+
+
+def _apply_product_fields(product, form):
+    """
+    Apply only allowlisted fields from form data to a Product instance.
+    This prevents mass-assignment attacks where new model fields could be
+    set via raw request.form data without explicit approval.
+    """
+    updates = {}
+    # Scalar field mappings: (form_key, model_attr, type_cast, default)
+    field_map = [
+        ("barcode", "barcode", str, None),
+        ("name", "name", str, None),
+        ("description", "description", str, None),
+        ("date", "date", str, None),
+        ("price", "price", str, "0"),
+        ("selling_price", "selling_price", str, None),
+        ("in_stock", "in_stock", str, None),
+        ("min_stock", "min_stock", int, 0),
+    ]
+    for form_key, attr, cast, default in field_map:
+        if form_key not in _ALLOWED_PRODUCT_FIELDS:
+            continue
+        val = form.get(form_key)
+        if val is not None:
+            raw = str(val).strip()
+            if raw:
+                updates[attr] = cast(raw)
+            elif default is not None:
+                updates[attr] = default
+
+    # cost_price — optional; empty string / missing clears to 0
+    if "cost_price" in _ALLOWED_PRODUCT_FIELDS:
+        cp = form.get("cost_price")
+        if cp is not None and str(cp).strip():
+            updates["cost_price"] = str(cp).strip()
+        else:
+            updates["cost_price"] = "0"
+
+    # vendor_id — optional FK; empty string / missing clears to None
+    if "vendor_id" in _ALLOWED_PRODUCT_FIELDS:
+        vi = form.get("vendor_id")
+        if vi is not None and str(vi).strip():
+            updates["vendor_id"] = int(vi)
+        else:
+            updates["vendor_id"] = None
+
+    # discontinued — boolean from "True"/"False" string
+    if "discontinued" in _ALLOWED_PRODUCT_FIELDS:
+        dc = form.get("discontinued", "False")
+        updates["discontinued"] = dc == "True"
+
+    for attr, value in updates.items():
+        setattr(product, attr, value)
+    return product
+
+
 class ProductSchema(SQLAlchemySchema):
     class Meta:
         model = Product
@@ -94,50 +158,16 @@ def add(subcategory_id):
 
         subcategory = SubCategory.query.get(subcategory_id)
         barcode = request.form["barcode"]
-        name = request.form["name"]
-        description = request.form["description"]
-        date = request.form["date"]
-        price = request.form["price"]
-        selling_price = request.form["selling_price"]
-        in_stock = request.form["in_stock"]
-        min_stock = request.form.get("min_stock", 0)
-        colors = request.form["colors"]
         sizes = request.form["sizes"]
-
-        if request.form["discontinued"] == "True":
-            discontinued = True
-        else:
-            discontinued = False
+        colors = request.form["colors"]
 
         has_product = db.session.query(
             exists().where(Product.barcode == barcode)
         ).scalar()
 
         if has_product is False:
-            p = Product(
-                barcode=barcode,
-                name=name,
-                in_stock=in_stock,
-                min_stock=min_stock,
-                discontinued=discontinued,
-            )
-            vendor_id = request.form.get("vendor_id")
-            if vendor_id:
-                p.vendor_id = int(vendor_id)
-
-            if description:
-                p.description = description.strip()
-            if date:
-                p.date = date.strip()
-            if price:
-                p.price = price.strip()
-            elif not price.strip():
-                p.price = 0
-            if selling_price:
-                p.selling_price = selling_price.strip()
-            cost_price = request.form.get("cost_price")
-            if cost_price:
-                p.cost_price = cost_price.strip()
+            p = Product()
+            _apply_product_fields(p, request.form)
 
             sizes = sizes.strip().strip("\n")
             sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
@@ -219,45 +249,18 @@ def update(subcategory_id):
     # this block is only entered when the form is submitted
     if request.method == "POST":
         subcategory = SubCategory.query.get(subcategory_id)
-        barcode = request.form["barcode"]
         old_barcode = request.form["old_barcode"]
-        # category = request.form["category"]
-
-        name = request.form["name"]
-        description = request.form["description"]
-
-        date = request.form["date"]
-        price = request.form["price"]
         product_id = request.form["product_id"]
-        if not price.strip():
-            price = 0
-        selling_price = request.form["selling_price"]
-        in_stock = request.form["in_stock"]
-        min_stock = request.form.get("min_stock", 0)
-        colors = request.form["colors"]
         sizes = request.form["sizes"]
-
-        if request.form["discontinued"] == "True":
-            discontinued = True
-        else:
-            discontinued = False
+        colors = request.form["colors"]
 
         p = Product.query.get(product_id)
         old_stock = p.in_stock
-        p.barcode = barcode
-        p.name = name
-        p.description = description
-        p.date = date
-        p.price = price
-        p.selling_price = selling_price
-        p.cost_price = request.form.get("cost_price", 0)
-        p.in_stock = in_stock
-        p.min_stock = min_stock
-        p.discontinued = discontinued
-        vendor_id = request.form.get("vendor_id")
-        p.vendor_id = int(vendor_id) if vendor_id else None
 
-        stock_diff = int(in_stock) - old_stock
+        # Only allowlisted fields are applied
+        _apply_product_fields(p, request.form)
+
+        stock_diff = int(request.form.get("in_stock", p.in_stock)) - old_stock
         if stock_diff != 0:
             p.log_adjustment(
                 stock_diff,
@@ -316,6 +319,15 @@ def lookup(subcategory_id):
     return render_template("product/lookup.html", **context)
 
 
+# Allowlist of searchable Product column names — prevents attribute injection
+# via getattr() with user-controlled field names
+_SEARCHABLE_FIELDS = {
+    "barcode", "name", "description", "date", "price",
+    "selling_price", "in_stock", "min_stock", "cost_price",
+    "discontinued", "is_onsale", "is_featured",
+}
+
+
 # api
 @module_blueprint.route(
     "sub/<subcategory_id>/search/<user_input>", methods=["GET"]
@@ -325,20 +337,28 @@ def lookup(subcategory_id):
 def search(subcategory_id, user_input):
     if request.method == "GET":
         subcategory = SubCategory.query.get(subcategory_id)
-        print(request.args["field"], request.args["global_search"])
-        field = request.args["field"]
-        global_search = request.args["global_search"]
+        field = request.args.get("field", "")
+        global_search = request.args.get("global_search", "False")
+
+        # Normalize display names (e.g. "selling price") to column names
+        field = field.replace(" ", "_")
+
+        # Validate against allowlist before passing to getattr()
+        if field not in _SEARCHABLE_FIELDS:
+            return jsonify({"error": f"Invalid search field: {field}"}), 400
+
+        column_attr = getattr(Product, field)
+
         if global_search == "True":
             all_p = Product.query.filter(
-                (getattr(Product, field).like("%" + user_input + "%"))
+                (column_attr.like(f"%{user_input}%"))
                 & (Product.subcategory == subcategory)
             ).all()
-            result = product_schema.dump(all_p)
         else:
             all_p = Product.query.filter(
-                getattr(Product, field).like("%" + user_input + "%")
+                column_attr.like(f"%{user_input}%")
             ).all()
-            result = product_schema.dump(all_p)
+        result = product_schema.dump(all_p)
     return jsonify(result)
 
 

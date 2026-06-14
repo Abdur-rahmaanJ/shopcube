@@ -112,7 +112,20 @@ def orders():
 @module_blueprint.route("/order/<order_id>/view", methods=["GET", "POST"])
 @login_required
 def order_view(order_id):
-    order = Order.query.get(order_id)
+    order = Order.query.get_or_404(order_id)
+
+    # Ownership check: the logged-in user must be the owner of this order
+    if order.logged_in_customer_email:
+        if order.logged_in_customer_email != current_user.email:
+            flash(notify_warning("You do not have permission to view this order."))
+            return redirect(url_for("customer.orders"))
+    else:
+        # Order was placed without a logged-in account; check billing email
+        billing = order.billing_detail
+        if not billing or billing.email != current_user.email:
+            flash(notify_warning("You do not have permission to view this order."))
+            return redirect(url_for("customer.orders"))
+
     context = mhelp.context()
     context.update({"order": order})
     context.update({"_hide_nav": True, "_logout_url": url_for("customer.logout")})

@@ -1,0 +1,31 @@
+{% extends "base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Stock at {{ loc.name }}</title>{% endblock %}
+{% set sidebar_bgtrigger = 'inv_locations' %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block content %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <h2>Stock at {{ loc.name }}</h2>
+        <a class="btn btn-primary mb-3" href="{{ url_for('inventory.locations') }}">< BACK</a>
+        <form method="POST" action="{{ url_for('inventory.location_stock_update', loc_id=loc.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <table class="table table-striped">
+                <thead><tr><th>Product</th><th>Barcode</th><th>Current Stock</th><th>Adjust</th></tr></thead>
+                <tbody>
+                    {% for item in stock_data %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.barcode }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td><input type="number" name="qty_{{ item.product.id }}" value="{{ item.qty }}" class="form-control" style="width:100px;"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-info">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

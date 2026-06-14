@@ -427,6 +427,17 @@
         <!-- LEFT COLUMN: Products -->
         <div class="col-lg-8 col-md-7 h-100 product-section">
             
+            <!-- Management Nav -->
+            {% if current_user.is_admin %}
+            <div class="mb-2 d-flex gap-2" style="gap:6px;">
+                <a href="{{ url_for('pos.transactions_list') }}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-receipt"></i> Transactions</a>
+                <a href="{{ url_for('pos.reports', days=7) }}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-chart-bar"></i> Reports</a>
+                <a href="{{ url_for('pos.shifts') }}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-clock"></i> Shifts</a>
+                <a href="{{ url_for('pos.returns') }}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-undo"></i> Returns</a>
+                <a href="{{ url_for('pos.quick_keys') }}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-keyboard"></i> Quick Keys</a>
+            </div>
+            {% endif %}
+
             <!-- Search -->
             <div class="search-bar-container">
                 <div class="position-relative">
@@ -561,6 +572,17 @@
                         </div>
                         <small class="text-muted" id="discount-display" style="display:none;">Discount: -$0.00</small>
                     </div>
+
+                    {% if locations %}
+                    <div class="form-group mb-3">
+                        <label class="small text-muted font-weight-bold text-uppercase">Location</label>
+                        <select id="pos-location" class="form-control" style="font-size:0.9rem;">
+                            {% for l in locations %}
+                            <option value="{{ l.id }}">{{ l.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
 
                     <div class="form-group mb-3">
                         <label class="small text-muted font-weight-bold text-uppercase">Payment Method</label>
@@ -956,7 +978,8 @@
         const payload = JSON.stringify({
             items: items, amount_paid: paid, payment_method: paymentMethod, notes: notes,
             discount_type: disc.type === 'none' ? '' : disc.type,
-            discount_value: disc.value || 0
+            discount_value: disc.value || 0,
+            location_id: $('#pos-location').val() || null
         });
 
         $('#loading-overlay').css('display', 'flex');

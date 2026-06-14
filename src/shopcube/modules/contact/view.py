@@ -1,3 +1,5 @@
+import re
+
 from flask import Blueprint
 from flask import flash
 from flask import redirect
@@ -10,6 +12,13 @@ from shopyo.api.html import notify_success
 
 from .forms import ContactForm
 from .models import ContactMessage
+
+
+def _strip_html(value):
+    """Remove HTML tags from a string to prevent stored XSS."""
+    if not value:
+        return value
+    return re.sub(r"<[^>]+>", "", str(value))
 
 contact_blueprint = Blueprint(
     "contact",
@@ -37,9 +46,9 @@ def validate_message():
             flash_errors(form)
             return redirect(url_for("contact.index"))
 
-        name = form.name.data
-        email = form.email.data
-        message = form.message.data
+        name = _strip_html(form.name.data)
+        email = _strip_html(form.email.data)
+        message = _strip_html(form.message.data)
 
         contact_message = ContactMessage(name=name, email=email, message=message)
         contact_message.insert()

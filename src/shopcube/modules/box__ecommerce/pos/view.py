@@ -9,11 +9,13 @@ from flask import flash, redirect, url_for
 from flask_login import current_user, login_required
 from shopyo.api.html import notify_success, notify_warning
 from shopyo.api.module import ModuleHelp
+from shopyo_appadmin.admin import admin_required
 from shopyo_auth.decorators import check_confirmed
 from sqlalchemy.orm import subqueryload
 
 from init import db
 from modules.box__ecommerce.category.models import Category, SubCategory
+from modules.box__ecommerce.inventory.models import Location, StockPerLocation
 from modules.box__ecommerce.pos.models import Transaction, TransactionItem
 from modules.box__ecommerce.pos.models import Shift
 from modules.box__ecommerce.pos.models import QuickKey
@@ -45,7 +47,12 @@ def index():
         subqueryload(Category.subcategories).subqueryload(SubCategory.products)
     ).all()
     quick_keys = QuickKey.query.order_by(QuickKey.position).all()
-    context.update({"categories": categories, "quick_keys": quick_keys})
+    locations = Location.query.filter_by(is_active=True).all()
+    if not locations:
+        loc = Location(name="Main Store", address="Default", is_active=True)
+        loc.insert()
+        locations = [loc]
+    context.update({"categories": categories, "quick_keys": quick_keys, "locations": locations})
     return render_template("pos/index.html", **context)
 
 
@@ -64,6 +71,7 @@ def transaction():
     notes = data.get("notes", "")
     discount_type = data.get("discount_type", "")
     discount_value = data.get("discount_value", 0)
+    location_id = data.get("location_id")
 
     if amount_paid is None or not isinstance(amount_paid, (int, float)) or amount_paid < 0:
         return jsonify({"success": False, "message": "Invalid or missing amount paid"}), 400
@@ -113,11 +121,15 @@ def transaction():
     transaction.notes = notes
     transaction.discount_type = discount_type
     transaction.discount_value = discount_value
+    transaction.location_id = location_id
 
     for barcode, item_data in items_data.items():
         quantity = item_data["count"]
         product = Product.query.filter_by(barcode=str(barcode)).first()
         product.in_stock -= quantity
+        if location_id:
+            current = product.stock_at(location_id)
+            product.set_stock(location_id, current - quantity)
         product.log_adjustment(-quantity, "POS sale", f"Transaction via {payment_method}")
         item = TransactionItem(
             product_barcode=barcode,
@@ -134,7 +146,7 @@ def transaction():
 
 @module_blueprint.route("/reports/dashboard")
 @login_required
-@pos_required
+@admin_required
 def reports():
     context = mhelp.context()
     days = request.args.get("days", 7, type=int)
@@ -144,19 +156,22 @@ def reports():
     total_tx = len(txs)
     by_method = {}
     by_cashier = {}
+    by_location = {}
     for t in txs:
         m = t.method_of_payment or "unknown"
         by_method[m] = by_method.get(m, 0) + float(t.total_amount or 0)
         c = t.cashier_id or 0
         by_cashier[c] = by_cashier.get(c, 0) + 1
+        loc_id = t.location_id or 0
+        by_location[loc_id] = by_location.get(loc_id, 0) + float(t.total_amount or 0)
     context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx,
-                     "by_method": by_method, "by_cashier": by_cashier, "days": days})
+                     "by_method": by_method, "by_cashier": by_cashier, "by_location": by_location, "days": days})
     return mhelp.render("reports.html", **context)
 
 
 @module_blueprint.route("/return", methods=["GET", "POST"])
 @login_required
-@pos_required
+@admin_required
 def returns():
     context = mhelp.context()
     tx = None
@@ -171,7 +186,7 @@ def returns():
 
 @module_blueprint.route("/return/<int:tx_id>/process", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def process_return(tx_id):
     tx = Transaction.query.get_or_404(tx_id)
     refund_tx = Transaction(
@@ -192,7 +207,7 @@ def process_return(tx_id):
 
 @module_blueprint.route("/shifts/dashboard")
 @login_required
-@pos_required
+@admin_required
 def shifts():
     context = mhelp.context()
     context["shifts"] = Shift.query.order_by(Shift.opened_at.desc()).all()
@@ -203,7 +218,7 @@ def shifts():
 
 @module_blueprint.route("/shift/open", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def shift_open():
     if Shift.query.filter_by(status="open").first():
         flash("A shift is already open", "warning")
@@ -216,7 +231,7 @@ def shift_open():
 
 @module_blueprint.route("/shift/<int:shift_id>/close", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def shift_close(shift_id):
     s = Shift.query.get_or_404(shift_id)
     if s.status != "open":
@@ -235,7 +250,7 @@ def shift_close(shift_id):
 
 @module_blueprint.route("/quick-keys/dashboard")
 @login_required
-@pos_required
+@admin_required
 def quick_keys():
     context = mhelp.context()
     keys = QuickKey.query.order_by(QuickKey.position).all()
@@ -246,7 +261,7 @@ def quick_keys():
 
 @module_blueprint.route("/quick-keys/add", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def quick_key_add():
     product_id = request.form.get("product_id", type=int)
     position = request.form.get("position", type=int)
@@ -268,9 +283,34 @@ def quick_key_add():
 
 @module_blueprint.route("/quick-keys/<int:key_id>/delete", methods=["POST"])
 @login_required
-@pos_required
+@admin_required
 def quick_key_delete(key_id):
     qk = QuickKey.query.get_or_404(key_id)
     qk.delete()
     flash("Quick key removed", "success")
     return redirect(url_for("pos.quick_keys"))
+
+
+@module_blueprint.route("/transactions/dashboard")
+@login_required
+@admin_required
+def transactions_list():
+    page = request.args.get("page", 1, type=int)
+    q = request.args.get("q", "", type=str)
+    query = Transaction.query
+    if q:
+        query = query.filter(Transaction.id == int(q)) if q.isdigit() else query
+    txs = query.order_by(Transaction.time.desc()).paginate(page=page, per_page=25, error_out=False)
+    context = mhelp.context()
+    context.update({"txs": txs, "q": q})
+    return mhelp.render("transactions.html", **context)
+
+
+@module_blueprint.route("/transactions/<int:tx_id>/view")
+@login_required
+@admin_required
+def transaction_view(tx_id):
+    tx = Transaction.query.get_or_404(tx_id)
+    context = mhelp.context()
+    context.update({"tx": tx})
+    return mhelp.render("transaction_view.html", **context)

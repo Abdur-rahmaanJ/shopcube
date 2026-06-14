@@ -15,6 +15,7 @@ class Transaction(db.Model):
     notes = db.Column(db.String(500))
     discount_type = db.Column(db.String(10))  # 'percentage' or 'fixed'
     discount_value = db.Column(db.Numeric(10, 2), default=0)
+    location_id = db.Column(db.Integer, db.ForeignKey("locations.id"), nullable=True)
 
     items = db.relationship('TransactionItem', backref='transaction', lazy=True, cascade="all, delete-orphan")
 

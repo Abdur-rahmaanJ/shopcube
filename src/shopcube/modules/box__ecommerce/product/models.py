@@ -58,6 +58,21 @@ class Product(PkModel):
         cascade="all, delete-orphan",
     )
 
+    def stock_at(self, location_id):
+        from modules.box__ecommerce.inventory.models import StockPerLocation
+        spl = StockPerLocation.query.filter_by(product_id=self.id, location_id=location_id).first()
+        return spl.quantity if spl else 0
+
+    def set_stock(self, location_id, quantity):
+        from modules.box__ecommerce.inventory.models import StockPerLocation
+        spl = StockPerLocation.query.filter_by(product_id=self.id, location_id=location_id).first()
+        if spl:
+            spl.quantity = quantity
+        else:
+            spl = StockPerLocation(product_id=self.id, location_id=location_id, quantity=quantity)
+            db.session.add(spl)
+        db.session.commit()
+
     def get_color_string(self):
         return "\n".join([c.name for c in self.colors])
 

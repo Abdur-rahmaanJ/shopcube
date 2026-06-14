@@ -27,7 +27,7 @@ class BaseConfig:
     BASE_DIR = base_path
     
     # Persistent data should live in the CWD or instance folder
-    DATA_DIR = os.environ.get("SHOPCUBE_DATA_DIR", os.getcwd())
+    DATA_DIR = os.environ.get("SHOPCUBE_DATA_DIR", base_path)
     
     STATIC = os.path.join(base_path, "static")
     
@@ -43,6 +43,7 @@ class BaseConfig:
     UPLOADED_PRODUCTEXCEL_DEST = os.path.join(DATA_DIR, "uploads")
     UPLOADED_PRODUCTEXCEL_ALLOW = ("xls", "xlsx", "xlsm", "xlsb", "odf")
     PASSWORD_SALT = "abcdefghi"
+    SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED = True
 
 
 class ProductionConfig(BaseConfig):

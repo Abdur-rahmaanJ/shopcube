@@ -1,7 +1,8 @@
 {% extends "base/module_base.html" %}
 {% set active_page = 'inventory' %}
 {% block pagehead %}<title>Locations</title>{% endblock %}
-{% block sidebar %}{% endblock %}
+{% set sidebar_bgtrigger = 'inv_locations' %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
 {% block content %}
 <br>
 <div class="card">
@@ -19,6 +20,7 @@
                 {% for l in locations %}
                 <tr><td>{{ l.name }}</td><td>{{ l.address or '-' }}</td><td>{{ 'Yes' if l.is_active else 'No' }}</td>
                     <td>
+                        <a href="{{ url_for('inventory.location_stock', loc_id=l.id) }}" class="btn btn-info btn-sm">Stock</a>
                         <form action="{{ url_for('inventory.location_delete', loc_id=l.id) }}" method="POST" style="display:inline;">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                             <button class="btn btn-danger btn-sm">Delete</button>

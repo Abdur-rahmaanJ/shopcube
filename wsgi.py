@@ -1,5 +1,6 @@
 import os
 import sys
+import click
 
 # Ensure the shopcube package can be imported if running from source
 # But if installed via pip, it will be in site-packages
@@ -31,10 +32,53 @@ if config_name in ("development",):
             import shopcube
             pkg_dir = os.path.dirname(shopcube.__file__)
             migrate_upgrade(directory=os.path.join(pkg_dir, "migrations"))
-            from modules.box__default.settings.upload import upload as settings_upload
+            application.config['SEED_SETTINGS'] = {
+                'ACTIVE_FRONT_THEME': 'ecommerceus',
+                'ACTIVE_BACK_THEME': 'sneat',
+                'SECTION_NAME': 'ShopCube',
+                'CURRENCY': 'usd',
+                'ACTIVE_ICONSET': 'fa',
+                'APP_NAME': 'ShopCube',
+                'SECTION_ITEMS': 'Products',
+            }
+            from shopyo_settings.upload import upload as settings_upload
             settings_upload()
             from shopyo_auth.upload import upload as auth_upload
             application.config['SHOPYO_AUTH_SEED_ADMIN_EMAIL'] = 'admin@domain.com'
             application.config['SHOPYO_AUTH_SEED_ADMIN_PASSWORD'] = 'pass'
             auth_upload()
             print("Database initialised.")
+
+    # Ensure required settings exist
+    with application.app_context():
+        from shopyo_settings.helpers import set_setting, get_setting
+        if get_setting("ACTIVE_FRONT_THEME") is None:
+            set_setting("ACTIVE_FRONT_THEME", "ecommerceus")
+            print("Seeded ACTIVE_FRONT_THEME")
+        if get_setting("ACTIVE_BACK_THEME") is None:
+            set_setting("ACTIVE_BACK_THEME", "sneat")
+            print("Seeded ACTIVE_BACK_THEME")
+
+
+@application.cli.command("createadmin")
+@click.argument("email")
+@click.argument("password")
+def create_admin(email, password):
+    """Create an admin user."""
+    with application.app_context():
+        from init import db
+        from shopyo_auth.models import User
+        u = User.query.filter_by(email=email).first()
+        if u:
+            print(f"User {email} already exists")
+            return
+        u = User()
+        u.email = email
+        u.password = password
+        u.is_admin = True
+        u.is_email_confirmed = True
+        u.username = email.split("@")[0]
+        db.session.add(u)
+        db.session.commit()
+        print(f"Admin {email} created")
+
