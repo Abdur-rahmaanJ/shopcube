@@ -20,6 +20,22 @@ from shopyo_ecommerce.pos.models import Transaction, TransactionItem
 from shopyo_ecommerce.pos.models import Shift
 from shopyo_ecommerce.pos.models import QuickKey
 from shopyo_ecommerce.product.models import Product
+from shopyo_settings.helpers import get_setting
+
+CURRENCY_SYMBOL_MAP = {
+    "USD": "$", "EUR": "\u20ac", "GBP": "\u00a3", "JPY": "\u00a5",
+    "CAD": "$", "AUD": "$", "CHF": "Fr", "CNY": "\u00a5",
+    "INR": "\u20b9", "MXN": "$", "BRL": "R$", "KRW": "\u20a9",
+    "SEK": "kr", "NOK": "kr", "DKK": "kr", "NZD": "$",
+    "SGD": "$", "HKD": "$", "MYR": "RM", "THB": "\u0e3f",
+    "PHP": "\u20b1", "IDR": "Rp", "VND": "\u20ab", "ZAR": "R",
+    "TRY": "\u20ba", "RUB": "\u20bd", "PLN": "z\u0142", "CZK": "K\u010d",
+    "ILS": "\u20aa", "AED": "dh", "SAR": "SR", "EGP": "E\u00a3", "MUR": "Rs",
+}
+
+def get_currency_symbol():
+    code = get_setting("CURRENCY") or "USD"
+    return CURRENCY_SYMBOL_MAP.get(code, code)
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -52,7 +68,14 @@ def index():
         loc = Location(name="Main Store", address="Default", is_active=True)
         loc.insert()
         locations = [loc]
-    context.update({"categories": categories, "quick_keys": quick_keys, "locations": locations})
+    context.update({
+        "categories": categories,
+        "quick_keys": quick_keys,
+        "locations": locations,
+        "store_name": get_setting("STORE_NAME") or "",
+        "store_tel": get_setting("STORE_TEL") or "",
+        "currency_symbol": get_currency_symbol(),
+    })
     return render_template("pos/index.html", **context)
 
 
@@ -196,7 +219,8 @@ def reports():
         loc_id = t.location_id or 0
         by_location[loc_id] = by_location.get(loc_id, 0) + float(t.total_amount or 0)
     context.update({"txs": txs, "total_sales": total_sales, "total_tx": total_tx,
-                     "by_method": by_method, "by_cashier": by_cashier, "by_location": by_location, "days": days})
+                     "by_method": by_method, "by_cashier": by_cashier, "by_location": by_location, "days": days,
+                     "currency_symbol": get_currency_symbol()})
     return mhelp.render("reports.html", **context)
 
 
@@ -212,6 +236,7 @@ def returns():
         if not tx:
             flash("Transaction not found", "warning")
     context["tx"] = tx
+    context["currency_symbol"] = get_currency_symbol()
     return mhelp.render("return.html", **context)
 
 
@@ -244,6 +269,7 @@ def shifts():
     context["shifts"] = Shift.query.order_by(Shift.opened_at.desc()).all()
     active = Shift.query.filter_by(status="open").first()
     context["active_shift"] = active
+    context["currency_symbol"] = get_currency_symbol()
     return mhelp.render("shifts.html", **context)
 
 
@@ -333,7 +359,7 @@ def transactions_list():
         query = query.filter(Transaction.id == int(q)) if q.isdigit() else query
     txs = query.order_by(Transaction.time.desc()).paginate(page=page, per_page=25, error_out=False)
     context = mhelp.context()
-    context.update({"txs": txs, "q": q})
+    context.update({"txs": txs, "q": q, "currency_symbol": get_currency_symbol()})
     return mhelp.render("transactions.html", **context)
 
 
@@ -343,5 +369,5 @@ def transactions_list():
 def transaction_view(tx_id):
     tx = Transaction.query.get_or_404(tx_id)
     context = mhelp.context()
-    context.update({"tx": tx})
+    context.update({"tx": tx, "currency_symbol": get_currency_symbol()})
     return mhelp.render("transaction_view.html", **context)

@@ -22,7 +22,7 @@
             <p class="text-[10px] font-bold text-emerald-500">Since {{ active_shift.opened_at.strftime('%Y-%m-%d %H:%M') }}</p>
           </div>
           <div class="ml-auto text-right">
-            <p class="text-lg font-black text-emerald-700 dark:text-emerald-300">${{ '%.2f'|format(active_shift.total_sales()) }}</p>
+            <p class="text-lg font-black text-emerald-700 dark:text-emerald-300">{{ currency_symbol }}{{ '%.2f'|format(active_shift.total_sales()) }}</p>
             <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Sales this shift</p>
           </div>
         </div>
@@ -69,14 +69,14 @@
             <td class="text-xs font-bold">#{{ s.id }}</td>
             <td class="text-xs">{{ s.opened_at.strftime('%Y-%m-%d %H:%M') if s.opened_at else '-' }}</td>
             <td class="text-xs">{{ s.closed_at.strftime('%Y-%m-%d %H:%M') if s.closed_at else 'open' }}</td>
-            <td class="text-xs">${{ '%.2f'|format(s.starting_cash|float) }}</td>
-            <td class="text-xs">${{ '%.2f'|format(s.expected_cash|float) }}</td>
-            <td class="text-xs">${{ '%.2f'|format(s.actual_cash|float) if s.actual_cash else '-' }}</td>
+            <td class="text-xs">{{ currency_symbol }}{{ '%.2f'|format(s.starting_cash|float) }}</td>
+            <td class="text-xs">{{ currency_symbol }}{{ '%.2f'|format(s.expected_cash|float) }}</td>
+            <td class="text-xs">{{ currency_symbol }}{{ '%.2f'|format(s.actual_cash|float) if s.actual_cash else '-' }}</td>
             <td class="text-xs font-bold {{ 'text-red-500' if s.variance_cash and s.variance_cash|float < 0 else 'text-emerald-500' if s.variance_cash and s.variance_cash|float> 0 }}">
               {% if s.variance_cash %}
               <span class="inline-flex items-center gap-1">
                 <i class="fas {{ 'fa-arrow-down' if s.variance_cash|float < 0 else 'fa-arrow-up' }} text-[8px]"></i>
-                ${{ '%.2f'|format(s.variance_cash|float|abs) }}
+                {{ currency_symbol }}{{ '%.2f'|format(s.variance_cash|float|abs) }}
               </span>
               {% else %}-{% endif %}
             </td>

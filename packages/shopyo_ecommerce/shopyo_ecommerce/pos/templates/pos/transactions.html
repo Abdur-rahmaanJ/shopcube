@@ -40,7 +40,7 @@
           <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
             <td class="text-xs font-bold">#{{ t.id }}</td>
             <td class="text-xs">{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
-            <td class="text-xs font-bold">${{ '%.2f'|format(t.total_amount|float) }}</td>
+            <td class="text-xs font-bold">{{ currency_symbol }}{{ '%.2f'|format(t.total_amount|float) }}</td>
             <td><span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest
               {%- if t.method_of_payment == 'cash' %} bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400
               {%- elif t.method_of_payment == 'card' %} bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400

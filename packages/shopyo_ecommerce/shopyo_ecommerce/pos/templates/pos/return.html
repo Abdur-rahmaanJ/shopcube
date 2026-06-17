@@ -40,7 +40,7 @@
             </div>
             <div>
               <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount</p>
-              <p class="text-xs font-bold text-slate-900 dark:text-white">${{ '%.2f'|format(tx.total_amount|float) }}</p>
+              <p class="text-xs font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(tx.total_amount|float) }}</p>
             </div>
             <div>
               <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment</p>
@@ -56,17 +56,17 @@
                   <span class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] font-black">{{ item.quantity }}x</span>
                   <div>
                     <p class="text-xs font-bold text-slate-900 dark:text-white">{{ item.product_barcode }}</p>
-                    <p class="text-[10px] text-slate-400">@ ${{ '%.2f'|format(item.unit_price|float) }} ea</p>
+                    <p class="text-[10px] text-slate-400">@ {{ currency_symbol }}{{ '%.2f'|format(item.unit_price|float) }} ea</p>
                   </div>
                 </div>
-                <p class="text-xs font-bold text-slate-900 dark:text-white">${{ '%.2f'|format(item.quantity * item.unit_price|float) }}</p>
+                <p class="text-xs font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(item.quantity * item.unit_price|float) }}</p>
               </div>
               {% endfor %}
             </div>
           </div>
           <form action="{{ url_for('shopyo_ecommerce.pos.process_return', tx_id=tx.id) }}" method="POST" class="pt-2">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-            <button class="w-full py-3 rounded-xl bg-red-500 text-white font-bold text-xs hover:bg-red-600 transition-all shadow-lg shadow-red-500/20 uppercase tracking-widest" onclick="return confirm('Process refund of ${{ '%.2f'|format(tx.total_amount|float) }}?')">
+            <button class="w-full py-3 rounded-xl bg-red-500 text-white font-bold text-xs hover:bg-red-600 transition-all shadow-lg shadow-red-500/20 uppercase tracking-widest" onclick="return confirm('Process refund of {{ currency_symbol }}{{ '%.2f'|format(tx.total_amount|float) }}?')">
               <i class="fas fa-rotate-left mr-1.5"></i>Process Full Refund
             </button>
           </form>

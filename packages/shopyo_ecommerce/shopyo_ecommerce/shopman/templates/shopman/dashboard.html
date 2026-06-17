@@ -9,35 +9,48 @@
 </style>
 {% endblock %}
 
-
-
-
 {% block sidebar %}
  {%include info['module_name']+'/blocks/sidebar.html'%}
 {%endblock%}
 
-
-
-
 {% block module_content %}
-<br>
-<div>
- <div class="card">
- <div class="card-body">
- <form class="form" method="POST" action="{{ url_for('shopyo_ecommerce.shopman.set_currency') }}">
- <div>
- <label>{{ form.currency.label }}</label>
- {% set z = form.currency.process_data(current_currency) %}
- {{ form.currency() }}
+<div class="max-w-3xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Store Settings</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Configure your store info and currency</p>
+      </div>
 
- </div><br>
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.shopman.save_store') }}" class="space-y-6 mb-8 pb-8 border-b border-slate-100 dark:border-slate-800">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Store Name</label>
+            <input type="text" name="store_name" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="My Store" value="{{ store_name }}">
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Store Telephone</label>
+            <input type="text" name="store_tel" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="+1 555-0000" value="{{ store_tel }}">
+          </div>
+        </div>
+        <button type="submit" class="bg-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest">
+          <i class="fas fa-save mr-1.5"></i>Save Store Info
+        </button>
+      </form>
 
- {{ form.csrf_token }}
- <button type="submit" class="btn btn-primary">submit</button>
- </form>
- </div>
- </div>
+      <form class="form" method="POST" action="{{ url_for('shopyo_ecommerce.shopman.set_currency') }}">
+        <div class="space-y-1 mb-6">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{{ form.currency.label }}</label>
+          {% set z = form.currency.process_data(current_currency) %}
+          {{ form.currency(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none") }}
+        </div>
+        {{ form.csrf_token }}
+        <button type="submit" class="bg-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest">
+          <i class="fas fa-check mr-1.5"></i>Set Currency
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
-
-
 {% endblock %}

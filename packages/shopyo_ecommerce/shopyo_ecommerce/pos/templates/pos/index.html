@@ -120,7 +120,7 @@
             <div class="product-card-body">
               <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
               <div class="flex items-center justify-between mt-2">
-                <span class="product-price">${{product.selling_price}}</span>
+                <span class="product-price">{{ currency_symbol }}{{product.selling_price}}</span>
                 <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock{% elif is_low %} low-stock{% endif %}">
                   {%- if product.in_stock == 0 -%}Out of stock
                   {%- elif is_low -%}{{product.in_stock}} left
@@ -173,7 +173,7 @@
       <div class="cart-footer space-y-4">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-slate-500">Subtotal</span>
-          <span class="text-xl font-black text-slate-800" id="cart-total">$0.00</span>
+          <span class="text-xl font-black text-slate-800" id="cart-total">{{ currency_symbol }}0.00</span>
         </div>
 
         <!-- Discount -->
@@ -182,12 +182,12 @@
           <div class="flex items-center gap-2">
             <select id="discount-type" class="w-16 bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-2 text-xs font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
               <option value="percentage">%</option>
-              <option value="fixed">$</option>
+              <option value="fixed">{{ currency_symbol }}</option>
             </select>
             <input type="number" id="discount-value" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0" step="0.01" min="0">
             <button class="px-3 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
           </div>
-          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -$0.00</small>
+          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -{{ currency_symbol }}0.00</small>
         </div>
 
         {% if locations %}
@@ -239,12 +239,12 @@
         <div class="space-y-1">
           <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount Received</label>
           <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500">$</span>
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500">{{ currency_symbol }}</span>
             <input type="number" id="amount-paid" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-7 pr-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0.00" step="0.01" min="0">
           </div>
           <div class="flex items-center justify-between px-1 mt-1">
             <span class="text-[10px] text-slate-400">Change Due:</span>
-            <span class="text-xs font-bold" id="change-due">$0.00</span>
+            <span class="text-xs font-bold" id="change-due">{{ currency_symbol }}0.00</span>
           </div>
         </div>
 
@@ -272,8 +272,8 @@
 <!-- Receipt Modal -->
 <div id="receipt-modal">
   <div class="receipt" id="receipt-content">
-    <h2>{{ config.get('APP_NAME', 'SHOP') or 'STORE' }}</h2>
-    <p class="store-info">{{ config.get('STORE_ADDRESS', '') }}<br>Tel: {{ config.get('STORE_PHONE', '') }}</p>
+    <h2>{{ store_name or 'STORE' }}</h2>
+    <p class="store-info">Tel: {{ store_tel }}</p>
     <hr class="divider">
     <div class="line"><span>Receipt #</span><span id="r-tx-id"></span></div>
     <div class="line"><span>Date</span><span id="r-time"></span></div>
@@ -299,6 +299,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 var cart = {};
+var currencySymbol = '{{ currency_symbol }}';
 var scanBuffer = '';
 var scanTimer = null;
 var lastKeyTime = 0;
@@ -351,7 +352,7 @@ $(document).on('click keydown', '.qty-increase', function(e) { if(e.type==='keyd
 $(document).on('change', '.qty-input', function() { updateQty($(this).data('barcode'), this.value); });
 $(document).on('input change', '#discount-value, #discount-type', updateCartUI);
 $(document).on('click', '.btn-remove', function() { removeFromCart($(this).data('barcode')); });
-$('#btn-clear').on('click', function() { if(Object.keys(cart).length>0 && confirm("Clear current order?")) { cart={}; $('#discount-value').val(''); $('#discount-display').hide(); updateCartUI(); $('#amount-paid').val(''); $('#change-due').text('$0.00').removeClass('text-emerald-500 text-red-500'); } });
+$('#btn-clear').on('click', function() { if(Object.keys(cart).length>0 && confirm("Clear current order?")) { cart={}; $('#discount-value').val(''); $('#discount-display').hide(); updateCartUI(); $('#amount-paid').val(''); $('#change-due').text(currencySymbol+'0.00').removeClass('text-emerald-500 text-red-500'); } });
 $('#btn-checkout').on('click', processCheckout);
 
 $(document).ready(function() {
@@ -437,12 +438,12 @@ function updateCartUI() {
     codes.forEach(function(code) {
       var item = cart[code], it = item.price * item.qty;
       total += it; count += item.qty;
-      tb.append('<tr><td class="pl-5 py-3"><div class="cart-item-title" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">$'+item.price.toFixed(2)+' ea &middot; $'+(item.price*item.qty).toFixed(2)+'</small></td><td class="text-center py-3"><div class="qty-control"><button class="qty-btn qty-decrease" data-barcode="'+code+'">-</button><input type="number" class="qty-input" value="'+item.qty+'" data-barcode="'+code+'" min="1" max="'+item.stock+'"><button class="qty-btn qty-increase" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold">$'+it.toFixed(2)+'</td><td class="py-3"><button class="btn-remove" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
+      tb.append('<tr><td class="pl-5 py-3"><div class="cart-item-title" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">'+currencySymbol+item.price.toFixed(2)+' ea &middot; '+currencySymbol+(item.price*item.qty).toFixed(2)+'</small></td><td class="text-center py-3"><div class="qty-control"><button class="qty-btn qty-decrease" data-barcode="'+code+'">-</button><input type="number" class="qty-input" value="'+item.qty+'" data-barcode="'+code+'" min="1" max="'+item.stock+'"><button class="qty-btn qty-increase" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold">'+currencySymbol+it.toFixed(2)+'</td><td class="py-3"><button class="btn-remove" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
     });
   }
   var disc = getDiscount(total);
-  $('#cart-total').text('$'+total.toFixed(2));
-  if (disc.amount>0) { $('#discount-display').text('Discount: -$'+disc.amount.toFixed(2)).show(); } else { $('#discount-display').hide(); }
+  $('#cart-total').text(currencySymbol+total.toFixed(2));
+  if (disc.amount>0) { $('#discount-display').text('Discount: -'+currencySymbol+disc.amount.toFixed(2)).show(); } else { $('#discount-display').hide(); }
   $('#cart-count-badge').text(count+' Items');
   $('#cart-total').data('net-total', (total-disc.amount).toFixed(2));
   calculateChange();
@@ -451,11 +452,11 @@ function getDiscount(st) {
   var v = parseFloat($('#discount-value').val())||0; if(v<=0) return {type:'none',amount:0};
   return $('#discount-type').val()==='percentage' ? {type:'percentage',value:Math.min(v,100),amount:st*(Math.min(v,100)/100)} : {type:'fixed',value:v,amount:Math.min(v,st)};
 }
-function getNetTotal() { return parseFloat($('#cart-total').data('net-total')||$('#cart-total').text().replace('$','')); }
+function getNetTotal() { return parseFloat($('#cart-total').data('net-total')||$('#cart-total').text().replace(currencySymbol,'')); }
 function calculateChange() {
   var t = getNetTotal(), p = parseFloat($('#amount-paid').val())||0, ch = p - t;
-  if(p===0&&t===0) { $('#change-due').text('$0.00'); return; }
-  $('#change-due').text(ch>=0?'$'+ch.toFixed(2):'-$'+Math.abs(ch).toFixed(2)).css('color', ch>=0?'#00b894':'#ff7675');
+  if(p===0&&t===0) { $('#change-due').text(currencySymbol+'0.00'); return; }
+  $('#change-due').text(ch>=0?currencySymbol+ch.toFixed(2):'-'+currencySymbol+Math.abs(ch).toFixed(2)).css('color', ch>=0?'#00b894':'#ff7675');
 }
 
 function applySearch() {
@@ -474,8 +475,8 @@ function selectPaymentMethod(el, method) {
 
 function processCheckout() {
   var codes = Object.keys(cart); if(codes.length===0) return;
-  var st = parseFloat($('#cart-total').text().replace('$','')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
-  if(paid < net) { showToast('Total: $'+net.toFixed(2)+', Received: $'+paid.toFixed(2),'error'); return; }
+  var st = parseFloat($('#cart-total').text().replace(currencySymbol,'')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
+  if(paid < net) { showToast('Total: '+currencySymbol+net.toFixed(2)+', Received: '+currencySymbol+paid.toFixed(2),'error'); return; }
   var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty}; });
   var payload = JSON.stringify({
     items:items,
@@ -524,17 +525,17 @@ function showReceipt(tx) {
   } else { $('#r-card-info').hide(); }
   var itemsHtml = '';
   tx.items.forEach(function(it) {
-    itemsHtml += '<div class="item-row"><span class="item-name">' + it.qty + 'x ' + it.name + '</span><span>$'+it.subtotal.toFixed(2)+'</span></div>';
+    itemsHtml += '<div class="item-row"><span class="item-name">' + it.qty + 'x ' + it.name + '</span><span>'+currencySymbol+it.subtotal.toFixed(2)+'</span></div>';
   });
   $('#r-items').html(itemsHtml);
-  $('#r-subtotal').text('$'+tx.total.toFixed(2));
+  $('#r-subtotal').text(currencySymbol+tx.total.toFixed(2));
   if (tx.discount_type) {
     $('#r-discount-line').show();
-    $('#r-discount').text('- $' + (tx.total - tx.net_total).toFixed(2));
+    $('#r-discount').text('- '+currencySymbol + (tx.total - tx.net_total).toFixed(2));
   } else { $('#r-discount-line').hide(); }
-  $('#r-total').text('$'+tx.net_total.toFixed(2));
-  $('#r-paid').text('$'+tx.amount_paid.toFixed(2));
-  $('#r-change').text('$'+tx.change.toFixed(2));
+  $('#r-total').text(currencySymbol+tx.net_total.toFixed(2));
+  $('#r-paid').text(currencySymbol+tx.amount_paid.toFixed(2));
+  $('#r-change').text(currencySymbol+tx.change.toFixed(2));
   $('#receipt-modal').addClass('open');
   setTimeout(function(){ $('#product-search').focus(); }, 300);
 }
