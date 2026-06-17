@@ -1,0 +1,15 @@
+{
+    "display_string": "Theme",
+    "module_name":"theme",
+    "type": "show",
+    "icons":{
+		"fa": "fa fa-palette",
+		"boxicons": "bx bx-palette"
+	},
+    "url_prefix": "/theme",
+    "author": {
+        "name":"ewfwefwefwef",
+        "website":"https://www.pythonkitchen.com/about-me/",
+        "mail":"arj.python@gmail.com"
+    }
+}

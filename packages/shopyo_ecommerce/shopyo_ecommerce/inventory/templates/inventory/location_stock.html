@@ -1,0 +1,30 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Stock at {{ loc.name }}</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Stock at {{ loc.name }}</h2>
+ <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.inventory.locations') }}">< BACK</a>
+ <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.location_stock_update', loc_id=loc.id) }}">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <table class="table ">
+ <thead><tr><th>Product</th><th>Barcode</th><th>Current Stock</th><th>Adjust</th></tr></thead>
+ <tbody>
+ {% for item in stock_data %}
+ <tr>
+ <td>{{ item.product.name }}</td>
+ <td>{{ item.product.barcode }}</td>
+ <td>{{ item.qty }}</td>
+ <td><input type="number" name="qty_{{ item.product.id }}" value="{{ item.qty }}" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="width:100px;"></td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ <button type="submit" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500">Save Changes</button>
+ </form>
+ </div>
+</div>
+{% endblock %}

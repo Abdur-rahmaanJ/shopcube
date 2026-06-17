@@ -1,0 +1,22 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>New Inventory Count</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>New Inventory Count</h2>
+ <p class="text-slate-400">This will create a count sheet for all products with current stock as expected values.</p>
+ <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.inventory.dashboard') }}">< BACK</a>
+ <form method="POST">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <div class="space-y-2">
+ <label>Notes (optional)</label>
+ {{ form.notes(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ", rows=2) }}
+ </div>
+ {{ form.submit(class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500") }}
+ </form>
+ </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends get_active_back_theme()+"/base.html" %}
+
+{%block head%}
+    <script src="{{url_for('static', filename='jquery_3.2.1.min.js')}}"></script>
+{%endblock%}
+
+{% block content %}
+<div class="container">
+    <br>
+    <a href="{{ url_for('appadmin.user_list') }}">
+        <button type="button" class="btn rounded-pill btn-icon btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(255, 255, 255);transform: ;msFilter:;"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path></svg>
+          </button>
+    </a>
+    <br><br>
+<div class="card">
+    <div class="card-body">
+        <h2>Edit User</h2>
+        <form action='/appadmin/update' method="post">
+            <label>Edit User:<span> {{ user.email }} </span></label>
+            <div class="input-group mb-3">
+            </div>
+            <div class="input-group mb-3">
+                <input placeholder="Email" type="text" name="email" class="form-control" id="user_email" value="{{ user.email }}" required autocomplete="off">
+            </div>
+            <div class="input-group mb-3">
+                <input placeholder="Password" type="password" name="password" class="form-control" id="user_password" value="" autocomplete="off">
+            </div>
+            <div class="">
+                <div class="">
+                    <input type="checkbox" name="is_admin" id="is_admin" class="" {{'checked' if user.is_admin}}>
+                    <label for="is_admin" class="custom-control-label">Admin User</label>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input placeholder="First Name" type="text" name="first_name" class="form-control" placeholder="First Name" autocomplete="off" value="{{ user.first_name if user.first_name else '' }}">
+            </div>
+            <div class="input-group mb-3">
+                <input placeholder="Last Name" type="text" name="last_name" class="form-control" placeholder="Last Name" autocomplete="off" value="{{ user.last_name if user.last_name else '' }}">
+            </div>
+            <input required name="id" id="user_id" type="hidden" class="form-control" value="{{ user.id }}">
+            <div>
+                Roles<br>
+                <table class="table">
+                    <tbody>
+                        {%for role in roles%}
+                        <tr>
+                            <td><input type="checkbox" name="role_{{role.id}}" {%if role.name in user_roles%} checked {%endif%}></td>
+                            <td>{{role.name}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <div class="">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input required type="submit" class="btn btn-info" value="edit">
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

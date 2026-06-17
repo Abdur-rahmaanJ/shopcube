@@ -1,0 +1,39 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}<title>Orders</title>{% endblock %}
+{% block sidebar %}{%include info['module_name']+'/blocks/sidebar.html'%}{%endblock%}
+{% block module_content %}
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Orders</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ orders|length }} total</p>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Ref</th><th>Date</th><th>Status</th><th>Customer</th><th>Email</th><th class="w-24"></th></tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">{{ order.get_ref() }}</td>
+            <td class="text-xs">{{ order.get_std_formatted_time() }}</td>
+            <td><span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest
+              {%- if order.status == 'pending' %} bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400
+              {%- elif order.status == 'processing' %} bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400
+              {%- elif order.status == 'shipped' %} bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400
+              {%- elif order.status == 'cancelled' %} bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400
+              {%- elif order.status == 'refunded' %} bg-slate-100 dark:bg-slate-800 text-slate-500{% endif %}">{{ order.status }}</span></td>
+            <td class="text-xs">{{ order.billing_detail.first_name }} {{ order.billing_detail.last_name }}</td>
+            <td class="text-xs text-slate-400">{{ order.billing_detail.email }}</td>
+            <td><a href="{{ url_for('shopyo_ecommerce.shopman.order_view', order_id=order.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="View"><i class="fas fa-chevron-right text-xs"></i></a></td>
+          </tr>
+          {% else %}<tr><td colspan="6" class="text-[10px] text-slate-400 text-center py-8">No orders found</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

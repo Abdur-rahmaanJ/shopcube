@@ -1,0 +1,103 @@
+{% extends get_active_back_theme()+"/base.html" %}
+
+{%block head%}
+    <script src="{{url_for('static', filename='jquery_3.2.1.min.js')}}"></script>
+
+{%endblock%}
+{% block content %}
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <a href="{{ url_for('page.index') }}">
+                <button type="button" class="btn rounded-pill btn-icon btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(255, 255, 255);transform: ;msFilter:;"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path></svg>
+                  </button>
+            </a>
+            <br><br>
+            <form action="{{url_for('{}.edit_pagecontent'.format(module_name))}}" method="POST">
+                {{ form.title.label }}
+                <div class="input-group mb-3">
+
+                    {{ form.title }}
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                {{ form.slug.label }}
+                <div class="input-group mb-3">
+
+                    {{ form.slug }}
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                <div class="field">
+                    {{ form.lang.label }} <br>
+                    <div class="input-group mb-3" id="lang-drop-wrapper">
+                        {{ form.lang }}
+                    </div>
+                </div>
+                <div class="field">
+                    {{ form.content.label }} <br>
+                    <div class="input-group mb-3">
+                        <textarea id="content" class="form-control" name="content">{{ form.content }}</textarea>
+                    </div>
+                </div>
+
+
+                <input type="hidden" name="page_id" value="{{page.id}}">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <input type="submit" class="btn btn-info" value="submit">
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.1/tinymce.min.js" integrity="sha512-eV68QXP3t5Jbsf18jfqT8xclEJSGvSK5uClUuqayUbF5IRK8e2/VSXIFHzEoBnNcvLBkHngnnd3CY7AFpUhF7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+tinymce.init({
+    selector: '#content',
+    plugins: `advlist autolink link image imagetools lists
+                charmap print preview hr anchor pagebreak
+        searchreplace wordcount visualblocks visualchars code
+        fullscreen insertdatetime media nonbreaking
+        save table directionality template paste
+        codesample`
+    ,
+    imagetools_toolbar: "rotateleft rotateright | flipv fliph | editimage imageoptions",
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | codesample | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+    relative_urls: false,
+    images_upload_url: "",
+    image_title: true,
+    automatic_uploads: true,
+    images_reuse_filename: false,
+    images_upload_base_path: '/static/uploads/images',
+    codesample_languages: [
+        { text: 'HTML/XML', value: 'markup' },
+        { text: 'JavaScript', value: 'javascript' },
+        { text: 'CSS', value: 'css' },
+        { text: 'Processing', value: 'processing' },
+        { text: 'Python', value: 'python' }
+    ],
+    width: "100%",
+    promotion: false
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#title").change(function() {
+        var title = $('#title').val();
+        title = title.trim();
+        title = title.replace(/[\W_]+/g, " ");
+        title = title.replaceAll(" ", "-");
+        $('#slug').val(title);
+    });
+
+
+     $("#lang").change(function () {
+      var thisurl = "{{ page.get_dashboard_url() }}";
+        var end = this.value;
+        var firstDropVal = $('#lang').val();
+        // alert(firstDropVal);
+        window.location.replace(thisurl + '?lang='+firstDropVal)
+        // location.reload();
+    });
+});
+</script>
+{% endblock %}

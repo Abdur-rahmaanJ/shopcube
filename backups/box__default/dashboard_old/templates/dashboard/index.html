@@ -1,0 +1,50 @@
+{% extends get_active_back_theme() + '/base.html' %}
+
+{% set active_page ='control panel' %}
+
+{% block head %}
+<title>Control Panel</title>
+<link rel="stylesheet" href="/static/fontawesome/css/all.css">
+<style>
+    .shopyo-main-area {
+        background-color: #fbfbfd !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="mb-5 mt-2">
+      <h1 style="font-weight: 700; letter-spacing: -1.5px; color: #1d1d1f; font-size: 2.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">Control Panel</h1>
+      <p class="text-muted" style="font-size: 1.1rem;">Manage your shop environment and inventory.</p>
+  </div>
+
+  <div class="d-flex flex-wrap">
+    {% set all_info = get_modules_info() %}
+    {% for info in all_info %}
+        {% if all_info[info]['type'] == 'show'%}
+          {%if 'dashboard' in all_info[info]%}
+            <a class="shopyo-link" href="{{all_info[info]['url_prefix'] + all_info[info]['dashboard']}}">
+          {%else%}
+            <a class="shopyo-link" href="{{all_info[info]['url_prefix']}}">
+          {%endif%}
+          <div class="shopyo-dashboard-card card card-menu">
+            <div class="shopyo-dashboard-card-body card-body text-center py-4">
+              {% if all_info[info]['icons'] %}
+                {% if get_setting('ACTIVE_ICONSET') == 'fa' %}
+                  <i class="shopyo-dashboard-card-menu card-menu-icon {{all_info[info]['icons']['fa']}}" style="color: #6c5ce7;"></i>
+                {% else %}
+                  <i class="shopyo-dashboard-card-menu card-menu-icon {{all_info[info]['icons']['boxicons']}}" style="color: #6c5ce7;"></i>
+                {% endif %}
+              {% else %}
+                <i class="shopyo-dashboard-card-menu card-menu-icon fas fa-box" style="color: #6c5ce7;"></i>
+              {% endif %}
+            </div>
+            <div class="shopyo-dashboard-card-footer card-footer">
+              {{all_info[info]['display_string'].capitalize()}}
+            </div>
+          </div>
+        </a>
+        {% endif %}
+    {% endfor %}
+ {% endblock %}

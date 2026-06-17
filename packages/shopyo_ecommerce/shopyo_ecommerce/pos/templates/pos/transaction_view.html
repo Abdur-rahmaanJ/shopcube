@@ -1,0 +1,78 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% block pagehead %}<title>Transaction #{{ tx.id }}</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-4xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center gap-3 mb-8">
+        <a href="{{ url_for('shopyo_ecommerce.pos.transactions_list') }}" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700">
+          <i class="fas fa-chevron-left text-xs"></i>
+        </a>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Transaction #{{ tx.id }}</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">View details and items</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Date</p>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.time.strftime('%Y-%m-%d %H:%M') if tx.time else '-' }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total</p>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(tx.total_amount|float) }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Payment Method</p>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.method_of_payment }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Cashier ID</p>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.cashier_id }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Discount</p>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">{% if tx.discount_type %}{{ tx.discount_type }} {{ tx.discount_value }}{% else %}<span class="text-slate-400">None</span>{% endif %}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Notes</p>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.notes or '-' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Items</h4>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ tx.items|length }} item(s)</p>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Barcode</th><th>Qty</th><th>Unit Price</th><th class="text-right">Subtotal</th></tr>
+        </thead>
+        <tbody>
+          {% for item in tx.items %}
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">{{ item.product_barcode }}</td>
+            <td class="text-xs">{{ item.quantity }}</td>
+            <td class="text-xs">{{ currency_symbol }}{{ '%.2f'|format(item.unit_price|float) }}</td>
+            <td class="text-xs font-bold text-right">{{ currency_symbol }}{{ '%.2f'|format(item.quantity * item.unit_price|float) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="bg-slate-50/50 dark:bg-slate-800/30">
+            <td colspan="3" class="text-xs font-black text-right">Total</td>
+            <td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(tx.total_amount|float) }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

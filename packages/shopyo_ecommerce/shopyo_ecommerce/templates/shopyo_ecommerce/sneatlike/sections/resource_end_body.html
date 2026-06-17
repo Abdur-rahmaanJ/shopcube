@@ -1,0 +1,29 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Dropdown toggle
+  document.querySelectorAll('.dropdown-toggle').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      var menu = this.nextElementSibling;
+      if (menu) menu.classList.toggle('show');
+    });
+  });
+  // Close dropdowns on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown-menu.show').forEach(function(m) { m.classList.remove('show'); });
+    }
+  });
+  // Sidebar menu toggle
+  document.querySelectorAll('.menu-toggle').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.closest('.menu-item').classList.toggle('open');
+    });
+  });
+  // Auto-dismiss toasts
+  document.querySelectorAll('.bs-toast').forEach(function(toast) {
+    setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { toast.remove(); }, 300); }, 3500);
+  });
+});
+</script>

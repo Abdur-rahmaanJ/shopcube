@@ -1,0 +1,545 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set sidebar_default_hidden = True %}
+{% set active_page ='pos' %}
+{% block pagehead %}
+<style>
+  .pos-layout { min-height: calc(100vh - 180px); }
+  #product-search { border: 1px solid rgba(0,0,0,0.1) !important; border-radius: 10px !important; height: 38px; font-size: 0.85rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+  #product-search:focus { box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-color: #6c5ce7 !important; }
+  .product-grid { flex-grow: 1; padding-bottom: 20px; }
+  .product-card { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); height: 100%; cursor: pointer; transition: box-shadow 0.2s ease; }
+  .product-card:hover { box-shadow: 0 8px 15px rgba(0,0,0,0.08), 0 0 0 2px #6c5ce7; }
+  .product-card.out-of-stock { opacity: 0.5; pointer-events: none; }
+  .product-card.low-stock { border: 1px solid #fdcb6e !important; }
+  .product-img-wrapper { height: 140px; overflow: hidden; position: relative; background: #f8f9fa; }
+  .product-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+  .product-card:hover img { transform: scale(1.05); }
+  .product-card-body { padding: 12px; }
+  .product-title { font-weight: 600; color: #333; font-size: 0.95rem; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .product-price { font-size: 1.1rem; font-weight: 700; color: #2d3436; }
+  .stock-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background-color: #e8e8e8; color: #2d2d2d; white-space: nowrap; }
+  .stock-badge.out-of-stock { background-color: #ffe0e0; color: #c0392b; font-weight: 600; }
+  .stock-badge.low-stock { background-color: #fff3cd; color: #856404; font-weight: 600; }
+  .cart-panel { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%; border: none; }
+  .cart-header { padding: 20px; border-bottom: 1px solid #f0f0f0; border-radius: 12px 12px 0 0; }
+  .cart-items { flex-grow: 1; overflow-y: auto; }
+  .cart-items table { margin-bottom: 0; }
+  .cart-items th { border-top: none; border-bottom: 2px solid #f0f0f0; color: #888; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cart-items td { vertical-align: middle; border-top: 1px solid #f8f9fa; padding: 12px 15px; }
+  .cart-item-title { font-weight: 600; color: #333; font-size: 0.9rem; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qty-control { display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 6px; padding: 2px; width: fit-content; margin: 0 auto; }
+  .qty-btn { border: none; background: white; width: 24px; height: 24px; border-radius: 4px; color: #555; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .qty-btn:hover { background: #6c5ce7; color: white; }
+  .qty-input { width: 30px; text-align: center; border: none; background: transparent; font-weight: 600; font-size: 0.9rem; padding: 0; margin: 0 5px; -moz-appearance: textfield; }
+  .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .btn-remove { color: #ff7675; background: rgba(255,118,117,0.1); width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: none; transition: all 0.2s; cursor: pointer; }
+  .btn-remove:hover { background: #ff7675; color: white; }
+  .cart-footer { padding: 20px; background: #fdfdfd; border-top: 1px solid #eee; border-radius: 0 0 12px 12px; }
+  .payment-method.active { background-color: #6c5ce7; border-color: #6c5ce7; color: white; }
+  .payment-method:hover:not(.active) { background-color: #f0edff; border-color: #6c5ce7; color: #6c5ce7; }
+  .quick-keys-bar { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0; margin-bottom: 10px; }
+  .quick-key-btn { flex: 0 0 auto; min-width: 70px; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 10px; background: white; font-size: 0.8rem; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .quick-key-btn:hover { background: #6c5ce7; color: white; border-color: #6c5ce7; transform: translateY(-1px); }
+  .cat-pill { border-radius: 14px; padding: 4px 10px; color: #555; background: #e9ecef; font-size: 0.72rem; font-weight: 600; transition: all 0.2s; border: 1px solid transparent; cursor: pointer; white-space: nowrap; }
+  .cat-pill:hover, .cat-pill.active { background-color: #6c5ce7; color: white; box-shadow: 0 4px 6px rgba(108,92,231,0.2); }
+  @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #dcdde1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #b2bec3; }
+  .barcode-highlight { animation: barcodeFlash 0.4s ease; }
+  @keyframes barcodeFlash { 0%,100% { box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 50% { box-shadow: 0 0 0 3px #6c5ce7, 0 8px 15px rgba(108,92,231,0.2); } }
+  #card-fields { transition: all 0.25s ease; overflow: hidden; }
+  #card-fields.hidden { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin: 0; }
+  #card-fields:not(.hidden) { max-height: 120px; }
+  #receipt-modal { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
+  #receipt-modal.open { display: flex; }
+  .receipt { background: white; width: 340px; max-height: 90vh; overflow-y: auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); font-family: 'Courier New', monospace; padding: 28px 24px; }
+  .receipt h2 { text-align: center; font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 2px; }
+  .receipt .store-info { text-align: center; font-size: 0.7rem; color: #666; margin-bottom: 16px; }
+  .receipt .divider { border: none; border-top: 1px dashed #ccc; margin: 8px 0; }
+  .receipt .line { display: flex; justify-content: space-between; font-size: 0.72rem; padding: 2px 0; }
+  .receipt .line-total { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; padding: 4px 0; }
+  .receipt .item-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 1px 0; }
+  .receipt .item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+  @media print { body * { visibility: hidden; } .receipt, .receipt * { visibility: visible; } .receipt { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 300px; box-shadow: none; border-radius: 0; } #receipt-modal { background: none; } .receipt .no-print { display: none; } }
+</style>
+{% endblock %}
+
+{% block module_content %}
+<div class="pos-layout flex flex-col lg:flex-row gap-4">
+  <!-- LEFT: Products -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- Management Nav -->
+    {% if current_user.is_admin %}
+    <div class="flex items-center gap-2 mb-2 flex-wrap">
+      <a href="{{ url_for('shopyo_ecommerce.pos.transactions_list') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"><i class="fa fa-receipt"></i> Transactions</a>
+      <a href="{{ url_for('shopyo_ecommerce.pos.reports', days=7) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"><i class="fa fa-chart-bar"></i> Reports</a>
+      <a href="{{ url_for('shopyo_ecommerce.pos.shifts') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"><i class="fa fa-clock"></i> Shifts</a>
+      <a href="{{ url_for('shopyo_ecommerce.pos.returns') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"><i class="fa fa-undo"></i> Returns</a>
+      <a href="{{ url_for('shopyo_ecommerce.pos.quick_keys') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"><i class="fa fa-keyboard"></i> Quick Keys</a>
+    </div>
+    {% endif %}
+
+    <!-- Search -->
+    <div class="relative mb-4">
+      <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10 text-sm"></i>
+      <input type="text" id="product-search" class="w-full !pl-9" placeholder="Scan barcode or search product..." autocomplete="off">
+    </div>
+
+    <!-- Quick Keys -->
+    {% if quick_keys %}
+    <div class="quick-keys-bar">
+      {% for k in quick_keys %}
+      <div class="quick-key-btn" data-barcode="{{ k.product.barcode }}" data-display-name="{{ k.label or k.product.name }}" data-price="{{ k.product.selling_price }}" data-stock="{{ k.product.in_stock }}" role="button" tabindex="0">{{ k.label or k.product.name[:12] }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Categories -->
+    <div class="flex items-center gap-1.5 mb-2 overflow-x-auto pb-1 category-pills" id="category-tabs">
+      <span class="cat-pill active" data-cat-id="all" role="tab" tabindex="0"><i class="fa fa-th-large mr-1"></i> All Items</span>
+      {% for category in categories %}
+      <span class="cat-pill" data-cat-id="{{category.id}}" role="tab" tabindex="0">{{category.name}}</span>
+      {% endfor %}
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="product-list">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        {% for category in categories %}
+        {% for subcategory in category.subcategories %}
+        {% for product in subcategory.products %}
+        {% set is_low = product.min_stock and product.min_stock > 0 and product.in_stock <= product.min_stock and product.in_stock > 0 %}
+        <div class="product-item-wrapper" data-category-id="{{category.id}}" data-name="{{product.name|lower}}" data-barcode="{{product.barcode}}">
+          <div class="product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
+            <div class="product-img-wrapper">
+              <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
+            </div>
+            <div class="product-card-body">
+              <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
+              <div class="flex items-center justify-between mt-2">
+                <span class="product-price">{{ currency_symbol }}{{product.selling_price}}</span>
+                <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock{% elif is_low %} low-stock{% endif %}">
+                  {%- if product.in_stock == 0 -%}Out of stock
+                  {%- elif is_low -%}{{product.in_stock}} left
+                  {%- else -%}{{product.in_stock}} in stock
+                  {%- endif -%}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Cart -->
+  <div class="w-full lg:w-96 xl:w-[420px] shrink-0 flex flex-col">
+    <div class="cart-panel">
+      <div class="cart-header">
+        <div class="flex items-center justify-between">
+          <h5 class="text-base font-bold text-slate-800 mb-0">Current Order</h5>
+          <span class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white" style="background:#6c5ce7;" id="cart-count-badge">0 Items</span>
+        </div>
+      </div>
+
+      <div class="cart-items">
+        <table class="w-full text-sm">
+          <thead>
+            <tr>
+              <th class="pl-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Product</th>
+              <th class="text-center py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Qty</th>
+              <th class="text-right pr-5 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total</th>
+              <th class="w-10"></th>
+            </tr>
+          </thead>
+          <tbody id="cart-table-body"></tbody>
+        </table>
+
+        <div id="empty-cart-msg" class="text-center py-12 px-6">
+          <div class="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-4">
+            <i class="fa fa-shopping-basket text-3xl text-slate-200"></i>
+          </div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cart is empty</p>
+          <p class="text-[10px] text-slate-400">Scan barcode or tap a product</p>
+        </div>
+      </div>
+
+      <div class="cart-footer space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-slate-500">Subtotal</span>
+          <span class="text-xl font-black text-slate-800" id="cart-total">{{ currency_symbol }}0.00</span>
+        </div>
+
+        <!-- Discount -->
+        <div class="space-y-1" id="discount-section">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Discount</label>
+          <div class="flex items-center gap-2">
+            <select id="discount-type" class="w-16 bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-2 text-xs font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+              <option value="percentage">%</option>
+              <option value="fixed">{{ currency_symbol }}</option>
+            </select>
+            <input type="number" id="discount-value" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0" step="0.01" min="0">
+            <button class="px-3 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
+          </div>
+          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -{{ currency_symbol }}0.00</small>
+        </div>
+
+        {% if locations %}
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</label>
+          <select id="pos-location" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+            {% for l in locations %}<option value="{{ l.id }}">{{ l.name }}</option>{% endfor %}
+          </select>
+        </div>
+        {% endif %}
+
+        <!-- Payment Method -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment Method</label>
+          <div class="flex gap-2">
+            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method active" data-method="cash" onclick="selectPaymentMethod(this,'cash')">
+              <input type="radio" name="payment_method" value="cash" checked hidden> <i class="fas fa-money-bill-wave mr-1 text-[10px]"></i>Cash
+            </label>
+            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method" data-method="card" onclick="selectPaymentMethod(this,'card')">
+              <input type="radio" name="payment_method" value="card" hidden> <i class="fas fa-credit-card mr-1 text-[10px]"></i>Card
+            </label>
+            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method" data-method="other" onclick="selectPaymentMethod(this,'other')">
+              <input type="radio" name="payment_method" value="other" hidden> <i class="fas fa-ellipsis mr-1 text-[10px]"></i>Other
+            </label>
+          </div>
+        </div>
+
+        <!-- Card reader fields (shown only when Card is selected) -->
+        <div id="card-fields" class="hidden space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Card Last 4</label>
+              <input type="text" id="card-last-four" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="****" maxlength="4" pattern="[0-9]{4}" inputmode="numeric">
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Auth Code</label>
+              <input type="text" id="card-auth-code" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="Optional" maxlength="20">
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Notes -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order Notes</label>
+          <textarea id="order-notes" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" rows="2" placeholder="Optional note"></textarea>
+        </div>
+
+        <!-- Amount Received -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount Received</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500">{{ currency_symbol }}</span>
+            <input type="number" id="amount-paid" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-7 pr-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0.00" step="0.01" min="0">
+          </div>
+          <div class="flex items-center justify-between px-1 mt-1">
+            <span class="text-[10px] text-slate-400">Change Due:</span>
+            <span class="text-xs font-bold" id="change-due">{{ currency_symbol }}0.00</span>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3">
+          <button class="flex-1 py-3 rounded-lg border border-slate-200 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-all" id="btn-clear"><i class="fa fa-trash mr-1"></i> Clear</button>
+          <button class="flex-[2] py-3 rounded-lg text-xs font-bold text-white transition-all" id="btn-checkout" style="background:#00b894;" onmouseover="this.style.background='#00a383'" onmouseout="this.style.background='#00b894'">Pay Now <i class="fa fa-arrow-right ml-1"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container" style="position:fixed;top:20px;right:20px;z-index:9999;"></div>
+
+<!-- Loading overlay -->
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(255,255,255,0.7);z-index:9998;align-items:center;justify-content:center;">
+  <div class="text-center">
+    <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+    <p class="mt-3 text-xs font-bold text-slate-400 uppercase tracking-widest">Processing...</p>
+  </div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receipt-modal">
+  <div class="receipt" id="receipt-content">
+    <h2>{{ store_name or 'STORE' }}</h2>
+    <p class="store-info">Tel: {{ store_tel }}</p>
+    <hr class="divider">
+    <div class="line"><span>Receipt #</span><span id="r-tx-id"></span></div>
+    <div class="line"><span>Date</span><span id="r-time"></span></div>
+    <div class="line"><span>Payment</span><span id="r-method"></span></div>
+    <div id="r-card-info" class="line" style="display:none;"><span>Card</span><span id="r-card-last-four"></span></div>
+    <hr class="divider">
+    <div id="r-items"></div>
+    <hr class="divider">
+    <div class="line"><span>Subtotal</span><span id="r-subtotal"></span></div>
+    <div id="r-discount-line" class="line" style="display:none;"><span>Discount</span><span id="r-discount"></span></div>
+    <div class="line-total"><span>Total</span><span id="r-total"></span></div>
+    <div class="line"><span>Paid</span><span id="r-paid"></span></div>
+    <div class="line"><span>Change</span><span id="r-change"></span></div>
+    <hr class="divider">
+    <p style="text-align:center;font-size:0.65rem;color:#999;margin-top:12px;">Thank you for your purchase!</p>
+    <div class="no-print" style="display:flex;gap:8px;margin-top:16px;">
+      <button onclick="window.print()" class="flex-1 py-2.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all uppercase tracking-widest"><i class="fas fa-print mr-1.5"></i>Print</button>
+      <button onclick="closeReceipt()" class="flex-1 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+var cart = {};
+var currencySymbol = '{{ currency_symbol }}';
+var scanBuffer = '';
+var scanTimer = null;
+var lastKeyTime = 0;
+var beepCtx = null;
+
+function initBeep() {
+  try { beepCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}
+function beep(freq, duration, vol) {
+  freq = freq || 1200; duration = duration || 80; vol = vol || 0.15;
+  if (!beepCtx) return;
+  var osc = beepCtx.createOscillator(), gain = beepCtx.createGain();
+  osc.connect(gain); gain.connect(beepCtx.destination);
+  osc.frequency.value = freq; osc.type = 'sine';
+  gain.gain.setValueAtTime(vol, beepCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, beepCtx.currentTime + duration/1000);
+  osc.start(); osc.stop(beepCtx.currentTime + duration/1000);
+}
+function beepOk() { beep(1400, 60, 0.12); setTimeout(function(){ beep(1800, 80, 0.12); }, 70); }
+function beepError() { beep(300, 200, 0.12); }
+
+function showToast(msg, type) {
+  type = type || 'info';
+  var bg = type === 'success' ? '#00b894' : type === 'error' ? '#ff7675' : type === 'warning' ? '#fdcb6e' : '#6c5ce7';
+  var id = 't-' + Date.now();
+  var el = '<div id="'+id+'" style="background:'+bg+';color:white;min-width:280px;padding:12px 16px;border-radius:8px;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;animation:slideIn 0.3s ease;"><span>'+msg+'</span><button onclick="document.getElementById(\''+id+'\').remove()" style="background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;opacity:0.8;padding:0 0 0 12px;">&times;</button></div>';
+  document.getElementById('toast-container').insertAdjacentHTML('beforeend', el);
+  setTimeout(function(){ var e = document.getElementById(id); if(e) e.remove(); }, 3500);
+}
+
+$(document).on('click keydown', '.product-card:not(.out-of-stock)', function(e) {
+  if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+  if (e.type === 'keydown') e.preventDefault();
+  var c = $(this);
+  addToCart(c.data('barcode'), c.data('display-name'), parseFloat(c.data('price'))||0, parseInt(c.data('stock'))||0);
+  c.addClass('barcode-highlight');
+  setTimeout(function(){ c.removeClass('barcode-highlight'); }, 500);
+});
+
+$(document).on('click keydown', '.quick-key-btn', function(e) {
+  if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+  if (e.type === 'keydown') e.preventDefault();
+  var b = $(this);
+  addToCart(b.data('barcode'), b.data('display-name'), parseFloat(b.data('price'))||0, parseInt(b.data('stock'))||0);
+});
+
+$(document).on('click', '.cat-pill', function() { $('.cat-pill').removeClass('active'); $(this).addClass('active'); applySearch(); });
+$(document).on('click keydown', '.qty-decrease', function(e) { if(e.type==='keydown'&&e.key!=='Enter')return; e.preventDefault(); changeQty($(this).data('barcode'),-1); });
+$(document).on('click keydown', '.qty-increase', function(e) { if(e.type==='keydown'&&e.key!=='Enter')return; e.preventDefault(); changeQty($(this).data('barcode'),1); });
+$(document).on('change', '.qty-input', function() { updateQty($(this).data('barcode'), this.value); });
+$(document).on('input change', '#discount-value, #discount-type', updateCartUI);
+$(document).on('click', '.btn-remove', function() { removeFromCart($(this).data('barcode')); });
+$('#btn-clear').on('click', function() { if(Object.keys(cart).length>0 && confirm("Clear current order?")) { cart={}; $('#discount-value').val(''); $('#discount-display').hide(); updateCartUI(); $('#amount-paid').val(''); $('#change-due').text(currencySymbol+'0.00').removeClass('text-emerald-500 text-red-500'); } });
+$('#btn-checkout').on('click', processCheckout);
+
+$(document).ready(function() {
+  initBeep();
+  var st;
+  $('#product-search').on('keydown', function(e) {
+    var now = Date.now();
+    var isScanner = (now - lastKeyTime < 50);
+    lastKeyTime = now;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var v = $(this).val();
+      if (isScanner) { scanBuffer = ''; }
+      if (v.length > 2 && isScanner) {
+        var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (card.length) { card.click(); beepOk(); $(this).val(''); applySearch(); }
+        else { beepError(); showToast("Barcode not found: "+v, 'warning'); $(this).val(''); applySearch(); }
+      } else {
+        var c = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (c.length) { c.click(); $(this).val(''); applySearch(); }
+      }
+      return;
+    }
+    if (e.key === 'Tab') {
+      if ($(this).val().length > 2) {
+        e.preventDefault();
+        var v = $(this).val();
+        var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (card.length) { card.click(); beepOk(); $(this).val(''); applySearch(); }
+      }
+      return;
+    }
+    if (e.key.length === 1 && isScanner) {
+      scanBuffer += e.key;
+      clearTimeout(scanTimer);
+      scanTimer = setTimeout(function() {
+        var v = scanBuffer;
+        scanBuffer = '';
+        var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (card.length) { card.click(); beepOk(); $('#product-search').val(''); applySearch(); }
+        else {
+          $('#product-search').val(v);
+          applySearch();
+        }
+      }, 100);
+    }
+  });
+  $('#product-search').on('keyup', function(e) {
+    if (e.key === 'Enter' || e.key === 'Tab') return;
+    clearTimeout(st);
+    st = setTimeout(applySearch, 200);
+  });
+  $('#amount-paid').on('input', calculateChange);
+  updateCartUI();
+  setTimeout(function(){ $('#product-search').focus(); }, 100);
+});
+
+function addToCart(barcode, name, price, stock) {
+  if (cart[barcode]) {
+    if (cart[barcode].qty < stock) { cart[barcode].qty++; }
+    else { beepError(); showToast("Not enough stock!", 'warning'); return; }
+  } else {
+    cart[barcode] = { name: name, price: price, qty: 1, stock: stock };
+  }
+  beep(800, 40, 0.08);
+  updateCartUI();
+  $('#product-search').focus();
+}
+function removeFromCart(barcode) { delete cart[barcode]; updateCartUI(); }
+function updateQty(barcode, n) {
+  n = parseInt(n); if(isNaN(n)||n<1) n=1;
+  if(n > cart[barcode].stock) { showToast("Max: "+cart[barcode].stock,'warning'); n = cart[barcode].stock; }
+  cart[barcode].qty = n; updateCartUI();
+}
+function changeQty(barcode, d) { if(cart[barcode]) updateQty(barcode, cart[barcode].qty + d); }
+
+function updateCartUI() {
+  var tb = $('#cart-table-body'); tb.empty();
+  var total = 0, count = 0, codes = Object.keys(cart);
+  if (codes.length === 0) { $('#empty-cart-msg').show(); $('#btn-checkout').prop('disabled',false); $('#discount-display').hide(); }
+  else {
+    $('#empty-cart-msg').hide();
+    codes.forEach(function(code) {
+      var item = cart[code], it = item.price * item.qty;
+      total += it; count += item.qty;
+      tb.append('<tr><td class="pl-5 py-3"><div class="cart-item-title" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">'+currencySymbol+item.price.toFixed(2)+' ea &middot; '+currencySymbol+(item.price*item.qty).toFixed(2)+'</small></td><td class="text-center py-3"><div class="qty-control"><button class="qty-btn qty-decrease" data-barcode="'+code+'">-</button><input type="number" class="qty-input" value="'+item.qty+'" data-barcode="'+code+'" min="1" max="'+item.stock+'"><button class="qty-btn qty-increase" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold">'+currencySymbol+it.toFixed(2)+'</td><td class="py-3"><button class="btn-remove" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
+    });
+  }
+  var disc = getDiscount(total);
+  $('#cart-total').text(currencySymbol+total.toFixed(2));
+  if (disc.amount>0) { $('#discount-display').text('Discount: -'+currencySymbol+disc.amount.toFixed(2)).show(); } else { $('#discount-display').hide(); }
+  $('#cart-count-badge').text(count+' Items');
+  $('#cart-total').data('net-total', (total-disc.amount).toFixed(2));
+  calculateChange();
+}
+function getDiscount(st) {
+  var v = parseFloat($('#discount-value').val())||0; if(v<=0) return {type:'none',amount:0};
+  return $('#discount-type').val()==='percentage' ? {type:'percentage',value:Math.min(v,100),amount:st*(Math.min(v,100)/100)} : {type:'fixed',value:v,amount:Math.min(v,st)};
+}
+function getNetTotal() { return parseFloat($('#cart-total').data('net-total')||$('#cart-total').text().replace(currencySymbol,'')); }
+function calculateChange() {
+  var t = getNetTotal(), p = parseFloat($('#amount-paid').val())||0, ch = p - t;
+  if(p===0&&t===0) { $('#change-due').text(currencySymbol+'0.00'); return; }
+  $('#change-due').text(ch>=0?currencySymbol+ch.toFixed(2):'-'+currencySymbol+Math.abs(ch).toFixed(2)).css('color', ch>=0?'#00b894':'#ff7675');
+}
+
+function applySearch() {
+  var term = $('#product-search').val().toLowerCase(), active = ($('.cat-pill.active').data('cat-id')||'all')+'';
+  $('.product-item-wrapper').each(function() {
+    var el = $(this), name = el.data('name'), barcode = String(el.data('barcode')||''), cat = String(el.data('category-id'));
+    el.toggle( (name.includes(term)||barcode.includes(term)) && (active==='all'||cat===active) );
+  });
+}
+
+function selectPaymentMethod(el, method) {
+  $('.payment-method').removeClass('active'); $(el).addClass('active'); $(el).find('input').prop('checked',true);
+  var cf = $('#card-fields');
+  if (method === 'card') { cf.removeClass('hidden'); } else { cf.addClass('hidden'); }
+}
+
+function processCheckout() {
+  var codes = Object.keys(cart); if(codes.length===0) return;
+  var st = parseFloat($('#cart-total').text().replace(currencySymbol,'')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
+  if(paid < net) { showToast('Total: '+currencySymbol+net.toFixed(2)+', Received: '+currencySymbol+paid.toFixed(2),'error'); return; }
+  var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty}; });
+  var payload = JSON.stringify({
+    items:items,
+    amount_paid:paid,
+    payment_method:$('input[name="payment_method"]:checked').val()||'cash',
+    notes:$('#order-notes').val().trim(),
+    discount_type:disc.type==='none'?'':disc.type,
+    discount_value:disc.value||0,
+    location_id:$('#pos-location').val()||null,
+    card_last_four:$('#card-last-four').val()||'',
+    card_auth_code:$('#card-auth-code').val()||''
+  });
+  $('#loading-overlay').css('display','flex');
+  $.ajax({ type:"POST", url:"{{url_for('shopyo_ecommerce.pos.transaction')}}", data:payload, contentType:"application/json; charset=utf-8", dataType:"json",
+    success:function(r){
+      $('#loading-overlay').hide();
+      showToast("Transaction completed!",'success');
+      beepOk();
+      if (r.tx) { showReceipt(r.tx); }
+      cart = {};
+      $('#discount-value').val('');
+      $('#discount-display').hide();
+      $('#amount-paid').val('');
+      $('#order-notes').val('');
+      $('#card-last-four').val('');
+      $('#card-auth-code').val('');
+      updateCartUI();
+    },
+    error:function(x,s,e){
+      $('#loading-overlay').hide();
+      var m=x.responseJSON&&x.responseJSON.message?x.responseJSON.message:e;
+      beepError();
+      showToast("Failed: "+m,'error');
+    },
+    beforeSend:function(x){ x.setRequestHeader("X-CSRFToken","{{csrf_token()}}"); }
+  });
+}
+
+function showReceipt(tx) {
+  $('#r-tx-id').text('#'+tx.id);
+  $('#r-time').text(tx.time);
+  $('#r-method').text(tx.method.toUpperCase());
+  if (tx.card_last_four) {
+    $('#r-card-info').show();
+    $('#r-card-last-four').text('****'+tx.card_last_four);
+  } else { $('#r-card-info').hide(); }
+  var itemsHtml = '';
+  tx.items.forEach(function(it) {
+    itemsHtml += '<div class="item-row"><span class="item-name">' + it.qty + 'x ' + it.name + '</span><span>'+currencySymbol+it.subtotal.toFixed(2)+'</span></div>';
+  });
+  $('#r-items').html(itemsHtml);
+  $('#r-subtotal').text(currencySymbol+tx.total.toFixed(2));
+  if (tx.discount_type) {
+    $('#r-discount-line').show();
+    $('#r-discount').text('- '+currencySymbol + (tx.total - tx.net_total).toFixed(2));
+  } else { $('#r-discount-line').hide(); }
+  $('#r-total').text(currencySymbol+tx.net_total.toFixed(2));
+  $('#r-paid').text(currencySymbol+tx.amount_paid.toFixed(2));
+  $('#r-change').text(currencySymbol+tx.change.toFixed(2));
+  $('#receipt-modal').addClass('open');
+  setTimeout(function(){ $('#product-search').focus(); }, 300);
+}
+function closeReceipt() { $('#receipt-modal').removeClass('open'); $('#product-search').focus(); }
+$(document).on('keydown', function(e) { if (e.key === 'Escape') closeReceipt(); });
+</script>
+{% endblock %}

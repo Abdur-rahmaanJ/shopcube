@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><head><title>Barcode Labels</title>
+<style>
+body { font-family: Arial; }
+.label-page { width: 100%; }
+.label { display: inline-block; width: 2.5in; height: 1.5in; border: 1px dashed #ccc; padding: 8px; margin: 4px; text-align: center; vertical-align: top; }
+.label strong { font-size: 14px; display: block; }
+.label .barcode { font-family: 'Libre Barcode 39', monospace; font-size: 32px; margin: 6px 0; }
+.label .price { font-size: 16px; font-weight: bold; color: #333; }
+@flex gap-4 print { .label { border: none; } .no-print { display: none; } }
+</style>
+</head><body>
+<div class="no-print" style="margin:20px;"><button onclick="window.print()">Print Labels</button></div>
+<div class="label-page">
+{% for p in products %}
+<div class="label">
+ <strong>{{ p.name }}</strong>
+ <div class="barcode">*{{ p.barcode }}*</div>
+ <div class="price">${{ '%.2f'|format(p.selling_price|float) if p.selling_price else '0.00' }}</div>
+</div>
+{% endfor %}
+</div>
+</body></html>

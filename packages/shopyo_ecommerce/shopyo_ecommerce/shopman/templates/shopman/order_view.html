@@ -1,0 +1,109 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}<title>Order #{{ order.get_ref() }}</title>{% endblock %}
+{% block sidebar %}{%include info['module_name']+'/blocks/sidebar.html'%}{%endblock%}
+{% block module_content %}
+<div class="max-w-4xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center gap-3 mb-8">
+        <a href="{{ url_for('shopyo_ecommerce.shopman.order') }}" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700">
+          <i class="fas fa-arrow-left text-xs"></i>
+        </a>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Order {{ order.get_ref() }}</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ order.get_std_formatted_time() }}</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Status</p>
+          <div class="flex items-center gap-3">
+            <span class="inline-block px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest
+              {%- if order.status == 'pending' %} bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400
+              {%- elif order.status == 'processing' %} bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400
+              {%- elif order.status == 'shipped' %} bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400
+              {%- elif order.status == 'cancelled' %} bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400
+              {%- elif order.status == 'refunded' %} bg-slate-100 dark:bg-slate-800 text-slate-500{% endif %}">{{ order.status }}</span>
+            <form action="{{ url_for('shopyo_ecommerce.shopman.order_status_change', order_id=order.id) }}" method="POST" class="flex items-center gap-2 ml-auto">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <select name="order_status" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 px-2 text-[10px] focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>Shipped</option>
+                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                <option value="refunded" {% if order.status == 'refunded' %}selected{% endif %}>Refunded</option>
+              </select>
+              <button class="px-3 py-1.5 rounded-lg bg-primary text-white font-bold text-[10px] hover:bg-primary-dark transition-all" type="submit">Change</button>
+            </form>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Amount</p>
+          <p class="text-lg font-black text-slate-900 dark:text-white">${{ order.get_total_amount() }}</p>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4">Items</h4>
+        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <table class="w-full text-xs">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800/20">
+                <th class="text-left px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Name</th>
+                <th class="text-left px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Barcode</th>
+                <th class="text-center px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Size</th>
+                <th class="text-center px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Color</th>
+                <th class="text-right px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Price</th>
+                <th class="text-center px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Qty</th>
+                <th class="text-right px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order.order_items %}
+              {% set product = order_item.get_product() %}
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="px-4 py-3 font-bold">{{ product.name }}</td>
+                <td class="px-4 py-3 text-slate-400">{{ product.barcode }}</td>
+                <td class="px-4 py-3 text-center">{{ order_item.size or '-' }}</td>
+                <td class="px-4 py-3 text-center">{{ order_item.color or '-' }}</td>
+                <td class="px-4 py-3 text-right font-medium">${{ product.selling_price }}</td>
+                <td class="px-4 py-3 text-center">{{ order_item.quantity }}</td>
+                <td class="px-4 py-3 text-right font-bold">${{ product.selling_price * order_item.quantity }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="border-t-2 border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30">
+                <td colspan="6" class="px-4 py-3 text-xs font-black text-right uppercase tracking-widest">Total</td>
+                <td class="px-4 py-3 text-xs font-black text-right">${{ order.get_total_amount() }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4">Customer Details</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Name</p>
+          <p class="text-xs font-bold text-slate-900 dark:text-white">{{ order.billing_detail.first_name }} {{ order.billing_detail.last_name }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Email</p>
+          <p class="text-xs font-bold text-slate-900 dark:text-white">{{ order.billing_detail.email }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Phone</p>
+          <p class="text-xs font-bold text-slate-900 dark:text-white">{{ order.billing_detail.phone }}</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Address</p>
+          <p class="text-xs font-bold text-slate-900 dark:text-white">{{ order.billing_detail.street }}{% if order.billing_detail.town_city %}, {{ order.billing_detail.town_city }}{% endif %}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

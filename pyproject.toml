@@ -70,7 +70,7 @@ dependencies = [
 include_package_data = true
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
 
 
 [project.scripts]

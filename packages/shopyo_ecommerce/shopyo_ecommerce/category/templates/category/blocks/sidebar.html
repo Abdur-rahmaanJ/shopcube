@@ -1,0 +1,34 @@
+
+{{
+sidebar_item('Category Home',
+icon='fa fa-store',
+url=url_for('shopyo_ecommerce.category.dashboard')
+)}}
+
+
+{{
+sidebar_item(
+'Upload',
+icon='fa fa-cloud-upload-alt',
+url=url_for('shopyo_ecommerce.category.upload')
+)
+}}
+
+
+{%if active_page not in ['manage subcategory', 'subcategory']%}
+{{
+sidebar_item('Add Category',
+icon='fas fa-plus-circle',
+url=url_for('shopyo_ecommerce.category.add')
+)
+}}
+{%endif%}
+
+{%if active_page == 'subcategory'%}
+{{
+sidebar_item('Manage Subcategory',
+icon='fa fa-wrench',
+url=url_for('shopyo_ecommerce.category.manage_sub', category_name=subcategory.category.name)
+)
+}}
+{%endif%}

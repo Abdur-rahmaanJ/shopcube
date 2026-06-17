@@ -1,0 +1,60 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='' %}
+{% block pagehead %}
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block module_content %}
+<div class="max-w-3xl mx-auto">
+  <div class="mb-4">
+    <a class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-widest" href="{{ url_for('shopyo_ecommerce.category.dashboard') }}">
+      <i class="fas fa-arrow-left"></i> Back to Categories
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ category.name }}</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Select a subcategory</p>
+      </div>
+
+      {%if category.subcategories%}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {%for subcategory in category.subcategories%}
+        <a href="{{url_for('shopyo_ecommerce.product.list', subcategory_id=subcategory.id)}}"
+           class="group flex items-center gap-4 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+          <div class="w-14 h-14 rounded-xl bg-slate-50 dark:bg-slate-800 overflow-hidden shrink-0 border border-slate-100 dark:border-slate-700 flex items-center justify-center">
+            {%set filename_='default'%}
+            {%if subcategory.resources%}
+            {%set filename_ = subcategory.resources[0].filename%}
+            <img class="w-full h-full object-cover" src="{{url_for('shopyo_ecommerce.category.subcategory_image', filename=filename_)}}">
+            {%else%}
+            <i class="fa fa-folder-open text-slate-300 dark:text-slate-600 text-lg"></i>
+            {%endif%}
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors block truncate">{{subcategory.name}}</span>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{subcategory.get_num_products()}} products</span>
+          </div>
+          <i class="fas fa-chevron-right text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors text-xs"></i>
+        </a>
+        {%endfor%}
+      </div>
+      {%else%}
+      <div class="col-span-full p-8 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 text-center">
+        <div class="flex flex-col items-center gap-3">
+          <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+            <i class="fa fa-folder-open text-2xl text-slate-200 dark:text-slate-700"></i>
+          </div>
+          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No subcategories</p>
+          <a href="{{url_for('shopyo_ecommerce.category.manage_sub', category_name=category.name)}}"
+             class="text-xs text-primary font-bold hover:underline">Manage subcategories</a>
+        </div>
+      </div>
+      {%endif%}
+    </div>
+  </div>
+</div>
+{% endblock %}

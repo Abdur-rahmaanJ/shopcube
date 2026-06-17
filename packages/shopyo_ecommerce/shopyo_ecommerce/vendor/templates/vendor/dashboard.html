@@ -1,0 +1,51 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'vendor' %}
+{% block pagehead %}<title>Vendors</title>{% endblock %}
+{% block sidebar %}{% include 'vendor/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Vendors</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ vendors|length }} total</p>
+        </div>
+        <a href="{{ url_for('shopyo_ecommerce.vendor.add') }}" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+          <i class="fas fa-plus-circle"></i>Add Vendor
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <table class="table">
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Phone</th><th>Products</th><th class="w-24"></th></tr>
+        </thead>
+        <tbody>
+          {% for vendor in vendors %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">{{ vendor.name }}</td>
+            <td class="text-xs">{{ vendor.email or '-' }}</td>
+            <td class="text-xs">{{ vendor.phone or '-' }}</td>
+            <td class="text-xs">{{ vendor.products|length }}</td>
+            <td>
+              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <a href="{{ url_for('shopyo_ecommerce.vendor.edit', vendor_id=vendor.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Edit"><i class="fas fa-pencil-alt text-xs"></i></a>
+                <form action="{{ url_for('shopyo_ecommerce.vendor.delete', vendor_id=vendor.id) }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Delete" onclick="return confirm('Delete vendor {{ vendor.name }}?')"><i class="fas fa-trash-alt text-xs"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}<tr><td colspan="5" class="text-[10px] text-slate-400 text-center py-8">No vendors yet</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

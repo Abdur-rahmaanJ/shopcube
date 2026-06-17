@@ -1,0 +1,96 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='products' %}
+{% block pagehead %}
+<title>{{ subcategory.category.name }} - {{ subcategory.name }}</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'product/blocks/sidebar.html'%}
+{%endblock%}
+{% block module_content %}
+<div class="max-w-6xl mx-auto">
+  <div class="mb-4">
+    <a class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-widest" href="{{ url_for('shopyo_ecommerce.category.choose_sub_dashboard', category_id=subcategory.category.id) }}">
+      <i class="fas fa-arrow-left"></i> Back to {{ subcategory.category.name }}
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ subcategory.name }}</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ subcategory.category.name }} &middot; {{ subcategory.products|length }} products</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1.5 rounded-xl bg-primary/5 text-primary border border-primary/10">
+            <span class="text-[10px] font-black uppercase tracking-widest">{{ subcategory.category.name }}</span>
+          </span>
+          <a href="{{url_for('shopyo_ecommerce.product.add_dashboard', subcategory_id=subcategory.id)}}" class="inline-flex items-center gap-1.5 bg-primary text-white font-bold px-4 py-2 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-[10px] uppercase tracking-widest">
+            <i class="fas fa-plus-circle"></i> Add Product
+          </a>
+        </div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>barcode</th>
+            <th>name</th>
+            <th>price</th>
+            <th>selling price</th>
+            <th>in stock</th>
+            <th class="w-24"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {%if subcategory.products%}
+          {%for p in subcategory.products%}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="px-6 py-5 font-mono text-xs font-bold">{{p.barcode}}</td>
+            <td class="px-6 py-5 text-xs font-medium">{{p.name}}</td>
+            <td class="px-6 py-5 text-xs">&#8377;{{p.price}}</td>
+            <td class="px-6 py-5 text-xs">&#8377;{{p.selling_price}}</td>
+            <td class="px-6 py-5">
+              {%if p.in_stock%}
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-500/20">
+                <i class="fas fa-check-circle text-[8px]"></i> In Stock
+              </span>
+              {%else%}
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-black uppercase tracking-widest border border-red-100 dark:border-red-500/20">
+                <i class="fas fa-times-circle text-[8px]"></i> Out
+              </span>
+              {%endif%}
+            </td>
+            <td class="px-6 py-5">
+              <div class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <a href="{{url_for('shopyo_ecommerce.product.edit_dashboard', barcode=p.barcode)}}" class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all border border-amber-100 dark:border-amber-500/20" title="Edit">
+                  <i class="fas fa-pencil-alt text-xs"></i>
+                </a>
+                <a href="{{url_for('shopyo_ecommerce.product.delete', barcode=p.barcode)}}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Delete" onclick="return confirm('Delete {{p.name}}?');">
+                  <i class="fas fa-trash-alt text-xs"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {%endfor%}
+          {%else%}
+          <tr>
+            <td colspan="6" class="py-12 text-center">
+              <div class="flex flex-col items-center gap-4">
+                <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fa fa-box-open text-2xl text-slate-200 dark:text-slate-700"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No products yet</p>
+                  <a href="{{url_for('shopyo_ecommerce.product.add_dashboard', subcategory_id=subcategory.id)}}" class="text-xs text-primary font-bold hover:underline mt-2 inline-block">Add your first product</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {%endif%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

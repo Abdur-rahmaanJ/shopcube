@@ -1,0 +1,90 @@
+{%extends get_active_back_theme()+'/base.html'%}
+
+
+{%block content%}
+<br>
+<div class="container">
+
+<br>
+    <div class="card" style="color: black">
+        <div class="card-header">
+            Front Theme
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key in all_front_info%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{all_front_info[key]['author']}}</td>
+                            <td>
+                                {%if active_front_theme != key%}
+                                    <a class="" href="{{url_for('theme.activate_front_theme', theme_name=key)}}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" value=""  disabled="">
+                                          </div>
+                                    </a>
+                                {%else%}
+                                <div class="form-check">
+                                    <input name="" class="form-check-input" type="radio" value="" id="defaultRadio2" checked="">
+                                  </div>
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<br>
+    <div class="card" style="color: black">
+        <div class="card-header">
+            Back Theme
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key in all_back_info%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{all_back_info[key]['author']}}</td>
+                            <td>
+                                {%if active_back_theme != key%}
+                                    <a class="" href="{{url_for('theme.activate_back_theme', theme_name=key)}}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" value=""  disabled="">
+                                          </div>
+                                    </a>
+                                {%else%}
+                                <div class="form-check">
+                                    <input name="" class="form-check-input" type="radio" value="" checked="">
+                                  </div>
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+<div class="container-xxl container-p-y">
+  <div class="row">
+    {% for moduleinfo in all_info.values() if moduleinfo.type == 'show' %}
+      {% set link = moduleinfo.url_prefix + moduleinfo.dashboard if 'dashboard' in moduleinfo else moduleinfo.url_prefix %}
+      <a href="{{link}}" class="card-menu">
+        <span class="card-menu-icon">{{moduleinfo.get('icons', {}).get('emoji', '📦')}}</span>
+        <div class="card-footer">{{moduleinfo.display_string}}</div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
