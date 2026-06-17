@@ -1,0 +1,8 @@
+{
+    "display_string": "Inventory Counts",
+    "module_name": "inventory",
+    "type": "show",
+    "url_prefix": "/inventory",
+    "dashboard": "/dashboard",
+    "fa-icon": "fas fa-clipboard-list"
+}

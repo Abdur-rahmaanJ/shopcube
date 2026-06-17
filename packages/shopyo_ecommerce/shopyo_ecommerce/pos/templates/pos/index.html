@@ -1,0 +1,1036 @@
+{% extends "base/main_base.html" %}
+{% set active_page ='pos' %}
+{% block pagehead %}
+<style type="text/css">
+ .pos-container {
+ height: calc(100vh - 100px); /* Adjusted height */
+ padding-top: 15px;
+ padding-bottom: 15px;
+ }
+ 
+ /* Left Panel: Products */
+ .product-section {
+ background-color: transparent;
+ height: 100%;
+ display: flex;
+ flex-direction: column;
+ }
+
+ .search-bar-container {
+ margin-bottom: 25px;
+ position: sticky;
+ top: 0;
+ z-index: 5;
+ background: rgba(251, 251, 253, 0.8);
+ backdrop-filter: blur(10px);
+ padding: 10px 0;
+ }
+
+ .search-input {
+ border: 1px solid rgba(0,0,0,0.1) !important;
+ border-radius: 12px !important;
+ height: 50px;
+ font-size: 1.1rem;
+ padding-left: 45px !important;
+ background: white;
+ box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+ transition: all 0.3s;
+ }
+
+ .search-input:focus {
+ box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+ border-color: #6c5ce7 !important;
+ background: white;
+ }
+
+ .search-icon-overlay {
+ position: absolute;
+ left: 15px;
+ top: 50%;
+ transform: translateY(-50%);
+ z-index: 10;
+ color: #999;
+ font-size: 1.1rem;
+ }
+
+
+ .category-pills-container {
+ margin-bottom: 15px;
+ }
+
+ .category-pills .px-3 py-2 text-sm font-medium {
+ border-radius: 20px;
+ padding: 8px 16px;
+ color: #555;
+ background: #e9ecef;
+ margin-right: 8px;
+ margin-bottom: 8px;
+ font-weight: 500;
+ transition: all 0.2s;
+ border: 1px solid transparent;
+ }
+
+ .category-pills .px-3 py-2 text-sm font-medium.active, .category-pills .px-3 py-2 text-sm font-medium:hover {
+ background-color: #6c5ce7;
+ color: white;
+ box-shadow: 0 4px 6px rgba(108, 92, 231, 0.2);
+ }
+
+ .product-grid-container {
+ flex-grow: 1;
+ overflow-y: auto;
+ overflow-x: hidden;
+ padding-right: 5px;
+ padding-bottom: 20px;
+ }
+
+ .product-card {
+ border: none;
+ border-radius: 12px;
+ overflow: hidden;
+ background: white;
+ box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+ transition: all 0.2s ease;
+ height: 100%;
+ position: relative;
+ }
+
+ .product-card:hover {
+ transform: translateY(-3px);
+ box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+ border: 1px solid #6c5ce7;
+ cursor: pointer;
+ }
+
+ .product-img-wrapper {
+ height: 140px;
+ overflow: hidden;
+ position: relative;
+ background: #f8f9fa;
+ }
+
+ .product-card img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ transition: transform 0.3s;
+ }
+ 
+ .product-card:hover img {
+ transform: scale(1.05);
+ }
+
+ .product-card-body {
+ padding: 12px;
+ }
+
+ .product-title {
+ font-weight: 600;
+ color: #333;
+ font-size: 0.95rem;
+ margin-bottom: 0.5rem;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ }
+
+ .product-price {
+ font-size: 1.1rem;
+ font-weight: 700;
+ color: #2d3436;
+ }
+
+ .stock-badge {
+ font-size: 0.75rem;
+ padding: 4px 8px;
+ border-radius: 4px;
+ background-color: #e8e8e8;
+ color: #2d2d2d;
+ }
+
+ .out-of-stock {
+ opacity: 0.5;
+ pointer-events: none;
+ }
+
+ .out-of-stock-badge {
+ background-color: #ffe0e0;
+ color: #c0392b;
+ font-weight: 600;
+ }
+
+ .low-stock {
+ border: 1px solid #fdcb6e !important;
+ }
+
+ .low-stock-badge {
+ background-color: #fff3cd;
+ color: #856404;
+ font-weight: 600;
+ }
+
+ /* Right Panel: Cart */
+ .cart-panel {
+ background: white;
+ border-radius: 12px;
+ box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+ display: flex;
+ flex-direction: column;
+ height: 100%;
+ border: none;
+ }
+
+ .cart-header {
+ padding: 20px;
+ border-bottom: 1px solid #f0f0f0;
+ background: #fff;
+ border-radius: 12px 12px 0 0;
+ }
+
+ .cart-items-container {
+ flex-grow: 1;
+ overflow-y: auto;
+ padding: 0;
+ }
+
+ .cart-table {
+ margin-bottom: 0;
+ }
+
+ .cart-table th {
+ border-top: none;
+ border-bottom: 2px solid #f0f0f0;
+ color: #888;
+ font-weight: 500;
+ font-size: 0.85rem;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ }
+
+ .cart-table td {
+ vertical-align: middle;
+ border-top: 1px solid #f8f9fa;
+ padding: 12px 15px;
+ }
+
+ .cart-item-title {
+ font-weight: 600;
+ color: #333;
+ font-size: 0.9rem;
+ }
+
+ .qty-control {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background: #f8f9fa;
+ border-radius: 6px;
+ padding: 2px;
+ width: fit-content;
+ margin: 0 auto;
+ }
+
+ .qty-btn {
+ border: none;
+ background: white;
+ width: 24px;
+ height: 24px;
+ border-radius: 4px;
+ color: #555;
+ font-size: 0.8rem;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+ }
+
+ .qty-btn:hover {
+ background: #6c5ce7;
+ color: white;
+ }
+
+ .qty-input {
+ width: 30px;
+ text-align: center;
+ border: none;
+ background: transparent;
+ font-weight: 600;
+ font-size: 0.9rem;
+ padding: 0;
+ margin: 0 5px;
+ -moz-appearance: textfield;
+ }
+ 
+ .qty-input::-webkit-outer-spin-button,
+ .qty-input::-webkit-inner-spin-button {
+ -webkit-appearance: none;
+ margin: 0;
+ }
+
+ .btn-remove {
+ color: #ff7675;
+ background: rgba(255, 118, 117, 0.1);
+ width: 28px;
+ height: 28px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: none;
+ transition: all 0.2s;
+ }
+
+ .btn-remove:hover {
+ background: #ff7675;
+ color: white;
+ }
+
+ .cart-footer {
+ padding: 20px;
+ background: #fdfdfd;
+ border-top: 1px solid #eee;
+ border-radius: 0 0 12px 12px;
+ }
+
+ .total-row {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-bottom: 15px;
+ font-size: 1.2rem;
+ }
+
+ .total-label {
+ color: #555;
+ font-weight: 500;
+ }
+
+ .total-amount {
+ color: #2d3436;
+ font-weight: 800;
+ font-size: 1.5rem;
+ }
+
+ .payment-input {
+ border-radius: 8px;
+ border: 2px solid #eee;
+ height: 45px;
+ font-size: 1.1rem;
+ font-weight: 600;
+ }
+
+ .payment-input:focus {
+ border-color: #00b894;
+ }
+
+ .payment-method.active {
+ background-color: #6c5ce7;
+ border-color: #6c5ce7;
+ color: white;
+ }
+
+ .payment-method:hover:not(.active) {
+ background-color: #f0edff;
+ border-color: #6c5ce7;
+ color: #6c5ce7;
+ }
+
+ .btn-checkout {
+ background: #00b894;
+ border: none;
+ height: 50px;
+ font-weight: 600;
+ letter-spacing: 0.5px;
+ font-size: 1.1rem;
+ border-radius: 8px;
+ box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+ transition: all 0.2s;
+ }
+
+ .btn-checkout:hover {
+ background: #00a383;
+ transform: translateY(-2px);
+ box-shadow: 0 6px 15px rgba(0, 184, 148, 0.4);
+ }
+
+ .btn-clear {
+ height: 50px;
+ border-radius: 8px;
+ font-weight: 600;
+ }
+
+ /* Scrollbar */
+ ::-webkit-scrollbar {
+ width: 6px;
+ }
+ ::-webkit-scrollbar-track {
+ background: transparent; 
+ }
+ ::-webkit-scrollbar-thumb {
+ background: #dcdde1; 
+ border-radius: 3px;
+ }
+ ::-webkit-scrollbar-thumb:hover {
+ background: #b2bec3; 
+ }
+
+ .added-flash {
+ animation: addPulse 0.4s ease;
+ }
+
+ @keyframes addPulse {
+ 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4); }
+ 50% { transform: scale(0.97); box-shadow: 0 0 0 8px rgba(108, 92, 231, 0); }
+ 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+ }
+
+ @keyframes slideIn {
+ from { transform: translateX(100%); opacity: 0; }
+ to { transform: translateX(0); opacity: 1; }
+ }
+
+ .quick-keys-bar {
+ display: flex;
+ gap: 6px;
+ overflow-x: auto;
+ padding: 8px 0;
+ margin-bottom: 10px;
+ flex-wrap: nowrap;
+ }
+ .quick-key-btn {
+ flex: 0 0 auto;
+ min-width: 70px;
+ padding: 8px 12px;
+ border: 1px solid #e0e0e0;
+ border-radius: 10px;
+ background: white;
+ font-size: 0.8rem;
+ font-weight: 600;
+ text-align: center;
+ cursor: pointer;
+ transition: all 0.15s;
+ white-space: nowrap;
+ }
+ .quick-key-btn:hover {
+ background: #6c5ce7;
+ color: white;
+ border-color: #6c5ce7;
+ transform: translateY(-1px);
+ }
+</style>
+{% endblock %}
+
+{% block main_container %}
+<div class="w-full px-3 pos-container">
+ <div class="row h-100">
+ <!-- LEFT COLUMN: Products -->
+ <div class=" h-100 product-section">
+ 
+ <!-- Management Nav -->
+ {% if current_user.is_admin %}
+ <div class="mb-2 d-flex gap-2" style="gap:6px;">
+ <a href="{{ url_for('shopyo_ecommerce.pos.transactions_list') }}" class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px]"><i class="fa fa-receipt"></i> Transactions</a>
+ <a href="{{ url_for('shopyo_ecommerce.pos.reports', days=7) }}" class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px]"><i class="fa fa-chart-bar"></i> Reports</a>
+ <a href="{{ url_for('shopyo_ecommerce.pos.shifts') }}" class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px]"><i class="fa fa-clock"></i> Shifts</a>
+ <a href="{{ url_for('shopyo_ecommerce.pos.returns') }}" class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px]"><i class="fa fa-undo"></i> Returns</a>
+ <a href="{{ url_for('shopyo_ecommerce.pos.quick_keys') }}" class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px]"><i class="fa fa-keyboard"></i> Quick Keys</a>
+ </div>
+ {% endif %}
+
+ <!-- Search -->
+ <div class="search-bar-container">
+ <div class="position-relative">
+ <i class="fa fa-search search-icon-overlay"></i>
+ <input type="text" id="product-search" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none search-input" placeholder="Scan barcode or search product..." autocomplete="off">
+ </div>
+ </div>
+
+ <!-- Quick Keys -->
+ {% if quick_keys %}
+ <div class="quick-keys-bar">
+ {% for k in quick_keys %}
+ <div class="quick-key-btn" data-barcode="{{ k.product.barcode }}" data-display-name="{{ k.label or k.product.name }}" data-price="{{ k.product.selling_price }}" data-stock="{{ k.product.in_stock }}" role="button" tabindex="0">
+ {{ k.label or k.product.name[:12] }}
+ </div>
+ {% endfor %}
+ </div>
+ {% endif %}
+
+ <!-- Categories -->
+ <div class="category-pills-container">
+ <ul class="nav nav-pills category-pills" id="category-tabs" role="tablist">
+ <li>
+ <a class="px-3 py-2 text-sm font-medium active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-selected="true" data-cat-id="all" tabindex="0">
+ <i class="fa fa-th-large mr-1"></i> All Items
+ </a>
+ </li>
+ {% for category in categories %}
+ <li>
+ <a class="px-3 py-2 text-sm font-medium" id="pills-{{category.id}}-tab" data-toggle="pill" href="#pills-{{category.id}}" role="tab" aria-selected="false" data-cat-id="{{category.id}}" tabindex="0">
+ {{category.name}}
+ </a>
+ </li>
+ {% endfor %}
+ </ul>
+ </div>
+
+ <!-- Product Grid -->
+ <div class="product-grid-container" id="product-list">
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ {% for category in categories %}
+ {% for subcategory in category.subcategories %}
+ {% for product in subcategory.products %}
+ <div class=" mb-4 product-item-wrapper" 
+ data-category-id="{{category.id}}" 
+ data-name="{{product.name|lower}}" 
+ data-barcode="{{product.barcode}}">
+ {% set is_low = product.min_stock and product.min_stock> 0 and product.in_stock <= product.min_stock and product.in_stock> 0 %}
+ <div class="card product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
+ <div class="product-img-wrapper">
+ <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
+ </div>
+ <div class="product-card-body">
+ <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
+ <div class="d-flex justify-content-between align-items-center mt-2">
+ <span class="product-price">$
+ {{product.selling_price}}
+ </span>
+ <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock-badge{% elif is_low %} low-stock-badge{% endif %}">
+ {%- if product.in_stock == 0 -%}
+ Out of stock
+ {%- elif is_low -%}
+ {{product.in_stock}} left
+ {%- else -%}
+ {{product.in_stock}} in stock
+ {%- endif -%}
+ </span>
+ </div>
+ </div>
+ </div>
+ </div>
+ {% endfor %}
+ {% endfor %}
+ {% endfor %}
+ </div>
+ </div>
+ </div>
+
+ <!-- RIGHT COLUMN: Cart -->
+ <div class=" h-100 pl-0">
+ <div class="card cart-panel">
+ <div class="cart-header">
+ <div class="d-flex justify-content-between align-items-center">
+ <h5 class="mb-0 font-weight-bold">Current Order</h5>
+ <span class="badge badge-pill badge-primary" id="cart-count-badge" style="background: #6c5ce7; padding: 6px 12px;">0 Items</span>
+ </div>
+ </div>
+ 
+ <div class="cart-items-container">
+ <table class="table cart-table">
+ <thead>
+ <tr>
+ <th style="padding-left: 20px;">Product</th>
+ <th class="text-center">Qty</th>
+ <th class="text-right" style="padding-right: 20px;">Total</th>
+ <th></th>
+ </tr>
+ </thead>
+ <tbody id="cart-table-body">
+ <!-- Items injected here -->
+ </tbody>
+ </table>
+ 
+ <div id="empty-cart-msg" class="text-center p-5">
+ <div style="background: #f8f9fa; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+ <i class="fa fa-shopping-basket" style="font-size: 2rem; color: #dcdde1;"></i>
+ </div>
+ <h6 class="text-slate-400">Cart is empty</h6>
+ <p class="small text-slate-400 mb-0">Select items from the left</p>
+ </div>
+ </div>
+
+ <div class="cart-footer">
+ <div class="total-row">
+ <span class="total-label">Subtotal</span>
+ <span class="total-amount" id="cart-total">$0.00</span>
+ </div>
+
+ <div class="space-y-2 mb-3" id="discount-section">
+ <label class="small text-slate-400 font-weight-bold text-uppercase">Discount</label>
+ <div class="flex mb-1">
+ <div class="flex-prepend">
+ <select id="discount-type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none  -sm" style="font-size:0.85rem;width:auto;">
+ <option value="percentage">%</option>
+ <option value="fixed">$</option>
+ </select>
+ </div>
+ <input type="number" id="discount-value" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="0" step="0.01" min="0" style="font-size:0.9rem;">
+ <div class="flex-append">
+ <button class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px]" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
+ </div>
+ </div>
+ <small class="text-slate-400" id="discount-display" style="display:none;">Discount: -$0.00</small>
+ </div>
+
+ {% if locations %}
+ <div class="space-y-2 mb-3">
+ <label class="small text-slate-400 font-weight-bold text-uppercase">Location</label>
+ <select id="pos-location" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="font-size:0.9rem;">
+ {% for l in locations %}
+ <option value="{{ l.id }}">{{ l.name }}</option>
+ {% endfor %}
+ </select>
+ </div>
+ {% endif %}
+
+ <div class="space-y-2 mb-3">
+ <label class="small text-slate-400 font-weight-bold text-uppercase">Payment Method</label>
+ <div class="d-flex">
+ <label class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px] flex-fill mr-1 payment-method active" data-method="cash" onclick="selectPaymentMethod(this, 'cash')">
+ <input type="radio" name="payment_method" value="cash" checked hidden> Cash
+ </label>
+ <label class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px] flex-fill mx-1 payment-method" data-method="card" onclick="selectPaymentMethod(this, 'card')">
+ <input type="radio" name="payment_method" value="card" hidden> Card
+ </label>
+ <label class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 px-3 py-1.5 text-[10px] flex-fill ml-1 payment-method" data-method="other" onclick="selectPaymentMethod(this, 'other')">
+ <input type="radio" name="payment_method" value="other" hidden> Other
+ </label>
+ </div>
+ </div>
+
+ <div class="space-y-2 mb-4">
+ <label class="small text-slate-400 font-weight-bold text-uppercase">Order Notes</label>
+ <textarea id="order-notes" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " rows="2" placeholder="Optional note for this transaction" style="font-size: 0.9rem;"></textarea>
+ </div>
+
+ <div class="space-y-2 mb-4">
+ <label class="small text-slate-400 font-weight-bold text-uppercase">Amount Received</label>
+ <div class="flex">
+ <div class="flex-prepend">
+ <span class="flex-text bg-white font-weight-bold">$
+ </span>
+ </div>
+ <input type="number" id="amount-paid" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none payment-input" placeholder="0.00" step="0.01" min="0">
+ </div>
+ <div class="d-flex justify-content-between mt-2 px-1">
+ <small class="text-slate-400">Change Due:</small>
+ <small class="font-weight-bold" id="change-due">$0.00</small>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div>
+ <button class="btn bg-transparent text-slate-500 border-slate-300 hover:bg-slate-100 w-full btn-clear" id="btn-clear" aria-label="Clear cart">
+ <i class="fa fa-trash"></i>
+ </button>
+ </div>
+ <div>
+ <button class="btn btn-primary w-full btn-checkout" id="btn-checkout">
+ Pay Now <i class="fa fa-arrow-right ml-2"></i>
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+
+<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+<div id="loading-overlay" style="display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.7); z-index: 9998; align-items: center; justify-content: center;">
+ <div style="text-align: center;">
+ <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+ <span class="sr-only">Processing...</span>
+ </div>
+ <p class="mt-2 text-slate-400">Processing transaction...</p>
+ </div>
+</div>
+
+<script>
+ // State
+ let cart = {}; 
+
+ // --- Toast Notifications ---
+
+ function showToast(message, type) {
+ type = type || 'info';
+ const bgColor = type === 'success' ? '#00b894' :
+ type === 'error' ? '#ff7675' :
+ type === 'warning' ? '#fdcb6e' : '#6c5ce7';
+ const id = 'toast-' + Date.now();
+ const html = `
+ <div id="${id}" role="p-4 rounded-2xl border" style="background: ${bgColor}; color: white; min-width: 280px;
+ padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+ display: flex; justify-content: space-between; align-items: center; animation: slideIn 0.3s ease;">
+ <span>${message}</span>
+ <button type="button" style="background: none; border: none; color: white; font-size: 1.2rem;
+ cursor: pointer; opacity: 0.8; padding: 0 0 0 12px;" onclick="document.getElementById('${id}').remove()">&times;</button>
+ </div>`;
+ $('#toast-container').append(html);
+ setTimeout(function() { $('#' + id).remove(); }, 3500);
+ }
+
+ // --- Cart Logic ---
+
+ $(document).on('click keydown', '.product-card:not(.out-of-stock)', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ const card = $(this);
+ const barcode = card.data('barcode');
+ const name = card.data('display-name');
+ const price = parseFloat(card.data('price')) || 0;
+ const stock = parseInt(card.data('stock')) || 0;
+ addToCart(barcode, name, price, stock, card);
+ });
+
+ $(document).on('click keydown', '.quick-key-btn', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ const btn = $(this);
+ const barcode = btn.data('barcode');
+ const name = btn.data('display-name');
+ const price = parseFloat(btn.data('price')) || 0;
+ const stock = parseInt(btn.data('stock')) || 0;
+ addToCart(barcode, name, price, stock, btn);
+ });
+
+ $(document).on('click keydown', '.category-pills .px-3 py-2 text-sm font-medium', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ filterCategory($(this).data('cat-id'));
+ });
+
+ $(document).on('click keydown', '.qty-decrease', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ changeQty($(this).data('barcode'), -1);
+ });
+
+ $(document).on('click keydown', '.qty-increase', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ changeQty($(this).data('barcode'), 1);
+ });
+
+ $(document).on('change', '.qty-input', function() {
+ updateQty($(this).data('barcode'), this.value);
+ });
+
+ $(document).on('input change', '#discount-value, #discount-type', function() {
+ updateCartUI();
+ });
+
+ $(document).on('click keydown', '.btn-remove', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ removeFromCart($(this).data('barcode'));
+ });
+
+ $(document).on('click keydown', '#btn-clear', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ clearCart();
+ });
+
+ $(document).on('click keydown', '#btn-checkout', function(e) {
+ if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+ if (e.type === 'keydown') e.preventDefault();
+ processCheckout();
+ });
+
+ function addToCart(barcode, name, price, stock) {
+ stock = parseInt(stock);
+ if (cart[barcode]) {
+ if (cart[barcode].qty < stock) {
+ cart[barcode].qty++;
+ } else {
+ showToast("Not enough stock!", 'warning');
+ return;
+ }
+ } else {
+ cart[barcode] = {
+ name: name,
+ price: parseFloat(price),
+ qty: 1,
+ stock: stock
+ };
+ }
+ updateCartUI();
+ }
+
+ function removeFromCart(barcode) {
+ delete cart[barcode];
+ updateCartUI();
+ }
+
+ function updateQty(barcode, newQty) {
+ newQty = parseInt(newQty);
+ if (isNaN(newQty) || newQty < 1) {
+ newQty = 1;
+ }
+ 
+ if (newQty> cart[barcode].stock) {
+ showToast("Not enough stock! Max available: " + cart[barcode].stock, 'warning');
+ newQty = cart[barcode].stock;
+ }
+
+ cart[barcode].qty = newQty;
+ updateCartUI();
+ }
+
+ function changeQty(barcode, delta) {
+ if (cart[barcode]) {
+ let newQty = cart[barcode].qty + delta;
+ updateQty(barcode, newQty);
+ }
+ }
+
+ function clearCart() {
+ if (Object.keys(cart).length> 0 && confirm("Clear current order?")) {
+ cart = {};
+ $('#discount-value').val('');
+ $('#discount-display').hide();
+ updateCartUI();
+ $('#amount-paid').val('');
+ $('#change-due').text('$0.00').removeClass('text-emerald-500 text-red-500');
+ }
+ }
+
+ function updateCartUI() {
+ const tbody = $('#cart-table-body');
+ tbody.empty();
+
+ let total = 0;
+ let count = 0;
+ const barcodes = Object.keys(cart);
+
+ if (barcodes.length === 0) {
+ $('#empty-cart-msg').show();
+ $('#btn-checkout').prop('disabled', true);
+ $('#discount-display').hide();
+ } else {
+ $('#empty-cart-msg').hide();
+ $('#btn-checkout').prop('disabled', false);
+ 
+ barcodes.forEach(code => {
+ const item = cart[code];
+ const itemTotal = item.price * item.qty;
+ total += itemTotal;
+ count += item.qty;
+
+ const row = `
+ <tr>
+ <td style="padding-left: 20px;">
+ <div class="cart-item-title text-truncate" style="max-width: 130px;" title="${item.name}">${item.name}</div>
+ <small class="text-slate-400">$${item.price.toFixed(2)} ea</small>
+ <small class="text-slate-400 d-block">$${(item.price * item.qty).toFixed(2)} subtotal</small>
+ </td>
+ <td class="text-center">
+ <div class="qty-control">
+ <button class="qty-btn qty-decrease" data-barcode="${code}" aria-label="Decrease quantity">-</button>
+ <input type="number" class="qty-input" value="${item.qty}" 
+ data-barcode="${code}" min="1" max="${item.stock}" aria-label="Quantity">
+ <button class="qty-btn qty-increase" data-barcode="${code}" aria-label="Increase quantity">+</button>
+ </div>
+ </td>
+ <td class="text-right" style="padding-right: 20px;">
+ <span class="font-weight-bold">$${itemTotal.toFixed(2)}</span>
+ </td>
+ <td>
+ <button class="btn-remove" data-barcode="${code}" aria-label="Remove item">
+ <i class="fa fa-times"></i>
+ </button>
+ </td>
+ </tr>
+ `;
+ tbody.append(row);
+ });
+ }
+
+ const disc = getDiscount(total);
+ const netTotal = total - disc.amount;
+ $('#cart-total').text('$' + total.toFixed(2));
+ if (disc.amount> 0) {
+ $('#discount-display').text('Discount: -$' + disc.amount.toFixed(2)).show();
+ } else {
+ $('#discount-display').hide();
+ }
+ $('#cart-count-badge').text(count + ' Items');
+ $('#cart-total').data('net-total', netTotal.toFixed(2));
+ calculateChange();
+ }
+
+ function getDiscount(subtotal) {
+ const val = parseFloat($('#discount-value').val()) || 0;
+ if (val <= 0) return { type: 'none', amount: 0 };
+ const type = $('#discount-type').val();
+ if (type === 'percentage') {
+ const amount = subtotal * (Math.min(val, 100) / 100);
+ return { type: 'percentage', value: Math.min(val, 100), amount: amount };
+ } else {
+ return { type: 'fixed', value: val, amount: Math.min(val, subtotal) };
+ }
+ }
+
+ function getNetTotal() {
+ return parseFloat($('#cart-total').data('net-total') || $('#cart-total').text().replace('$',''));
+ }
+
+ function calculateChange() {
+ const total = getNetTotal();
+ const paid = parseFloat($('#amount-paid').val()) || 0;
+ 
+ if (paid === 0 && total === 0) {
+ $('#change-due').text('$0.00').removeClass('text-emerald-500 text-red-500');
+ return;
+ }
+
+ const change = paid - total;
+ 
+ const changeEl = $('#change-due');
+ if (change>= 0) {
+ changeEl.text('$' + change.toFixed(2)).removeClass('text-red-500').addClass('text-emerald-500');
+ } else {
+ // Optional: show how much is missing
+ changeEl.text('-$' + Math.abs(change).toFixed(2)).removeClass('text-emerald-500').addClass('text-red-500');
+ }
+ }
+
+ // --- Search & Filter ---
+
+ function filterCategory(catId) {
+ const rows = $('.product-item-wrapper');
+ 
+ // Update active tab styling
+ $('.category-pills .px-3 py-2 text-sm font-medium').removeClass('active');
+ if(catId === 'all') {
+ $('#pills-all-tab').addClass('active');
+ } else {
+ $('#pills-' + catId + '-tab').addClass('active');
+ }
+
+ applySearch();
+ }
+
+ function applySearch() {
+ const term = $('#product-search').val().toLowerCase();
+ // Determine active category from the UI state or logic
+ // Simplified: check which tab has 'active' class
+ let activeCategory = 'all';
+ $('.category-pills .px-3 py-2 text-sm font-medium.active').each(function() {
+ const href = $(this).attr('href');
+ if(href) activeCategory = href.replace('#pills-', '');
+ });
+ 
+ $('.product-item-wrapper').each(function() {
+ const el = $(this);
+ const name = el.data('name');
+ const barcode = String(el.data('barcode'));
+ const catId = el.data('category-id');
+ 
+ const matchesSearch = name.includes(term) || barcode.includes(term);
+ const matchesCat = (activeCategory === 'all' || catId == activeCategory);
+
+ if (matchesSearch && matchesCat) {
+ el.fadeIn(200);
+ } else {
+ el.hide();
+ }
+ });
+ }
+
+ // --- Payment Method ---
+
+ function selectPaymentMethod(el, method) {
+ $('.payment-method').removeClass('active');
+ $(el).addClass('active');
+ $(el).find('input[type="radio"]').prop('checked', true);
+ }
+
+ // --- Checkout ---
+
+ function processCheckout() {
+ const barcodes = Object.keys(cart);
+ if (barcodes.length === 0) return;
+
+ const subtotal = parseFloat($('#cart-total').text().replace('$',''));
+ const disc = getDiscount(subtotal);
+ const netTotal = subtotal - disc.amount;
+ const paid = parseFloat($('#amount-paid').val()) || 0;
+
+ if (paid < netTotal) {
+ showToast(
+ `Insufficient payment. Total: $${netTotal.toFixed(2)}, Received: $${paid.toFixed(2)}`,
+ 'error'
+ );
+ return;
+ }
+
+ const items = {};
+ barcodes.forEach(code => {
+ items[code] = { count: cart[code].qty };
+ });
+
+ const paymentMethod = $('input[name="payment_method"]:checked').val() || 'cash';
+ const notes = $('#order-notes').val().trim();
+ const payload = JSON.stringify({
+ items: items, amount_paid: paid, payment_method: paymentMethod, notes: notes,
+ discount_type: disc.type === 'none' ? '' : disc.type,
+ discount_value: disc.value || 0,
+ location_id: $('#pos-location').val() || null
+ });
+
+ $('#loading-overlay').css('display', 'flex');
+
+ $.ajax({
+ type: "POST",
+ url: "{{url_for('shopyo_ecommerce.pos.transaction')}}",
+ data: payload,
+ contentType: "application/json; charset=utf-8",
+ dataType: "json",
+ success: function(response) {
+ showToast("Transaction completed successfully!", 'success');
+ window.location.reload();
+ },
+ error: function(xhr, status, error) {
+ $('#loading-overlay').hide();
+ const msg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+ showToast("Transaction failed: " + msg, 'error');
+ },
+ beforeSend: function(xhr, settings) {
+ if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+ xhr.setRequestHeader("X-CSRFToken", "{{csrf_token()}}")
+ }
+ }
+ });
+ }
+
+ // --- Events ---
+
+ let searchTimeout;
+ $(document).ready(function() {
+ $('#product-search').on('keyup', function(e) {
+ clearTimeout(searchTimeout);
+ const val = $(this).val();
+ if (e.key === 'Enter') {
+ const card = $('.product-card:not(.out-of-stock)[data-barcode="' + val + '"]');
+ if (card.length) {
+ card.click();
+ $(this).val('');
+ }
+ }
+ searchTimeout = setTimeout(applySearch, 200);
+ });
+ $('#amount-paid').on('input', calculateChange);
+ 
+ // Focus search on load
+ $('#product-search').focus();
+ 
+ // Initial empty state check
+ updateCartUI();
+ });
+
+</script>
+{% endblock %}

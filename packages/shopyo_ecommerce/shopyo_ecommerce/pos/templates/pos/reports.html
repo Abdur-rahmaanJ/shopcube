@@ -1,0 +1,67 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% block pagehead %}<title>Sales Reports</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Sales Reports</h2>
+ <div class="mb-3">
+ <a href="?days=1" class="btn px-3 py-1.5 text-[10px] {{ 'btn-primary' if days==1 else 'bg-transparent text-primary border-primary hover:bg-primary hover:text-white' }}">Today</a>
+ <a href="?days=7" class="btn px-3 py-1.5 text-[10px] {{ 'btn-primary' if days==7 else 'bg-transparent text-primary border-primary hover:bg-primary hover:text-white' }}">7 Days</a>
+ <a href="?days=30" class="btn px-3 py-1.5 text-[10px] {{ 'btn-primary' if days==30 else 'bg-transparent text-primary border-primary hover:bg-primary hover:text-white' }}">30 Days</a>
+ <a href="?days=365" class="btn px-3 py-1.5 text-[10px] {{ 'btn-primary' if days==365 else 'bg-transparent text-primary border-primary hover:bg-primary hover:text-white' }}">Year</a>
+ </div>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div><div class="card bg-info text-white p-3"><h5>Total Sales</h5><h3>${{ '%.2f'|format(total_sales) }}</h3></div></div>
+ <div><div class="card bg-success text-white p-3"><h5>Transactions</h5><h3>{{ total_tx }}</h3></div></div>
+ <div><div class="card bg-warning text-white p-3"><h5>Avg per Tx</h5><h3>${{ '%.2f'|format(total_sales / total_tx) if total_tx else '0.00' }}</h3></div></div>
+ </div>
+ <h4>By Location</h4>
+ <table class="table mb-4">
+ {% for loc_id, amt in by_location.items() %}
+ <tr><td>Location #{{ loc_id }}</td><td><strong>${{ '%.2f'|format(amt) }}</strong></td></tr>
+ {% endfor %}
+ </table>
+
+ <h4>By Payment Method</h4>
+ <table class="table mb-4">
+ {% for method, amt in by_method.items() %}
+ <tr><td>{{ method|capitalize }}</td><td><strong>${{ '%.2f'|format(amt) }}</strong></td></tr>
+ {% endfor %}
+ <tr class="font-weight-bold"><td>Total</td><td>${{ '%.2f'|format(total_sales) }}</td></tr>
+ </table>
+
+ <h4>By Cashier (tx count)</h4>
+ <table class="table mb-4">
+ {% for cid, count in by_cashier.items() %}
+ <tr><td>Cashier #{{ cid }}</td><td>{{ count }} tx(s)</td></tr>
+ {% endfor %}
+ </table>
+
+ <h4>Tax Summary (estimated 10%)</h4>
+ <table class="table mb-4">
+ <tr><td>Taxable Sales</td><td>${{ '%.2f'|format(total_sales) }}</td></tr>
+ <tr><td>Tax (10%)</td><td>${{ '%.2f'|format(total_sales * 0.1) }}</td></tr>
+ <tr><td>Net Sales</td><td>${{ '%.2f'|format(total_sales * 0.9) }}</td></tr>
+ </table>
+ <h4>Recent Transactions</h4>
+ <table class="table ">
+ <thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Discount</th></tr></thead>
+ <tbody>
+ {% for t in txs %}
+ <tr>
+ <td>{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
+ <td>${{ '%.2f'|format(t.total_amount|float) }}</td>
+ <td>{{ t.method_of_payment }}</td>
+ <td>{{ t.cashier_id }}</td>
+ <td>{{ t.discount_type or '-' }} {{ t.discount_value or '' }}</td>
+ </tr>
+ {% else %}<tr><td colspan="5" class="text-slate-400">No transactions</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ </div>
+</div>
+{% endblock %}

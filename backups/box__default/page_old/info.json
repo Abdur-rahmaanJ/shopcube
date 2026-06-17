@@ -1,0 +1,20 @@
+{
+        "display_string": "Page",
+        "module_name":"page",
+        "type": "show",
+        "icons":{
+		"fa": "fa fa-edit",
+		"boxicons": "bx bx-pen"
+	},
+        "url_prefix": "/page",
+        "menu": {
+                "new page": "/dashboard",
+                "all pages":"/dashboard/all-pages"
+        },
+        "dashboard": "/dashboard",
+        "author": {
+                "name": "Abdur-Rahmaan Janhangeer",
+                "website": "https://www.pythonkitchen.com/about-me/",
+                "mail": "arj.python@gmail.com"
+        }
+}

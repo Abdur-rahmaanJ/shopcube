@@ -1,0 +1,8 @@
+{
+    "display_string": "Purchasing",
+    "module_name": "purchase",
+    "type": "show",
+    "url_prefix": "/purchase",
+    "dashboard": "/dashboard",
+    "fa-icon": "fas fa-file-invoice"
+}

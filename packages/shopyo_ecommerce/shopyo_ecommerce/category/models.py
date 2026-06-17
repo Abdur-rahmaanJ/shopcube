@@ -1,0 +1,93 @@
+"""
+remember: backrefs should be unique
+"""
+
+from flask import url_for
+
+from shopyo.api.models import PkModel
+from sqlalchemy import exists
+from sqlalchemy.orm import validates
+
+from init import db
+
+
+class Category(PkModel):
+    __tablename__ = "shopyo_ecommerce_categories"
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    subcategories = db.relationship("SubCategory", backref="category", lazy=True)
+    resources = db.relationship(
+        "Resource",
+        backref="resource_category",
+        lazy=True,
+    )
+
+    def __repr__(self):
+        return f"Category: {self.name}"
+
+    @classmethod
+    def category_exists(cls, name):
+        return db.session.query(exists().where(cls.name == name.lower())).scalar()
+
+    @validates("name")
+    def convert_lower(self, key, value):
+        return value.lower()
+
+    def get_num_subcategories(self):
+        return len(self.subcategories)
+ 
+    def get_one_image_url(self):
+        if len(self.resources) == 0:
+            return url_for("static", filename="default/default_subcategory.jpg")
+        else:
+            resource = self.resources[0]
+            return url_for("static", filename=f"uploads/products/{resource.filename}")
+
+    def get_page_url(self):
+        return url_for("shopyo_ecommerce.shop.category", category_name=self.name)
+
+
+class SubCategory(PkModel):
+    __tablename__ = "shopyo_ecommerce_subcategories"
+    name = db.Column(db.String(100), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("shopyo_ecommerce_categories.id"))
+    products = db.relationship("Product", backref="subcategory", lazy=True)
+    resources = db.relationship("Resource", backref="resource_subcategory", lazy=True)
+
+    @classmethod
+    def category_exists(cls, name):
+        return db.session.query(exists().where(cls.name == name.lower())).scalar()
+
+    @validates("name")
+    def convert_lower(self, key, value):
+        return value.lower()
+
+    def get_num_products(self):
+        return len(self.products)
+
+    def get_one_image_url(self):
+
+        if len(self.products) > 0:
+            product = self.products[0]
+            if len(product.resources) == 0:
+                if len(self.resources) == 0:
+                    return url_for("static", filename="default/default_subcategory.jpg")
+                else:
+                    resource = self.resources[0]
+                    return url_for(
+                        "static",
+                        filename=f"uploads/subcategory/{resource.filename}",
+                    )
+            else:
+                resource = product.resources[0]
+                return url_for(
+                    "static", filename=f"uploads/products/{resource.filename}"
+                )
+        else:
+            if len(self.resources) == 0:
+                return url_for("static", filename="default/default_subcategory.jpg")
+            else:
+                resource = self.resources[0]
+                return url_for(
+                    "static",
+                    filename=f"uploads/subcategory/{resource.filename}",
+                )

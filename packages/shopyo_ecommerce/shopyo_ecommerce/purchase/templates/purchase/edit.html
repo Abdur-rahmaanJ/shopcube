@@ -1,0 +1,124 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'purchase' %}
+{% block pagehead %}<title>PO #{{ po.id }}</title>{% endblock %}
+{% block sidebar %}{% include 'purchase/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Purchase Order #{{ po.id }} <span class="badge badge-{{ 'secondary' if po.status=='draft' else 'primary' if po.status=='ordered' else 'success' if po.status=='received' else 'danger' }}">{{ po.status }}</span></h2>
+ <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.purchase.dashboard') }}">< BACK</a>
+
+ <form method="POST">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <div class="space-y-2">
+ <label>Vendor</label>
+ {{ form.vendor_id(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ") }}
+ </div>
+ <div class="space-y-2">
+ <label>Notes</label>
+ {{ form.notes(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ", rows=3) }}
+ </div>
+ {% if po.status == 'draft' %}
+ {{ form.submit(class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500") }}
+ {% endif %}
+ </form>
+ </div>
+</div>
+
+{% if po.status == 'draft' %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h4>Add Item</h4>
+ <form action="{{ url_for('shopyo_ecommerce.purchase.add_item', po_id=po.id) }}" method="POST" style="display:flex;gap:8px;align-items:center;">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <input type="text" name="barcode" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="width:150px;" placeholder="Barcode" id="item-barcode" required>
+ <input type="number" name="quantity" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="width:80px;" placeholder="Qty" value="1" min="1">
+ <button type="submit" class="btn text-white bg-emerald-500 hover:bg-emerald-600 border-emerald-500">Add</button>
+ </form>
+ <small class="text-slate-400" id="product-preview"></small>
+ </div>
+</div>
+<script>
+$('#item-barcode').on('input', function() {
+ var bc = $(this).val();
+ if (bc.length> 2) {
+ $.getJSON('/purchase/product/' + bc + '/info', function(data) {
+ $('#product-preview').text(data.name + ' | In stock: ' + data.in_stock + ' | Price: $' + data.price);
+ }).fail(function() {
+ $('#product-preview').text('Product not found');
+ });
+ } else {
+ $('#product-preview').text('');
+ }
+});
+</script>
+{% endif %}
+
+<br>
+<div class="card">
+ <div class="card-body">
+ <h4>Items ({{ po.items|length }})</h4>
+ <table class="table ">
+ <thead><tr><th>Barcode</th><th>Product</th><th>Ordered</th><th>Received</th><th>Unit Price</th><th>Subtotal</th>{% if po.status == 'draft' %}<th></th>{% endif %}</tr></thead>
+ <tbody>
+ {% for item in po.items %}
+ <tr>
+ <td>{{ item.product_barcode }}</td>
+ <td>{{ item.product_name }}</td>
+ <td>{{ item.quantity_ordered }}</td>
+ <td>{{ item.quantity_received }}</td>
+ <td>${{ '%.2f'|format(item.unit_price|float) }}</td>
+ <td>${{ '%.2f'|format((item.quantity_received or 0) * (item.unit_price|float)) }}</td>
+ {% if po.status == 'draft' %}
+ <td>
+ <form action="{{ url_for('shopyo_ecommerce.purchase.delete_item', item_id=item.id) }}" method="POST" style="display:inline;">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500 px-3 py-1.5 text-[10px]">Remove</button>
+ </form>
+ </td>
+ {% endif %}
+ </tr>
+ {% else %}
+ <tr><td colspan="7" class="text-slate-400">No items. Add items above.</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+
+ {% if po.status == 'draft' and po.items %}
+ <form action="{{ url_for('shopyo_ecommerce.purchase.place_order', po_id=po.id) }}" method="POST" style="display:inline;">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn btn-primary">Place Order</button>
+ </form>
+ {% endif %}
+
+ {% if po.status == 'ordered' %}
+ <h4 class="mt-3">Receive Items</h4>
+ <form action="{{ url_for('shopyo_ecommerce.purchase.receive', po_id=po.id) }}" method="POST">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <table class="table ">
+ <thead><tr><th>Product</th><th>Ordered</th><th>Receive Qty</th></tr></thead>
+ <tbody>
+ {% for item in po.items %}
+ <tr>
+ <td>{{ item.product_name }}</td>
+ <td>{{ item.quantity_ordered }}</td>
+ <td><input type="number" name="qty_received_{{ item.id }}" value="{{ item.quantity_ordered }}" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="width:100px;" min="0"></td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ <button class="btn text-white bg-emerald-500 hover:bg-emerald-600 border-emerald-500">Receive All</button>
+ </form>
+ {% endif %}
+
+ {% if po.status in ('draft', 'cancelled') %}
+ <form action="{{ url_for('shopyo_ecommerce.purchase.delete', po_id=po.id) }}" method="POST" style="display:inline;" class="mt-3">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500" onclick="return confirm('Delete PO #{{ po.id }}?')">Delete PO</button>
+ </form>
+ {% endif %}
+ </div>
+</div>
+{% endblock %}

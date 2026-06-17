@@ -1,0 +1,49 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'vendor' %}
+{% block pagehead %}
+<title>Vendors</title>
+{% endblock %}
+{% block sidebar %}
+{% include 'vendor/blocks/sidebar.html' %}
+{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Vendors</h2>
+ <a href="{{ url_for('shopyo_ecommerce.vendor.add') }}" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500 mb-3">Add Vendor</a>
+ {% if vendors %}
+ <table class="table ">
+ <thead>
+ <tr>
+ <th>Name</th>
+ <th>Email</th>
+ <th>Phone</th>
+ <th>Products</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ {% for vendor in vendors %}
+ <tr>
+ <td>{{ vendor.name }}</td>
+ <td>{{ vendor.email or '-' }}</td>
+ <td>{{ vendor.phone or '-' }}</td>
+ <td>{{ vendor.products|length }}</td>
+ <td>
+ <a href="{{ url_for('shopyo_ecommerce.vendor.edit', vendor_id=vendor.id) }}" class="btn btn-warning px-3 py-1.5 text-[10px]">Edit</a>
+ <form action="{{ url_for('shopyo_ecommerce.vendor.delete', vendor_id=vendor.id) }}" method="POST" style="display:inline;">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500 px-3 py-1.5 text-[10px]" onclick="return confirm('Delete vendor {{ vendor.name }}?')">Delete</button>
+ </form>
+ </td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ {% else %}
+ <p class="text-slate-400">No vendors yet.</p>
+ {% endif %}
+ </div>
+</div>
+{% endblock %}

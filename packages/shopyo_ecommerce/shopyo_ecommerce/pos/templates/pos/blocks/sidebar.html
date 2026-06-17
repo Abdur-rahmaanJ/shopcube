@@ -1,0 +1,8 @@
+{{ sidebar_item('POS', icon='fas fa-cash-register', url=url_for('shopyo_ecommerce.pos.index')) }}
+{% if current_user.is_admin %}
+{{ sidebar_item('Transactions', icon='fas fa-receipt', url=url_for('shopyo_ecommerce.pos.transactions_list')) }}
+{{ sidebar_item('Reports', icon='fas fa-chart-bar', url=url_for('shopyo_ecommerce.pos.reports')) }}
+{{ sidebar_item('Shifts', icon='fas fa-clock', url=url_for('shopyo_ecommerce.pos.shifts')) }}
+{{ sidebar_item('Returns', icon='fas fa-undo', url=url_for('shopyo_ecommerce.pos.returns')) }}
+{{ sidebar_item('Quick Keys', icon='fas fa-keyboard', url=url_for('shopyo_ecommerce.pos.quick_keys')) }}
+{% endif %}

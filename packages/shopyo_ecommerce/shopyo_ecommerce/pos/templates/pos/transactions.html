@@ -1,0 +1,40 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% block pagehead %}<title>Transactions</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Transactions</h2>
+ <form method="GET" class="form-inline mb-3">
+ <input type="text" name="q" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Search by receipt #..." value="{{ q }}">
+ <button type="submit" class="btn btn-primary">Search</button>
+ </form>
+ <table class="table ">
+ <thead><tr><th>Receipt #</th><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Location</th><th>Discount</th><th></th></tr></thead>
+ <tbody>
+ {% for t in txs.items %}
+ <tr>
+ <td>{{ t.id }}</td>
+ <td>{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
+ <td>${{ '%.2f'|format(t.total_amount|float) }}</td>
+ <td>{{ t.method_of_payment }}</td>
+ <td>{{ t.cashier_id }}</td>
+ <td>{{ t.location_id or '-' }}</td>
+ <td>{% if t.discount_type %}{{ t.discount_type }} {{ t.discount_value }}{% endif %}</td>
+ <td><a href="{{ url_for('shopyo_ecommerce.pos.transaction_view', tx_id=t.id) }}" class="btn px-3 py-1.5 text-[10px] text-white bg-sky-500 hover:bg-sky-600 border-sky-500">View</a></td>
+ </tr>
+ {% else %}<tr><td colspan="7" class="text-slate-400">No transactions</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ <nav>
+ <ul class="pagination">
+ {% if txs.has_prev %}<li class="page-item"><a class="page-link" href="?page={{ txs.prev_num }}">Previous</a></li>{% endif %}
+ {% if txs.has_next %}<li class="page-item"><a class="page-link" href="?page={{ txs.next_num }}">Next</a></li>{% endif %}
+ </ul>
+ </nav>
+ </div>
+</div>
+{% endblock %}

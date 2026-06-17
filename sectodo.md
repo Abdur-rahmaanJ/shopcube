@@ -59,36 +59,21 @@ The first-run database seed creates an admin account with password `"pass"`. Thi
 
 ---
 
-### 5. Stored XSS in Contact Messages
+### 5. Stored XSS in Contact Messages ✅ FIXED
 
 **File:** `src/shopcube/modules/contact/view.py`
 
-```python
-name = form.name.data
-email = form.email.data
-message = form.message.data
-contact_message = ContactMessage(name=name, email=email, message=message)
-```
-
-User-submitted contact messages are stored and displayed in the admin dashboard without sanitization. While Jinja2 auto-escapes by default, if `|safe` is used in templates or if inserted into JavaScript contexts, this becomes exploitable.
-
-**Fix:** Sanitize HTML on output (e.g., with bleach) or strip HTML tags before storage. Verify templates don't use `|safe` on user data.
+**Fix applied:** Added `_strip_html()` function that strips all HTML tags from `name`, `email`, and `message` fields using regex before storing to the database. This provides defense-in-depth on top of Jinja2's default auto-escaping.
 
 ---
 
-### 6. Path Traversal in `send_from_directory`
+### 6. Path Traversal in `send_from_directory` ✅ FIXED
 
-**Files:** `resource/view.py`, `category/view.py`
+**Files:** `resource/view.py`, `category/view.py`, `utils/file.py`
 
-```python
-@module_blueprint.route("/product/<filename>", methods=["GET"])
-def product_image(filename):
-    return send_from_directory(UPLOADED_PRODUCTPHOTOS_DEST, filename)
-```
-
-While `send_from_directory` is generally safe in Werkzeug 2.x, these endpoints serve files from user-controlled filenames without adequate validation that `filename` is a simple filename (not containing `../`).
-
-**Fix:** Validate filename contains no path separators before passing to `send_from_directory`.
+**Fix applied:** Added `is_safe_path_component()` in `utils/file.py` that validates path components contain only `[a-zA-Z0-9_.\-]`. Applied to all 5 `send_from_directory` endpoints:
+- `resource/view.py`: theme CSS endpoints (`active_theme`) and product image endpoint (`filename`)
+- `category/view.py`: subcategory image and category image endpoints (`filename`)
 
 ---
 
@@ -161,20 +146,11 @@ Flask uses **client-side sessions** (signed cookies) by default. All session dat
 
 ---
 
-### 13. Mass Assignment Risk in Product Update
+### 13. Mass Assignment Risk in Product Update ✅ FIXED
 
 **File:** `product/view.py`
 
-```python
-p.barcode = barcode
-p.name = name
-p.description = description
-# ... many fields set directly from form data
-```
-
-Several fields are set directly from `request.form` without explicit allowlisting. If new fields are added to the model, they might be set from form data without proper validation.
-
-**Fix:** Use form validation to control which fields can be updated. Avoid setting model attributes directly from raw form data.
+**Fix applied:** Added `_ALLOWED_PRODUCT_FIELDS` allowlist and `_apply_product_fields()` helper that only copies explicitly allowlisted fields from form data to the Product model. The `add()` and `update()` functions now use this helper instead of manually setting attributes from raw `request.form` data. Any future fields added to the Product model will not be settable via form data unless added to the allowlist.
 
 ---
 

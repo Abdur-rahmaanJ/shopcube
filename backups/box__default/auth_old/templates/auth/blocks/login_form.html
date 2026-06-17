@@ -1,0 +1,36 @@
+
+<p class="h2">Login</p>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+    </div>
+    {{ form.email() }}
+    {% if form.email.errors %}
+        <ul class="errors">
+            {% for error in form.user_id.errors %}
+	            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-key"></i></span>
+    </div>
+    {{ form.password() }}
+    {% if form.password.errors %}
+        <ul class="errors">
+            {% for error in form.password.errors %}
+	            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+<input
+    type="hidden"
+    name="next"
+    value="{{ request.args.get('next', '') }}"
+/>
+<input type="submit" name="" value="submit" class="btn btn-info">

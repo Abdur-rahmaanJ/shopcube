@@ -1,0 +1,7 @@
+include requirements.txt
+include dev_requirements.txt
+recursive-include . *
+recursive-exclude instance *
+recursive-exclude static/modules *
+recursive-exclude .tox *
+recursive-exclude __pycache__ *

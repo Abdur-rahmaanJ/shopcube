@@ -1,0 +1,20 @@
+{
+	"display_string": "Admin",
+	"type": "show",
+	"icons":{
+		"fa": "fas fa-user-lock",
+		"boxicons": "bx bx-shield"
+	},
+	"url_prefix": "/appadmin",
+	"menu": {
+		"list users":"/",
+		"add user": "/add",
+		"roles":"/roles"
+	},
+	"module_name": "appadmin",
+	"author": {
+		"name":"Abdur-Rahmaan Janhangeer",
+		"website":"https://www.pythonkitchen.com/about-me/",
+		"mail":"arj.python@gmail.com"
+		}
+}
