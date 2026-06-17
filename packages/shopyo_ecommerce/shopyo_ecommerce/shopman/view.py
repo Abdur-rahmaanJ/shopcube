@@ -60,7 +60,12 @@ def dashboard():
     currency_choices = [(c["cc"], c["name"]) for c in currencies]
     form.currency.choices = currency_choices
 
-    context.update({"form": form, "current_currency": get_setting("CURRENCY")})
+    context.update({
+        "form": form,
+        "current_currency": get_setting("CURRENCY"),
+        "store_name": get_setting("STORE_NAME") or "",
+        "store_tel": get_setting("STORE_TEL") or "",
+    })
     return mhelp.render("dashboard.html", **context)
 
 
@@ -71,6 +76,17 @@ def set_currency():
     if request.method == "POST":
         form = CurrencyForm()
         set_setting("CURRENCY", form.currency.data)
+        return mhelp.redirect_url("shopyo_ecommerce.shopman.dashboard")
+
+
+@module_blueprint.route("/store/save", methods=["POST"])
+@login_required
+@admin_required
+def save_store():
+    if request.method == "POST":
+        set_setting("STORE_NAME", request.form.get("store_name", ""))
+        set_setting("STORE_TEL", request.form.get("store_tel", ""))
+        flash(notify_success("Store info saved!"))
         return mhelp.redirect_url("shopyo_ecommerce.shopman.dashboard")
 
 

@@ -25,7 +25,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
           <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total Sales</p>
-          <p class="text-3xl font-black text-slate-900 dark:text-white">${{ '%.2f'|format(total_sales) }}</p>
+          <p class="text-3xl font-black text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(total_sales) }}</p>
         </div>
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
           <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Transactions</p>
@@ -33,7 +33,7 @@
         </div>
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
           <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Avg per Transaction</p>
-          <p class="text-3xl font-black text-slate-900 dark:text-white">${{ '%.2f'|format(total_sales / total_tx) if total_tx else '0.00' }}</p>
+          <p class="text-3xl font-black text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(total_sales / total_tx) if total_tx else '0.00' }}</p>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
           {% for loc_id, amt in by_location.items() %}
           <tr>
             <td class="text-xs font-medium text-slate-600 dark:text-slate-300">Location #{{ loc_id }}</td>
-            <td class="text-xs font-black text-right">${{ '%.2f'|format(amt) }}</td>
+            <td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(amt) }}</td>
           </tr>
           {% else %}
           <tr><td colspan="2" class="text-[10px] text-slate-400 text-center py-8">No data</td></tr>
@@ -70,12 +70,12 @@
           {% for method, amt in by_method.items() %}
           <tr>
             <td class="text-xs font-medium text-slate-600 dark:text-slate-300">{{ method|capitalize }}</td>
-            <td class="text-xs font-black text-right">${{ '%.2f'|format(amt) }}</td>
+            <td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(amt) }}</td>
           </tr>
           {% endfor %}
           <tr class="border-t-2 border-slate-200 dark:border-slate-700">
             <td class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">Total</td>
-            <td class="text-xs font-black text-right text-primary">${{ '%.2f'|format(total_sales) }}</td>
+            <td class="text-xs font-black text-right text-primary">{{ currency_symbol }}{{ '%.2f'|format(total_sales) }}</td>
           </tr>
         </table>
       </div>
@@ -109,9 +109,9 @@
           <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Estimated 10%</p>
         </div>
         <table class="table">
-          <tr><td class="text-xs font-medium text-slate-600">Taxable Sales</td><td class="text-xs font-black text-right">${{ '%.2f'|format(total_sales) }}</td></tr>
-          <tr><td class="text-xs font-medium text-slate-600">Tax (10%)</td><td class="text-xs font-black text-right">${{ '%.2f'|format(total_sales * 0.1) }}</td></tr>
-          <tr class="border-t-2 border-slate-200 dark:border-slate-700"><td class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">Net Sales</td><td class="text-xs font-black text-right text-primary">${{ '%.2f'|format(total_sales * 0.9) }}</td></tr>
+          <tr><td class="text-xs font-medium text-slate-600">Taxable Sales</td><td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(total_sales) }}</td></tr>
+          <tr><td class="text-xs font-medium text-slate-600">Tax (10%)</td><td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(total_sales * 0.1) }}</td></tr>
+          <tr class="border-t-2 border-slate-200 dark:border-slate-700"><td class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">Net Sales</td><td class="text-xs font-black text-right text-primary">{{ currency_symbol }}{{ '%.2f'|format(total_sales * 0.9) }}</td></tr>
         </table>
       </div>
     </div>
@@ -132,7 +132,7 @@
           {% for t in txs %}
           <tr>
             <td class="text-xs">{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
-            <td class="text-xs font-bold">${{ '%.2f'|format(t.total_amount|float) }}</td>
+            <td class="text-xs font-bold">{{ currency_symbol }}{{ '%.2f'|format(t.total_amount|float) }}</td>
             <td class="text-xs"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary/5 text-primary text-[10px] font-bold border border-primary/10">{{ t.method_of_payment }}</span></td>
             <td class="text-xs text-slate-500">#{{ t.cashier_id }}</td>
             <td class="text-xs text-slate-400">{{ t.discount_type or '-' }}{{ ' ' if t.discount_value }}{{ t.discount_value or '' }}</td>
