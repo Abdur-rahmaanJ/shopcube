@@ -16,6 +16,8 @@ class Transaction(db.Model):
     discount_type = db.Column(db.String(10))  # 'percentage' or 'fixed'
     discount_value = db.Column(db.Numeric(10, 2), default=0)
     location_id = db.Column(db.Integer, db.ForeignKey("shopyo_ecommerce_locations.id"), nullable=True)
+    card_last_four = db.Column(db.String(4), nullable=True)
+    card_auth_code = db.Column(db.String(20), nullable=True)
 
     items = db.relationship('TransactionItem', backref='transaction', lazy=True, cascade="all, delete-orphan")
 

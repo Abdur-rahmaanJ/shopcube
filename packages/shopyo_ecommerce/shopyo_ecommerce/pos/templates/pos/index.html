@@ -47,6 +47,22 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #dcdde1; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #b2bec3; }
+  .barcode-highlight { animation: barcodeFlash 0.4s ease; }
+  @keyframes barcodeFlash { 0%,100% { box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 50% { box-shadow: 0 0 0 3px #6c5ce7, 0 8px 15px rgba(108,92,231,0.2); } }
+  #card-fields { transition: all 0.25s ease; overflow: hidden; }
+  #card-fields.hidden { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin: 0; }
+  #card-fields:not(.hidden) { max-height: 120px; }
+  #receipt-modal { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
+  #receipt-modal.open { display: flex; }
+  .receipt { background: white; width: 340px; max-height: 90vh; overflow-y: auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); font-family: 'Courier New', monospace; padding: 28px 24px; }
+  .receipt h2 { text-align: center; font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 2px; }
+  .receipt .store-info { text-align: center; font-size: 0.7rem; color: #666; margin-bottom: 16px; }
+  .receipt .divider { border: none; border-top: 1px dashed #ccc; margin: 8px 0; }
+  .receipt .line { display: flex; justify-content: space-between; font-size: 0.72rem; padding: 2px 0; }
+  .receipt .line-total { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; padding: 4px 0; }
+  .receipt .item-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 1px 0; }
+  .receipt .item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+  @media print { body * { visibility: hidden; } .receipt, .receipt * { visibility: visible; } .receipt { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 300px; box-shadow: none; border-radius: 0; } #receipt-modal { background: none; } .receipt .no-print { display: none; } }
 </style>
 {% endblock %}
 
@@ -150,7 +166,7 @@
             <i class="fa fa-shopping-basket text-3xl text-slate-200"></i>
           </div>
           <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cart is empty</p>
-          <p class="text-[10px] text-slate-400">Select items from the left</p>
+          <p class="text-[10px] text-slate-400">Scan barcode or tap a product</p>
         </div>
       </div>
 
@@ -188,14 +204,28 @@
           <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment Method</label>
           <div class="flex gap-2">
             <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method active" data-method="cash" onclick="selectPaymentMethod(this,'cash')">
-              <input type="radio" name="payment_method" value="cash" checked hidden> Cash
+              <input type="radio" name="payment_method" value="cash" checked hidden> <i class="fas fa-money-bill-wave mr-1 text-[10px]"></i>Cash
             </label>
             <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method" data-method="card" onclick="selectPaymentMethod(this,'card')">
-              <input type="radio" name="payment_method" value="card" hidden> Card
+              <input type="radio" name="payment_method" value="card" hidden> <i class="fas fa-credit-card mr-1 text-[10px]"></i>Card
             </label>
             <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method" data-method="other" onclick="selectPaymentMethod(this,'other')">
-              <input type="radio" name="payment_method" value="other" hidden> Other
+              <input type="radio" name="payment_method" value="other" hidden> <i class="fas fa-ellipsis mr-1 text-[10px]"></i>Other
             </label>
+          </div>
+        </div>
+
+        <!-- Card reader fields (shown only when Card is selected) -->
+        <div id="card-fields" class="hidden space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Card Last 4</label>
+              <input type="text" id="card-last-four" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="****" maxlength="4" pattern="[0-9]{4}" inputmode="numeric">
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Auth Code</label>
+              <input type="text" id="card-auth-code" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="Optional" maxlength="20">
+            </div>
           </div>
         </div>
 
@@ -228,7 +258,10 @@
   </div>
 </div>
 
+<!-- Toast container -->
 <div id="toast-container" style="position:fixed;top:20px;right:20px;z-index:9999;"></div>
+
+<!-- Loading overlay -->
 <div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(255,255,255,0.7);z-index:9998;align-items:center;justify-content:center;">
   <div class="text-center">
     <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -236,9 +269,56 @@
   </div>
 </div>
 
+<!-- Receipt Modal -->
+<div id="receipt-modal">
+  <div class="receipt" id="receipt-content">
+    <h2>{{ config.get('APP_NAME', 'SHOP') or 'STORE' }}</h2>
+    <p class="store-info">{{ config.get('STORE_ADDRESS', '') }}<br>Tel: {{ config.get('STORE_PHONE', '') }}</p>
+    <hr class="divider">
+    <div class="line"><span>Receipt #</span><span id="r-tx-id"></span></div>
+    <div class="line"><span>Date</span><span id="r-time"></span></div>
+    <div class="line"><span>Payment</span><span id="r-method"></span></div>
+    <div id="r-card-info" class="line" style="display:none;"><span>Card</span><span id="r-card-last-four"></span></div>
+    <hr class="divider">
+    <div id="r-items"></div>
+    <hr class="divider">
+    <div class="line"><span>Subtotal</span><span id="r-subtotal"></span></div>
+    <div id="r-discount-line" class="line" style="display:none;"><span>Discount</span><span id="r-discount"></span></div>
+    <div class="line-total"><span>Total</span><span id="r-total"></span></div>
+    <div class="line"><span>Paid</span><span id="r-paid"></span></div>
+    <div class="line"><span>Change</span><span id="r-change"></span></div>
+    <hr class="divider">
+    <p style="text-align:center;font-size:0.65rem;color:#999;margin-top:12px;">Thank you for your purchase!</p>
+    <div class="no-print" style="display:flex;gap:8px;margin-top:16px;">
+      <button onclick="window.print()" class="flex-1 py-2.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all uppercase tracking-widest"><i class="fas fa-print mr-1.5"></i>Print</button>
+      <button onclick="closeReceipt()" class="flex-1 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Close</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 var cart = {};
+var scanBuffer = '';
+var scanTimer = null;
+var lastKeyTime = 0;
+var beepCtx = null;
+
+function initBeep() {
+  try { beepCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}
+function beep(freq, duration, vol) {
+  freq = freq || 1200; duration = duration || 80; vol = vol || 0.15;
+  if (!beepCtx) return;
+  var osc = beepCtx.createOscillator(), gain = beepCtx.createGain();
+  osc.connect(gain); gain.connect(beepCtx.destination);
+  osc.frequency.value = freq; osc.type = 'sine';
+  gain.gain.setValueAtTime(vol, beepCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, beepCtx.currentTime + duration/1000);
+  osc.start(); osc.stop(beepCtx.currentTime + duration/1000);
+}
+function beepOk() { beep(1400, 60, 0.12); setTimeout(function(){ beep(1800, 80, 0.12); }, 70); }
+function beepError() { beep(300, 200, 0.12); }
 
 function showToast(msg, type) {
   type = type || 'info';
@@ -254,6 +334,8 @@ $(document).on('click keydown', '.product-card:not(.out-of-stock)', function(e) 
   if (e.type === 'keydown') e.preventDefault();
   var c = $(this);
   addToCart(c.data('barcode'), c.data('display-name'), parseFloat(c.data('price'))||0, parseInt(c.data('stock'))||0);
+  c.addClass('barcode-highlight');
+  setTimeout(function(){ c.removeClass('barcode-highlight'); }, 500);
 });
 
 $(document).on('click keydown', '.quick-key-btn', function(e) {
@@ -273,26 +355,70 @@ $('#btn-clear').on('click', function() { if(Object.keys(cart).length>0 && confir
 $('#btn-checkout').on('click', processCheckout);
 
 $(document).ready(function() {
+  initBeep();
   var st;
+  $('#product-search').on('keydown', function(e) {
+    var now = Date.now();
+    var isScanner = (now - lastKeyTime < 50);
+    lastKeyTime = now;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var v = $(this).val();
+      if (isScanner) { scanBuffer = ''; }
+      if (v.length > 2 && isScanner) {
+        var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (card.length) { card.click(); beepOk(); $(this).val(''); applySearch(); }
+        else { beepError(); showToast("Barcode not found: "+v, 'warning'); $(this).val(''); applySearch(); }
+      } else {
+        var c = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (c.length) { c.click(); $(this).val(''); applySearch(); }
+      }
+      return;
+    }
+    if (e.key === 'Tab') {
+      if ($(this).val().length > 2) {
+        e.preventDefault();
+        var v = $(this).val();
+        var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (card.length) { card.click(); beepOk(); $(this).val(''); applySearch(); }
+      }
+      return;
+    }
+    if (e.key.length === 1 && isScanner) {
+      scanBuffer += e.key;
+      clearTimeout(scanTimer);
+      scanTimer = setTimeout(function() {
+        var v = scanBuffer;
+        scanBuffer = '';
+        var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
+        if (card.length) { card.click(); beepOk(); $('#product-search').val(''); applySearch(); }
+        else {
+          $('#product-search').val(v);
+          applySearch();
+        }
+      }, 100);
+    }
+  });
   $('#product-search').on('keyup', function(e) {
+    if (e.key === 'Enter' || e.key === 'Tab') return;
     clearTimeout(st);
-    var v = $(this).val();
-    if (e.key === 'Enter') { var c = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]'); if(c.length){c.click();$(this).val('');} }
     st = setTimeout(applySearch, 200);
   });
   $('#amount-paid').on('input', calculateChange);
-  $('#product-search').focus();
   updateCartUI();
+  setTimeout(function(){ $('#product-search').focus(); }, 100);
 });
 
 function addToCart(barcode, name, price, stock) {
   if (cart[barcode]) {
     if (cart[barcode].qty < stock) { cart[barcode].qty++; }
-    else { showToast("Not enough stock!", 'warning'); return; }
+    else { beepError(); showToast("Not enough stock!", 'warning'); return; }
   } else {
     cart[barcode] = { name: name, price: price, qty: 1, stock: stock };
   }
+  beep(800, 40, 0.08);
   updateCartUI();
+  $('#product-search').focus();
 }
 function removeFromCart(barcode) { delete cart[barcode]; updateCartUI(); }
 function updateQty(barcode, n) {
@@ -340,20 +466,79 @@ function applySearch() {
   });
 }
 
-function selectPaymentMethod(el, method) { $('.payment-method').removeClass('active'); $(el).addClass('active'); $(el).find('input').prop('checked',true); }
+function selectPaymentMethod(el, method) {
+  $('.payment-method').removeClass('active'); $(el).addClass('active'); $(el).find('input').prop('checked',true);
+  var cf = $('#card-fields');
+  if (method === 'card') { cf.removeClass('hidden'); } else { cf.addClass('hidden'); }
+}
 
 function processCheckout() {
   var codes = Object.keys(cart); if(codes.length===0) return;
   var st = parseFloat($('#cart-total').text().replace('$','')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
   if(paid < net) { showToast('Total: $'+net.toFixed(2)+', Received: $'+paid.toFixed(2),'error'); return; }
   var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty}; });
-  var payload = JSON.stringify({items:items, amount_paid:paid, payment_method:$('input[name="payment_method"]:checked').val()||'cash', notes:$('#order-notes').val().trim(), discount_type:disc.type==='none'?'':disc.type, discount_value:disc.value||0, location_id:$('#pos-location').val()||null });
+  var payload = JSON.stringify({
+    items:items,
+    amount_paid:paid,
+    payment_method:$('input[name="payment_method"]:checked').val()||'cash',
+    notes:$('#order-notes').val().trim(),
+    discount_type:disc.type==='none'?'':disc.type,
+    discount_value:disc.value||0,
+    location_id:$('#pos-location').val()||null,
+    card_last_four:$('#card-last-four').val()||'',
+    card_auth_code:$('#card-auth-code').val()||''
+  });
   $('#loading-overlay').css('display','flex');
   $.ajax({ type:"POST", url:"{{url_for('shopyo_ecommerce.pos.transaction')}}", data:payload, contentType:"application/json; charset=utf-8", dataType:"json",
-    success:function(r){ showToast("Transaction completed!",'success'); window.location.reload(); },
-    error:function(x,s,e){ $('#loading-overlay').hide(); var m=x.responseJSON&&x.responseJSON.message?x.responseJSON.message:e; showToast("Failed: "+m,'error'); },
+    success:function(r){
+      $('#loading-overlay').hide();
+      showToast("Transaction completed!",'success');
+      beepOk();
+      if (r.tx) { showReceipt(r.tx); }
+      cart = {};
+      $('#discount-value').val('');
+      $('#discount-display').hide();
+      $('#amount-paid').val('');
+      $('#order-notes').val('');
+      $('#card-last-four').val('');
+      $('#card-auth-code').val('');
+      updateCartUI();
+    },
+    error:function(x,s,e){
+      $('#loading-overlay').hide();
+      var m=x.responseJSON&&x.responseJSON.message?x.responseJSON.message:e;
+      beepError();
+      showToast("Failed: "+m,'error');
+    },
     beforeSend:function(x){ x.setRequestHeader("X-CSRFToken","{{csrf_token()}}"); }
   });
 }
+
+function showReceipt(tx) {
+  $('#r-tx-id').text('#'+tx.id);
+  $('#r-time').text(tx.time);
+  $('#r-method').text(tx.method.toUpperCase());
+  if (tx.card_last_four) {
+    $('#r-card-info').show();
+    $('#r-card-last-four').text('****'+tx.card_last_four);
+  } else { $('#r-card-info').hide(); }
+  var itemsHtml = '';
+  tx.items.forEach(function(it) {
+    itemsHtml += '<div class="item-row"><span class="item-name">' + it.qty + 'x ' + it.name + '</span><span>$'+it.subtotal.toFixed(2)+'</span></div>';
+  });
+  $('#r-items').html(itemsHtml);
+  $('#r-subtotal').text('$'+tx.total.toFixed(2));
+  if (tx.discount_type) {
+    $('#r-discount-line').show();
+    $('#r-discount').text('- $' + (tx.total - tx.net_total).toFixed(2));
+  } else { $('#r-discount-line').hide(); }
+  $('#r-total').text('$'+tx.net_total.toFixed(2));
+  $('#r-paid').text('$'+tx.amount_paid.toFixed(2));
+  $('#r-change').text('$'+tx.change.toFixed(2));
+  $('#receipt-modal').addClass('open');
+  setTimeout(function(){ $('#product-search').focus(); }, 300);
+}
+function closeReceipt() { $('#receipt-modal').removeClass('open'); $('#product-search').focus(); }
+$(document).on('keydown', function(e) { if (e.key === 'Escape') closeReceipt(); });
 </script>
 {% endblock %}

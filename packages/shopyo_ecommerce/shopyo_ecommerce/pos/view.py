@@ -72,6 +72,8 @@ def transaction():
     discount_type = data.get("discount_type", "")
     discount_value = data.get("discount_value", 0)
     location_id = data.get("location_id")
+    card_last_four = data.get("card_last_four", "")
+    card_auth_code = data.get("card_auth_code", "")
 
     if amount_paid is None or not isinstance(amount_paid, (int, float)) or amount_paid < 0:
         return jsonify({"success": False, "message": "Invalid or missing amount paid"}), 400
@@ -122,6 +124,8 @@ def transaction():
     transaction.discount_type = discount_type
     transaction.discount_value = discount_value
     transaction.location_id = location_id
+    transaction.card_last_four = card_last_four or None
+    transaction.card_auth_code = card_auth_code or None
 
     for barcode, item_data in items_data.items():
         quantity = item_data["count"]
@@ -141,7 +145,34 @@ def transaction():
     db.session.add(transaction)
     db.session.commit()
 
-    return jsonify({"success": True, "message": "Transaction completed successfully"})
+    receipt_items = []
+    for item in transaction.items:
+        product = Product.query.filter_by(barcode=item.product_barcode).first()
+        receipt_items.append({
+            "barcode": item.product_barcode,
+            "name": product.name if product else item.product_barcode,
+            "qty": item.quantity,
+            "unit_price": float(item.unit_price),
+            "subtotal": float(item.quantity * item.unit_price),
+        })
+
+    return jsonify({
+        "success": True,
+        "message": "Transaction completed successfully",
+        "tx": {
+            "id": transaction.id,
+            "time": transaction.time.strftime("%Y-%m-%d %H:%M"),
+            "total": float(transaction.total_amount),
+            "discount_type": transaction.discount_type or "",
+            "discount_value": float(transaction.discount_value or 0),
+            "net_total": round(net_total, 2),
+            "method": transaction.method_of_payment,
+            "amount_paid": float(amount_paid),
+            "change": round(float(amount_paid) - net_total, 2),
+            "card_last_four": transaction.card_last_four,
+            "items": receipt_items,
+        }
+    })
 
 
 @module_blueprint.route("/reports/dashboard")
