@@ -1,0 +1,10 @@
+{
+	"display_string": "Login",
+	"type": "hidden",
+	"icons":{
+		"fa": "fas fa-user-lock",
+		"boxicons": ""
+	},
+	"module_name": "auth",
+	"url_prefix": "/auth"
+}

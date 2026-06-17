@@ -1,0 +1,70 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='category' %}
+{% block pagehead %}
+<title>Category Dashboard</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block module_content %}
+<div class="card">
+  <div class="card-body !p-0">
+    <div class="p-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+      <div>
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Categories</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Manage product categories</p>
+      </div>
+      <span class="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+        <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">{{ categorys|length }} TOTAL</span>
+      </span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-4">
+      {%for category in categorys%}
+      <a href="{{url_for('shopyo_ecommerce.category.choose_sub_dashboard', category_id=category.id)}}"
+         class="group flex flex-col items-center text-center p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+        <div class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 overflow-hidden border border-slate-100 dark:border-slate-700 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+          {%set filename_ = ''%}
+          {%if category.resources%}
+          {%set filename_ = category.resources[0].filename%}
+          <img class="w-full h-full object-cover" src="{{url_for('shopyo_ecommerce.category.category_image', filename=filename_)}}">
+          {%else%}
+          <i class="fa fa-folder text-slate-300 dark:text-slate-600"></i>
+          {%endif%}
+        </div>
+        <span class="text-xs font-bold text-slate-900 dark:text-white truncate w-full">{{category.name}}</span>
+        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{{category.get_num_subcategories()}} sub</span>
+
+        <div class="flex items-center gap-1.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span onclick="event.stopPropagation(); window.open('{{url_for("shopyo_ecommerce.category.manage_sub", category_name=category.name)}}', '_self')"
+                class="w-7 h-7 rounded-lg bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-sky-100 dark:border-sky-500/20 cursor-pointer"
+                title="Manage subcategories">
+            <i class="fas fa-layer-group text-[10px]"></i>
+          </span>
+          {%if category.name != 'uncategorised'%}
+          <span onclick="event.stopPropagation(); window.open('{{url_for("shopyo_ecommerce.category.edit_dashboard", category_name=category.name)}}', '_self')"
+                class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all border border-amber-100 dark:border-amber-500/20 cursor-pointer"
+                title="Edit category">
+            <i class="fas fa-pencil-alt text-[10px]"></i>
+          </span>
+          <span onclick="event.stopPropagation(); confirmDelete('{{category.name}}')"
+                class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700 cursor-pointer"
+                title="Delete category">
+            <i class="fas fa-trash-alt text-[10px]"></i>
+          </span>
+          {%endif%}
+        </div>
+      </a>
+      {%endfor%}
+    </div>
+  </div>
+</div>
+
+<script>
+function confirmDelete(name) {
+  if (confirm("Delete category '" + name + "'?")) {
+    window.open("/category/" + name + "/delete", "_self");
+  }
+}
+</script>
+{% endblock %}

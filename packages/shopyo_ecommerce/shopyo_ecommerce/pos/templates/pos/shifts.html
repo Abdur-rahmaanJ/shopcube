@@ -1,0 +1,49 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% block pagehead %}<title>Shift Management</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Shift Management</h2>
+ {% if active_shift %}
+ <div class="p-4 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-700">
+ <strong>Shift #{{ active_shift.id }} open</strong> since {{ active_shift.opened_at.strftime('%Y-%m-%d %H:%M') }}
+ <br>Sales this shift: <strong>${{ '%.2f'|format(active_shift.total_sales()) }}</strong>
+ <form action="{{ url_for('shopyo_ecommerce.pos.shift_close', shift_id=active_shift.id) }}" method="POST" style="margin-top:8px;" class="form-inline">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <input type="number" name="actual_cash" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Actual cash in drawer" step="0.01" required>
+ <button type="submit" class="btn btn-warning">Close Shift</button>
+ </form>
+ </div>
+ {% else %}
+ <form action="{{ url_for('shopyo_ecommerce.pos.shift_open') }}" method="POST" class="form-inline mb-3">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <input type="number" name="starting_cash" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Starting cash" step="0.01" value="0">
+ <button type="submit" class="btn text-white bg-emerald-500 hover:bg-emerald-600 border-emerald-500">Open New Shift</button>
+ </form>
+ {% endif %}
+ <h4>Past Shifts</h4>
+ <table class="table ">
+ <thead><tr><th>#</th><th>Opened</th><th>Closed</th><th>Starting</th><th>Expected</th><th>Actual</th><th>Variance</th></tr></thead>
+ <tbody>
+ {% for s in shifts %}
+ <tr>
+ <td>{{ s.id }}</td>
+ <td>{{ s.opened_at.strftime('%Y-%m-%d %H:%M') if s.opened_at else '-' }}</td>
+ <td>{{ s.closed_at.strftime('%Y-%m-%d %H:%M') if s.closed_at else 'open' }}</td>
+ <td>${{ '%.2f'|format(s.starting_cash|float) }}</td>
+ <td>${{ '%.2f'|format(s.expected_cash|float) }}</td>
+ <td>${{ '%.2f'|format(s.actual_cash|float) if s.actual_cash else '-' }}</td>
+ <td class="{{ 'text-red-500' if s.variance_cash and s.variance_cash|float < 0 else 'text-emerald-500' if s.variance_cash and s.variance_cash|float> 0 }}">
+ {{ '$%.2f'|format(s.variance_cash|float) if s.variance_cash else '-' }}
+ </td>
+ </tr>
+ {% else %}<tr><td colspan="7" class="text-slate-400">No shifts</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base/main_base.html" %}
+
+{% set active_page = "register" %}
+
+{% block pagehead %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modules/box__default/auth/style.css') }}">
+    <title>{{ active_page.capitalize() }}</title>
+{% endblock %}
+
+{% block content %}
+	<div class="container col-md-6 mb-4 off-set-2 text-center">
+        <div class="card">
+            <div class="card-body">
+                <img src="/static/shopyo.svg" width="175" height="150">
+                <form action="{{url_for('auth.register')}}" method="post">
+                    {%include 'auth/blocks/register_form.html'%}
+                </form>
+                <hr>
+                <span class="text-muted">
+                    Have already registered?
+                    <a href={{ url_for('auth.login') }}>Sign in here</a>
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

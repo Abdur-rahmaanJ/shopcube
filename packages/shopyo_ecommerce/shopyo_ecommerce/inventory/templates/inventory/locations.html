@@ -1,0 +1,35 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Locations</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Locations / Warehouses</h2>
+ <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.location_add') }}" class="form-inline mb-3">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <input type="text" name="name" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Name" required>
+ <input type="text" name="address" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Address" style="flex:1;">
+ <button type="submit" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500">Add</button>
+ </form>
+ <table class="table ">
+ <thead><tr><th>Name</th><th>Address</th><th>Active</th><th>Actions</th></tr></thead>
+ <tbody>
+ {% for l in locations %}
+ <tr><td>{{ l.name }}</td><td>{{ l.address or '-' }}</td><td>{{ 'Yes' if l.is_active else 'No' }}</td>
+ <td>
+ <a href="{{ url_for('shopyo_ecommerce.inventory.location_stock', loc_id=l.id) }}" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500 px-3 py-1.5 text-[10px]">Stock</a>
+ <form action="{{ url_for('shopyo_ecommerce.inventory.location_delete', loc_id=l.id) }}" method="POST" style="display:inline;">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500 px-3 py-1.5 text-[10px]">Delete</button>
+ </form>
+ </td>
+ </tr>
+ {% else %}<tr><td colspan="4" class="text-slate-400">No locations</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ </div>
+</div>
+{% endblock %}

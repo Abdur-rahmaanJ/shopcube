@@ -1,0 +1,30 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'purchase' %}
+{% block pagehead %}<title>Purchase Orders</title>{% endblock %}
+{% block sidebar %}{% include 'purchase/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Purchase Orders</h2>
+ <a href="{{ url_for('shopyo_ecommerce.purchase.add') }}" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500 mb-3">New Purchase Order</a>
+ {% if orders %}
+ <table class="table ">
+ <thead><tr><th>#</th><th>Vendor</th><th>Status</th><th>Items</th><th>Created</th><th>Actions</th></tr></thead>
+ <tbody>
+ {% for po in orders %}
+ <tr>
+ <td>{{ po.id }}</td>
+ <td>{{ po.vendor.name if po.vendor else '-' }}</td>
+ <td><span class="badge badge-{{ 'secondary' if po.status=='draft' else 'primary' if po.status=='ordered' else 'success' if po.status=='received' else 'danger' }}">{{ po.status }}</span></td>
+ <td>{{ po.items|length }}</td>
+ <td>{{ po.created_at.strftime('%Y-%m-%d') if po.created_at else '-' }}</td>
+ <td><a href="{{ url_for('shopyo_ecommerce.purchase.edit', po_id=po.id) }}" class="btn btn-warning px-3 py-1.5 text-[10px]">View/Edit</a></td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ {% else %}<p class="text-slate-400">No purchase orders yet.</p>{% endif %}
+ </div>
+</div>
+{% endblock %}

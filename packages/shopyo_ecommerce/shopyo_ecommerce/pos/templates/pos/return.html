@@ -1,0 +1,32 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% block pagehead %}<title>Returns</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Return / Refund</h2>
+ <form method="POST" class="form-inline mb-3">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <input type="number" name="receipt_id" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Receipt #" required>
+ <button type="submit" class="btn btn-primary">Look Up</button>
+ </form>
+ {% if tx %}
+ <div class="card p-3">
+ <h4>Transaction #{{ tx.id }}</h4>
+ <p>Date: {{ tx.time.strftime('%Y-%m-%d %H:%M') if tx.time else '-' }} | Amount: <strong>${{ '%.2f'|format(tx.total_amount|float) }}</strong> | Payment: {{ tx.method_of_payment }}</p>
+ <ul>
+ {% for item in tx.items %}
+ <li>{{ item.product_barcode }} x{{ item.quantity }} @ ${{ '%.2f'|format(item.unit_price|float) }}</li>
+ {% endfor %}
+ </ul>
+ <form action="{{ url_for('shopyo_ecommerce.pos.process_return', tx_id=tx.id) }}" method="POST">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500" onclick="return confirm('Process refund of ${{ '%.2f'|format(tx.total_amount|float) }}?')">Process Refund</button>
+ </form>
+ </div>
+ {% endif %}
+ </div>
+</div>
+{% endblock %}

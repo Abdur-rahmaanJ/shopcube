@@ -1,0 +1,47 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'customer' %}
+{% block pagehead %}<title>Customer Management</title>{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div>
+ <div class="card">
+ <div class="card-body">
+ <h2>Customers</h2>
+ <table class="table ">
+ <thead><tr><th>Email</th><th>Orders</th><th>Total Spent</th><th>Last Purchase</th><th>Group</th></tr></thead>
+ <tbody>
+ {% for u in customers %}
+ <tr><td>{{ u.email }}</td><td>{{ u.order_count or 0 }}</td><td>${{ '%.2f'|format(u.total_spent or 0) }}</td><td>{{ u.last_purchase.strftime('%Y-%m-%d') if u.last_purchase else '-' }}</td><td>{{ u.group.name if u.group else '-' }}</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div class="card">
+ <div class="card-body">
+ <h4>Customer Groups</h4>
+ <form action="{{ url_for('shopyo_ecommerce.customer.admin_group_add') }}" method="POST" class="mb-3">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <div class="space-y-2"><input type="text" name="name" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="Group name" required></div>
+ <div class="space-y-2"><input type="number" name="discount_percent" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="Discount %" step="0.01" value="0"></div>
+ <button type="submit" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500 px-3 py-1.5 text-[10px]">Add Group</button>
+ </form>
+ <ul class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
+ {% for g in groups %}
+ <li class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden-item d-flex justify-content-between">{{ g.name }} ({{ g.discount_percent }}% off)
+ <form action="{{ url_for('shopyo_ecommerce.customer.admin_group_delete', group_id=g.id) }}" method="POST" style="display:inline;">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500 px-3 py-1.5 text-[10px]">Delete</button>
+ </form>
+ </li>
+ {% else %}<li class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden-item text-slate-400">No groups</li>{% endfor %}
+ </ul>
+ </div>
+ </div>
+ </div>
+</div>
+{% endblock %}

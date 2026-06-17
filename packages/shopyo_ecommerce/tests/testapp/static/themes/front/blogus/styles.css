@@ -1,0 +1,41 @@
+
+    html {
+     scroll-behavior: smooth;
+        }
+    .suggest {
+
+    }
+
+    .suggest span {
+        padding-left: 5px;
+        padding-right: 5px;
+        margin: 5px;
+        min-width: 50px;
+    }
+
+    a{
+        text-decoration: inherit;
+        color: inherit;
+    }
+    a:hover{
+        text-decoration: inherit;
+        color: inherit;
+    }
+
+    #flashed-messages{
+        padding: 5px;
+        position: fixed;
+        right: 5px;
+        top: 5px;
+        z-index: 10;
+        height: 300px;
+        overflow-y: scroll;
+
+      }
+      #flashed-messages::-webkit-scrollbar {
+        display: none;
+      }
+      /* Hide scrollbar for IE and Edge */
+      #flashed-messages{
+        -ms-overflow-style: none;
+      }

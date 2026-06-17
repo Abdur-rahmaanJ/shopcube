@@ -1,0 +1,48 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Count #{{ count.id }}</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Inventory Count #{{ count.id }}</h2>
+ <p class="text-slate-400">{{ count.created_at.strftime('%Y-%m-%d %H:%M') if count.created_at else '' }} | Status: <strong>{{ count.status }}</strong></p>
+ <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.inventory.dashboard') }}">< BACK</a>
+ {% if count.status == 'draft' %}
+ <form method="POST">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+ <table class="table ">
+ <thead><tr><th>Product</th><th>Barcode</th><th>Expected</th><th>Actual</th><th>Variance</th></tr></thead>
+ <tbody>
+ {% for item in count.items %}
+ <tr>
+ <td>{{ item.product.name }}</td>
+ <td>{{ item.product.barcode }}</td>
+ <td>{{ item.expected_qty }}</td>
+ <td><input type="number" name="qty_{{ item.id }}" value="{{ item.actual_qty or item.expected_qty }}" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="width:100px;"></td>
+ <td class="{{ 'text-red-500' if item.variance < 0 else 'text-emerald-500' if item.variance> 0 }}">{{ item.variance }}</td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ <button type="submit" class="btn text-white bg-emerald-500 hover:bg-emerald-600 border-emerald-500">Complete Count</button>
+ </form>
+ {% else %}
+ <table class="table ">
+ <thead><tr><th>Product</th><th>Expected</th><th>Actual</th><th>Variance</th></tr></thead>
+ <tbody>
+ {% for item in count.items %}
+ <tr>
+ <td>{{ item.product.name }}</td>
+ <td>{{ item.expected_qty }}</td>
+ <td>{{ item.actual_qty }}</td>
+ <td class="{{ 'text-red-500' if item.variance < 0 else 'text-emerald-500' if item.variance> 0 }}">{{ item.variance }}</td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ {% endif %}
+ </div>
+</div>
+{% endblock %}

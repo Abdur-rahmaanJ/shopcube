@@ -1,0 +1,44 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'products' %}
+{% block pagehead %}
+<title>Stock Adjustments - {{ product.name }}</title>
+{% endblock %}
+{% block sidebar %}
+{% include 'product/blocks/sidebar.html' %}
+{% endblock %}
+{% block module_content %}
+<br>
+<div class="card">
+ <div class="card-body">
+ <h2>Stock Adjustments: {{ product.name }}</h2>
+ <p class="text-slate-400">Barcode: {{ product.barcode }} | Current stock: <strong>{{ product.in_stock }}</strong></p>
+ <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.product.edit_dashboard', barcode=product.barcode) }}">< BACK</a>
+ <table class="table ">
+ <thead>
+ <tr>
+ <th>Date</th>
+ <th>Change</th>
+ <th>Reason</th>
+ <th>Reference</th>
+ <th>User</th>
+ </tr>
+ </thead>
+ <tbody>
+ {% for adj in adjustments %}
+ <tr>
+ <td>{{ adj.created_at.strftime('%Y-%m-%d %H:%M') if adj.created_at else '-' }}</td>
+ <td class="{{ 'text-emerald-500' if adj.quantity_change> 0 else 'text-red-500' }}">
+ {{ '+' if adj.quantity_change> 0 }}{{ adj.quantity_change }}
+ </td>
+ <td>{{ adj.reason }}</td>
+ <td>{{ adj.reference or '-' }}</td>
+ <td>{{ adj.user_id or '-' }}</td>
+ </tr>
+ {% else %}
+ <tr><td colspan="5" class="text-slate-400">No adjustments recorded.</td></tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ </div>
+</div>
+{% endblock %}
