@@ -3,28 +3,47 @@
 {% block pagehead %}<title>Stock at {{ loc.name }}</title>{% endblock %}
 {% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
 {% block module_content %}
-<br>
-<div class="card">
- <div class="card-body">
- <h2>Stock at {{ loc.name }}</h2>
- <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.inventory.locations') }}">< BACK</a>
- <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.location_stock_update', loc_id=loc.id) }}">
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
- <table class="table ">
- <thead><tr><th>Product</th><th>Barcode</th><th>Current Stock</th><th>Adjust</th></tr></thead>
- <tbody>
- {% for item in stock_data %}
- <tr>
- <td>{{ item.product.name }}</td>
- <td>{{ item.product.barcode }}</td>
- <td>{{ item.qty }}</td>
- <td><input type="number" name="qty_{{ item.product.id }}" value="{{ item.qty }}" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " style="width:100px;"></td>
- </tr>
- {% endfor %}
- </tbody>
- </table>
- <button type="submit" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500">Save Changes</button>
- </form>
- </div>
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center gap-4 mb-6">
+        <a href="{{ url_for('shopyo_ecommerce.inventory.locations') }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700" title="Back">
+          <i class="fas fa-arrow-left text-xs"></i>
+        </a>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Stock at {{ loc.name }}</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ stock_data|length }} products</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.location_stock_update', loc_id=loc.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <table class="table">
+          <thead>
+            <tr><th>Product</th><th>Barcode</th><th>Current Stock</th><th>Adjust</th></tr>
+          </thead>
+          <tbody>
+            {% for item in stock_data %}
+            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+              <td class="text-xs font-bold">{{ item.product.name }}</td>
+              <td class="text-xs font-mono">{{ item.product.barcode }}</td>
+              <td class="text-xs">{{ item.qty }}</td>
+              <td><input type="number" name="qty_{{ item.product.id }}" value="{{ item.qty }}" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2 px-3 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" style="width:100px;"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+          <button type="submit" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+            <i class="fas fa-save"></i>Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
