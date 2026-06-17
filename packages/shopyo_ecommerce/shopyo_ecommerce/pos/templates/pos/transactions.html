@@ -3,38 +3,76 @@
 {% block pagehead %}<title>Transactions</title>{% endblock %}
 {% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
 {% block module_content %}
-<br>
-<div class="card">
- <div class="card-body">
- <h2>Transactions</h2>
- <form method="GET" class="form-inline mb-3">
- <input type="text" name="q" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Search by receipt #..." value="{{ q }}">
- <button type="submit" class="btn btn-primary">Search</button>
- </form>
- <table class="table ">
- <thead><tr><th>Receipt #</th><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Location</th><th>Discount</th><th></th></tr></thead>
- <tbody>
- {% for t in txs.items %}
- <tr>
- <td>{{ t.id }}</td>
- <td>{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
- <td>${{ '%.2f'|format(t.total_amount|float) }}</td>
- <td>{{ t.method_of_payment }}</td>
- <td>{{ t.cashier_id }}</td>
- <td>{{ t.location_id or '-' }}</td>
- <td>{% if t.discount_type %}{{ t.discount_type }} {{ t.discount_value }}{% endif %}</td>
- <td><a href="{{ url_for('shopyo_ecommerce.pos.transaction_view', tx_id=t.id) }}" class="btn px-3 py-1.5 text-[10px] text-white bg-sky-500 hover:bg-sky-600 border-sky-500">View</a></td>
- </tr>
- {% else %}<tr><td colspan="7" class="text-slate-400">No transactions</td></tr>
- {% endfor %}
- </tbody>
- </table>
- <nav>
- <ul class="pagination">
- {% if txs.has_prev %}<li class="page-item"><a class="page-link" href="?page={{ txs.prev_num }}">Previous</a></li>{% endif %}
- {% if txs.has_next %}<li class="page-item"><a class="page-link" href="?page={{ txs.next_num }}">Next</a></li>{% endif %}
- </ul>
- </nav>
- </div>
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Transactions</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">All POS transactions</p>
+      </div>
+
+      <form method="GET" class="flex items-end gap-3 mb-8 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/20">
+        <div class="flex-1 space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Search receipt #</label>
+          <input type="text" name="q" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Search..." value="{{ q }}">
+        </div>
+        <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 shrink-0 uppercase tracking-widest">
+          <i class="fas fa-search mr-1.5"></i>Search
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">All Transactions</h4>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Page {{ txs.page }} of {{ txs.pages }}</p>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Receipt #</th><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Location</th><th>Discount</th><th class="w-20"></th></tr>
+        </thead>
+        <tbody>
+          {% for t in txs.items %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">#{{ t.id }}</td>
+            <td class="text-xs">{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
+            <td class="text-xs font-bold">${{ '%.2f'|format(t.total_amount|float) }}</td>
+            <td><span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest
+              {%- if t.method_of_payment == 'cash' %} bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400
+              {%- elif t.method_of_payment == 'card' %} bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400
+              {%- else %} bg-slate-100 dark:bg-slate-800 text-slate-500{% endif %}">{{ t.method_of_payment }}</span></td>
+            <td class="text-xs text-slate-400">{{ t.cashier_id }}</td>
+            <td class="text-xs text-slate-400">{{ t.location_id or '-' }}</td>
+            <td class="text-xs text-slate-400">{% if t.discount_type %}{{ t.discount_type }} {{ t.discount_value }}{% endif %}</td>
+            <td>
+              <a href="{{ url_for('shopyo_ecommerce.pos.transaction_view', tx_id=t.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="View">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </a>
+            </td>
+          </tr>
+          {% else %}<tr><td colspan="8" class="text-[10px] text-slate-400 text-center py-8">No transactions found</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if txs.pages > 1 %}
+      <div class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-center gap-2">
+        {% if txs.has_prev %}
+        <a href="?page={{ txs.prev_num }}{% if q %}&q={{ q }}{% endif %}" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+          <i class="fas fa-chevron-left mr-1"></i>Previous
+        </a>
+        {% endif %}
+        {% if txs.has_next %}
+        <a href="?page={{ txs.next_num }}{% if q %}&q={{ q }}{% endif %}" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+          Next<i class="fas fa-chevron-right ml-1"></i>
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}
