@@ -12,8 +12,6 @@ from flask_uploads import configure_uploads
 from flask_uploads import UploadSet
 
 
-__version__ = "0.1.0"
-
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "box_info.json") as f:
     info = json.load(f)

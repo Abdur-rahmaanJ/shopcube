@@ -37,11 +37,12 @@ classifiers = [
 ]
 dependencies = [
     "shopyo",
-    "shopyo-appadmin",
-    "shopyo-auth",
-    "shopyo-dashboard",
+    "shopyo-appadmin>=1.5.0",
+    "shopyo-auth>=1.10.0",
+    "shopyo-dashboard>=1.5.1",
+    "shopyo-theme>=1.7.0"
 ]
-version = "0.1.0"
+version = "0.2.1"
 
 [project.urls]
 "Homepage" = "https://github.com/shopcube/shopcube"
