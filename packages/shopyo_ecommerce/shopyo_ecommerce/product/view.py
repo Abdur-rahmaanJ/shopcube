@@ -13,7 +13,7 @@ import flask_uploads
 from flask_login import login_required
 from shopyo.api.file import delete_file
 from shopyo.api.file import unique_filename
-from shopyo.api.html import notify_warning
+from shopyo.api.html import notify_success, notify_warning
 from shopyo.api.module import ModuleHelp
 from shopyo_appadmin.admin import admin_required
 from shopyo_ecommerce._utils import get_currency_symbol
@@ -271,6 +271,8 @@ def edit_dashboard(barcode):
         {"len": len, "product": product, "subcategory": product.subcategory}
     )
     context["vendors"] = Vendor.query.order_by(Vendor.name).all()
+    context["category"] = product.subcategory.category.name if product.subcategory else ""
+    context["currency_symbol"] = get_currency_symbol()
     return render_template("product/edit.html", **context)
 
 
@@ -449,6 +451,7 @@ def image_delete(filename, barcode):
 def adjustments(barcode):
     product = Product.query.filter(Product.barcode == barcode).first_or_404()
     context = {"product": product}
+    context["subcategory"] = product.subcategory
     context["adjustments"] = StockAdjustment.query.filter_by(product_id=product.id)\
         .order_by(StockAdjustment.created_at.desc()).all()
     return render_template("product/adjustments.html", **context)

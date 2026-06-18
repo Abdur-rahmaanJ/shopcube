@@ -44,9 +44,9 @@ def pos_required(f):
 @pos_required
 def index():
     context = mhelp.context()
-    categories = Category.query.options(
-        subqueryload(Category.subcategories).subqueryload(SubCategory.products)
-    ).all()
+    
+
+    categories = Category.query.all()
     quick_keys = QuickKey.query.order_by(QuickKey.position).all()
     locations = Location.query.filter_by(is_active=True).all()
     if not locations:
