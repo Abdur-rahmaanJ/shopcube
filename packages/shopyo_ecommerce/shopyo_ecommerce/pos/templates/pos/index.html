@@ -387,7 +387,7 @@ function showSizePicker(barcode, name, sizes, stock) {
     html += '<button class="w-full py-3 px-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-between" onclick="addSizeToCart(\''+barcode+'\',\''+name+' ('+sz.name+')\','+sz.price+','+stock+',\''+sz.name+'\')"><span class="text-xs font-bold text-slate-900">'+sz.name+'</span><span class="text-xs font-black text-primary">'+currencySymbol+parseFloat(sz.price).toFixed(2)+'</span></button>';
   });
   $('#sp-sizes').html(html);
-  $('#size-picker-modal').show();
+  $('#size-picker-modal').css('display','flex');
 }
 function addSizeToCart(barcode, displayName, price, stock, sizeName) {
   $('#size-picker-modal').hide();
@@ -403,7 +403,7 @@ function showVariableQtyPrompt(barcode, name, price, unit, stock) {
   $('#vq-unit2').text(unit);
   $('#vq-price-display').text(currencySymbol+price.toFixed(2));
   $('#vq-qty').val(50).attr('step', '1');
-  $('#variable-qty-modal').show();
+  $('#variable-qty-modal').css('display','flex');
   setTimeout(function(){ $('#vq-qty').focus().select(); }, 100);
 }
 function confirmVariableQty() {
