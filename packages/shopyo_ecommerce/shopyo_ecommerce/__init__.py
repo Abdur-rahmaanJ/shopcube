@@ -82,6 +82,8 @@ class ShopyoEcommerce:
             )
             parent.register_blueprint(mod.module_blueprint)
 
+        from shopyo_ecommerce.resource.models import Resource  # noqa: F401
+
         global_modules = [
             "shopyo_ecommerce.category.global",
             "shopyo_ecommerce.shop.global",
