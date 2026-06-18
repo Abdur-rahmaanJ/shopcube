@@ -20,9 +20,9 @@
   .stock-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background-color: #e8e8e8; color: #2d2d2d; white-space: nowrap; }
   .stock-badge.out-of-stock { background-color: #ffe0e0; color: #c0392b; font-weight: 600; }
   .stock-badge.low-stock { background-color: #fff3cd; color: #856404; font-weight: 600; }
-  .cart-panel { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%; border: none; }
+  .cart-panel { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: none; }
   .cart-header { padding: 20px; border-bottom: 1px solid #f0f0f0; border-radius: 12px 12px 0 0; }
-  .cart-items { flex-grow: 1; overflow-y: auto; }
+  .cart-items { max-height: 400px; overflow-y: auto; }
   .cart-items table { margin-bottom: 0; }
   .cart-items th { border-top: none; border-bottom: 2px solid #f0f0f0; color: #888; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
   .cart-items td { vertical-align: middle; border-top: 1px solid #f8f9fa; padding: 12px 15px; }
@@ -140,7 +140,7 @@
   </div>
 
   <!-- RIGHT: Cart -->
-  <div class="w-full lg:w-96 xl:w-[420px] shrink-0 flex flex-col">
+  <div class="w-full lg:w-96 xl:w-[420px] shrink-0 self-start flex flex-col">
     <div class="cart-panel">
       <div class="cart-header">
         <div class="flex items-center justify-between">
