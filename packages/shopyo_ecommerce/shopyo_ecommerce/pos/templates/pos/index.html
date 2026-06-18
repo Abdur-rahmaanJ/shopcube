@@ -535,7 +535,7 @@ function calculateChange() {
 function applySearch() {
   var term = $('#product-search').val().toLowerCase(), active = ($('.cat-pill.active').data('cat-id')||'all')+'';
   $('.product-item-wrapper').each(function() {
-    var el = $(this), name = el.data('name'), barcode = String(el.data('barcode')||''), cat = String(el.data('category-id'));
+    var el = $(this), name = String(el.data('name')||''), barcode = String(el.data('barcode')||''), cat = String(el.data('category-id'));
     el.toggle( (name.includes(term)||barcode.includes(term)) && (active==='all'||cat===active) );
   });
 }
