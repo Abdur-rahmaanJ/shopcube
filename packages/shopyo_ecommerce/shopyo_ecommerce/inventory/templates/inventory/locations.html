@@ -3,33 +3,59 @@
 {% block pagehead %}<title>Locations</title>{% endblock %}
 {% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
 {% block module_content %}
-<br>
-<div class="card">
- <div class="card-body">
- <h2>Locations / Warehouses</h2>
- <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.location_add') }}" class="form-inline mb-3">
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
- <input type="text" name="name" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Name" required>
- <input type="text" name="address" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mr-2" placeholder="Address" style="flex:1;">
- <button type="submit" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500">Add</button>
- </form>
- <table class="table ">
- <thead><tr><th>Name</th><th>Address</th><th>Active</th><th>Actions</th></tr></thead>
- <tbody>
- {% for l in locations %}
- <tr><td>{{ l.name }}</td><td>{{ l.address or '-' }}</td><td>{{ 'Yes' if l.is_active else 'No' }}</td>
- <td>
- <a href="{{ url_for('shopyo_ecommerce.inventory.location_stock', loc_id=l.id) }}" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500 px-3 py-1.5 text-[10px]">Stock</a>
- <form action="{{ url_for('shopyo_ecommerce.inventory.location_delete', loc_id=l.id) }}" method="POST" style="display:inline;">
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
- <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500 px-3 py-1.5 text-[10px]">Delete</button>
- </form>
- </td>
- </tr>
- {% else %}<tr><td colspan="4" class="text-slate-400">No locations</td></tr>
- {% endfor %}
- </tbody>
- </table>
- </div>
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Locations / Warehouses</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ locations|length }} total</p>
+        </div>
+      </div>
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.location_add') }}" class="flex gap-2 mb-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="text" name="name" class="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Location name" required>
+        <input type="text" name="address" class="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Address (optional)">
+        <button type="submit" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+          <i class="fas fa-plus-circle"></i>Add
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <table class="table">
+        <thead>
+          <tr><th>Name</th><th>Address</th><th>Active</th><th class="w-24"></th></tr>
+        </thead>
+        <tbody>
+          {% for l in locations %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">{{ l.name }}</td>
+            <td class="text-xs">{{ l.address or '-' }}</td>
+            <td>
+              {% if l.is_active %}
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">Active</span>
+              {% else %}
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300">Inactive</span>
+              {% endif %}
+            </td>
+            <td>
+              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <a href="{{ url_for('shopyo_ecommerce.inventory.location_stock', loc_id=l.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Stock"><i class="fas fa-boxes text-xs"></i></a>
+                <form action="{{ url_for('shopyo_ecommerce.inventory.location_delete', loc_id=l.id) }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Delete" onclick="return confirm('Delete location {{ l.name }}?')"><i class="fas fa-trash-alt text-xs"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}<tr><td colspan="4" class="text-[10px] text-slate-400 text-center py-8">No locations</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

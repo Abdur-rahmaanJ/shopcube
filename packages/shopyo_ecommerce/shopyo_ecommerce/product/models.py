@@ -27,6 +27,9 @@ class Product(PkModel):
     selling_price = db.Column(db.Numeric(10, 2))
     is_onsale = db.Column(db.Boolean, default=False)
     is_featured = db.Column(db.Boolean, default=False)
+    is_variable_qty = db.Column(db.Boolean, default=False)
+    unit_label = db.Column(db.String(20), default="ml")
+    unit_step = db.Column(db.Numeric(10, 2), default=1.0)
 
     resources = db.relationship(
         "Resource", backref="resources", lazy=True, cascade="all, delete"
@@ -77,7 +80,7 @@ class Product(PkModel):
         return "\n".join([c.name for c in self.colors])
 
     def get_size_string(self):
-        return "\n".join([s.name for s in self.sizes])
+        return "\n".join([f"{s.name}:{s.price}" if s.price else s.name for s in self.sizes])
 
     def get_one_image_url(self):
         if len(self.resources) == 0:
@@ -154,3 +157,4 @@ class Size(PkModel):
     __tablename__ = "shopyo_ecommerce_size"
     name = db.Column(db.String(100))
     product_id = db.Column(db.Integer, db.ForeignKey("shopyo_ecommerce_product.id"))
+    price = db.Column(db.Numeric(10, 2), nullable=True)

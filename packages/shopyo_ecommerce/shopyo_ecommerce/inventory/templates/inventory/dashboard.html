@@ -3,39 +3,59 @@
 {% block pagehead %}<title>Inventory Counts</title>{% endblock %}
 {% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
 {% block module_content %}
-<br>
-<div class="card">
- <div class="card-body">
- <h2>Inventory Management</h2>
- <div class="mb-4">
- <a href="{{ url_for('shopyo_ecommerce.inventory.new') }}" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500 mb-3">New Count</a>
- <a href="{{ url_for('shopyo_ecommerce.inventory.locations') }}" class="btn text-white bg-emerald-500 hover:bg-emerald-600 border-emerald-500 mb-3">Locations</a>
- <a href="{{ url_for('shopyo_ecommerce.inventory.transfers') }}" class="btn btn-warning mb-3">Transfers</a>
- <a href="{{ url_for('shopyo_ecommerce.inventory.reports') }}" class="btn bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200 mb-3">Reports</a>
- </div>
- <h4>Recent Counts</h4>
- {% if counts %}
- <table class="table ">
- <thead><tr><th>#</th><th>Date</th><th>Items</th><th>Status</th><th>Actions</th></tr></thead>
- <tbody>
- {% for c in counts %}
- <tr>
- <td>{{ c.id }}</td>
- <td>{{ c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else '-' }}</td>
- <td>{{ c.items|length }}</td>
- <td><span class="badge badge-{{ 'secondary' if c.status=='draft' else 'success' }}">{{ c.status }}</span></td>
- <td>
- <a href="{{ url_for('shopyo_ecommerce.inventory.count', count_id=c.id) }}" class="btn btn-warning px-3 py-1.5 text-[10px]">View</a>
- <form action="{{ url_for('shopyo_ecommerce.inventory.delete', count_id=c.id) }}" method="POST" style="display:inline;">
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
- <button class="btn text-white bg-red-500 hover:bg-red-600 border-red-500 px-3 py-1.5 text-[10px]" onclick="return confirm('Delete?')">Delete</button>
- </form>
- </td>
- </tr>
- {% endfor %}
- </tbody>
- </table>
- {% else %}<p class="text-slate-400">No counts yet.</p>{% endif %}
- </div>
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Inventory Counts</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ counts|length }} total</p>
+        </div>
+        <div class="flex gap-2">
+          <a href="{{ url_for('shopyo_ecommerce.inventory.new') }}" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+            <i class="fas fa-plus-circle"></i>New Count
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <table class="table">
+        <thead>
+          <tr><th>#</th><th>Date</th><th>Items</th><th>Status</th><th class="w-24"></th></tr>
+        </thead>
+        <tbody>
+          {% for c in counts %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">{{ c.id }}</td>
+            <td class="text-xs">{{ c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else '-' }}</td>
+            <td class="text-xs">{{ c.items|length }}</td>
+            <td>
+              {% if c.status == 'draft' %}
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300">Draft</span>
+              {% elif c.status == 'completed' %}
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400">Completed</span>
+              {% else %}
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">Reviewed</span>
+              {% endif %}
+            </td>
+            <td>
+              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <a href="{{ url_for('shopyo_ecommerce.inventory.count', count_id=c.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="View"><i class="fas fa-eye text-xs"></i></a>
+                <form action="{{ url_for('shopyo_ecommerce.inventory.delete', count_id=c.id) }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Delete" onclick="return confirm('Delete count #{{ c.id }}?')"><i class="fas fa-trash-alt text-xs"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}<tr><td colspan="5" class="text-[10px] text-slate-400 text-center py-8">No counts yet</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

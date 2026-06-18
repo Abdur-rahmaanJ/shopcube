@@ -140,23 +140,58 @@
           </div>
         </div>
 
+        <div class="space-y-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><i class="fas fa-weight text-xs"></i></div>
+            <div>
+              <h4 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight">Variable Quantity</h4>
+              <p class="text-[10px] text-slate-400">For products sold by ml, g, or other units</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="radio" name="is_variable_qty" value="True"
+                     class="w-4 h-4 border-slate-300 dark:border-slate-600 text-primary focus:ring-primary/20">
+              <span class="text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Variable</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="radio" name="is_variable_qty" value="False" checked
+                     class="w-4 h-4 border-slate-300 dark:border-slate-600 text-slate-500 focus:ring-slate-500/20">
+              <span class="text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-slate-800 transition-colors">Fixed</span>
+            </label>
+          </div>
+          <div class="grid grid-cols-2 gap-3 variable-fields" style="display:none">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Unit Label</label>
+              <input type="text" name="unit_label" value="ml"
+                     class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                     placeholder="ml, g, oz...">
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Step</label>
+              <input type="number" name="unit_step" value="1" step="0.1" min="0.1"
+                     class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+            </div>
+          </div>
+        </div>
+
         <div class="space-y-1">
           <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Colors</label>
           <div class="relative">
             <i class="fa fa-palette absolute left-4 top-4 text-slate-400 text-xs"></i>
             <textarea rows="3" name="colors" autocomplete="off" id="color_description"
                       class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-                      placeholder="One per line:&#10;Red&#10;Blue&#10;Green"></textarea>
+                      placeholder="One per line or comma-separated:&#10;Red, Blue, Green"></textarea>
           </div>
         </div>
 
         <div class="space-y-1">
-          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Sizes</label>
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Sizes <span class="text-slate-400 font-normal normal-case tracking-normal">(add <code>:price</code> for variant pricing, e.g. <code>50ml:100.00</code>)</span></label>
           <div class="relative">
             <i class="fa fa-ruler-combined absolute left-4 top-4 text-slate-400 text-xs"></i>
             <textarea rows="3" name="sizes" autocomplete="off" id="size_description"
                       class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-                      placeholder="One per line:&#10;S&#10;M&#10;L&#10;XL"></textarea>
+                      placeholder="One per line or comma-separated:&#10;50ml:100.00&#10;100ml:180.00&#10;S, M, L, XL"></textarea>
           </div>
         </div>
 
@@ -203,6 +238,11 @@ document.getElementById('barcode')?.addEventListener('input', function() {
         ? '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
         : '<i class="fa fa-list-alt"></i>';
     });
+});
+document.querySelectorAll('input[name="is_variable_qty"]').forEach(function(r) {
+  r.addEventListener('change', function() {
+    document.querySelector('.variable-fields').style.display = this.value === 'True' ? 'grid' : 'none';
+  });
 });
 </script>
 {% endblock %}

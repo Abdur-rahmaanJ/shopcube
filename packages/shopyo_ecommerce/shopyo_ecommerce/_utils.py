@@ -1,6 +1,14 @@
 import re
 
 from shopyo.api.validators import is_empty_str
+from shopyo_settings.helpers import get_setting
+from iso4217parse import by_alpha3
+
+
+def get_currency_symbol():
+    code = get_setting("CURRENCY") or "USD"
+    currency = by_alpha3(code)
+    return currency.symbols[0] if currency else code
 from shopyo.api.file import unique_filename
 from werkzeug.utils import secure_filename
 from wtforms.validators import ValidationError

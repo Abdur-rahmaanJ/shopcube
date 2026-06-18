@@ -34,7 +34,7 @@ def index():
     form = ContactForm()
 
     context.update({"form": form})
-    return render_template(f"{get_active_front_theme()}/contact.html", **context)
+    return render_template("contact/contact_form.html", **context)
 
 
 @contact_blueprint.route("/validate_message", methods=["GET", "POST"])

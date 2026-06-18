@@ -3,20 +3,31 @@
 {% block pagehead %}<title>New Inventory Count</title>{% endblock %}
 {% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
 {% block module_content %}
-<br>
-<div class="card">
- <div class="card-body">
- <h2>New Inventory Count</h2>
- <p class="text-slate-400">This will create a count sheet for all products with current stock as expected values.</p>
- <a class="btn btn-primary mb-3" href="{{ url_for('shopyo_ecommerce.inventory.dashboard') }}">< BACK</a>
- <form method="POST">
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
- <div class="space-y-2">
- <label>Notes (optional)</label>
- {{ form.notes(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ", rows=2) }}
- </div>
- {{ form.submit(class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500") }}
- </form>
- </div>
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center gap-4 mb-6">
+        <a href="{{ url_for('shopyo_ecommerce.inventory.dashboard') }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700" title="Back">
+          <i class="fas fa-arrow-left text-xs"></i>
+        </a>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">New Inventory Count</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Creates a count sheet for all products</p>
+        </div>
+      </div>
+      <div class="max-w-lg">
+        <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <div class="space-y-4">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Notes (optional)</label>
+              {{ form.notes(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", rows=3) }}
+            </div>
+            {{ form.submit(class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5 cursor-pointer border-0") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

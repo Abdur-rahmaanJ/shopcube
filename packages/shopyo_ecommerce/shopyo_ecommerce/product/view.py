@@ -16,6 +16,7 @@ from shopyo.api.file import unique_filename
 from shopyo.api.html import notify_warning
 from shopyo.api.module import ModuleHelp
 from shopyo_appadmin.admin import admin_required
+from shopyo_ecommerce._utils import get_currency_symbol
 from sqlalchemy import exists
 from werkzeug.utils import secure_filename
 
@@ -43,6 +44,7 @@ _ALLOWED_PRODUCT_FIELDS = {
     "barcode", "name", "description", "date", "price",
     "selling_price", "cost_price", "in_stock", "min_stock",
     "discontinued", "vendor_id",
+    "is_variable_qty", "unit_label", "unit_step",
 }
 
 
@@ -96,6 +98,25 @@ def _apply_product_fields(product, form):
         dc = form.get("discontinued", "False")
         updates["discontinued"] = dc == "True"
 
+    # variable qty — boolean
+    if "is_variable_qty" in _ALLOWED_PRODUCT_FIELDS:
+        vq = form.get("is_variable_qty", "False")
+        updates["is_variable_qty"] = vq == "True"
+
+    # unit_label
+    if "unit_label" in _ALLOWED_PRODUCT_FIELDS:
+        ul = form.get("unit_label", "").strip()
+        if ul:
+            updates["unit_label"] = ul
+
+    # unit_step
+    if "unit_step" in _ALLOWED_PRODUCT_FIELDS:
+        us = form.get("unit_step", "1")
+        try:
+            updates["unit_step"] = float(us)
+        except (ValueError, TypeError):
+            updates["unit_step"] = 1.0
+
     for attr, value in updates.items():
         setattr(product, attr, value)
     return product
@@ -129,7 +150,7 @@ def list(subcategory_id):
     context = {}
     subcategory = SubCategory.query.get(subcategory_id)
 
-    context.update({"subcategory": subcategory})
+    context.update({"subcategory": subcategory, "currency_symbol": get_currency_symbol()})
     return render_template("product/list.html", **context)
 
 
@@ -171,12 +192,24 @@ def add(subcategory_id):
             _apply_product_fields(p, request.form)
 
             sizes = sizes.strip().strip("\n")
-            sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
-            sizes = [Size(name=s) for s in sizes]
-            p.sizes = sizes
+            sizes = [s.strip("\r") for s in sizes.replace(",", "\n").split("\n") if s.strip()]
+            size_objs = []
+            for s in sizes:
+                if ":" in s:
+                    parts = s.rsplit(":", 1)
+                    size_name = parts[0].strip()
+                    try:
+                        size_price = float(parts[1].strip())
+                    except (ValueError, IndexError):
+                        size_price = None
+                else:
+                    size_name = s
+                    size_price = None
+                size_objs.append(Size(name=size_name, price=size_price))
+            p.sizes = size_objs
 
             colors = colors.strip().strip("\n")
-            colors = [c.strip("\r") for c in colors.split("\n") if c.strip()]
+            colors = [c.strip("\r") for c in colors.replace(",", "\n").split("\n") if c.strip()]
             colors = [Color(name=c) for c in colors]
             p.colors = colors
 
@@ -272,13 +305,25 @@ def update(subcategory_id):
         with db.session.no_autoflush:
             p.sizes.clear()
             sizes = sizes.strip().strip("\n")
-            sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
-            sizes = [Size(name=s, product_id=p.id) for s in sizes]
-            p.sizes.extend(sizes)
+            size_list = [s.strip("\r") for s in sizes.replace(",", "\n").split("\n") if s.strip()]
+            size_objs = []
+            for s in size_list:
+                if ":" in s:
+                    parts = s.rsplit(":", 1)
+                    size_name = parts[0].strip()
+                    try:
+                        size_price = float(parts[1].strip())
+                    except (ValueError, IndexError):
+                        size_price = None
+                else:
+                    size_name = s
+                    size_price = None
+                size_objs.append(Size(name=size_name, price=size_price, product_id=p.id))
+            p.sizes.extend(size_objs)
         with db.session.no_autoflush:
             p.colors.clear()
             colors = colors.strip().strip("\n")
-            colors = [c.strip("\r") for c in colors.split("\n") if c.strip()]
+            colors = [c.strip("\r") for c in colors.replace(",", "\n").split("\n") if c.strip()]
             colors = [Color(name=c, product_id=p.id) for c in colors]
             p.colors.extend(colors)
         # p.category = category
