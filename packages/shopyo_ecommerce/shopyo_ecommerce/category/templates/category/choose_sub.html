@@ -23,8 +23,8 @@
       {%if category.subcategories%}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {%for subcategory in category.subcategories%}
-        <a href="{{url_for('shopyo_ecommerce.product.list', subcategory_id=subcategory.id)}}"
-           class="group flex items-center gap-4 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+        <div onclick="event.target.closest('.card-actions') || (window.open('{{url_for("shopyo_ecommerce.product.list", subcategory_id=subcategory.id)}}', '_self'))"
+             class="group flex items-center gap-4 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-pointer">
           <div class="w-14 h-14 rounded-xl bg-slate-50 dark:bg-slate-800 overflow-hidden shrink-0 border border-slate-100 dark:border-slate-700 flex items-center justify-center">
             {%set filename_='default'%}
             {%if subcategory.resources%}
@@ -38,23 +38,23 @@
             <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors block truncate">{{subcategory.name}}</span>
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{subcategory.get_num_products()}} products</span>
           </div>
-          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div class="card-actions flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <span onclick="event.stopPropagation(); window.open('{{url_for("shopyo_ecommerce.category.manage_sub", category_name=category.name)}}', '_self')"
                   class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all border border-amber-100 dark:border-amber-500/20 cursor-pointer"
                   title="Edit subcategories">
               <i class="fas fa-pencil-alt text-[10px]"></i>
             </span>
-            <form method="POST" action="{{ url_for('shopyo_ecommerce.category.sub_delete', subcategory_id=subcategory.id) }}" style="display:inline;">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-              <button onclick="event.stopPropagation(); return confirm('Delete subcategory {{subcategory.name}}?')"
-                      class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700 cursor-pointer"
-                      title="Delete subcategory">
-                <i class="fas fa-trash-alt text-[10px]"></i>
-              </button>
-            </form>
+            <span onclick="event.stopPropagation(); if(confirm('Delete subcategory {{subcategory.name}}?')){document.getElementById('del-form-{{subcategory.id}}').submit();}"
+                  class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700 cursor-pointer"
+                  title="Delete subcategory">
+              <i class="fas fa-trash-alt text-[10px]"></i>
+            </span>
           </div>
           <i class="fas fa-chevron-right text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors text-xs"></i>
-        </a>
+        </div>
+        <form id="del-form-{{subcategory.id}}" method="POST" action="{{ url_for('shopyo_ecommerce.category.sub_delete', subcategory_id=subcategory.id) }}" style="display:none;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        </form>
         {%endfor%}
       </div>
       {%else%}
