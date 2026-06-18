@@ -43,7 +43,7 @@ dependencies = [
     "shopyo-theme>=1.7.0",
     "iso4217parse>=0.6.2"
 ]
-version = "0.3.2"
+version = "0.3.3"
 
 [project.urls]
 "Homepage" = "https://github.com/shopcube/shopcube"
