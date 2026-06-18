@@ -68,20 +68,43 @@
  </div>
  <textarea rows="10" name="description" autocomplete="off" id="description" type="text" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="Product Description">{{product.description}}</textarea>
  </div>
- <label>colors</label>
- <div class="flex mb-3">
- <div class="flex-prepend">
- <span class="flex-text"><i class="fa fa-list-alt"></i></span>
- </div>
- <textarea rows="5" name="colors" autocomplete="off" id="color_description" type="text" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="">{{ product.get_color_string() }}</textarea>
- </div>
- <label>sizes</label>
- <div class="flex mb-3">
- <div class="flex-prepend">
- <span class="flex-text"><i class="fa fa-list-alt"></i></span>
- </div>
- <textarea rows="5" name="sizes" autocomplete="off" id="size_description" type="text" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="">{{ product.get_size_string() }}</textarea>
- </div>
+  <label>variable qty</label>
+  <div class="flex items-center gap-3 mb-3 px-1">
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="radio" name="is_variable_qty" value="True" {{ 'checked' if product.is_variable_qty }}
+             class="w-4 h-4 border-slate-300 dark:border-slate-600 text-primary focus:ring-primary/20">
+      <span class="text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Variable</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="radio" name="is_variable_qty" value="False" {{ '' if product.is_variable_qty else 'checked' }}
+             class="w-4 h-4 border-slate-300 dark:border-slate-600 text-slate-500 focus:ring-slate-500/20">
+      <span class="text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-slate-800 transition-colors">Fixed</span>
+    </label>
+  </div>
+  <div class="flex gap-3 mb-3 variable-fields" {{ 'style=\"display:none\"' if not product.is_variable_qty }}>
+    <div class="flex-1">
+    <input type="text" name="unit_label" value="{{ product.unit_label or 'ml' }}"
+           class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="ml, g...">
+    </div>
+    <div class="flex-1">
+    <input type="number" name="unit_step" value="{{ product.unit_step or 1 }}" step="0.1" min="0.1"
+           class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+    </div>
+  </div>
+  <label>colors</label>
+  <div class="flex mb-3">
+  <div class="flex-prepend">
+  <span class="flex-text"><i class="fa fa-list-alt"></i></span>
+  </div>
+  <textarea rows="4" name="colors" autocomplete="off" id="color_description" type="text" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="One per line or comma-separated">{{ product.get_color_string() }}</textarea>
+  </div>
+  <label>sizes <span class="text-slate-400 font-normal normal-case tracking-normal">(add <code>:price</code> for variant pricing, e.g. <code>50ml:100.00</code>)</span></label>
+  <div class="flex mb-3">
+  <div class="flex-prepend">
+  <span class="flex-text"><i class="fa fa-list-alt"></i></span>
+  </div>
+  <textarea rows="4" name="sizes" autocomplete="off" id="size_description" type="text" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none " placeholder="One per line or comma-separated:&#10;50ml:100.00&#10;100ml:180.00&#10;S, M, L, XL">{{ product.get_size_string() }}</textarea>
+  </div>
  <!--
  <label>category</label>
  <div class="flex mb-3">
@@ -196,14 +219,14 @@
  <input required type="submit" class="btn text-white bg-sky-500 hover:bg-sky-600 border-sky-500" value="edit">
  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
  <input type="hidden" name="product_id" value="{{ product.id }}" />
- <script>
- // Limit appointment date selections to current date and the future.
- // Format is yyyy-mm-dd according to section 2.4.5.2 of the W3C HTML 5.2 spec:
- // https://www.w3.org/TR/html52/infrastructure.html#valid-date-string
- /*(function() {
- document.getElementById("noHistoricDates").setAttribute("min", new Date().toISOString().split("T")[0]);
- })();*/
- </script>
+  <script>
+  document.querySelectorAll('input[name="is_variable_qty"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      var f = document.querySelector('.variable-fields');
+      if (f) f.style.display = this.value === 'True' ? 'flex' : 'none';
+    });
+  });
+  </script>
  </form>
  </div>
 </div>

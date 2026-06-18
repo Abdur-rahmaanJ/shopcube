@@ -20,23 +20,7 @@ from shopyo_ecommerce.pos.models import Transaction, TransactionItem
 from shopyo_ecommerce.pos.models import Shift
 from shopyo_ecommerce.pos.models import QuickKey
 from shopyo_ecommerce.product.models import Product
-from shopyo_settings.helpers import get_setting
-
-CURRENCY_SYMBOL_MAP = {
-    "USD": "$", "EUR": "\u20ac", "GBP": "\u00a3", "JPY": "\u00a5",
-    "CAD": "$", "AUD": "$", "CHF": "Fr", "CNY": "\u00a5",
-    "INR": "\u20b9", "MXN": "$", "BRL": "R$", "KRW": "\u20a9",
-    "SEK": "kr", "NOK": "kr", "DKK": "kr", "NZD": "$",
-    "SGD": "$", "HKD": "$", "MYR": "RM", "THB": "\u0e3f",
-    "PHP": "\u20b1", "IDR": "Rp", "VND": "\u20ab", "ZAR": "R",
-    "TRY": "\u20ba", "RUB": "\u20bd", "PLN": "z\u0142", "CZK": "K\u010d",
-    "ILS": "\u20aa", "AED": "dh", "SAR": "SR", "EGP": "E\u00a3", "MUR": "Rs",
-}
-
-def get_currency_symbol():
-    code = get_setting("CURRENCY") or "USD"
-    return CURRENCY_SYMBOL_MAP.get(code, code)
-
+from shopyo_ecommerce._utils import get_currency_symbol
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]
@@ -104,20 +88,23 @@ def transaction():
     errors = []
     computed_total = 0
     for barcode, item_data in items_data.items():
-        quantity = item_data.get("count", 0)
-        if not isinstance(quantity, int) or quantity < 1:
+        quantity = float(item_data.get("count", 0))
+        if quantity < 0.01:
             errors.append(f"Invalid quantity for barcode {barcode}")
             continue
         product = Product.query.filter_by(barcode=str(barcode)).first()
         if product is None:
             errors.append(f"Product not found: {barcode}")
-        elif quantity > product.in_stock:
+        elif not product.is_variable_qty and quantity != int(quantity):
+            errors.append(f"Quantity must be whole number for {product.name}")
+        elif not product.is_variable_qty and int(quantity) > product.in_stock:
             errors.append(
                 f"Insufficient stock for {product.name}: "
-                f"requested {quantity}, available {product.in_stock}"
+                f"requested {int(quantity)}, available {product.in_stock}"
             )
         else:
-            computed_total += product.selling_price * quantity
+            unit_price = float(item_data.get("unit_price", product.selling_price))
+            computed_total += unit_price * quantity
 
     if errors:
         return jsonify({"success": False, "message": "; ".join(errors)}), 400
@@ -151,17 +138,19 @@ def transaction():
     transaction.card_auth_code = card_auth_code or None
 
     for barcode, item_data in items_data.items():
-        quantity = item_data["count"]
+        quantity = float(item_data["count"])
         product = Product.query.filter_by(barcode=str(barcode)).first()
-        product.in_stock -= quantity
+        deduct = int(quantity) if not product.is_variable_qty else int(quantity)
+        product.in_stock -= deduct
         if location_id:
             current = product.stock_at(location_id)
-            product.set_stock(location_id, current - quantity)
-        product.log_adjustment(-quantity, "POS sale", f"Transaction via {payment_method}")
+            product.set_stock(location_id, current - deduct)
+        product.log_adjustment(-deduct, "POS sale", f"Transaction via {payment_method}")
+        unit_price = float(item_data.get("unit_price", product.selling_price))
         item = TransactionItem(
             product_barcode=barcode,
             quantity=quantity,
-            unit_price=product.selling_price,
+            unit_price=unit_price,
         )
         transaction.items.append(item)
 
@@ -255,8 +244,8 @@ def process_return(tx_id):
     for item in tx.items:
         product = Product.query.filter_by(barcode=item.product_barcode).first()
         if product:
-            product.in_stock = (product.in_stock or 0) + item.quantity
-            product.log_adjustment(item.quantity, "return", f"Return of TX #{tx.id}")
+            product.in_stock = (product.in_stock or 0) + int(item.quantity)
+            product.log_adjustment(int(item.quantity), "return", f"Return of TX #{tx.id}")
     flash(f"Return processed. Refund: ${float(tx.total_amount or 0):.2f}", "success")
     return redirect(url_for("shopyo_ecommerce.pos.returns"))
 
