@@ -59,6 +59,7 @@ dependencies = [
     "werkzeug==2.2.2",
     "wtforms==3.0.1",
     "setuptools",
+    "iso4217parse>=0.6.2",
 ]
 
 [project.urls]

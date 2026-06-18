@@ -40,9 +40,10 @@ dependencies = [
     "shopyo-appadmin>=1.5.0",
     "shopyo-auth>=1.10.0",
     "shopyo-dashboard>=1.5.1",
-    "shopyo-theme>=1.7.0"
+    "shopyo-theme>=1.7.0",
+    "iso4217parse>=0.6.2"
 ]
-version = "0.2.1"
+version = "0.2.2"
 
 [project.urls]
 "Homepage" = "https://github.com/shopcube/shopcube"

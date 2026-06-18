@@ -559,73 +559,92 @@ def upload_check():
             products = pd.read_excel(xls, xls.sheet_names[0])
 
             for i, row in products.iterrows():
-                barcode = str(row[0]).strip()
-                name = str(row[1]).strip()
-                description = str(row[2]).strip()
-                colors = str(row[3]).strip()
-                sizes = str(row[4]).strip()
-                price = str(row[5]).strip()
-                selling_price = str(row[6]).strip()
-                in_stock = str(row[7]).strip()
-                discontinued = str(row[8]).strip()
-                category_name = str(row[9]).strip()
-                subcategory_name = str(row[10]).strip()
+                try:
+                    barcode = str(row.iloc[0]).strip() if pd.notna(row.iloc[0]) else ""
+                    name = str(row.iloc[1]).strip() if pd.notna(row.iloc[1]) else ""
+                    description = str(row.iloc[2]).strip() if pd.notna(row.iloc[2]) else ""
+                    colors = str(row.iloc[3]).strip() if pd.notna(row.iloc[3]) else ""
+                    sizes = str(row.iloc[4]).strip() if pd.notna(row.iloc[4]) else ""
+                    price_val = row.iloc[5]
+                    selling_price_val = row.iloc[6]
+                    in_stock_val = row.iloc[7]
+                    discontinued = isdiscontinued(row.iloc[8])
+                    is_variable_qty = str(row.iloc[9]).strip().lower() if pd.notna(row.iloc[9]) else ""
+                    unit_label = str(row.iloc[10]).strip() if pd.notna(row.iloc[10]) else ""
+                    category_name = str(row.iloc[11]).strip().lower() if pd.notna(row.iloc[11]) else ""
+                    subcategory_name = str(row.iloc[12]).strip().lower() if pd.notna(row.iloc[12]) else ""
 
-                discontinued = isdiscontinued(row[8])
+                    with db.session.no_autoflush:
+                        product = Product.query.filter(Product.barcode == barcode).first()
+                        category = Category.query.filter(
+                            Category.name == category_name
+                        ).first()
+                        subcategory = SubCategory.query.filter(
+                            SubCategory.name == subcategory_name
+                        ).first()
 
-                with db.session.no_autoflush:
-                    product = Product.query.filter(Product.barcode == barcode).first()
-                    category = Category.query.filter(
-                        Category.name == category_name
-                    ).first()
-                    subcategory = SubCategory.query.filter(
-                        SubCategory.name == subcategory_name
-                    ).first()
-                    already_existed = False
+                        if not subcategory:
+                            subcategory = SubCategory(name=subcategory_name)
 
-                    if not subcategory:
-                        subcategory = SubCategory(name=subcategory_name)
+                        if not category:
+                            category = Category(name=category_name)
 
-                    if not category:
-                        category = Category(name=category_name)
+                        if not product:
+                            product = Product()
 
-                    if not product:
-                        already_existed = True
-                        product = Product()
+                        product.barcode = barcode
+                        product.name = name
+                        product.description = description
 
-                    product.barcode = barcode
-                    product.name = name
-                    product.description = description
-                    # product.date = date
+                        try:
+                            product.price = float(price_val) if pd.notna(price_val) else 0
+                        except (ValueError, TypeError):
+                            product.price = 0
+                        try:
+                            product.selling_price = float(selling_price_val) if pd.notna(selling_price_val) else 0
+                        except (ValueError, TypeError):
+                            product.selling_price = 0
+                        try:
+                            product.in_stock = int(float(in_stock_val)) if pd.notna(in_stock_val) else 0
+                        except (ValueError, TypeError):
+                            product.in_stock = 0
+                        product.discontinued = discontinued
+                        product.is_variable_qty = is_variable_qty in ("yes", "1", "true")
+                        if product.is_variable_qty and unit_label:
+                            product.unit_label = unit_label
 
-                    if not str(price).strip():
-                        price = 0
-                    product.price = price
-                    product.selling_price = selling_price
-                    product.in_stock = in_stock
-                    product.discontinued = discontinued
+                        product.sizes.clear()
+                        size_list = [s.strip("\r") for s in sizes.replace(",", "\n").split("\n") if s.strip()]
+                        size_objs = []
+                        for s in size_list:
+                            if ":" in s:
+                                parts = s.rsplit(":", 1)
+                                size_name = parts[0].strip()
+                                try:
+                                    size_price = float(parts[1].strip())
+                                except (ValueError, IndexError):
+                                    size_price = None
+                            else:
+                                size_name = s
+                                size_price = None
+                            size_objs.append(Size(name=size_name, price=size_price, product_id=product.id))
+                        product.sizes.extend(size_objs)
 
-                    product.sizes.clear()
-                    sizes = sizes.strip().strip("\n")
-                    sizes = [s.strip("\r") for s in sizes.split("\n") if s.strip()]
-                    sizes = [Size(name=s, product_id=product.id) for s in sizes]
-                    product.sizes.extend(sizes)
+                        product.colors.clear()
+                        color_list = [c.strip("\r") for c in colors.replace(",", "\n").split("\n") if c.strip()]
+                        color_objs = [Color(name=c, product_id=product.id) for c in color_list]
+                        product.colors.extend(color_objs)
 
-                    product.colors.clear()
-                    colors = colors.strip().strip("\n")
-                    colors = [c.strip("\r") for c in colors.split("\n") if c.strip()]
-                    colors = [Color(name=c, product_id=product.id) for c in colors]
-                    product.colors.extend(colors)
-
-                category.subcategories.append(subcategory)
-                subcategory.products.append(product)
-            db.session.add(category)
-            db.session.add(subcategory)
-            db.session.add(product)
-
-            print(product, subcategory, category)
-
-            db.session.commit()
+                    category.subcategories.append(subcategory)
+                    subcategory.products.append(product)
+                    db.session.add(category)
+                    db.session.add(subcategory)
+                    db.session.add(product)
+                    db.session.commit()
+                except Exception as e:
+                    db.session.rollback()
+                    print(f"SKIP row {i}: {type(e).__name__}: {e}")
+                    continue
 
             flash(notify_success(f"Products uploaded: {form.product_file.data.name}"))
             os.remove(file_path)

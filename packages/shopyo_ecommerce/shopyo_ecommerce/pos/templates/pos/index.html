@@ -113,14 +113,15 @@
         {% for product in subcategory.products %}
         {% set is_low = product.min_stock and product.min_stock > 0 and product.in_stock <= product.min_stock and product.in_stock > 0 %}
         <div class="product-item-wrapper" data-category-id="{{category.id}}" data-name="{{product.name|lower}}" data-barcode="{{product.barcode}}">
-          <div class="product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" tabindex="0" role="button">
+          {% set has_sized_prices = product.sizes|selectattr('price')|list|length > 0 %}
+          <div class="product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" {% if has_sized_prices %}data-has-sizes="true" data-sizes='[{% for s in product.sizes %}{% if s.price %}{"name":"{{s.name}}","price":{{s.price}}}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}]'{% endif %}{% if product.is_variable_qty %} data-variable-qty="true" data-unit-label="{{product.unit_label}}"{% endif %} tabindex="0" role="button">
             <div class="product-img-wrapper">
               <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
             </div>
             <div class="product-card-body">
               <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
               <div class="flex items-center justify-between mt-2">
-                <span class="product-price">{{ currency_symbol }}{{product.selling_price}}</span>
+                <span class="product-price">{{ currency_symbol }}{{product.selling_price}}{% if product.is_variable_qty %}<span class="text-[10px] text-slate-400 font-normal">/{{product.unit_label}}</span>{% endif %}</span>
                 <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock{% elif is_low %} low-stock{% endif %}">
                   {%- if product.in_stock == 0 -%}Out of stock
                   {%- elif is_low -%}{{product.in_stock}} left
@@ -296,6 +297,33 @@
   </div>
 </div>
 
+<!-- Size Picker Modal -->
+<div id="size-picker-modal" style="position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);">
+  <div style="background:white;border-radius:16px;padding:24px;max-width:360px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <h3 class="text-sm font-black text-slate-900 mb-1 uppercase tracking-tight" id="sp-name"></h3>
+    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Select size</p>
+    <div id="sp-sizes" class="space-y-2"></div>
+    <button onclick="$('#size-picker-modal').hide()" class="w-full mt-3 py-2.5 rounded-xl border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Cancel</button>
+  </div>
+</div>
+
+<!-- Variable Qty Prompt -->
+<div id="variable-qty-modal" style="position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);">
+  <div style="background:white;border-radius:16px;padding:24px;max-width:320px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <h3 class="text-sm font-black text-slate-900 mb-1 uppercase tracking-tight" id="vq-name"></h3>
+    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Enter quantity in <span id="vq-unit" class="text-primary"></span></p>
+    <div class="flex gap-2 items-center mb-4">
+      <input type="number" id="vq-qty" step="1" min="0.1" value="50" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-bold text-center focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+      <span id="vq-unit-label" class="text-xs font-bold text-slate-400 uppercase">ml</span>
+    </div>
+    <p class="text-[10px] text-slate-400 mb-4 text-center">@ <span id="vq-price-display"></span> / <span id="vq-unit2"></span></p>
+    <div class="flex gap-2">
+      <button onclick="confirmVariableQty()" class="flex-1 py-2.5 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary-dark transition-all uppercase tracking-widest">Add</button>
+      <button onclick="$('#variable-qty-modal').hide()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 var cart = {};
@@ -333,8 +361,14 @@ function showToast(msg, type) {
 $(document).on('click keydown', '.product-card:not(.out-of-stock)', function(e) {
   if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
   if (e.type === 'keydown') e.preventDefault();
-  var c = $(this);
-  addToCart(c.data('barcode'), c.data('display-name'), parseFloat(c.data('price'))||0, parseInt(c.data('stock'))||0);
+  var c = $(this), b = c.data('barcode'), n = c.data('display-name'), p = parseFloat(c.data('price'))||0, s = parseInt(c.data('stock'))||0;
+  if (c.data('has-sizes')) {
+    showSizePicker(b, n, c.data('sizes'), s);
+  } else if (c.data('variable-qty')) {
+    showVariableQtyPrompt(b, n, p, c.data('unit-label')||'ml', s);
+  } else {
+    addToCart(b, n, p, s, '', p);
+  }
   c.addClass('barcode-highlight');
   setTimeout(function(){ c.removeClass('barcode-highlight'); }, 500);
 });
@@ -343,8 +377,41 @@ $(document).on('click keydown', '.quick-key-btn', function(e) {
   if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
   if (e.type === 'keydown') e.preventDefault();
   var b = $(this);
-  addToCart(b.data('barcode'), b.data('display-name'), parseFloat(b.data('price'))||0, parseInt(b.data('stock'))||0);
+  addToCart(b.data('barcode'), b.data('display-name'), parseFloat(b.data('price'))||0, parseInt(b.data('stock'))||0, '', parseFloat(b.data('price'))||0);
 });
+
+function showSizePicker(barcode, name, sizes, stock) {
+  $('#sp-name').text(name);
+  var html = '';
+  sizes.forEach(function(sz) {
+    html += '<button class="w-full py-3 px-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-between" onclick="addSizeToCart(\''+barcode+'\',\''+name+' ('+sz.name+')\','+sz.price+','+stock+',\''+sz.name+'\')"><span class="text-xs font-bold text-slate-900">'+sz.name+'</span><span class="text-xs font-black text-primary">'+currencySymbol+parseFloat(sz.price).toFixed(2)+'</span></button>';
+  });
+  $('#sp-sizes').html(html);
+  $('#size-picker-modal').show();
+}
+function addSizeToCart(barcode, displayName, price, stock, sizeName) {
+  $('#size-picker-modal').hide();
+  addToCart(barcode, displayName, price, stock, sizeName, price);
+}
+
+var vqBarcode, vqName, vqPrice, vqUnit, vqStock;
+function showVariableQtyPrompt(barcode, name, price, unit, stock) {
+  vqBarcode = barcode; vqName = name; vqPrice = price; vqUnit = unit; vqStock = stock;
+  $('#vq-name').text(name);
+  $('#vq-unit').text(unit);
+  $('#vq-unit-label').text(unit);
+  $('#vq-unit2').text(unit);
+  $('#vq-price-display').text(currencySymbol+price.toFixed(2));
+  $('#vq-qty').val(50).attr('step', '1');
+  $('#variable-qty-modal').show();
+  setTimeout(function(){ $('#vq-qty').focus().select(); }, 100);
+}
+function confirmVariableQty() {
+  var qty = parseFloat($('#vq-qty').val())||0;
+  if (qty < 0.1) { showToast('Enter a valid quantity', 'warning'); return; }
+  $('#variable-qty-modal').hide();
+  addToCart(vqBarcode, vqName+' ('+qty+vqUnit+')', vqPrice, vqStock, '', vqPrice, qty);
+}
 
 $(document).on('click', '.cat-pill', function() { $('.cat-pill').removeClass('active'); $(this).addClass('active'); applySearch(); });
 $(document).on('click keydown', '.qty-decrease', function(e) { if(e.type==='keydown'&&e.key!=='Enter')return; e.preventDefault(); changeQty($(this).data('barcode'),-1); });
@@ -368,8 +435,11 @@ $(document).ready(function() {
       if (isScanner) { scanBuffer = ''; }
       if (v.length > 2 && isScanner) {
         var card = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
-        if (card.length) { card.click(); beepOk(); $(this).val(''); applySearch(); }
-        else { beepError(); showToast("Barcode not found: "+v, 'warning'); $(this).val(''); applySearch(); }
+        if (card.length) {
+          if (card.data('has-sizes') || card.data('variable-qty')) { card.click(); }
+          else { card.click(); beepOk(); }
+          $(this).val(''); applySearch();
+        } else { beepError(); showToast("Barcode not found: "+v, 'warning'); $(this).val(''); applySearch(); }
       } else {
         var c = $('.product-card:not(.out-of-stock)[data-barcode="'+v+'"]');
         if (c.length) { c.click(); $(this).val(''); applySearch(); }
@@ -410,12 +480,14 @@ $(document).ready(function() {
   setTimeout(function(){ $('#product-search').focus(); }, 100);
 });
 
-function addToCart(barcode, name, price, stock) {
+function addToCart(barcode, name, price, stock, sizeName, unitPrice, qty) {
+  unitPrice = unitPrice || price;
+  qty = qty || 1;
   if (cart[barcode]) {
-    if (cart[barcode].qty < stock) { cart[barcode].qty++; }
+    if (cart[barcode].qty < stock) { cart[barcode].qty += qty; }
     else { beepError(); showToast("Not enough stock!", 'warning'); return; }
   } else {
-    cart[barcode] = { name: name, price: price, qty: 1, stock: stock };
+    cart[barcode] = { name: name, price: price, unit_price: unitPrice, qty: qty, stock: stock, size: sizeName || '' };
   }
   beep(800, 40, 0.08);
   updateCartUI();
@@ -423,11 +495,11 @@ function addToCart(barcode, name, price, stock) {
 }
 function removeFromCart(barcode) { delete cart[barcode]; updateCartUI(); }
 function updateQty(barcode, n) {
-  n = parseInt(n); if(isNaN(n)||n<1) n=1;
+  n = parseFloat(n); if(isNaN(n)||n<0.01) n=1;
   if(n > cart[barcode].stock) { showToast("Max: "+cart[barcode].stock,'warning'); n = cart[barcode].stock; }
   cart[barcode].qty = n; updateCartUI();
 }
-function changeQty(barcode, d) { if(cart[barcode]) updateQty(barcode, cart[barcode].qty + d); }
+function changeQty(barcode, d) { if(cart[barcode]) updateQty(barcode, (parseFloat(cart[barcode].qty)||0) + d); }
 
 function updateCartUI() {
   var tb = $('#cart-table-body'); tb.empty();
@@ -436,9 +508,10 @@ function updateCartUI() {
   else {
     $('#empty-cart-msg').hide();
     codes.forEach(function(code) {
-      var item = cart[code], it = item.price * item.qty;
+      var item = cart[code], it = item.unit_price * item.qty;
       total += it; count += item.qty;
-      tb.append('<tr><td class="pl-5 py-3"><div class="cart-item-title" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">'+currencySymbol+item.price.toFixed(2)+' ea &middot; '+currencySymbol+(item.price*item.qty).toFixed(2)+'</small></td><td class="text-center py-3"><div class="qty-control"><button class="qty-btn qty-decrease" data-barcode="'+code+'">-</button><input type="number" class="qty-input" value="'+item.qty+'" data-barcode="'+code+'" min="1" max="'+item.stock+'"><button class="qty-btn qty-increase" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold">'+currencySymbol+it.toFixed(2)+'</td><td class="py-3"><button class="btn-remove" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
+      var unitLabel = item.size ? ' ea' : '';
+      tb.append('<tr><td class="pl-5 py-3"><div class="cart-item-title" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">'+currencySymbol+item.unit_price.toFixed(2)+unitLabel+' &middot; '+currencySymbol+it.toFixed(2)+'</small></td><td class="text-center py-3"><div class="qty-control"><button class="qty-btn qty-decrease" data-barcode="'+code+'">-</button><input type="number" class="qty-input" value="'+item.qty+'" data-barcode="'+code+'" min="0.1" max="'+item.stock+'" step="any"><button class="qty-btn qty-increase" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold">'+currencySymbol+it.toFixed(2)+'</td><td class="py-3"><button class="btn-remove" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
     });
   }
   var disc = getDiscount(total);
@@ -477,7 +550,7 @@ function processCheckout() {
   var codes = Object.keys(cart); if(codes.length===0) return;
   var st = parseFloat($('#cart-total').text().replace(currencySymbol,'')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
   if(paid < net) { showToast('Total: '+currencySymbol+net.toFixed(2)+', Received: '+currencySymbol+paid.toFixed(2),'error'); return; }
-  var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty}; });
+  var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty, unit_price: cart[c].unit_price}; });
   var payload = JSON.stringify({
     items:items,
     amount_paid:paid,
@@ -525,7 +598,7 @@ function showReceipt(tx) {
   } else { $('#r-card-info').hide(); }
   var itemsHtml = '';
   tx.items.forEach(function(it) {
-    itemsHtml += '<div class="item-row"><span class="item-name">' + it.qty + 'x ' + it.name + '</span><span>'+currencySymbol+it.subtotal.toFixed(2)+'</span></div>';
+    itemsHtml += '<div class="item-row"><span class="item-name">' + parseFloat(it.qty) + 'x ' + it.name + '</span><span>'+currencySymbol+it.subtotal.toFixed(2)+'</span></div>';
   });
   $('#r-items').html(itemsHtml);
   $('#r-subtotal').text(currencySymbol+tx.total.toFixed(2));
