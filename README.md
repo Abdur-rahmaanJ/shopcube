@@ -101,3 +101,37 @@ Environment variables:
 - File upload type and size validation
 
 Built on [Shopyo](https://shopyo.org) with isolated module architecture.
+
+## E-Commerce Configuration
+
+The `shopyo_ecommerce` module reads these Flask config keys. Defaults are applied automatically, override them in your `config.py` or instance config:
+
+| Key | Default | Description |
+|---|---|---|
+| `SHOPYO_ECOMMERCE_URL` | `/shopyo-ecommerce` | URL prefix for all ecommerce routes |
+| `SHOPYO_ECOMMERCE_CURRENCY` | `USD` | ISO 4217 currency code (e.g. `MUR`, `EUR`, `GBP`) |
+| `SHOPYO_ECOMMERCE_SECTION_NAME` | `Shop` | Section name shown in dashboard and settings |
+| `SHOPYO_ECOMMERCE_ITEMS_PER_PAGE` | `12` | Products per page in shop listings |
+| `SHOPYO_ECOMMERCE_ENABLE_WISHLIST` | `True` | Enable/disable the wishlist feature |
+| `SHOPYO_ECOMMERCE_ENABLE_REVIEWS` | `False` | Enable/disable product reviews |
+| `SHOPYO_ECOMMERCE_CATEGORYPHOTOS_UPLOADSET` | `categoryphotos` | Flask-Uploads set name for category images |
+| `SHOPYO_ECOMMERCE_SUBCATEGORYPHOTOS_UPLOADSET` | `subcategoryphotos` | Flask-Uploads set name for subcategory images |
+| `SHOPYO_ECOMMERCE_PRODUCTEXCEL_UPLOADSET` | `productexcel` | Flask-Uploads set name for product Excel imports |
+| `SHOPYO_ECOMMERCE_PRODUCTPHOTOS_UPLOADSET` | `productphotos` | Flask-Uploads set name for product images |
+| `SHOPYO_ECOMMERCE_UPLOADED_CATEGORYPHOTOS_DEST` | `static/uploads/categoryphotos` | Upload destination for category images |
+| `SHOPYO_ECOMMERCE_UPLOADED_SUBCATEGORYPHOTOS_DEST` | `static/uploads/subcategoryphotos` | Upload destination for subcategory images |
+| `SHOPYO_ECOMMERCE_UPLOADED_PRODUCTEXCEL_DEST` | `static/uploads/productexcel` | Upload destination for product Excel files |
+| `SHOPYO_ECOMMERCE_UPLOADED_PRODUCTPHOTOS_DEST` | `static/uploads/productphotos` | Upload destination for product images |
+
+**Example:**
+
+```python
+class Config:
+    SHOPYO_ECOMMERCE_URL = "/shop"
+    SHOPYO_ECOMMERCE_CURRENCY = "MUR"
+    SHOPYO_ECOMMERCE_ITEMS_PER_PAGE = 24
+    SHOPYO_ECOMMERCE_ENABLE_WISHLIST = False
+    SHOPYO_ECOMMERCE_UPLOADED_PRODUCTPHOTOS_DEST = "/data/uploads/products"
+```
+
+Currency symbols are resolved from the ISO 4217 code via the `iso4217parse` package (e.g. `MUR` -> `₨`, `EUR` -> `€`).
