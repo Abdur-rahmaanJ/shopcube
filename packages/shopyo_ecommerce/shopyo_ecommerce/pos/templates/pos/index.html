@@ -62,7 +62,7 @@
   .receipt .line-total { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; padding: 4px 0; }
   .receipt .item-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 1px 0; }
   .receipt .item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
-  @media print { body * { visibility: hidden; } .receipt, .receipt * { visibility: visible; } .receipt { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 300px; box-shadow: none; border-radius: 0; } #receipt-modal { background: none; } .receipt .no-print { display: none; } }
+  @media print { #receipt-modal, #receipt-modal.open { display: none; } }
 </style>
 {% endblock %}
 
@@ -294,7 +294,7 @@
     <hr class="divider">
     <p style="text-align:center;font-size:0.65rem;color:#999;margin-top:12px;">Thank you for your purchase!</p>
     <div class="no-print" style="display:flex;gap:8px;margin-top:16px;">
-      <button onclick="window.print()" class="flex-1 py-2.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all uppercase tracking-widest"><i class="fas fa-print mr-1.5"></i>Print</button>
+      <button onclick="printReceipt()" class="flex-1 py-2.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all uppercase tracking-widest"><i class="fas fa-print mr-1.5"></i>Print</button>
       <button onclick="closeReceipt()" class="flex-1 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Close</button>
     </div>
   </div>
@@ -361,10 +361,13 @@
 <script>
 var cart = {};
 var currencySymbol = '{{ currency_symbol }}';
+var storeName = '{{ store_name|e }}' || 'STORE';
+var storeTel = '{{ store_tel|e }}' || '';
 var scanBuffer = '';
 var scanTimer = null;
 var lastKeyTime = 0;
 var beepCtx = null;
+var lastReceiptData = null;
 
 function initBeep() {
   try { beepCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
@@ -680,9 +683,49 @@ function showReceipt(tx) {
   $('#r-paid').text(currencySymbol+tx.amount_paid.toFixed(2));
   $('#r-change').text(currencySymbol+tx.change.toFixed(2));
   $('#receipt-modal').addClass('open');
+  lastReceiptData = tx;
   setTimeout(function(){ $('#product-search').focus(); }, 300);
 }
-function closeReceipt() { $('#receipt-modal').removeClass('open'); $('#product-search').focus(); }
+function printReceipt() {
+  var tx = lastReceiptData;
+  if (!tx) return;
+  var itemsHtml = '';
+  tx.items.forEach(function(it) {
+    itemsHtml += '<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;"><span>' + parseFloat(it.qty) + 'x ' + it.name + '</span><span>'+currencySymbol+parseFloat(it.subtotal).toFixed(2)+'</span></div>';
+  });
+  var discountHtml = tx.discount_type ? '<hr style="border:none;border-top:1px dashed #ccc;margin:6px 0;"><div style="display:flex;justify-content:space-between;font-size:11px;"><span>Discount</span><span>- '+currencySymbol+(tx.total - tx.net_total).toFixed(2)+'</span></div>' : '';
+  var cardHtml = tx.card_last_four ? '<div style="display:flex;justify-content:space-between;font-size:11px;"><span>Card</span><span>****'+tx.card_last_four+'</span></div>' : '';
+  var w = window.open('', '_blank', 'width=380,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>Receipt</title><style>body{font-family:"Courier New",monospace;font-size:12px;margin:0;padding:20px;width:300px;}h2{text-align:center;font-size:16px;font-weight:800;margin:0 0 2px;text-transform:uppercase;letter-spacing:2px;}.store-info{text-align:center;font-size:10px;color:#666;margin:0 0 16px;}hr{border:none;border-top:1px dashed #ccc;margin:6px 0;}.line{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;}.line-total{display:flex;justify-content:space-between;font-size:13px;font-weight:700;padding:4px 0;}.footer{text-align:center;font-size:10px;color:#999;margin-top:12px;}@media print{body{margin:0;padding:10px;}}</style></head><body>' +
+    '<h2>' + storeName + '</h2>' +
+    '<p class="store-info">Tel: ' + storeTel + '</p>' +
+    '<hr>' +
+    '<div class="line"><span>Receipt #</span><span>#'+tx.id+'</span></div>' +
+    '<div class="line"><span>Date</span><span>'+tx.time+'</span></div>' +
+    '<div class="line"><span>Payment</span><span>'+tx.method.toUpperCase()+'</span></div>' +
+    cardHtml +
+    '<hr>' +
+    itemsHtml +
+    discountHtml +
+    '<hr>' +
+    '<div class="line"><span>Subtotal</span><span>'+currencySymbol+parseFloat(tx.total).toFixed(2)+'</span></div>' +
+    '<div class="line-total"><span>Total</span><span>'+currencySymbol+parseFloat(tx.net_total).toFixed(2)+'</span></div>' +
+    '<div class="line"><span>Paid</span><span>'+currencySymbol+parseFloat(tx.amount_paid).toFixed(2)+'</span></div>' +
+    '<div class="line"><span>Change</span><span>'+currencySymbol+parseFloat(tx.change).toFixed(2)+'</span></div>' +
+    '<hr>' +
+    '<p class="footer">Thank you for your purchase!</p>' +
+    '</body></html>');
+  w.document.close();
+  w.onafterprint = function () { w.close(); };
+  setTimeout(function () { if (!w.closed) w.close(); }, 5000);
+  w.focus();
+  w.print();
+}
+function closeReceipt() {
+  $('#receipt-modal').removeClass('open');
+  lastReceiptData = null;
+  setTimeout(function(){ $('#product-search').focus(); }, 100);
+}
 $(document).on('keydown', function(e) { if (e.key === 'Escape') closeReceipt(); });
 </script>
 {% endblock %}
