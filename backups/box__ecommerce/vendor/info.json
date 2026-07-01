@@ -1,8 +1,0 @@
-{
-    "display_string": "Vendors",
-    "module_name": "vendor",
-    "type": "show",
-    "url_prefix": "/vendor",
-    "dashboard": "/dashboard",
-    "fa-icon": "fas fa-truck"
-}

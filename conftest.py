@@ -6,6 +6,23 @@ for more details on pytest
 import datetime
 import json
 import os
+import sys
+
+# Ensure the shopcube directory (containing the real app.py) is first on sys.path
+# so `from app import create_app` imports THIS project's app.py, not a stray
+# app.py in a parent directory.
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _THIS_DIR not in sys.path:
+    sys.path.insert(0, _THIS_DIR)
+elif sys.path[0] != _THIS_DIR:
+    sys.path.remove(_THIS_DIR)
+    sys.path.insert(0, _THIS_DIR)
+
+# Add packages/shopyo_ecommerce dir so local shopyo_ecommerce takes precedence
+# over the PyPI-installed version when tests import it.
+_PACKAGES_DIR = os.path.join(_THIS_DIR, "packages", "shopyo_ecommerce")
+if _PACKAGES_DIR not in sys.path:
+    sys.path.insert(0, _PACKAGES_DIR)
 
 import pytest
 from app import create_app
@@ -15,6 +32,18 @@ from init import db as _db
 from shopyo_auth.models import User
 from shopyo_settings.models import Settings
 from sqlalchemy import event
+
+# Import all ecommerce models so SQLAlchemy can resolve string-based relationships
+import shopyo_ecommerce.resource.models  # noqa: F401, E402
+import shopyo_ecommerce.product.models  # noqa: F401, E402
+import shopyo_ecommerce.category.models  # noqa: F401, E402
+import shopyo_ecommerce.vendor.models  # noqa: F401, E402
+import shopyo_ecommerce.customer.models  # noqa: F401, E402
+import shopyo_ecommerce.inventory.models  # noqa: F401, E402
+import shopyo_ecommerce.pos.models  # noqa: F401, E402
+import shopyo_ecommerce.purchase.models  # noqa: F401, E402
+import shopyo_ecommerce.shop.models  # noqa: F401, E402
+import shopyo_ecommerce.shopman.models  # noqa: F401, E402
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v
@@ -32,6 +61,7 @@ def unconfirmed_user():
     user.email = "unconfirmed@domain.com"
     user.password = "pass"
     user.is_email_confirmed = False
+    user.fixture_email = "unconfirmed@domain.com"
     return user
 
 
@@ -45,6 +75,7 @@ def non_admin_user():
     user.password = "pass"
     user.is_email_confirmed = True
     user.email_confirm_date = datetime.datetime.now()
+    user.fixture_email = "admin1@domain.com"
     return user
 
 
@@ -59,6 +90,7 @@ def admin_user():
     user.is_admin = True
     user.is_email_confirmed = True
     user.email_confirm_date = datetime.datetime.now()
+    user.fixture_email = "admin2@domain.com"
     return user
 
 
@@ -216,9 +248,10 @@ class AuthActions:
         self._client = client
 
     def login(self, user, password="pass"):
+        email = getattr(user, "fixture_email", None) or user.email
         return self._client.post(
             url_for("shopyo_auth.login"),
-            data=dict(email=user.email, password=password),
+            data=dict(email=email, password=password),
             follow_redirects=True,
         )
 

@@ -77,16 +77,16 @@ with open(os.path.join(module_path, "info.json")) as f:
 #         assert request.path == url_for("auth.login")
 
 
-@pytest.mark.usefixtures("login_non_admin_user")
+@pytest.mark.usefixtures("login_admin_user")
 class TestCategoryApi:
     def test_category_dashboard_page_get(self, test_client):
-        response = test_client.get(url_for("category.dashboard"))
+        response = test_client.get(url_for("shopyo_ecommerce.category.dashboard"))
 
         assert response.status_code == 200
         assert b"Category" in response.data
 
     def test_category_add_page_get(self, test_client):
-        response = test_client.get(url_for("category.add"))
+        response = test_client.get(url_for("shopyo_ecommerce.category.add"))
 
         assert response.status_code == 200
         assert b"name" in response.data
@@ -94,18 +94,18 @@ class TestCategoryApi:
 
     def test_category_add_empty_name_post(self, test_client):
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name="   "),
             follow_redirects=True,
         )
 
         assert response.status_code == 200
         assert b"Category name cannot be empty" in response.data
-        assert request.path == url_for("category.add")
+        assert request.path == url_for("shopyo_ecommerce.category.add")
 
     def test_category_add_uncategorized_as_name_post(self, test_client):
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name="uncategorized"),
             follow_redirects=True,
         )
@@ -115,7 +115,7 @@ class TestCategoryApi:
 
     def test_category_add_uncategorised_as_name_post(self, test_client):
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name=" uncategorised"),
             follow_redirects=True,
         )
@@ -126,18 +126,18 @@ class TestCategoryApi:
     def test_category_add_existing_category_name_post(self, test_client):
         Category.create(name="category")
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name="category"),
             follow_redirects=True,
         )
 
         assert response.status_code == 200
-        assert b'Category "category" already exists' in response.data
+        assert b'Category &#34;category&#34; already exists' in response.data
         assert Category.query.count() == 1
 
     def test_category_add_unique_category_name_post(self, test_client):
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name="category"),
             follow_redirects=True,
         )
@@ -146,12 +146,12 @@ class TestCategoryApi:
         ).all()
 
         assert response.status_code == 200
-        assert b'Category "category" added successfully' in response.data
+        assert b'Category &#34;category&#34; added successfully' in response.data
         assert len(added_category) == 1
 
     def test_category_add_name_with_lower_and_upper_post(self, test_client):
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name="CatEgorY"),
             follow_redirects=True,
         )
@@ -160,12 +160,12 @@ class TestCategoryApi:
         ).all()
 
         assert response.status_code == 200
-        assert b'Category "category" added successfully' in response.data
+        assert b'Category &#34;category&#34; added successfully' in response.data
         assert len(added_category) == 1
 
     def test_category_add_name_with_leading_trailing_space(self, test_client):
         response = test_client.post(
-            url_for("category.add"),
+            url_for("shopyo_ecommerce.category.add"),
             data=dict(name="   category   "),
             follow_redirects=True,
         )
@@ -174,29 +174,29 @@ class TestCategoryApi:
         ).all()
 
         assert response.status_code == 200
-        assert b'Category "category" added successfully' in response.data
+        assert b'Category &#34;category&#34; added successfully' in response.data
         assert len(added_category) == 1
 
     # def test_category_delete_existing_category_get(self, test_client):
     #     Category.create(name="category")
     #     response = test_client.get(
-    #         url_for("category.delete", name="category"),
+    #         url_for("shopyo_ecommerce.category.delete", name="category"),
     #         follow_redirects=True,
     #     )
     #     query = Category.query.filter(Category.name == "category").scalar()
 
     #     assert b'Category "category" successfully deleted' in response.data
-    #     assert request.path == url_for("category.dashboard")
+    #     assert request.path == url_for("shopyo_ecommerce.category.dashboard")
     #     assert query is None
 
     # def test_category_delete_nonexisting_category_get(self, test_client):
     #     response = test_client.get(
-    #         url_for("category.delete", name="category"),
+    #         url_for("shopyo_ecommerce.category.delete", name="category"),
     #         follow_redirects=True,
     #     )
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("category.dashboard")
+    #     assert request.path == url_for("shopyo_ecommerce.category.dashboard")
     #     assert b'Category "category" does not exist.' in response.data
 
     # def test_category_delete_cat_with_subcategory_get(self, test_client):
@@ -207,12 +207,12 @@ class TestCategoryApi:
     #     category.save()
 
     #     response = test_client.get(
-    #         url_for("category.delete", name="category"),
+    #         url_for("shopyo_ecommerce.category.delete", name="category"),
     #         follow_redirects=True,
     #     )
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("category.dashboard")
+    #     assert request.path == url_for("shopyo_ecommerce.category.dashboard")
     #     assert (
     #         b'Please delete all subcategories for category "category"'
     #         in response.data
@@ -220,27 +220,27 @@ class TestCategoryApi:
 
     # def test_category_delete_cat_named_uncategorised_get(self, test_client):
     #     response = test_client.get(
-    #         url_for("category.delete", name="uncategorised"),
+    #         url_for("shopyo_ecommerce.category.delete", name="uncategorised"),
     #         follow_redirects=True,
     #     )
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("category.dashboard")
+    #     assert request.path == url_for("shopyo_ecommerce.category.dashboard")
     #     assert b"Cannot delete category uncategorised" in response.data
 
     # def test_category_delete_cat_name_which_is_empty_get(self, test_client):
     #     response = test_client.get(
-    #         url_for("category.delete", name=" "), follow_redirects=True
+    #         url_for("shopyo_ecommerce.category.delete", name=" "), follow_redirects=True
     #     )
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("category.dashboard")
+    #     assert request.path == url_for("shopyo_ecommerce.category.dashboard")
     #     assert b"Cannot delete a category with no name" in response.data
 
     # def test_category_add_nonexisting_subcategory_post(self, test_client):
     #     Category.create(name="category")
     #     response = test_client.post(
-    #         url_for("category.add_sub", category_name="category"),
+    #         url_for("shopyo_ecommerce.category.add_sub", category_name="category"),
     #         data=dict(name="subcategory"),
     #         follow_redirects=True,
     #     )
@@ -263,7 +263,7 @@ class TestCategoryApi:
         category.save()
 
         response = test_client.post(
-            url_for("category.add_sub", category_name="category1"),
+            url_for("shopyo_ecommerce.category.add_sub", category_name="category1"),
             data=dict(name="subcategory1"),
             follow_redirects=True,
         )
@@ -276,7 +276,7 @@ class TestCategoryApi:
     def test_category_add_subcat_name_which_is_empty_get(self, test_client):
         Category.create(name="category1")
         response = test_client.post(
-            url_for("category.add_sub", category_name="category1"),
+            url_for("shopyo_ecommerce.category.add_sub", category_name="category1"),
             data=dict(name="  "),
             follow_redirects=True,
         )
@@ -293,7 +293,7 @@ class TestCategoryApi:
         category.save()
 
         response = test_client.post(
-            url_for("category.add_sub", category_name="category1"),
+            url_for("shopyo_ecommerce.category.add_sub", category_name="category1"),
             data=dict(name="   subcategory1   "),
             follow_redirects=True,
         )
@@ -305,7 +305,7 @@ class TestCategoryApi:
 
     def test_category_add_subcat_to_nonexisting_cat_post(self, test_client):
         response = test_client.post(
-            url_for("category.add_sub", category_name="category"),
+            url_for("shopyo_ecommerce.category.add_sub", category_name="category"),
             data=dict(name="subcategory"),
             follow_redirects=True,
         )

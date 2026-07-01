@@ -1,5 +1,4 @@
 
-
 name: Tests
 on:
   push:
@@ -9,7 +8,6 @@ on:
     branches:
       - dev
     paths-ignore:
-      - 'shopyo/sphinx_src/**'
       - '*.md'
       - '*.rst'
 jobs:
@@ -20,11 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - {name: Windows, python: '3.9', os: windows-latest, tox: py39}
-          # - {name: Mac, python: '3.9', os: macos-latest, tox: py39}
           - {name: Linux, python: '3.10', os: ubuntu-latest, tox: py310}
-          # - {name: '3.8', python: '3.8', os: ubuntu-latest, tox: py38}
-          # - {name: '3.7', python: '3.7', os: ubuntu-latest, tox: py37}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,10 +29,9 @@ jobs:
           pip install -U wheel
           pip install -U setuptools
           python -m pip install -U pip
-      - name: install requirements
+      - name: install project with testing extras
         run: |
-          python -m pip install pytest pytest-coverage coverage
-          python -m pip install .
+          pip install .[testing]
       - name: get pip cache dir
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> "$GITHUB_OUTPUT"
@@ -46,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: pip|${{ runner.os }}|${{ matrix.python }}|${{ hashFiles('setup.py') }}|${{ hashFiles('requirements/*.txt') }}|${{ hashFiles('requirements.txt') }}
+          key: pip|${{ runner.os }}|${{ matrix.python }}|${{ hashFiles('pyproject.toml') }}
       - run: pip install tox codecov
       - run: tox -e py
       - name: Upload coverage to Codecov

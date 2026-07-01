@@ -88,8 +88,8 @@ def create_app(config_name="development", instance_path=None):
         if user.is_admin:
             return url_for("shopyo_dashboard.index")
         if any(r.name == "cashier" for r in user.roles):
-            return url_for("pos.index")
-        return url_for("customer.dashboard")
+            return url_for("shopyo_ecommerce.pos.index")
+        return url_for("shopyo_ecommerce.customer.dashboard")
 
     shopyo_auth.login_redirect_url = _login_redirect
     shopyo_theme = ShopyoTheme(app)

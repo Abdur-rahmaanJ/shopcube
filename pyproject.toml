@@ -80,6 +80,13 @@ dependencies = [
 "Source" = "https://github.com/Abdur-RahmaanJ/shopcube/"
 
 
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "pytest-ordering",
+]
+
 [options]
 include_package_data = true
 
@@ -89,3 +96,20 @@ where = ["."]
 
 [project.scripts]
 shopcube = "shopcube.__main__:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["packages", "tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning:sqlalchemy.*",
+    "ignore::DeprecationWarning:dateutil.*",
+    "ignore::DeprecationWarning:pytz.*",
+    "ignore::DeprecationWarning:flask_sqlalchemy.*",
+    "ignore::DeprecationWarning:flask_admin.*",
+    "ignore::DeprecationWarning:pkg_resources.*",
+    "ignore::DeprecationWarning:marshmallow.*",
+    "ignore::DeprecationWarning:werkzeug.*",
+    "ignore::DeprecationWarning:ast.*",
+    "ignore::UserWarning:flask_limiter.*",
+    "ignore::pytest.PytestUnknownMarkWarning",
+]

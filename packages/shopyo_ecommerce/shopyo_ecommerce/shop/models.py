@@ -57,6 +57,7 @@ class Order(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
@@ -94,6 +95,7 @@ class OrderItem(PkModel):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
@@ -128,6 +130,7 @@ class BillingDetail(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
