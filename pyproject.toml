@@ -43,7 +43,7 @@ dependencies = [
     "idna==2.10",
     "itsdangerous==2.0.1",
     "jinja2==3.0.1",
-    "mako==1.1.5",
+    "mako==1.3.12",
     "markupsafe==2.1.1",
     "marshmallow==3.14.1",
     "marshmallow-sqlalchemy==0.26.1",

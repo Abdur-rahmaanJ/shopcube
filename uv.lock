@@ -375,14 +375,14 @@ wheels = [
 
 [[package]]
 name = "mako"
-version = "1.1.5"
+version = "1.3.12"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markupsafe" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/42/ff293411e980debfc647be9306d89840c8b82ea24571b014f1a35b2ad80f/Mako-1.1.5.tar.gz", hash = "sha256:169fa52af22a91900d852e937400e79f535496191c63712e3b9fda5a9bed6fc3", size = 494647, upload-time = "2021-08-20T16:30:24.076Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/62/791b31e69ae182791ec67f04850f2f062716bbd205483d63a215f3e062d3/mako-1.3.12.tar.gz", hash = "sha256:9f778e93289bd410bb35daadeb4fc66d95a746f0b75777b942088b7fd7af550a", size = 400219, upload-time = "2026-04-28T19:01:08.512Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/75/69/c3ab0db9234fa5681a85a1c55203763a62902d56ad76b6d9b9bfa2c83694/Mako-1.1.5-py2.py3-none-any.whl", hash = "sha256:6804ee66a7f6a6416910463b00d76a7b25194cd27f1918500c5bd7be2a088a23", size = 75696, upload-time = "2021-08-20T16:30:26.522Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/b1/a0ec7a5a9db730a08daef1fdfb8090435b82465abbf758a596f0ea88727e/mako-1.3.12-py3-none-any.whl", hash = "sha256:8f61569480282dbf557145ce441e4ba888be453c30989f879f0d652e39f53ea9", size = 78521, upload-time = "2026-04-28T19:01:10.393Z" },
 ]
 
 [[package]]
@@ -640,7 +640,7 @@ wheels = [
 
 [[package]]
 name = "shopcube"
-version = "5.0.0"
+version = "5.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },
@@ -721,7 +721,7 @@ requires-dist = [
     { name = "iso4217parse", specifier = ">=0.6.2" },
     { name = "itsdangerous", specifier = "==2.0.1" },
     { name = "jinja2", specifier = "==3.0.1" },
-    { name = "mako", specifier = "==1.1.5" },
+    { name = "mako", specifier = "==1.3.12" },
     { name = "markupsafe", specifier = "==2.1.1" },
     { name = "marshmallow", specifier = "==3.14.1" },
     { name = "marshmallow-sqlalchemy", specifier = "==0.26.1" },
