@@ -1,0 +1,66 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = info['display_string']+' dashboard' %}
+{% block pagehead %}<title></title>{% endblock %}
+{% block sidebar %}{%include info['module_name']+'/blocks/sidebar.html'%}{%endblock%}
+{% block module_content %}
+<div class="max-w-4xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Payment Options</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Manage payment methods and descriptions</p>
+      </div>
+
+      <form class="space-y-4 mb-8 pb-8 border-b border-slate-100 dark:border-slate-800" method="POST" action="{{ url_for('shopyo_ecommerce.shopman.payment_add_option') }}">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{{ form.name.label }}</label>
+            {{ form.name(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none") }}
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{{ form.text.label }}</label>
+            {{ form.text(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", rows=3) }}
+          </div>
+        </div>
+        {{ form.csrf_token }}
+        <button type="submit" class="bg-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest">
+          <i class="fas fa-plus-circle mr-1.5"></i>Add Option
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">All Options</h4>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ options|length }} total</p>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Name</th><th>Description</th><th class="w-32"></th></tr>
+        </thead>
+        <tbody>
+          {% for option in options %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <form method="POST" action="{{ url_for('shopyo_ecommerce.shopman.payment_option_update') }}">
+              <input type="hidden" name="id" value="{{ option.id }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <td><input type="text" name="name" value="{{ option.name }}" class="w-full bg-transparent border-0 border-b border-transparent group-hover:border-slate-200 dark:group-hover:border-slate-700 py-2 px-1 text-xs focus:outline-none focus:border-primary transition-colors"></td>
+              <td><textarea name="text" rows="2" class="w-full bg-transparent border-0 border-b border-transparent group-hover:border-slate-200 dark:group-hover:border-slate-700 py-2 px-1 text-xs focus:outline-none focus:border-primary transition-colors">{{ option.text }}</textarea></td>
+              <td>
+                <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" type="submit" title="Save"><i class="fas fa-check text-xs"></i></button>
+                  <a href="{{ url_for('shopyo_ecommerce.shopman.payment_option_delete', option_id=option.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Delete"><i class="fas fa-trash-alt text-xs"></i></a>
+                </div>
+              </td>
+            </form>
+          </tr>
+          {% else %}<tr><td colspan="3" class="text-[10px] text-slate-400 text-center py-8">No payment options configured</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

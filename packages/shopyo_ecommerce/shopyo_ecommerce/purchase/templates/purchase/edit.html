@@ -1,0 +1,157 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'purchase' %}
+{% block pagehead %}<title>PO #{{ po.id }}</title>{% endblock %}
+{% block sidebar %}{% include 'purchase/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-5xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center gap-3 mb-8">
+        <a href="{{ url_for('shopyo_ecommerce.purchase.dashboard') }}" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700">
+          <i class="fas fa-arrow-left text-xs"></i>
+        </a>
+        <div class="flex-1">
+          <div class="flex items-center gap-3">
+            <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">PO #{{ po.id }}</h3>
+            <span class="inline-block px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest
+              {%- if po.status == 'draft' %} bg-slate-100 dark:bg-slate-800 text-slate-500
+              {%- elif po.status == 'ordered' %} bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400
+              {%- elif po.status == 'received' %} bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400
+              {%- else %} bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400{% endif %}">{{ po.status }}</span>
+          </div>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Created {{ po.created_at.strftime('%Y-%m-%d') if po.created_at else '-' }}</p>
+        </div>
+      </div>
+
+      <form method="POST" class="space-y-6 mb-8 pb-8 border-b border-slate-100 dark:border-slate-800">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Vendor</label>
+          {{ form.vendor_id(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none") }}
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Notes</label>
+          {{ form.notes(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", rows=3) }}
+        </div>
+        {% if po.status == 'draft' %}
+        <div>
+          {{ form.submit(class="bg-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest cursor-pointer") }}
+        </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  {% if po.status == 'draft' %}
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-6">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Add Item</h4>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Scan or enter barcode to add products</p>
+      </div>
+      <form action="{{ url_for('shopyo_ecommerce.purchase.add_item', po_id=po.id) }}" method="POST" class="flex items-end gap-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Barcode</label>
+          <input type="text" name="barcode" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Scan barcode..." id="item-barcode" required>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Qty</label>
+          <input type="number" name="quantity" class="w-20 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Qty" value="1" min="1">
+        </div>
+        <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-white font-bold text-xs hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20 uppercase tracking-widest">
+          <i class="fas fa-plus mr-1.5"></i>Add
+        </button>
+      </form>
+      <p class="text-[10px] text-slate-400 mt-2" id="product-preview"></p>
+    </div>
+  </div>
+  <script>
+  $('#item-barcode').on('input', function() {
+    var bc = $(this).val();
+    if (bc.length > 2) {
+      $.getJSON('/purchase/product/' + bc + '/info', function(data) {
+        $('#product-preview').text(data.name + ' | In stock: ' + data.in_stock + ' | Price: $' + data.price);
+      }).fail(function() { $('#product-preview').text('Product not found'); });
+    } else { $('#product-preview').text(''); }
+  });
+  </script>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Items</h4>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ po.items|length }} item(s)</p>
+        </div>
+        <div class="flex gap-2">
+          {% if po.status == 'draft' and po.items %}
+          <form action="{{ url_for('shopyo_ecommerce.purchase.place_order', po_id=po.id) }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button class="px-4 py-2 rounded-xl bg-sky-500 text-white font-bold text-[10px] hover:bg-sky-600 transition-all shadow-lg shadow-sky-500/20 uppercase tracking-widest"><i class="fas fa-check mr-1"></i>Place Order</button>
+          </form>
+          {% endif %}
+          {% if po.status in ('draft', 'cancelled') %}
+          <form action="{{ url_for('shopyo_ecommerce.purchase.delete', po_id=po.id) }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button class="px-4 py-2 rounded-xl bg-red-500 text-white font-bold text-[10px] hover:bg-red-600 transition-all shadow-lg shadow-red-500/20 uppercase tracking-widest" onclick="return confirm('Delete PO #{{ po.id }}?')"><i class="fas fa-trash-alt mr-1"></i>Delete</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr><th>Barcode</th><th>Product</th><th>Ordered</th><th>Received</th><th>Unit Price</th><th>Subtotal</th>{% if po.status == 'draft' %}<th class="w-16"></th>{% endif %}</tr>
+        </thead>
+        <tbody>
+          {% for item in po.items %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs">{{ item.product_barcode }}</td>
+            <td class="text-xs font-bold">{{ item.product_name }}</td>
+            <td class="text-xs">{{ item.quantity_ordered }}</td>
+            <td class="text-xs">{{ item.quantity_received }}</td>
+            <td class="text-xs">${{ '%.2f'|format(item.unit_price|float) }}</td>
+            <td class="text-xs font-bold">${{ '%.2f'|format((item.quantity_received or 0) * (item.unit_price|float)) }}</td>
+            {% if po.status == 'draft' %}
+            <td>
+              <form action="{{ url_for('shopyo_ecommerce.purchase.delete_item', item_id=item.id) }}" method="POST" class="opacity-0 group-hover:opacity-100 transition-opacity">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Remove"><i class="fas fa-trash-alt text-xs"></i></button>
+              </form>
+            </td>
+            {% endif %}
+          </tr>
+          {% else %}<tr><td colspan="{% if po.status == 'draft' %}7{% else %}6{% endif %}" class="text-[10px] text-slate-400 text-center py-8">No items</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if po.status == 'ordered' %}
+      <div class="p-6 border-t border-slate-100 dark:border-slate-800">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4">Receive Items</h4>
+        <form action="{{ url_for('shopyo_ecommerce.purchase.receive', po_id=po.id) }}" method="POST" class="space-y-4">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <div class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+            <table class="w-full text-xs">
+              <thead><tr class="bg-slate-50 dark:bg-slate-800/20"><th class="text-left px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Product</th><th class="text-center px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ordered</th><th class="text-center px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Receive Qty</th></tr></thead>
+              <tbody>
+                {% for item in po.items %}
+                <tr class="border-t border-slate-100 dark:border-slate-800">
+                  <td class="px-4 py-3 font-bold">{{ item.product_name }}</td>
+                  <td class="px-4 py-3 text-center">{{ item.quantity_ordered }}</td>
+                  <td class="px-4 py-3 text-center"><input type="number" name="qty_received_{{ item.id }}" value="{{ item.quantity_ordered }}" class="w-24 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2 px-3 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-center" min="0"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <button class="px-6 py-2.5 rounded-xl bg-emerald-500 text-white font-bold text-xs hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20 uppercase tracking-widest"><i class="fas fa-download mr-1.5"></i>Receive All</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

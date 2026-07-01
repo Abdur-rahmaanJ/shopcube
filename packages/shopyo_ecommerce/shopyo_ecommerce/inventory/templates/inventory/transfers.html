@@ -1,0 +1,115 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Stock Transfers</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Stock Transfers</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ transfers|length }} total</p>
+        </div>
+      </div>
+      {% if locations|length > 1 %}
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.transfer_create') }}" class="flex gap-2 flex-wrap">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <select name="from_location_id" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" required>
+          <option value="">From...</option>
+          {% for l in locations %}<option value="{{ l.id }}">{{ l.name }}</option>{% endfor %}
+        </select>
+        <select name="to_location_id" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" required>
+          <option value="">To...</option>
+          {% for l in locations %}<option value="{{ l.id }}">{{ l.name }}</option>{% endfor %}
+        </select>
+        <button type="submit" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+          <i class="fas fa-plus-circle"></i>New Transfer
+        </button>
+      </form>
+      {% else %}
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Add at least 2 locations to create transfers.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% for t in transfers %}
+  <div class="card overflow-hidden">
+    <div class="card-body">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Transfer #{{ t.id }}</h4>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+            {{ t.from_location.name }} → {{ t.to_location.name }} |
+            {{ t.created_at.strftime('%Y-%m-%d %H:%M') if t.created_at else '' }}
+          </p>
+        </div>
+        {% if t.status == 'draft' %}
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300">Draft</span>
+        {% elif t.status == 'completed' %}
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400">Completed</span>
+        {% else %}
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">Received</span>
+        {% endif %}
+      </div>
+
+      <div class="overflow-x-auto mb-4">
+        <table class="table">
+          <thead>
+            <tr><th>Product</th><th>Qty</th></tr>
+          </thead>
+          <tbody>
+            {% for item in t.items %}
+            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+              <td class="text-xs font-bold">{{ item.product.name if item.product else '?' }}</td>
+              <td class="text-xs">{{ item.quantity }}</td>
+            </tr>
+            {% else %}<tr><td colspan="2" class="text-[10px] text-slate-400 text-center py-4">No items</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if t.status == 'draft' %}
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.transfer_add_item', t_id=t.id) }}" class="flex gap-2 flex-wrap items-end mb-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Product</label>
+          <select name="product_id" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" required>
+            <option value="">Select...</option>
+            {% for p in products %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Quantity</label>
+          <input type="number" name="quantity" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Qty" min="1" required style="width:100px;">
+        </div>
+        <button type="submit" class="bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20 text-[10px] uppercase tracking-widest inline-flex items-center gap-1">
+          <i class="fas fa-plus-circle"></i>Add
+        </button>
+      </form>
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.transfer_complete', t_id=t.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+          <i class="fas fa-check-circle"></i>Complete Transfer
+        </button>
+      </form>
+      {% elif t.status == 'completed' %}
+      <form method="POST" action="{{ url_for('shopyo_ecommerce.inventory.transfer_receive', t_id=t.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="bg-emerald-500 text-white font-bold py-2.5 px-5 rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20 text-xs uppercase tracking-widest inline-flex items-center gap-1.5">
+          <i class="fas fa-truck-loading"></i>Receive at Destination
+        </button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="card">
+    <div class="card-body text-center py-8">
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No transfers yet</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

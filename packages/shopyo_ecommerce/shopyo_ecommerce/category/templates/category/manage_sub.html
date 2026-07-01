@@ -1,0 +1,126 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='manage subcategory' %}
+{% block pagehead %}
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block module_content %}
+<div class="max-w-3xl mx-auto space-y-6">
+  <div>
+    <a class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-widest" href="{{ url_for('shopyo_ecommerce.category.choose_sub_dashboard', category_id=category.id) }}">
+      <i class="fas fa-arrow-left"></i> Back to {{ category.name }}
+    </a>
+  </div>
+
+  {%if category.name != 'uncategorised'%}
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Add Subcategory</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">to {{ category.name }}</p>
+      </div>
+
+      <form action="{{url_for('shopyo_ecommerce.category.add_sub', category_name=category.name)}}" method="post" enctype="multipart/form-data" class="space-y-6">
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Name</label>
+          <div class="relative">
+            <i class="fa fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input required autocomplete="off" id="name" type="text"
+                   class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                   name="name" placeholder="Subcategory name">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Image</label>
+          <div class="relative">
+            <i class="fa fa-image absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="file" name="photo" autocomplete="off"
+                   class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+          </div>
+        </div>
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-widest">
+          <i class="fas fa-plus-circle mr-2"></i>Add Subcategory
+        </button>
+      </form>
+    </div>
+  </div>
+  {%endif%}
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Existing Subcategories</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ category.subcategories|length }} total</p>
+      </div>
+
+      <div class="divide-y divide-slate-100 dark:divide-slate-800">
+        {%for subcategory in category.subcategories%}
+        <div class="px-6 py-4 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all" x-data="{ showModal: false }">
+          <form class="flex items-center gap-3" action="{{url_for('shopyo_ecommerce.category.edit_sub_name', subcategory_id=subcategory.id)}}" method="POST">
+            <div class="flex-1 min-w-0">
+              <input type="text" name="name" value="{{subcategory.name}}" autocomplete="off"
+                     class="w-full bg-transparent border-0 border-b border-transparent hover:border-slate-200 dark:hover:border-slate-700 focus:border-primary dark:focus:border-primary py-1 px-2 text-sm font-bold text-slate-900 dark:text-white outline-none transition-all">
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              <button type="button" @click="showModal = true"
+                      class="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-sky-100 dark:border-sky-500/20"
+                      title="View image">
+                <i class="fas fa-image text-xs"></i>
+              </button>
+
+              <button type="submit"
+                      class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-100 dark:border-emerald-500/20"
+                      title="Save">
+                <i class="fas fa-check text-xs"></i>
+              </button>
+
+              {%if subcategory.name != 'uncategorised' and subcategory.category.name != 'uncategorised'%}
+              <a href="{{url_for('shopyo_ecommerce.category.edit_sub_img_dashboard', subcategory_id=subcategory.id)}}"
+                 class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all border border-amber-100 dark:border-amber-500/20"
+                 title="Edit image">
+                <i class="fas fa-pencil-alt text-xs"></i>
+              </a>
+              <a href="{{url_for('shopyo_ecommerce.category.sub_delete', subcategory_id=subcategory.id)}}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="Delete" onclick="return confirm('Delete this subcategory?')">
+                <i class="fas fa-trash-alt text-xs"></i>
+              </a>
+              {%endif%}
+            </div>
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          </form>
+
+          <!-- Image Modal -->
+          <div x-show="showModal"
+               x-cloak
+               class="fixed inset-0 z-50 flex items-center justify-center p-4"
+               @click.away="showModal = false">
+            <div class="fixed inset-0 bg-black/50" @click="showModal = false"></div>
+            <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+              <div class="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+                <h5 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">{{subcategory.name}}</h5>
+                <button @click="showModal = false"
+                        class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                  <i class="fas fa-times text-xs"></i>
+                </button>
+              </div>
+              <div class="p-6">
+                {%for resource in subcategory.resources%}
+                <img class="w-full rounded-xl" src="{{url_for('shopyo_ecommerce.category.subcategory_image', filename=resource.filename)}}">
+                {%else%}
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-8">No image</p>
+                {%endfor%}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

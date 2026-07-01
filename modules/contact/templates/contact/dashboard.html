@@ -1,0 +1,88 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'contact' %}
+{% block pagehead %}<title>Contact Messages</title>{% endblock %}
+{% block sidebar %}{% include 'contact/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Contact Messages</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Page {{ messages.page }} of {{ messages.pages }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body !p-0">
+      <table class="table">
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Date</th><th class="w-28"></th></tr>
+        </thead>
+        <tbody>
+          {% for message in messages.items %}
+          <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+            <td class="text-xs font-bold">{{ message.name }}</td>
+            <td class="text-xs">{{ message.email }}</td>
+            <td class="text-xs text-slate-400">{{ message.created_date.strftime('%Y-%m-%d %H:%M') if message.created_date else '-' }}</td>
+            <td>
+              <button onclick="openMessage({{ message.id }})" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="View message">
+                <i class="fas fa-envelope-open-text text-xs"></i>
+              </button>
+            </td>
+          </tr>
+          {% else %}<tr><td colspan="4" class="text-[10px] text-slate-400 text-center py-8">No messages</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if messages.pages > 1 %}
+      <div class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-center gap-2">
+        {% if messages.has_prev %}
+        <a href="{{ url_for('contact.dashboard', page=messages.prev_num) }}" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"><i class="fas fa-chevron-left mr-1"></i>Previous</a>
+        {% endif %}
+        {% if messages.has_next %}
+        <a href="{{ url_for('contact.dashboard', page=messages.next_num) }}" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">Next<i class="fas fa-chevron-right ml-1"></i></a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Message Modal -->
+<div id="message-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg mx-4 shadow-2xl">
+    <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight" id="modal-name"></h4>
+        <p class="text-[10px] font-bold text-slate-400" id="modal-email"></p>
+      </div>
+      <button onclick="closeMessage()" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"><i class="fas fa-times text-xs"></i></button>
+    </div>
+    <div class="p-6">
+      <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-wrap" id="modal-message"></p>
+    </div>
+    <div class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+      <button onclick="closeMessage()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-widest">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var messages = {{ messages.items|tojson|safe }};
+function openMessage(id) {
+  var m = messages.find(function(x) { return x.id === id; });
+  if (!m) return;
+  document.getElementById('modal-name').textContent = m.name;
+  document.getElementById('modal-email').textContent = m.email;
+  document.getElementById('modal-message').textContent = m.message;
+  document.getElementById('message-modal').classList.remove('hidden');
+  document.getElementById('message-modal').classList.add('flex');
+}
+function closeMessage() {
+  document.getElementById('message-modal').classList.add('hidden');
+  document.getElementById('message-modal').classList.remove('flex');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMessage(); });
+</script>
+{% endblock %}

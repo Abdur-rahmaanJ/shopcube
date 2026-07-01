@@ -1,0 +1,20 @@
+{% extends "shopyo_dashboard/dashboard_base.html" %}
+{% block title %}Unconfirmed - {{OUR_APP_NAME}}{% endblock %}
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center">
+  <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 md:p-10 shadow-sm text-center">
+    <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-envelope text-amber-500 text-2xl"></i>
+    </div>
+    <h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">Welcome to {{OUR_APP_NAME}}!</h1>
+    <p class="text-slate-500 dark:text-slate-400 text-sm">You have not confirmed your account. An email confirmation link was sent to <strong class="text-slate-700 dark:text-slate-200">{{ current_user.email }}</strong>.</p>
+    <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Please check your inbox and spam folder.</p>
+    <div class="mt-8 space-y-3">
+      <a href="{{ url_for('shopyo_auth.resend', _external=True) }}" class="block w-full py-3 px-4 rounded-xl bg-primary text-white font-black text-xs uppercase tracking-widest hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">Resend Confirmation</a>
+      <p class="text-xs text-slate-400">
+        New here? <a href="{{ url_for('shopyo_auth.register') }}" class="font-bold text-primary hover:text-primary-dark">Create an account</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

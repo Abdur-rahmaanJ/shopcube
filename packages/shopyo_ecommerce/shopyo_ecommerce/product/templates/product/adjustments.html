@@ -1,0 +1,66 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'products' %}
+{% block pagehead %}
+<title>Stock Adjustments - {{ product.name }}</title>
+{% endblock %}
+{% block sidebar %}
+{% include 'product/blocks/sidebar.html' %}
+{% endblock %}
+{% block module_content %}
+<div class="max-w-5xl mx-auto space-y-6">
+  <div class="mb-4">
+    <a class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-widest" href="{{ url_for('shopyo_ecommerce.product.edit_dashboard', barcode=product.barcode) }}">
+      <i class="fas fa-arrow-left"></i> Back to {{ product.name }}
+    </a>
+  </div>
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Stock Adjustments</h3>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ product.name }} &middot; {{ product.barcode }} &middot; Current stock: <span class="text-primary">{{ product.in_stock }}</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+              <th class="text-left py-3.5 px-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Date</th>
+              <th class="text-left py-3.5 px-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Change</th>
+              <th class="text-left py-3.5 px-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Reason</th>
+              <th class="text-left py-3.5 px-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Reference</th>
+              <th class="text-left py-3.5 px-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">User</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for adj in adjustments %}
+            <tr class="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+              <td class="py-3.5 px-6 font-medium">{{ adj.created_at.strftime('%Y-%m-%d %H:%M') if adj.created_at else '-' }}</td>
+              <td class="py-3.5 px-6 font-bold {{ 'text-emerald-500' if adj.quantity_change > 0 else 'text-red-500' }}">
+                {{ '+' if adj.quantity_change > 0 }}{{ adj.quantity_change }}
+              </td>
+              <td class="py-3.5 px-6">{{ adj.reason }}</td>
+              <td class="py-3.5 px-6 text-slate-400">{{ adj.reference or '-' }}</td>
+              <td class="py-3.5 px-6 text-slate-400">{{ adj.user_id or '-' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5" class="py-12 text-center">
+                <div class="flex flex-col items-center gap-3">
+                  <div class="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                    <i class="fas fa-history text-xl text-slate-200 dark:text-slate-700"></i>
+                  </div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No adjustments recorded</p>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'purchase' %}
+{% block pagehead %}<title>New Purchase Order</title>{% endblock %}
+{% block sidebar %}{% include 'purchase/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-3xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center gap-3 mb-8">
+        <a href="{{ url_for('shopyo_ecommerce.purchase.dashboard') }}" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700">
+          <i class="fas fa-arrow-left text-xs"></i>
+        </a>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">New Purchase Order</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Create a new purchase order</p>
+        </div>
+      </div>
+
+      <form method="POST" class="space-y-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Vendor</label>
+          {{ form.vendor_id(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none") }}
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Notes</label>
+          {{ form.notes(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", rows=3) }}
+        </div>
+        <div class="flex gap-3">
+          <a href="{{ url_for('shopyo_ecommerce.purchase.dashboard') }}" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-widest">Cancel</a>
+          {{ form.submit(class="bg-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest cursor-pointer") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

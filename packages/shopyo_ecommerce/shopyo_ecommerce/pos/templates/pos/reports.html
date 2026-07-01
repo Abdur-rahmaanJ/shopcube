@@ -1,0 +1,147 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'pos' %}
+{% block pagehead %}<title>Sales Reports</title>{% endblock %}
+{% block sidebar %}{% include 'pos/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-5xl mx-auto space-y-6">
+
+  <!-- Header -->
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Sales Reports</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Revenue and transaction overview</p>
+      </div>
+
+      <!-- Date range pills -->
+      <div class="flex items-center gap-2 mb-8">
+        <a href="?days=1" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ 'bg-primary text-white shadow-lg shadow-primary/20' if days==1 else 'bg-slate-50 dark:bg-slate-800 text-slate-500 hover:bg-primary/10 hover:text-primary border border-slate-100 dark:border-slate-700' }}">Today</a>
+        <a href="?days=7" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ 'bg-primary text-white shadow-lg shadow-primary/20' if days==7 else 'bg-slate-50 dark:bg-slate-800 text-slate-500 hover:bg-primary/10 hover:text-primary border border-slate-100 dark:border-slate-700' }}">7 Days</a>
+        <a href="?days=30" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ 'bg-primary text-white shadow-lg shadow-primary/20' if days==30 else 'bg-slate-50 dark:bg-slate-800 text-slate-500 hover:bg-primary/10 hover:text-primary border border-slate-100 dark:border-slate-700' }}">30 Days</a>
+        <a href="?days=365" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ 'bg-primary text-white shadow-lg shadow-primary/20' if days==365 else 'bg-slate-50 dark:bg-slate-800 text-slate-500 hover:bg-primary/10 hover:text-primary border border-slate-100 dark:border-slate-700' }}">Year</a>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total Sales</p>
+          <p class="text-3xl font-black text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(total_sales) }}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Transactions</p>
+          <p class="text-3xl font-black text-slate-900 dark:text-white">{{ total_tx }}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Avg per Transaction</p>
+          <p class="text-3xl font-black text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(total_sales / total_tx) if total_tx else '0.00' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breakdown tables -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- By Location -->
+    <div class="card">
+      <div class="card-body !p-0">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">By Location</h4>
+        </div>
+        <table class="table">
+          {% for loc_id, amt in by_location.items() %}
+          <tr>
+            <td class="text-xs font-medium text-slate-600 dark:text-slate-300">Location #{{ loc_id }}</td>
+            <td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(amt) }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="2" class="text-[10px] text-slate-400 text-center py-8">No data</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <!-- By Payment Method -->
+    <div class="card">
+      <div class="card-body !p-0">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">By Payment Method</h4>
+        </div>
+        <table class="table">
+          {% for method, amt in by_method.items() %}
+          <tr>
+            <td class="text-xs font-medium text-slate-600 dark:text-slate-300">{{ method|capitalize }}</td>
+            <td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(amt) }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="border-t-2 border-slate-200 dark:border-slate-700">
+            <td class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">Total</td>
+            <td class="text-xs font-black text-right text-primary">{{ currency_symbol }}{{ '%.2f'|format(total_sales) }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cashier & Tax -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="card">
+      <div class="card-body !p-0">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">By Cashier</h4>
+        </div>
+        <table class="table">
+          {% for cid, count in by_cashier.items() %}
+          <tr>
+            <td class="text-xs font-medium text-slate-600 dark:text-slate-300">Cashier #{{ cid }}</td>
+            <td class="text-xs font-black text-right">{{ count }} tx</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="2" class="text-[10px] text-slate-400 text-center py-8">No data</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body !p-0">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+          <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Tax Summary</h4>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Estimated 10%</p>
+        </div>
+        <table class="table">
+          <tr><td class="text-xs font-medium text-slate-600">Taxable Sales</td><td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(total_sales) }}</td></tr>
+          <tr><td class="text-xs font-medium text-slate-600">Tax (10%)</td><td class="text-xs font-black text-right">{{ currency_symbol }}{{ '%.2f'|format(total_sales * 0.1) }}</td></tr>
+          <tr class="border-t-2 border-slate-200 dark:border-slate-700"><td class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">Net Sales</td><td class="text-xs font-black text-right text-primary">{{ currency_symbol }}{{ '%.2f'|format(total_sales * 0.9) }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="card">
+    <div class="card-body !p-0">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Recent Transactions</h4>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Last {{ days }} days</p>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Date</th><th>Amount</th><th>Method</th><th>Cashier</th><th>Discount</th></tr>
+        </thead>
+        <tbody>
+          {% for t in txs %}
+          <tr>
+            <td class="text-xs">{{ t.time.strftime('%Y-%m-%d %H:%M') if t.time else '-' }}</td>
+            <td class="text-xs font-bold">{{ currency_symbol }}{{ '%.2f'|format(t.total_amount|float) }}</td>
+            <td class="text-xs"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary/5 text-primary text-[10px] font-bold border border-primary/10">{{ t.method_of_payment }}</span></td>
+            <td class="text-xs text-slate-500">#{{ t.cashier_id }}</td>
+            <td class="text-xs text-slate-400">{{ t.discount_type or '-' }}{{ ' ' if t.discount_value }}{{ t.discount_value or '' }}</td>
+          </tr>
+          {% else %}<tr><td colspan="5" class="text-[10px] text-slate-400 text-center py-8">No transactions in this period</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

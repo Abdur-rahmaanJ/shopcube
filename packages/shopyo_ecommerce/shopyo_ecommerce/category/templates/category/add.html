@@ -1,0 +1,66 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='category' %}
+{% block pagehead %}
+<title>Add Category</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block module_content %}
+<div class="max-w-2xl mx-auto">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Add Category</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Create a new product category</p>
+      </div>
+
+      {% if has_category == 'True' %}
+      <div class="mb-6 p-4 rounded-2xl border bg-red-50 border-red-200 text-red-700 text-xs font-bold uppercase tracking-widest">
+        Category already listed
+      </div>
+      {% endif %}
+
+      <form action="/category/add" method="post" enctype="multipart/form-data" class="space-y-6">
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Name</label>
+          <div class="relative">
+            <i class="fa fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input required autocomplete="off" id="name" type="text"
+                   class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                   name="name" placeholder="Category name">
+          </div>
+          <span id="check" class="text-[10px] text-slate-400 px-1"><i class="fa fa-list-alt"></i></span>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Image</label>
+          <div class="relative">
+            <i class="fa fa-image absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="file" name="photo" autocomplete="off"
+                   class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+          </div>
+        </div>
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-widest">
+          <i class="fas fa-plus-circle mr-2"></i>Add Category
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('name')?.addEventListener('input', function() {
+  var check = document.getElementById('check');
+  fetch('/category/check/' + encodeURIComponent(this.value))
+    .then(r => r.json())
+    .then(data => {
+      check.innerHTML = data.exists
+        ? '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
+        : '<i class="fa fa-list-alt"></i>';
+    });
+});
+</script>
+{% endblock %}

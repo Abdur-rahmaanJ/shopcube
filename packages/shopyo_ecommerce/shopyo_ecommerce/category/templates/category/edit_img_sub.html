@@ -1,0 +1,57 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='subcategory' %}
+{% block pagehead %}
+{% endblock %}
+{% block sidebar %}
+{%include 'category/blocks/sidebar.html'%}
+{%endblock%}
+{% block module_content %}
+<div class="max-w-2xl mx-auto">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-8">
+        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Edit Subcategory Image</h3>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ subcategory.name }}</p>
+      </div>
+
+      <form action="{{url_for('shopyo_ecommerce.category.edit_sub_img', subcategory_id=subcategory.id)}}" method="post" enctype="multipart/form-data" class="space-y-6">
+        {%if len(subcategory.resources) == 0%}
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Add image for {{subcategory.name}}</label>
+          <div class="relative">
+            <i class="fa fa-image absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="file" name="photo" autocomplete="off"
+                   class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+          </div>
+        </div>
+        {%else%}
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Current Images</label>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {%for resource in subcategory.resources%}
+            {%if resource.type == 'image'%}
+            <div class="relative group rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+              <img class="w-full h-32 object-cover" src="{{url_for('shopyo_ecommerce.category.subcategory_image', filename=resource.filename)}}" alt="">
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <a href="{{url_for('shopyo_ecommerce.category.subcategory_image_delete', subcategory_id=subcategory.id, filename=resource.filename)}}"
+                   class="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-all">
+                  <i class="fas fa-trash-alt text-xs"></i>
+                </a>
+              </div>
+            </div>
+            {%endif%}
+            {%endfor%}
+          </div>
+          <p class="text-[10px] text-slate-400 px-1 mt-2">Delete all images to add new ones</p>
+        </div>
+        {%endif%}
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-widest">
+          <i class="fas fa-save mr-2"></i>Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

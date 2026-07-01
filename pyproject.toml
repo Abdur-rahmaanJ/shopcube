@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "shopcube"
 version = "5.0.0"
@@ -53,12 +57,22 @@ dependencies = [
     "python-dateutil==2.8.2",
     "pytz==2022.2.1",
     "shopyo>=4.13.1",
+    "shopyo-appadmin>=1.5.0",
+    "shopyo-auth>=1.10.0",
+    "shopyo-base>=1.6.0",
+    "shopyo-dashboard>=1.5.1",
+    "shopyo-page>=1.5.0",
+    "shopyo-settings>=1.4.0",
+    "shopyo-theme>=1.7.0",
+    "shopyo-ecommerce>=0.3.5",
     "six==1.16.0",
     "sqlalchemy==1.4.46",
     "tzdata==2024.1",
     "werkzeug==2.2.2",
     "wtforms==3.0.1",
     "setuptools",
+    "iso4217parse>=0.6.2",
+    "shopyo-i18n>=1.3.0",
 ]
 
 [project.urls]
@@ -66,12 +80,36 @@ dependencies = [
 "Source" = "https://github.com/Abdur-RahmaanJ/shopcube/"
 
 
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "pytest-ordering",
+]
+
 [options]
 include_package_data = true
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
 
 
 [project.scripts]
 shopcube = "shopcube.__main__:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["packages", "tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning:sqlalchemy.*",
+    "ignore::DeprecationWarning:dateutil.*",
+    "ignore::DeprecationWarning:pytz.*",
+    "ignore::DeprecationWarning:flask_sqlalchemy.*",
+    "ignore::DeprecationWarning:flask_admin.*",
+    "ignore::DeprecationWarning:pkg_resources.*",
+    "ignore::DeprecationWarning:marshmallow.*",
+    "ignore::DeprecationWarning:werkzeug.*",
+    "ignore::DeprecationWarning:ast.*",
+    "ignore::UserWarning:flask_limiter.*",
+    "ignore::pytest.PytestUnknownMarkWarning",
+]

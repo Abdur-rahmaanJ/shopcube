@@ -1,0 +1,158 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'inventory' %}
+{% block pagehead %}<title>Inventory Reports</title>{% endblock %}
+{% block sidebar %}{% include 'inventory/blocks/sidebar.html' %}{% endblock %}
+{% block module_content %}
+<div class="max-w-6xl mx-auto space-y-6">
+  <div class="card">
+    <div class="card-body">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Inventory Reports</h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ products|length }} products tracked</p>
+        </div>
+        <div class="flex gap-3">
+          <div class="text-center">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Low Stock</p>
+            <p class="text-lg font-black text-amber-500">{{ low_stock|length }}</p>
+          </div>
+          <div class="text-center">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Out of Stock</p>
+            <p class="text-lg font-black text-red-500">{{ out_of_stock|length }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card bg-gradient-to-br from-sky-500 to-sky-600 overflow-hidden relative">
+      <div class="absolute top-3 right-3 text-white/20 text-4xl"><i class="fas fa-coins"></i></div>
+      <div class="card-body">
+        <p class="text-[10px] font-bold text-white/70 uppercase tracking-widest">Valuation (Cost)</p>
+        <h4 class="text-3xl font-black text-white mt-2 tracking-tight">${{ '%.2f'|format(total_cost) }}</h4>
+      </div>
+    </div>
+    <div class="card bg-gradient-to-br from-emerald-500 to-emerald-600 overflow-hidden relative">
+      <div class="absolute top-3 right-3 text-white/20 text-4xl"><i class="fas fa-tags"></i></div>
+      <div class="card-body">
+        <p class="text-[10px] font-bold text-white/70 uppercase tracking-widest">Valuation (Retail)</p>
+        <h4 class="text-3xl font-black text-white mt-2 tracking-tight">${{ '%.2f'|format(total_retail) }}</h4>
+      </div>
+    </div>
+    <div class="card bg-gradient-to-br from-amber-500 to-amber-600 overflow-hidden relative">
+      <div class="absolute top-3 right-3 text-white/20 text-4xl"><i class="fas fa-chart-line"></i></div>
+      <div class="card-body">
+        <p class="text-[10px] font-bold text-white/70 uppercase tracking-widest">Potential Margin</p>
+        <h4 class="text-3xl font-black text-white mt-2 tracking-tight">${{ '%.2f'|format(total_retail - total_cost) }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center"><i class="fas fa-exclamation-triangle text-xs"></i></div>
+            <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Low Stock Alerts</h4>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">{{ low_stock|length }}</span>
+        </div>
+        <div class="space-y-1">
+          {% for p in low_stock %}
+          <div class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
+              <span class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ p.name }}</span>
+            </div>
+            <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 whitespace-nowrap ml-3">{{ p.in_stock }} / {{ p.min_stock }} min</span>
+          </div>
+          {% else %}
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-8">
+            <i class="fas fa-check-circle text-emerald-400 text-lg block mb-2"></i>All stocked up
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center"><i class="fas fa-times-circle text-xs"></i></div>
+            <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Out of Stock</h4>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">{{ out_of_stock|length }}</span>
+        </div>
+        <div class="space-y-1">
+          {% for p in out_of_stock %}
+          <div class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0"></span>
+              <span class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ p.name }}</span>
+            </div>
+            <span class="text-[10px] font-bold text-red-600 dark:text-red-400 whitespace-nowrap ml-3">0 in stock</span>
+          </div>
+          {% else %}
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-8">
+            <i class="fas fa-check-circle text-emerald-400 text-lg block mb-2"></i>Nothing out of stock
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body border-b border-slate-200 dark:border-slate-700">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center"><i class="fas fa-box text-xs"></i></div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">All Products</h4>
+      </div>
+    </div>
+    <div class="card-body !p-0">
+      <div class="overflow-x-auto">
+        <table class="table">
+          <thead>
+            <tr><th>Name</th><th>Stock</th><th>Cost</th><th>Retail</th><th>Margin</th><th>Value (Cost)</th></tr>
+          </thead>
+          <tbody>
+            {% for p in products %}
+            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+              <td>
+                <div class="flex items-center gap-2">
+                  {% if (p.in_stock or 0) == 0 %}
+                  <span class="w-2 h-2 rounded-full bg-red-400 shrink-0" title="Out of stock"></span>
+                  {% elif p.min_stock and (p.in_stock or 0) <= p.min_stock %}
+                  <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0" title="Low stock"></span>
+                  {% else %}
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0" title="In stock"></span>
+                  {% endif %}
+                  <span class="text-xs font-bold whitespace-nowrap">{{ p.name }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs">{{ p.in_stock or 0 }}</span>
+                  {% if p.min_stock and p.in_stock %}
+                  <div class="w-16 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden hidden md:block">
+                    <div class="h-full rounded-full max-w-full {{ 'bg-red-400' if (p.in_stock or 0) <= p.min_stock else 'bg-emerald-400' }}" style="width: {{ ((p.in_stock / (p.min_stock * 3)) * 100)|int }}%"></div>
+                  </div>
+                  {% endif %}
+                </div>
+              </td>
+              <td class="text-xs">${{ '%.2f'|format(p.cost_price|float) }}</td>
+              <td class="text-xs">${{ '%.2f'|format(p.selling_price|float) }}</td>
+              <td class="text-xs font-bold {{ 'text-emerald-600 dark:text-emerald-400' if (p.selling_price|float) > (p.cost_price|float) else 'text-red-600 dark:text-red-400' }}">${{ '%.2f'|format((p.selling_price|float) - (p.cost_price|float)) }}</td>
+              <td class="text-xs">${{ '%.2f'|format((p.cost_price|float) * (p.in_stock or 0)) }}</td>
+            </tr>
+            {% else %}<tr><td colspan="6" class="text-[10px] text-slate-400 text-center py-8">No products</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

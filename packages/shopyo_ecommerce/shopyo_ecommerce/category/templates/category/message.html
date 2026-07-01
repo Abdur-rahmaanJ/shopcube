@@ -1,0 +1,19 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='category' %}
+{% block module_content %}
+<div class="max-w-lg mx-auto">
+  <div class="card">
+    <div class="card-body text-center">
+      <div class="py-8">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+          <i class="fas fa-check-circle text-primary text-2xl"></i>
+        </div>
+        <h1 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4">{{message}}</h1>
+        <a href="{{redirect_url}}" class="inline-flex items-center gap-2 bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 text-xs uppercase tracking-widest">
+          <i class="fas fa-arrow-right"></i> Continue
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

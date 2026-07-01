@@ -1,0 +1,39 @@
+from flask import render_template
+from shopyo_theme import get_active_front_theme
+from shopyo.api.module import ModuleHelp
+from shopyo.api.templates import yo_render
+from shopyo_settings.helpers import get_setting
+
+# from flask import url_for
+# from flask import redirect
+# from flask import flash
+# from flask import request
+#
+# from shopyo.api.html import notify_success
+# from shopyo.api.forms import flash_errors
+# from shopyo.api.enhance import get_active_theme_dir
+# from shopyo.api.enhance import get_setting
+# from modules.box__ecommerce.shop.helpers import get_cart_data
+
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
+
+
+@module_blueprint.route("/")
+def index():
+    theme = get_active_front_theme()
+    if theme == "blogus":
+        theme = get_setting("ACTIVE_FRONT_THEME") or "ecommerceus"
+    return render_template(
+        f"{theme}/index.html", get_static=get_static
+    )
+
+
+from shopyo.api.assets import get_static
+
+
+@module_blueprint.route("/render_demo")
+def render_demo():
+    context = {"fruit": "mango"}
+    return yo_render("blogus/render_demo.html", context)

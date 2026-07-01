@@ -1,0 +1,42 @@
+{% extends "shopyo_dashboard/dashboard_base.html" %}
+{% block title %}Create Account - {{OUR_APP_NAME}}{% endblock %}
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center">
+  <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 md:p-10 shadow-sm">
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-user-plus text-primary text-2xl"></i>
+      </div>
+      <h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Create Account</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Make your app management easy and fun!</p>
+    </div>
+    <form action="{{url_for('shopyo_auth.register')}}" method="post" class="space-y-5">
+      <div>
+        <label class="block text-[11px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5">{{ form.email.label }}</label>
+        {{ form.email(class_="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none text-slate-900 dark:text-white", placeholder="Email") }}
+        {% if form.email.errors %}<ul class="mt-1.5 space-y-1">{% for e in form.email.errors %}<li class="text-[10px] font-bold text-red-500">{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+      <div>
+        <label class="block text-[11px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5">{{ form.password.label }}</label>
+        {{ form.password(class_="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none text-slate-900 dark:text-white", placeholder="Password") }}
+        {% if form.password.errors %}<ul class="mt-1.5 space-y-1">{% for e in form.password.errors %}<li class="text-[10px] font-bold text-red-500">{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+      <div>
+        <label class="block text-[11px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5">{{ form.confirm.label }}</label>
+        {{ form.confirm(class_="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none text-slate-900 dark:text-white", placeholder="Confirm Password") }}
+        {% if form.confirm.errors %}<ul class="mt-1.5 space-y-1">{% for e in form.confirm.errors %}<li class="text-[10px] font-bold text-red-500">{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+      <div class="flex items-center gap-2">
+        <input class="w-4 h-4 rounded border-slate-300 dark:border-slate-600" type="checkbox" id="terms" name="terms" />
+        <label class="text-xs font-bold text-slate-500 dark:text-slate-400" for="terms">I agree to privacy policy & terms</label>
+      </div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <button class="w-full py-3 px-4 rounded-xl bg-primary text-white font-black text-xs uppercase tracking-widest hover:bg-primary-dark transition-all shadow-lg shadow-primary/20" type="submit">Sign up</button>
+    </form>
+    <p class="text-center mt-6">
+      <span class="text-xs text-slate-400">Already have an account?</span>
+      <a href="{{ url_for('shopyo_auth.login') }}" class="text-xs font-bold text-primary hover:text-primary-dark ml-1">Sign in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

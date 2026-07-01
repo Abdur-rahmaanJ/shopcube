@@ -1,0 +1,64 @@
+[project]
+name = "shopyo_ecommerce"
+authors = [{ name = "ShopCube", email = "dev@shopcube.app" }]
+description = "Full-featured ecommerce module for Shopyo Flask apps — products, cart, checkout, orders, POS, inventory, and API"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "BSD-3-Clause"
+keywords = [
+    "shopyo",
+    "ecommerce",
+    "flask",
+    "flask-ecommerce",
+    "shopping-cart",
+    "online-store",
+    "point-of-sale",
+    "pos",
+    "inventory",
+    "order-management",
+    "python-ecommerce",
+    "flask-shop",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "shopyo",
+    "shopyo-appadmin>=1.5.0",
+    "shopyo-auth>=1.10.0",
+    "shopyo-dashboard>=1.5.1",
+    "shopyo-theme>=1.7.0",
+    "iso4217parse>=0.6.2"
+]
+version = "0.3.5"
+
+[project.urls]
+"Homepage" = "https://github.com/shopcube/shopcube"
+"Bug Tracker" = "https://github.com/shopcube/shopcube/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["shopyo_ecommerce*"]
+
+[tool.setuptools.package-data]
+shopyo_ecommerce = ["static/**", "templates/**", "*/templates/**", "data/**", "**/*.json"]
