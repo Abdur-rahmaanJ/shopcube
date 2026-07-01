@@ -244,14 +244,14 @@ wheels = [
 
 [[package]]
 name = "flask-reuploaded"
-version = "1.2.0"
+version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flask" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/69/294fbd07ba6fbf09603ba2ed709ceb4b15a28a435842627cdf4b60f9dc22/Flask-Reuploaded-1.2.0.tar.gz", hash = "sha256:fde68f9fb246c55d97996a9339ad56f70b268f69f2bcbff92deaddf663f12c32", size = 25967, upload-time = "2021-11-07T09:03:28.63Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/f7/c80fe59a796f51028fbe145ef154e3b58e85e511cb30499a72e89a64338e/flask_reuploaded-1.5.0.tar.gz", hash = "sha256:e5dc9da2a52e3d72131538388c227212f6130448010e369e24479d226cd66b2d", size = 35096, upload-time = "2026-02-21T08:07:28.849Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/27/3709bb9bc350cb50955d12c99e10d3b607935ffc43c61fb6478540cf5690/Flask_Reuploaded-1.2.0-py3-none-any.whl", hash = "sha256:dbf2fe96b1125aa7e1d4e0155ab150d997868f6d31b2b0523945c8b0fe392772", size = 14481, upload-time = "2021-11-07T09:03:26.293Z" },
+    { url = "https://files.pythonhosted.org/packages/3a/fb/30f9763cc8397510d9dfadcd8af5f15e558c83c5a4d301daa9648e531d40/flask_reuploaded-1.5.0-py3-none-any.whl", hash = "sha256:883baf5747586bfa0abd31fda8931aa3319970e18c2400087f98ab79ff9fea4c", size = 15497, upload-time = "2026-02-21T08:07:27.304Z" },
 ]
 
 [[package]]
@@ -640,7 +640,7 @@ wheels = [
 
 [[package]]
 name = "shopcube"
-version = "5.0.0"
+version = "5.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },
@@ -713,7 +713,7 @@ requires-dist = [
     { name = "flask-mailman", specifier = "==0.3.0" },
     { name = "flask-marshmallow", specifier = "==1.0.0" },
     { name = "flask-migrate", specifier = "==3.1.0" },
-    { name = "flask-reuploaded", specifier = "==1.2.0" },
+    { name = "flask-reuploaded", specifier = "==1.5.0" },
     { name = "flask-sqlalchemy", specifier = "==2.5.1" },
     { name = "flask-wtf", specifier = "==1.0.0" },
     { name = "greenlet", specifier = "==3.1.1" },

@@ -26,12 +26,8 @@ click==8.1.3
     # via
     #   flask
     #   pip-tools
-codecov==2.1.12
-    # via -r reqs/dev.in
-coverage[toml]==6.0
-    # via
-    #   codecov
-    #   pytest-cov
+coverage==6.0
+    # via pytest-cov
 distlib==0.3.3
     # via virtualenv
 dnspython==2.2.1
@@ -56,7 +52,6 @@ flask==2.2.0
     #   flask-admin
     #   flask-login
     #   flask-mailman
-    #   flask-marshmallow
     #   flask-migrate
     #   flask-reuploaded
     #   flask-sqlalchemy
@@ -70,11 +65,9 @@ flask-login==0.6.2
     #   shopyo
 flask-mailman==0.3.0
     # via shopyo
-flask-marshmallow==0.14.0
-    # via shopyo
 flask-migrate==4.0.1
     # via shopyo
-flask-reuploaded==1.2.0
+flask-reuploaded==1.5.0
     # via -r reqs/app.in
 flask-sqlalchemy==2.5.1
     # via
@@ -84,7 +77,9 @@ flask-sqlalchemy==2.5.1
 flask-wtf==1.0.1
     # via shopyo
 greenlet==2.0.1
-    # via sqlalchemy
+    # via
+    #   -r reqs/app.in
+    #   sqlalchemy
 identify==2.5.3
     # via pre-commit
 idna==3.2
@@ -112,19 +107,16 @@ markupsafe==2.1.1
     #   werkzeug
     #   wtforms
 marshmallow==3.19.0
-    # via
-    #   flask-marshmallow
-    #   marshmallow-sqlalchemy
-    #   shopyo
+    # via marshmallow-sqlalchemy
 marshmallow-sqlalchemy==0.28.1
-    # via shopyo
+    # via -r reqs/app.in
 mccabe==0.6.1
     # via flake8
 mkdocs-material-extensions==1.1.1
     # via flask-mailman
 nodeenv==1.7.0
     # via pre-commit
-numpy==1.24.1
+numpy==2.5.0
     # via pandas
 openpyxl==3.0.10
     # via -r reqs/app.in
@@ -136,10 +128,12 @@ packaging==23.0
     #   pytest
     #   sphinx
     #   tox
-pandas==1.5.2
+pandas==2.2.2
     # via -r reqs/app.in
-pillow==9.2.0
+pillow==12.2.0
     # via -r reqs/app.in
+pip==26.1.2
+    # via pip-tools
 pip-tools==6.12.1
     # via -r reqs/dev.in
 platformdirs==2.4.0
@@ -182,13 +176,16 @@ pytz==2021.3
 pyyaml==6.0
     # via pre-commit
 requests==2.26.0
+    # via sphinx
+setuptools==82.0.1
     # via
-    #   codecov
+    #   nodeenv
+    #   pip-tools
     #   sphinx
 shopyo==4.13.1
+    # via -r reqs/app.in
 six==1.16.0
     # via
-    #   flask-marshmallow
     #   python-dateutil
     #   tox
     #   virtualenv
@@ -213,7 +210,6 @@ sqlalchemy==1.4.46
     #   alembic
     #   flask-sqlalchemy
     #   marshmallow-sqlalchemy
-    #   pythoncms
     #   shopyo
 toml==0.10.2
     # via
@@ -221,12 +217,11 @@ toml==0.10.2
     #   pytest
     #   tox
 tomli==1.2.1
-    # via
-    #   build
-    #   coverage
-    #   pyproject-hooks
+    # via coverage
 tox==3.24.4
     # via -r reqs/dev.in
+tzdata==2026.2
+    # via pandas
 urllib3==1.26.7
     # via requests
 virtualenv==20.8.1
@@ -245,7 +240,3 @@ wtforms==3.0.1
     #   flask-admin
     #   flask-wtf
     #   shopyo
-
-# The following packages are considered to be unsafe in a requirements file:
-# pip
-# setuptools
