@@ -78,7 +78,7 @@ openpyxl==3.0.10
     # via -r reqs/app.in
 pandas==2.2.2
     # via -r reqs/app.in
-pillow==10.4.0
+pillow==12.2.0
     # via -r reqs/app.in
 pymysql==1.0.2
     # via -r reqs/app.in
