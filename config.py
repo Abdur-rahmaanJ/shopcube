@@ -96,7 +96,7 @@ class DevelopmentConfig(BaseConfig):
     MAIL_DEFAULT_SENDER = "ma@mail.com"
 
     # database configs
-    DEFAULT_DB = os.path.join(BaseConfig.DATA_DIR, "shopcube_dev.db")
+    DEFAULT_DB = os.path.join(BaseConfig.DATA_DIR, "shopcube.db")
     SQLALCHEMY_DATABASE_URI = f"sqlite:///{DEFAULT_DB}"
 
     # unknown configs

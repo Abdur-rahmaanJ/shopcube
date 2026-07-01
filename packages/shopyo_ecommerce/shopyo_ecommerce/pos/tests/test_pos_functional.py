@@ -87,6 +87,29 @@ class TestPosTransaction:
         tx = Transaction.query.first()
         assert tx.notes == "Test note"
 
+    def test_transaction_custom_item(self, test_client, db_session):
+        login_admin(test_client)
+        response = test_client.post(url_for("shopyo_ecommerce.pos.transaction"), json={
+            "items": {"__custom__1": {"count": 2, "unit_price": 5.99, "custom_description": "Custom fee"}},
+            "amount_paid": 20
+        })
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data["success"] is True
+        tx = Transaction.query.first()
+        assert tx is not None
+        assert len(tx.items) == 1
+        item = tx.items[0]
+        assert item.custom_description == "Custom fee"
+        assert float(item.quantity) == 2
+        assert float(item.unit_price) == 5.99
+        assert float(tx.total_amount) == 11.98
+        # Custom item should have no barcode
+        assert item.product_barcode is None
+        # No product was deducted
+        receipt_item = data["tx"]["items"][0]
+        assert receipt_item["name"] == "Custom fee"
+
 
 class TestPosShifts:
     def test_shift_open_close(self, test_client, db_session):

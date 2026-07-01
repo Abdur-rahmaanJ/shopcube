@@ -55,11 +55,11 @@
                 <div class="flex items-center gap-3">
                   <span class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] font-black">{{ item.quantity }}x</span>
                   <div>
-                    <p class="text-xs font-bold text-slate-900 dark:text-white">{{ item.product_barcode }}</p>
+                    <p class="text-xs font-bold text-slate-900 dark:text-white">{% if item.custom_description %}{{ item.custom_description }}{% else %}{{ item.product_barcode }}{% endif %}</p>
                     <p class="text-[10px] text-slate-400">@ {{ currency_symbol }}{{ '%.2f'|format(item.unit_price|float) }} ea</p>
                   </div>
                 </div>
-                <p class="text-xs font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(item.quantity * item.unit_price|float) }}</p>
+                <p class="text-xs font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(item.quantity|float * item.unit_price|float) }}</p>
               </div>
               {% endfor %}
             </div>

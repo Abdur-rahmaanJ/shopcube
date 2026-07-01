@@ -3,55 +3,19 @@
 {% set active_page ='pos' %}
 {% block pagehead %}
 <style>
-  .pos-layout { min-height: calc(100vh - 180px); }
-  #product-search { border: 1px solid rgba(0,0,0,0.1) !important; border-radius: 10px !important; height: 38px; font-size: 0.85rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-  #product-search:focus { box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-color: #6c5ce7 !important; }
-  .product-grid { flex-grow: 1; padding-bottom: 20px; }
-  .product-card { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); height: 100%; cursor: pointer; transition: box-shadow 0.2s ease; }
-  .product-card:hover { box-shadow: 0 8px 15px rgba(0,0,0,0.08), 0 0 0 2px #6c5ce7; }
-  .product-card.out-of-stock { opacity: 0.5; pointer-events: none; }
-  .product-card.low-stock { border: 1px solid #fdcb6e !important; }
-  .product-img-wrapper { height: 140px; overflow: hidden; position: relative; background: #f8f9fa; }
-  .product-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-  .product-card:hover img { transform: scale(1.05); }
-  .product-card-body { padding: 12px; }
-  .product-title { font-weight: 600; color: #333; font-size: 0.95rem; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .product-price { font-size: 1.1rem; font-weight: 700; color: #2d3436; }
-  .stock-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background-color: #e8e8e8; color: #2d2d2d; white-space: nowrap; }
-  .stock-badge.out-of-stock { background-color: #ffe0e0; color: #c0392b; font-weight: 600; }
-  .stock-badge.low-stock { background-color: #fff3cd; color: #856404; font-weight: 600; }
-  .cart-panel { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: none; }
-  .cart-header { padding: 20px; border-bottom: 1px solid #f0f0f0; border-radius: 12px 12px 0 0; }
-  .cart-items { max-height: 400px; overflow-y: auto; }
-  .cart-items table { margin-bottom: 0; }
-  .cart-items th { border-top: none; border-bottom: 2px solid #f0f0f0; color: #888; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  .cart-items td { vertical-align: middle; border-top: 1px solid #f8f9fa; padding: 12px 15px; }
-  .cart-item-title { font-weight: 600; color: #333; font-size: 0.9rem; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .qty-control { display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 6px; padding: 2px; width: fit-content; margin: 0 auto; }
-  .qty-btn { border: none; background: white; width: 24px; height: 24px; border-radius: 4px; color: #555; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-  .qty-btn:hover { background: #6c5ce7; color: white; }
-  .qty-input { width: 30px; text-align: center; border: none; background: transparent; font-weight: 600; font-size: 0.9rem; padding: 0; margin: 0 5px; -moz-appearance: textfield; }
-  .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .btn-remove { color: #ff7675; background: rgba(255,118,117,0.1); width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: none; transition: all 0.2s; cursor: pointer; }
-  .btn-remove:hover { background: #ff7675; color: white; }
-  .cart-footer { padding: 20px; background: #fdfdfd; border-top: 1px solid #eee; border-radius: 0 0 12px 12px; }
-  .payment-method.active { background-color: #6c5ce7; border-color: #6c5ce7; color: white; }
-  .payment-method:hover:not(.active) { background-color: #f0edff; border-color: #6c5ce7; color: #6c5ce7; }
-  .quick-keys-bar { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0; margin-bottom: 10px; }
-  .quick-key-btn { flex: 0 0 auto; min-width: 70px; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 10px; background: white; font-size: 0.8rem; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-  .quick-key-btn:hover { background: #6c5ce7; color: white; border-color: #6c5ce7; transform: translateY(-1px); }
-  .cat-pill { border-radius: 14px; padding: 4px 10px; color: #555; background: #e9ecef; font-size: 0.72rem; font-weight: 600; transition: all 0.2s; border: 1px solid transparent; cursor: pointer; white-space: nowrap; }
-  .cat-pill:hover, .cat-pill.active { background-color: #6c5ce7; color: white; box-shadow: 0 4px 6px rgba(108,92,231,0.2); }
   @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes barcodeFlash { 0%,100% { box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 50% { box-shadow: 0 0 0 3px #6c5ce7, 0 8px 15px rgba(108,92,231,0.2); } }
+  .barcode-highlight { animation: barcodeFlash 0.4s ease; }
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #dcdde1; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #b2bec3; }
-  .barcode-highlight { animation: barcodeFlash 0.4s ease; }
-  @keyframes barcodeFlash { 0%,100% { box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 50% { box-shadow: 0 0 0 3px #6c5ce7, 0 8px 15px rgba(108,92,231,0.2); } }
+  .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   #card-fields { transition: all 0.25s ease; overflow: hidden; }
   #card-fields.hidden { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin: 0; }
   #card-fields:not(.hidden) { max-height: 120px; }
+  .payment-method.active { background-color: #6c5ce7; border-color: #6c5ce7; color: white; }
+  .cat-pill.active { background-color: #6c5ce7 !important; color: white !important; box-shadow: 0 4px 6px rgba(108,92,231,0.2); }
   #receipt-modal { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
   #receipt-modal.open { display: flex; }
   .receipt { background: white; width: 340px; max-height: 90vh; overflow-y: auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); font-family: 'Courier New', monospace; padding: 28px 24px; }
@@ -62,12 +26,12 @@
   .receipt .line-total { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; padding: 4px 0; }
   .receipt .item-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 1px 0; }
   .receipt .item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
-  @media print { body * { visibility: hidden; } .receipt, .receipt * { visibility: visible; } .receipt { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 300px; box-shadow: none; border-radius: 0; } #receipt-modal { background: none; } .receipt .no-print { display: none; } }
+  @media print { #receipt-modal, #receipt-modal.open { display: none; } }
 </style>
 {% endblock %}
 
 {% block module_content %}
-<div class="pos-layout flex flex-col lg:flex-row gap-4">
+<div class="min-h-[calc(100vh-180px)] flex flex-col lg:flex-row gap-4">
   <!-- LEFT: Products -->
   <div class="flex-1 flex flex-col min-w-0">
 
@@ -82,31 +46,34 @@
     </div>
     {% endif %}
 
-    <!-- Search -->
-    <div class="relative mb-4">
-      <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10 text-sm"></i>
-      <input type="text" id="product-search" class="w-full !pl-9" placeholder="Scan barcode or search product..." autocomplete="off">
+    <!-- Search + Custom Item -->
+    <div class="flex items-center gap-2 mb-4">
+      <div class="relative flex-1">
+        <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10 text-sm"></i>
+        <input type="text" id="product-search" class="w-full !pl-9 !border !border-black/10 !rounded-[10px] h-[38px] text-sm bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] focus:shadow-[0_4px_20px_rgba(0,0,0,0.08)] focus:!border-[#6c5ce7] outline-none" placeholder="Scan barcode or search product..." autocomplete="off">
+      </div>
+      <button type="button" id="btn-custom-item" class="shrink-0 px-3 py-2.5 rounded-lg border border-dashed border-slate-300 text-[10px] font-bold text-slate-500 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all whitespace-nowrap" onclick="showCustomItemModal()"><i class="fa fa-plus mr-1"></i> Custom</button>
     </div>
 
     <!-- Quick Keys -->
     {% if quick_keys %}
-    <div class="quick-keys-bar">
+    <div class="flex gap-1.5 overflow-x-auto py-2 mb-2">
       {% for k in quick_keys %}
-      <div class="quick-key-btn" data-barcode="{{ k.product.barcode }}" data-display-name="{{ k.label or k.product.name }}" data-price="{{ k.product.selling_price }}" data-stock="{{ k.product.in_stock }}" role="button" tabindex="0">{{ k.label or k.product.name[:12] }}</div>
+      <div class="quick-key-btn flex-none min-w-[70px] px-3 py-2 border border-gray-200 rounded-xl bg-white text-xs font-semibold text-center cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-[#6c5ce7] hover:text-white hover:border-[#6c5ce7] hover:-translate-y-px" data-barcode="{{ k.product.barcode }}" data-display-name="{{ k.label or k.product.name }}" data-price="{{ k.product.selling_price }}" data-stock="{{ k.product.in_stock }}" role="button" tabindex="0">{{ k.label or k.product.name[:12] }}</div>
       {% endfor %}
     </div>
     {% endif %}
 
     <!-- Categories -->
     <div class="flex items-center gap-1.5 mb-2 overflow-x-auto pb-1 category-pills" id="category-tabs">
-      <span class="cat-pill active" data-cat-id="all" role="tab" tabindex="0"><i class="fa fa-th-large mr-1"></i> All Items</span>
+      <span class="cat-pill rounded-[14px] px-2.5 py-1 text-gray-600 bg-gray-200 text-[0.72rem] font-semibold transition-all duration-200 border border-transparent cursor-pointer whitespace-nowrap hover:bg-[#6c5ce7] hover:text-white hover:shadow-[0_4px_6px_rgba(108,92,231,0.2)] active" data-cat-id="all" role="tab" tabindex="0"><i class="fa fa-th-large mr-1"></i> All Items</span>
       {% for category in categories %}
-      <span class="cat-pill" data-cat-id="{{category.id}}" role="tab" tabindex="0">{{category.name}}</span>
+      <span class="cat-pill rounded-[14px] px-2.5 py-1 text-gray-600 bg-gray-200 text-[0.72rem] font-semibold transition-all duration-200 border border-transparent cursor-pointer whitespace-nowrap hover:bg-[#6c5ce7] hover:text-white hover:shadow-[0_4px_6px_rgba(108,92,231,0.2)]" data-cat-id="{{category.id}}" role="tab" tabindex="0">{{category.name}}</span>
       {% endfor %}
     </div>
 
     <!-- Product Grid -->
-    <div class="product-grid" id="product-list">
+    <div class="flex-1 pb-5" id="product-list">
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {% for category in categories %}
         {% for subcategory in category.subcategories %}
@@ -114,15 +81,15 @@
         {% set is_low = product.min_stock and product.min_stock > 0 and product.in_stock <= product.min_stock and product.in_stock > 0 %}
         <div class="product-item-wrapper" data-category-id="{{category.id}}" data-name="{{product.name|lower}}" data-barcode="{{product.barcode}}">
           {% set has_sized_prices = product.sizes|selectattr('price')|list|length > 0 %}
-          <div class="product-card{% if product.in_stock == 0 %} out-of-stock{% endif %}{% if is_low %} low-stock{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" {% if has_sized_prices %}data-has-sizes="true" data-sizes='[{% for s in product.sizes %}{% if s.price %}{"name":"{{s.name}}","price":{{s.price}}}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}]'{% endif %}{% if product.is_variable_qty %} data-variable-qty="true" data-unit-label="{{product.unit_label}}"{% endif %} tabindex="0" role="button">
-            <div class="product-img-wrapper">
-              <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
+          <div class="product-card rounded-xl overflow-hidden bg-white shadow-[0_2px_5px_rgba(0,0,0,0.02)] h-full cursor-pointer transition-shadow duration-200 hover:shadow-[0_8px_15px_rgba(0,0,0,0.08),0_0_0_2px_#6c5ce7] group{% if product.in_stock == 0 %} out-of-stock opacity-50 pointer-events-none{% endif %}{% if is_low %} !border-[#fdcb6e] border{% endif %}" data-barcode="{{product.barcode}}" data-display-name="{{product.name}}" data-price="{{product.selling_price}}" data-stock="{{product.in_stock}}" {% if has_sized_prices %}data-has-sizes="true" data-sizes='[{% for s in product.sizes %}{% if s.price %}{"name":"{{s.name}}","price":{{s.price}}}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}]'{% endif %}{% if product.is_variable_qty %} data-variable-qty="true" data-unit-label="{{product.unit_label}}"{% endif %} tabindex="0" role="button">
+            <div class="h-[140px] overflow-hidden relative bg-gray-100">
+              <img src="{{product.get_one_image_url()}}" alt="{{product.name}}" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;\'><i class=\'fa fa-cube\'></i></div>'">
             </div>
-            <div class="product-card-body">
-              <h6 class="product-title" title="{{product.name}}">{{product.name}}</h6>
+            <div class="p-3">
+              <h6 class="font-semibold text-[#333] text-[0.95rem] mb-2 truncate" title="{{product.name}}">{{product.name}}</h6>
               <div class="flex items-center justify-between mt-2">
-                <span class="product-price">{{ currency_symbol }}{{product.selling_price}}{% if product.is_variable_qty %}<span class="text-[10px] text-slate-400 font-normal">/{{product.unit_label}}</span>{% endif %}</span>
-                <span class="stock-badge{% if product.in_stock == 0 %} out-of-stock{% elif is_low %} low-stock{% endif %}">
+                <span class="text-lg font-bold text-[#2d3436]">{{ currency_symbol }}&nbsp;{{product.selling_price}}{% if product.is_variable_qty %}<span class="text-[10px] text-slate-400 font-normal">/{{product.unit_label}}</span>{% endif %}</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-gray-200 text-gray-700 whitespace-nowrap{% if product.in_stock == 0 %} bg-red-100 text-red-600 font-semibold{% elif is_low %} bg-yellow-100 text-yellow-700 font-semibold{% endif %}">
                   {%- if product.in_stock == 0 -%}Out of stock
                   {%- elif is_low -%}{{product.in_stock}} left
                   {%- else -%}{{product.in_stock}} in stock
@@ -141,22 +108,22 @@
 
   <!-- RIGHT: Cart -->
   <div class="w-full lg:w-96 xl:w-[420px] shrink-0 self-start flex flex-col">
-    <div class="cart-panel">
-      <div class="cart-header">
+    <div class="cart-panel bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] flex flex-col border-0">
+      <div class="p-5 border-b border-[#f0f0f0] rounded-t-xl">
         <div class="flex items-center justify-between">
           <h5 class="text-base font-bold text-slate-800 mb-0">Current Order</h5>
           <span class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white" style="background:#6c5ce7;" id="cart-count-badge">0 Items</span>
         </div>
       </div>
 
-      <div class="cart-items">
+      <div class="max-h-[400px] overflow-y-auto">
         <table class="w-full text-sm">
           <thead>
             <tr>
-              <th class="pl-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Product</th>
-              <th class="text-center py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Qty</th>
-              <th class="text-right pr-5 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total</th>
-              <th class="w-10"></th>
+              <th class="pl-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b-2 border-[#f0f0f0]">Product</th>
+              <th class="text-center py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b-2 border-[#f0f0f0]">Qty</th>
+              <th class="text-right pr-5 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b-2 border-[#f0f0f0]">Total</th>
+              <th class="w-10 border-b-2 border-[#f0f0f0]"></th>
             </tr>
           </thead>
           <tbody id="cart-table-body"></tbody>
@@ -171,10 +138,10 @@
         </div>
       </div>
 
-      <div class="cart-footer space-y-4">
+      <div class="p-5 bg-[#fdfdfd] border-t border-[#eee] rounded-b-xl space-y-4">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-slate-500">Subtotal</span>
-          <span class="text-xl font-black text-slate-800" id="cart-total">{{ currency_symbol }}0.00</span>
+          <span class="text-xl font-black text-slate-800" id="cart-total">{{ currency_symbol }}&nbsp;0.00</span>
         </div>
 
         <!-- Discount -->
@@ -188,7 +155,7 @@
             <input type="number" id="discount-value" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0" step="0.01" min="0">
             <button class="px-3 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
           </div>
-          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -{{ currency_symbol }}0.00</small>
+          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -{{ currency_symbol }}&nbsp;0.00</small>
         </div>
 
         {% if locations %}
@@ -204,13 +171,13 @@
         <div class="space-y-1">
           <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment Method</label>
           <div class="flex gap-2">
-            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method active" data-method="cash" onclick="selectPaymentMethod(this,'cash')">
+            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all hover:bg-[#f0edff] hover:border-[#6c5ce7] hover:text-[#6c5ce7] payment-method active" data-method="cash" onclick="selectPaymentMethod(this,'cash')">
               <input type="radio" name="payment_method" value="cash" checked hidden> <i class="fas fa-money-bill-wave mr-1 text-[10px]"></i>Cash
             </label>
-            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method" data-method="card" onclick="selectPaymentMethod(this,'card')">
+            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all hover:bg-[#f0edff] hover:border-[#6c5ce7] hover:text-[#6c5ce7] payment-method" data-method="card" onclick="selectPaymentMethod(this,'card')">
               <input type="radio" name="payment_method" value="card" hidden> <i class="fas fa-credit-card mr-1 text-[10px]"></i>Card
             </label>
-            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all payment-method" data-method="other" onclick="selectPaymentMethod(this,'other')">
+            <label class="flex-1 text-center px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer transition-all hover:bg-[#f0edff] hover:border-[#6c5ce7] hover:text-[#6c5ce7] payment-method" data-method="other" onclick="selectPaymentMethod(this,'other')">
               <input type="radio" name="payment_method" value="other" hidden> <i class="fas fa-ellipsis mr-1 text-[10px]"></i>Other
             </label>
           </div>
@@ -241,11 +208,11 @@
           <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount Received</label>
           <div class="relative">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500">{{ currency_symbol }}</span>
-            <input type="number" id="amount-paid" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-7 pr-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0.00" step="0.01" min="0">
+            <input type="number" id="amount-paid" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-8 pr-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0.00" step="0.01" min="0">
           </div>
           <div class="flex items-center justify-between px-1 mt-1">
             <span class="text-[10px] text-slate-400">Change Due:</span>
-            <span class="text-xs font-bold" id="change-due">{{ currency_symbol }}0.00</span>
+            <span class="text-xs font-bold" id="change-due">{{ currency_symbol }}&nbsp;0.00</span>
           </div>
         </div>
 
@@ -291,7 +258,7 @@
     <hr class="divider">
     <p style="text-align:center;font-size:0.65rem;color:#999;margin-top:12px;">Thank you for your purchase!</p>
     <div class="no-print" style="display:flex;gap:8px;margin-top:16px;">
-      <button onclick="window.print()" class="flex-1 py-2.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all uppercase tracking-widest"><i class="fas fa-print mr-1.5"></i>Print</button>
+      <button onclick="printReceipt()" class="flex-1 py-2.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all uppercase tracking-widest"><i class="fas fa-print mr-1.5"></i>Print</button>
       <button onclick="closeReceipt()" class="flex-1 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Close</button>
     </div>
   </div>
@@ -324,14 +291,48 @@
   </div>
 </div>
 
+<!-- Custom Item Modal -->
+<div id="custom-item-modal" style="position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);">
+  <div style="background:white;border-radius:16px;padding:24px;max-width:340px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <h3 class="text-sm font-black text-slate-900 mb-4 uppercase tracking-tight">Add Custom Item</h3>
+    <div class="space-y-3">
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Description</label>
+        <input type="text" id="ci-description" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Item name" autocomplete="off">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Quantity</label>
+          <input type="number" id="ci-qty" value="1" min="1" step="1" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-bold text-center focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Unit Price</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">{{ currency_symbol }}</span>
+            <input type="number" id="ci-price" value="0" min="0" step="0.01" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-7 pr-4 text-xs font-bold text-center focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-5">
+      <button onclick="confirmCustomItem()" class="flex-1 py-2.5 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary-dark transition-all uppercase tracking-widest">Add to Cart</button>
+      <button onclick="$('#custom-item-modal').hide()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 var cart = {};
-var currencySymbol = '{{ currency_symbol }}';
+var currencySymbol = '{{ currency_symbol }} ';
+var cs = currencySymbol;
+var storeName = '{{ store_name|e }}' || 'STORE';
+var storeTel = '{{ store_tel|e }}' || '';
 var scanBuffer = '';
 var scanTimer = null;
 var lastKeyTime = 0;
 var beepCtx = null;
+var lastReceiptData = null;
 
 function initBeep() {
   try { beepCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
@@ -411,6 +412,39 @@ function confirmVariableQty() {
   if (qty < 0.1) { showToast('Enter a valid quantity', 'warning'); return; }
   $('#variable-qty-modal').hide();
   addToCart(vqBarcode, vqName+' ('+qty+vqUnit+')', vqPrice, vqStock, '', vqPrice, qty);
+}
+
+var ciCounter = 0;
+function showCustomItemModal() {
+  ciCounter++;
+  $('#ci-description').val('');
+  $('#ci-qty').val(1);
+  $('#ci-price').val(0);
+  $('#custom-item-modal').css('display','flex');
+  setTimeout(function(){ $('#ci-description').focus(); }, 100);
+}
+function confirmCustomItem() {
+  var desc = $('#ci-description').val().trim();
+  if (!desc) { showToast('Enter a description', 'warning'); return; }
+  var qty = parseFloat($('#ci-qty').val()) || 1;
+  if (qty < 0.01) { showToast('Enter a valid quantity', 'warning'); return; }
+  var price = parseFloat($('#ci-price').val()) || 0;
+  if (price < 0) { showToast('Price cannot be negative', 'warning'); return; }
+  $('#custom-item-modal').hide();
+  var barcode = '__custom__' + Date.now() + '_' + ciCounter;
+  cart[barcode] = {
+    name: desc,
+    price: price,
+    unit_price: price,
+    qty: qty,
+    stock: Infinity,
+    size: '',
+    is_custom: true,
+    custom_description: desc
+  };
+  beep(800, 40, 0.08);
+  updateCartUI();
+  $('#product-search').focus();
 }
 
 $(document).on('click', '.cat-pill', function() { $('.cat-pill').removeClass('active'); $(this).addClass('active'); applySearch(); });
@@ -511,7 +545,7 @@ function updateCartUI() {
       var item = cart[code], it = item.unit_price * item.qty;
       total += it; count += item.qty;
       var unitLabel = item.size ? ' ea' : '';
-      tb.append('<tr><td class="pl-5 py-3"><div class="cart-item-title" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">'+currencySymbol+item.unit_price.toFixed(2)+unitLabel+' &middot; '+currencySymbol+it.toFixed(2)+'</small></td><td class="text-center py-3"><div class="qty-control"><button class="qty-btn qty-decrease" data-barcode="'+code+'">-</button><input type="number" class="qty-input" value="'+item.qty+'" data-barcode="'+code+'" min="0.1" max="'+item.stock+'" step="any"><button class="qty-btn qty-increase" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold">'+currencySymbol+it.toFixed(2)+'</td><td class="py-3"><button class="btn-remove" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
+      tb.append('<tr><td class="pl-5 py-3 border-t border-[#f8f9fa]"><div class="cart-item-title font-semibold text-[#333] text-[0.9rem] max-w-[130px] truncate" title="'+item.name+'">'+item.name+'</div><small class="text-[10px] text-slate-400">'+currencySymbol+item.unit_price.toFixed(2)+unitLabel+' &middot; '+currencySymbol+it.toFixed(2)+'</small></td><td class="text-center py-3 border-t border-[#f8f9fa]"><div class="qty-control flex items-center justify-center bg-gray-100 rounded-md p-0.5 w-fit mx-auto"><button class="qty-btn qty-decrease border-0 bg-white w-6 h-6 rounded text-gray-500 text-xs flex items-center justify-center cursor-pointer shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#6c5ce7] hover:text-white" data-barcode="'+code+'">-</button><input type="number" class="qty-input w-[30px] text-center border-0 bg-transparent font-semibold text-sm p-0 mx-1 [-moz-appearance:textfield]" value="'+item.qty+'" data-barcode="'+code+'" min="0.1" max="'+item.stock+'" step="any"><button class="qty-btn qty-increase border-0 bg-white w-6 h-6 rounded text-gray-500 text-xs flex items-center justify-center cursor-pointer shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#6c5ce7] hover:text-white" data-barcode="'+code+'">+</button></div></td><td class="text-right pr-5 py-3 font-bold border-t border-[#f8f9fa]">'+currencySymbol+it.toFixed(2)+'</td><td class="py-3 border-t border-[#f8f9fa]"><button class="btn-remove text-[#ff7675] bg-[rgba(255,118,117,0.1)] w-7 h-7 rounded-full inline-flex items-center justify-center border-0 transition-all duration-200 cursor-pointer hover:bg-[#ff7675] hover:text-white" data-barcode="'+code+'"><i class="fa fa-times"></i></button></td></tr>');
     });
   }
   var disc = getDiscount(total);
@@ -550,7 +584,11 @@ function processCheckout() {
   var codes = Object.keys(cart); if(codes.length===0) return;
   var st = parseFloat($('#cart-total').text().replace(currencySymbol,'')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
   if(paid < net) { showToast('Total: '+currencySymbol+net.toFixed(2)+', Received: '+currencySymbol+paid.toFixed(2),'error'); return; }
-  var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty, unit_price: cart[c].unit_price}; });
+  var items = {}; codes.forEach(function(c){
+    var entry = {count: cart[c].qty, unit_price: cart[c].unit_price};
+    if (cart[c].is_custom) { entry.custom_description = cart[c].custom_description; }
+    items[c] = entry;
+  });
   var payload = JSON.stringify({
     items:items,
     amount_paid:paid,
@@ -610,9 +648,49 @@ function showReceipt(tx) {
   $('#r-paid').text(currencySymbol+tx.amount_paid.toFixed(2));
   $('#r-change').text(currencySymbol+tx.change.toFixed(2));
   $('#receipt-modal').addClass('open');
+  lastReceiptData = tx;
   setTimeout(function(){ $('#product-search').focus(); }, 300);
 }
-function closeReceipt() { $('#receipt-modal').removeClass('open'); $('#product-search').focus(); }
+function printReceipt() {
+  var tx = lastReceiptData;
+  if (!tx) return;
+  var itemsHtml = '';
+  tx.items.forEach(function(it) {
+    itemsHtml += '<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;"><span>' + parseFloat(it.qty) + 'x ' + it.name + '</span><span>'+currencySymbol+parseFloat(it.subtotal).toFixed(2)+'</span></div>';
+  });
+  var discountHtml = tx.discount_type ? '<hr style="border:none;border-top:1px dashed #ccc;margin:6px 0;"><div style="display:flex;justify-content:space-between;font-size:11px;"><span>Discount</span><span>- '+currencySymbol+(tx.total - tx.net_total).toFixed(2)+'</span></div>' : '';
+  var cardHtml = tx.card_last_four ? '<div style="display:flex;justify-content:space-between;font-size:11px;"><span>Card</span><span>****'+tx.card_last_four+'</span></div>' : '';
+  var w = window.open('', '_blank', 'width=380,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>Receipt</title><style>body{font-family:"Courier New",monospace;font-size:12px;margin:0;padding:20px;width:300px;}h2{text-align:center;font-size:16px;font-weight:800;margin:0 0 2px;text-transform:uppercase;letter-spacing:2px;}.store-info{text-align:center;font-size:10px;color:#666;margin:0 0 16px;}hr{border:none;border-top:1px dashed #ccc;margin:6px 0;}.line{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;}.line-total{display:flex;justify-content:space-between;font-size:13px;font-weight:700;padding:4px 0;}.footer{text-align:center;font-size:10px;color:#999;margin-top:12px;}@media print{body{margin:0;padding:10px;}}</style></head><body>' +
+    '<h2>' + storeName + '</h2>' +
+    '<p class="store-info">Tel: ' + storeTel + '</p>' +
+    '<hr>' +
+    '<div class="line"><span>Receipt #</span><span>#'+tx.id+'</span></div>' +
+    '<div class="line"><span>Date</span><span>'+tx.time+'</span></div>' +
+    '<div class="line"><span>Payment</span><span>'+tx.method.toUpperCase()+'</span></div>' +
+    cardHtml +
+    '<hr>' +
+    itemsHtml +
+    discountHtml +
+    '<hr>' +
+    '<div class="line"><span>Subtotal</span><span>'+currencySymbol+parseFloat(tx.total).toFixed(2)+'</span></div>' +
+    '<div class="line-total"><span>Total</span><span>'+currencySymbol+parseFloat(tx.net_total).toFixed(2)+'</span></div>' +
+    '<div class="line"><span>Paid</span><span>'+currencySymbol+parseFloat(tx.amount_paid).toFixed(2)+'</span></div>' +
+    '<div class="line"><span>Change</span><span>'+currencySymbol+parseFloat(tx.change).toFixed(2)+'</span></div>' +
+    '<hr>' +
+    '<p class="footer">Thank you for your purchase!</p>' +
+    '</body></html>');
+  w.document.close();
+  w.onafterprint = function () { w.close(); };
+  setTimeout(function () { if (!w.closed) w.close(); }, 5000);
+  w.focus();
+  w.print();
+}
+function closeReceipt() {
+  $('#receipt-modal').removeClass('open');
+  lastReceiptData = null;
+  setTimeout(function(){ $('#product-search').focus(); }, 100);
+}
 $(document).on('keydown', function(e) { if (e.key === 'Escape') closeReceipt(); });
 </script>
 {% endblock %}

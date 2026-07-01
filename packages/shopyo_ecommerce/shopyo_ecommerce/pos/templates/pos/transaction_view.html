@@ -58,10 +58,10 @@
         <tbody>
           {% for item in tx.items %}
           <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
-            <td class="text-xs font-bold">{{ item.product_barcode }}</td>
+            <td class="text-xs font-bold">{% if item.custom_description %}{{ item.custom_description }}{% else %}{{ item.product_barcode }}{% endif %}</td>
             <td class="text-xs">{{ item.quantity }}</td>
             <td class="text-xs">{{ currency_symbol }}{{ '%.2f'|format(item.unit_price|float) }}</td>
-            <td class="text-xs font-bold text-right">{{ currency_symbol }}{{ '%.2f'|format(item.quantity * item.unit_price|float) }}</td>
+            <td class="text-xs font-bold text-right">{{ currency_symbol }}{{ '%.2f'|format(item.quantity|float * item.unit_price|float) }}</td>
           </tr>
           {% endfor %}
         </tbody>
