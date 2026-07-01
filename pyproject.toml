@@ -72,6 +72,7 @@ dependencies = [
     "wtforms==3.0.1",
     "setuptools",
     "iso4217parse>=0.6.2",
+    "shopyo-i18n>=1.3.0",
 ]
 
 [project.urls]
