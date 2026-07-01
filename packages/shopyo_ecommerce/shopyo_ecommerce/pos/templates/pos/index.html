@@ -88,7 +88,7 @@
             <div class="p-3">
               <h6 class="font-semibold text-[#333] text-[0.95rem] mb-2 truncate" title="{{product.name}}">{{product.name}}</h6>
               <div class="flex items-center justify-between mt-2">
-                <span class="text-lg font-bold text-[#2d3436]">{{ currency_symbol }}{{product.selling_price}}{% if product.is_variable_qty %}<span class="text-[10px] text-slate-400 font-normal">/{{product.unit_label}}</span>{% endif %}</span>
+                <span class="text-lg font-bold text-[#2d3436]">{{ currency_symbol }}&nbsp;{{product.selling_price}}{% if product.is_variable_qty %}<span class="text-[10px] text-slate-400 font-normal">/{{product.unit_label}}</span>{% endif %}</span>
                 <span class="text-xs px-2 py-0.5 rounded bg-gray-200 text-gray-700 whitespace-nowrap{% if product.in_stock == 0 %} bg-red-100 text-red-600 font-semibold{% elif is_low %} bg-yellow-100 text-yellow-700 font-semibold{% endif %}">
                   {%- if product.in_stock == 0 -%}Out of stock
                   {%- elif is_low -%}{{product.in_stock}} left
@@ -141,7 +141,7 @@
       <div class="p-5 bg-[#fdfdfd] border-t border-[#eee] rounded-b-xl space-y-4">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-slate-500">Subtotal</span>
-          <span class="text-xl font-black text-slate-800" id="cart-total">{{ currency_symbol }}0.00</span>
+          <span class="text-xl font-black text-slate-800" id="cart-total">{{ currency_symbol }}&nbsp;0.00</span>
         </div>
 
         <!-- Discount -->
@@ -155,7 +155,7 @@
             <input type="number" id="discount-value" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0" step="0.01" min="0">
             <button class="px-3 py-2.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all" type="button" onclick="document.getElementById('discount-value').value='';updateCartUI();">Clear</button>
           </div>
-          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -{{ currency_symbol }}0.00</small>
+          <small class="text-[10px] text-slate-400" id="discount-display" style="display:none;">Discount: -{{ currency_symbol }}&nbsp;0.00</small>
         </div>
 
         {% if locations %}
@@ -208,11 +208,11 @@
           <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount Received</label>
           <div class="relative">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500">{{ currency_symbol }}</span>
-            <input type="number" id="amount-paid" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-7 pr-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0.00" step="0.01" min="0">
+            <input type="number" id="amount-paid" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-8 pr-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" placeholder="0.00" step="0.01" min="0">
           </div>
           <div class="flex items-center justify-between px-1 mt-1">
             <span class="text-[10px] text-slate-400">Change Due:</span>
-            <span class="text-xs font-bold" id="change-due">{{ currency_symbol }}0.00</span>
+            <span class="text-xs font-bold" id="change-due">{{ currency_symbol }}&nbsp;0.00</span>
           </div>
         </div>
 
@@ -324,7 +324,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 var cart = {};
-var currencySymbol = '{{ currency_symbol }}';
+var currencySymbol = '{{ currency_symbol }} ';
+var cs = currencySymbol;
 var storeName = '{{ store_name|e }}' || 'STORE';
 var storeTel = '{{ store_tel|e }}' || '';
 var scanBuffer = '';
