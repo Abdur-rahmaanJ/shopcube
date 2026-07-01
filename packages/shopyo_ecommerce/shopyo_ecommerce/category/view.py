@@ -276,7 +276,7 @@ def add_sub(category_name):
             flash(notify_warning("Name cannot be empty"))
             return redirect(
                 url_for(
-                    "category.manage_sub",
+                    "shopyo_ecommerce.category.manage_sub",
                     category_name=category_name,
                 )
             )
@@ -293,7 +293,7 @@ def add_sub(category_name):
             flash(notify_warning("Name already exists for category"))
             return redirect(
                 url_for(
-                    "category.manage_sub",
+                    "shopyo_ecommerce.category.manage_sub",
                     category_name=category_name,
                 )
             )
@@ -348,7 +348,7 @@ def edit_sub_name(subcategory_id):
             flash(notify_warning("Name cannot be empty"))
             return redirect(
                 url_for(
-                    "category.manage_sub",
+                    "shopyo_ecommerce.category.manage_sub",
                     category_name=subcategory.category.name,
                 )
             )
@@ -360,7 +360,7 @@ def edit_sub_name(subcategory_id):
             flash(notify_warning("Name already exists for category"))
             return redirect(
                 url_for(
-                    "category.manage_sub",
+                    "shopyo_ecommerce.category.manage_sub",
                     category_name=subcategory.category.name,
                 )
             )
@@ -397,7 +397,7 @@ def edit_sub_img(subcategory_id):
         subcategory.update()
         return redirect(
             url_for(
-                "category.edit_sub_img_dashboard",
+                "shopyo_ecommerce.category.edit_sub_img_dashboard",
                 subcategory_id=subcategory.id,
             )
         )

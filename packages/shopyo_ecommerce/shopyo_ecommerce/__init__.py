@@ -82,6 +82,20 @@ class ShopyoEcommerce:
             )
             parent.register_blueprint(mod.module_blueprint)
 
+        from shopyo_ecommerce.resource.models import Resource  # noqa: F401
+        from shopyo_ecommerce.product.models import Product  # noqa: F401
+        from shopyo_ecommerce.category.models import Category, SubCategory  # noqa: F401
+        from shopyo_ecommerce.vendor.models import Vendor  # noqa: F401
+        from shopyo_ecommerce.customer.models import Customer, CustomerGroup  # noqa: F401
+        from shopyo_ecommerce.inventory.models import (  # noqa: F401
+            Location, StockPerLocation, StockTransfer, StockTransferItem,
+            InventoryCount, InventoryCountItem,
+        )
+        from shopyo_ecommerce.pos.models import Transaction, TransactionItem, Shift, QuickKey  # noqa: F401
+        from shopyo_ecommerce.purchase.models import PurchaseOrder, PurchaseOrderItem  # noqa: F401
+        from shopyo_ecommerce.shop.models import Order, OrderItem, BillingDetail  # noqa: F401
+        from shopyo_ecommerce.shopman.models import DeliveryOption, PaymentOption, Coupon  # noqa: F401
+
         global_modules = [
             "shopyo_ecommerce.category.global",
             "shopyo_ecommerce.shop.global",

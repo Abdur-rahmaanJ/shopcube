@@ -1,12 +1,8 @@
 <div align="center">
 
-
-
 <img src="https://github.com/Abdur-rahmaanJ/shopcube/raw/dev/assets/logo.png" width="250" />
 
 [![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
-
-🇲🇺 🇵🇰 🇳🇬 🇮🇳 🇻🇳 🇬🇭 🇬🇧
 
 </div>
 
@@ -19,12 +15,9 @@
 
 # ShopCube
 
-ShopCube is a high-performance, minimalist e-commerce and POS solution. Designed for clarity, speed, and ease of use.
+E-commerce and POS platform built on the Shopyo Flask framework.
 
 ## Installation
-
-### 1. Install via PyPI
-You can install ShopCube directly into your virtual environment without cloning the repository.
 
 ```bash
 python3 -m venv venv
@@ -32,116 +25,113 @@ source venv/bin/activate
 pip install shopcube
 ```
 
-### 2. Initialise Workspace
-Once installed, use the `shopcube` command to set up your database and assets in your current directory.
+Then initialise:
 
 ```bash
 shopcube initialise
-```
-
-### 3. Run Locally
-Launch the development server directly from the CLI.
-
-```bash
 shopcube run
 ```
 
-Access the dashboard at [http://127.0.0.1:5000/dashboard](http://127.0.0.1:5000/dashboard)
-- **Email:** `admin@admin.com`
-- **Password:** `admin`
+Dashboard: http://127.0.0.1:5000/dashboard -- Email: `admin@admin.com`, Password: `admin`
 
-## Production Deployment
-
-When installed via pip, you can deploy using **Gunicorn** by referencing the internal WSGI entry point.
-
-### Running with Gunicorn
+## Production
 
 ```bash
 pip install gunicorn
 gunicorn --bind 0.0.0.0:8000 shopcube.wsgi:application
 ```
 
-## Advanced Usage
-
-### Custom Project Directory
-If you want to create a full editable copy of the shopcube source in a specific folder:
-
-```bash
-shopcube create my_store
-cd my_store
-# You now have the full source code and templates to customize
-```
-
-### Environment Variables
-Configure your production environment:
+Environment variables:
 
 | Variable | Description | Default |
 | :--- | :--- | :--- |
 | `SHOPCUBE_CONFIG` | Environment type (`production`, `development`, `testing`) | `production` |
-| `SECRET_KEY` | Secret key for session encryption | *Required* |
-| `SHOPCUBE_DATA_DIR` | Directory for database and uploads | Current Directory |
-
----
-
-Designed with precision for the modern shop.
+| `SECRET_KEY` | Secret key for session encryption | Required |
+| `SHOPCUBE_DATA_DIR` | Directory for database and uploads | Current directory |
 
 ## Features
 
-### Inventory Management
-- **Product catalog** with barcode, images, colors, sizes, categories, and subcategories
-- **Low-stock alerts** — configurable `min_stock` threshold per product; visual badge in POS
-- **Stock adjustments with reason codes** — audit trail for all stock changes (manual edit, POS sale, return, count, PO receive)
-- **Purchase Orders** — full PO lifecycle (draft → ordered → received); vendor-linked; auto-updates stock on receipt
-- **Vendor/Supplier management** — CRUD with contact info; link products to vendors
-- **Physical inventory counts** — generate count sheets; record actual qty; auto-apply variances
-- **Multi-location inventory** — warehouses/stores with location management
-- **Stock transfers** — move inventory between locations with draft → complete → receive workflow
-- **Kit/Bundle management** — assemble products from components; track component stock
-- **Barcode label printing** — print-ready label sheets
-- **Cost price & margin tracking** — per-product cost tracking; potential margin reports
-- **Inventory reports** — valuation at cost and retail; low-stock and out-of-stock views; per-product margin table
+### Inventory
+- Products with barcode, images, colors, sizes, categories, subcategories, and vendors
+- Low-stock alerts with configurable thresholds
+- Stock adjustments with reason codes (manual, POS sale, return, count, PO receive)
+- Purchase orders with draft, ordered, received lifecycle; auto-updates stock on receipt
+- Vendor/supplier management with contact info
+- Physical inventory counts with variance application
+- Multi-location inventory with location management
+- Stock transfers between locations
+- Kit/bundle assembly from components
+- Cost price and margin tracking
+- Barcode label printing
+- Inventory reports (valuation, low-stock, margin)
 
-### Point of Sale (POS)
-- **Intuitive grid layout** with category filtering, search, and barcode scanning
-- **Cart management** with quantity controls, line-item display, and running total
-- **Discount at POS** — percentage or fixed amount; server-side validated
-- **Order notes** — optional text memo attached to each transaction
-- **Payment method selector** — Cash, Card, Other
-- **Change calculation** — auto-computed from amount received
-- **Quick keys / Speed buttons** — assign products to numbered grid positions for one-tap add
-- **Transaction history** with full audit trail
-- **Sales reports** — date-filtered summaries by total, transaction count, and payment method
-- **Cashier performance** — per-cashier transaction counts
-- **Tax summary** — estimated tax on reportable sales
-- **Return with receipt lookup** — search by receipt number; reverses stock
-- **Shift management** — open/close workflow; tracks starting cash, expected vs actual, variance
-- **Low-stock visual warning** — gold border + quantity badge in product grid
-- **Cashier role** — non-admin staff can access POS via `cashier` role assignment
+### POS
+- Product grid with category filtering, search, and barcode scanning
+- Cart with quantity controls and running total
+- Discount (percentage or fixed amount)
+- Order notes
+- Payment methods: Cash, Card, Other
+- Auto change calculation
+- Quick keys for one-tap product add
+- Transaction history
+- Sales reports by date, total, payment method
+- Returns with receipt lookup and stock reversal
+- Shift management with cash reconciliation
+- Cashier role for non-admin staff
 
-### Customer Management
-- **Customer accounts** with registration, email confirmation, login/logout
-- **Order history** — per-customer view of past orders
-- **Customer groups/tiers** — configurable groups with % discount
-- **Customer Lifetime Value (CLV)** — total spent, order count, average order value, last purchase date
+### Customers
+- Registration with email confirmation
+- Order history per customer
+- Customer groups with percentage discounts
+- Customer Lifetime Value tracking (total spent, order count, AOV)
 
-### Admin Dashboard
-- **Product CRUD** — add/edit/delete with images, colors, sizes, vendor assignment
-- **Category management** — hierarchical categories and subcategories
-- **Coupon management** — configurable discount coupons
-- **Delivery & Payment options** — configure available methods
-- **Order management** — status tracking (pending → processing → shipped → cancelled/refunded); email notifications
-- **Bulk product upload** — via Excel spreadsheet
-- **Role-based access** — `@admin_required` on all management routes
+### Admin
+- Product CRUD with images, colors, sizes, vendor assignment
+- Category and subcategory management
+- Coupon management
+- Delivery and payment method configuration
+- Order management with status tracking and email notifications
+- Bulk product upload via Excel
+- Role-based access control
 
 ### Security
-- **CSRF protection** on all POST routes
-- **Admin-only access** enforced via `admin_required` decorator
-- **Login required** for all management endpoints
-- **File upload validation** — type and size restrictions
-- **SQLAlchemy ORM** with parameterized queries (no raw SQL)
+- CSRF protection on all POST routes
+- Admin-only access on management routes
+- Login required for all management endpoints
+- File upload type and size validation
 
-### Modular Architecture
-- Built on [Shopyo](https://shopyo.org) framework
-- Fully isolated modules (`box__ecommerce/*`) with independent models, views, and templates
-- Event-driven inter-module communication
-- Extensible — add custom modules via `shopyo startapp`
+Built on [Shopyo](https://shopyo.org) with isolated module architecture.
+
+## E-Commerce Configuration
+
+The `shopyo_ecommerce` module reads these Flask config keys. Defaults are applied automatically, override them in your `config.py` or instance config:
+
+| Key | Default | Description |
+|---|---|---|
+| `SHOPYO_ECOMMERCE_URL` | `/shopyo-ecommerce` | URL prefix for all ecommerce routes |
+| `SHOPYO_ECOMMERCE_CURRENCY` | `USD` | ISO 4217 currency code (e.g. `MUR`, `EUR`, `GBP`) |
+| `SHOPYO_ECOMMERCE_SECTION_NAME` | `Shop` | Section name shown in dashboard and settings |
+| `SHOPYO_ECOMMERCE_ITEMS_PER_PAGE` | `12` | Products per page in shop listings |
+| `SHOPYO_ECOMMERCE_ENABLE_WISHLIST` | `True` | Enable/disable the wishlist feature |
+| `SHOPYO_ECOMMERCE_ENABLE_REVIEWS` | `False` | Enable/disable product reviews |
+| `SHOPYO_ECOMMERCE_CATEGORYPHOTOS_UPLOADSET` | `categoryphotos` | Flask-Uploads set name for category images |
+| `SHOPYO_ECOMMERCE_SUBCATEGORYPHOTOS_UPLOADSET` | `subcategoryphotos` | Flask-Uploads set name for subcategory images |
+| `SHOPYO_ECOMMERCE_PRODUCTEXCEL_UPLOADSET` | `productexcel` | Flask-Uploads set name for product Excel imports |
+| `SHOPYO_ECOMMERCE_PRODUCTPHOTOS_UPLOADSET` | `productphotos` | Flask-Uploads set name for product images |
+| `SHOPYO_ECOMMERCE_UPLOADED_CATEGORYPHOTOS_DEST` | `static/uploads/categoryphotos` | Upload destination for category images |
+| `SHOPYO_ECOMMERCE_UPLOADED_SUBCATEGORYPHOTOS_DEST` | `static/uploads/subcategoryphotos` | Upload destination for subcategory images |
+| `SHOPYO_ECOMMERCE_UPLOADED_PRODUCTEXCEL_DEST` | `static/uploads/productexcel` | Upload destination for product Excel files |
+| `SHOPYO_ECOMMERCE_UPLOADED_PRODUCTPHOTOS_DEST` | `static/uploads/productphotos` | Upload destination for product images |
+
+**Example:**
+
+```python
+class Config:
+    SHOPYO_ECOMMERCE_URL = "/shop"
+    SHOPYO_ECOMMERCE_CURRENCY = "MUR"
+    SHOPYO_ECOMMERCE_ITEMS_PER_PAGE = 24
+    SHOPYO_ECOMMERCE_ENABLE_WISHLIST = False
+    SHOPYO_ECOMMERCE_UPLOADED_PRODUCTPHOTOS_DEST = "/data/uploads/products"
+```
+
+Currency symbols are resolved from the ISO 4217 code via the `iso4217parse` package (e.g. `MUR` -> `₨`, `EUR` -> `€`).

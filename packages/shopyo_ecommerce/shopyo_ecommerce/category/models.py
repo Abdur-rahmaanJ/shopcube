@@ -46,6 +46,9 @@ class Category(PkModel):
         return url_for("shopyo_ecommerce.shop.category", category_name=self.name)
 
 
+from shopyo_ecommerce.resource.models import Resource  # noqa: F401, E402
+
+
 class SubCategory(PkModel):
     __tablename__ = "shopyo_ecommerce_subcategories"
     name = db.Column(db.String(100), nullable=False)

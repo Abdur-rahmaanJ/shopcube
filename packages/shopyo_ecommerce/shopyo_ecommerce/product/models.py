@@ -100,6 +100,7 @@ class Product(PkModel):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
@@ -158,3 +159,5 @@ class Size(PkModel):
     name = db.Column(db.String(100))
     product_id = db.Column(db.Integer, db.ForeignKey("shopyo_ecommerce_product.id"))
     price = db.Column(db.Numeric(10, 2), nullable=True)
+
+from shopyo_ecommerce.resource.models import Resource  # noqa: F401, E402

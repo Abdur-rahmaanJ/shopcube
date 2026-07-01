@@ -8,11 +8,11 @@ from shopyo_ecommerce.product.models import Product
 
 class TestPurchaseAccess:
     def test_requires_login(self, test_client):
-        response = test_client.get("/purchase/dashboard", follow_redirects=True)
+        response = test_client.get(url_for("shopyo_ecommerce.purchase.dashboard"), follow_redirects=True)
         assert response.status_code == 200
 
     def test_dashboard_admin(self, test_client, login_admin_user):
-        response = test_client.get(url_for("purchase.dashboard"))
+        response = test_client.get(url_for("shopyo_ecommerce.purchase.dashboard"))
         assert response.status_code == 200
 
 
@@ -22,7 +22,7 @@ class TestPurchaseLifecycle:
         db_session.add(v)
         db_session.commit()
         response = test_client.post(
-            url_for("purchase.add"),
+            url_for("shopyo_ecommerce.purchase.add"),
             data={"vendor_id": v.id, "notes": "Test PO"},
             follow_redirects=True,
         )
@@ -44,7 +44,7 @@ class TestPurchaseLifecycle:
         po = PurchaseOrder(notes="PO with items")
         po.insert()
         response = test_client.post(
-            url_for("purchase.add_item", po_id=po.id),
+            url_for("shopyo_ecommerce.purchase.add_item", po_id=po.id),
             data={"barcode": "PO001", "quantity": 10},
             follow_redirects=True,
         )
@@ -67,7 +67,7 @@ class TestPurchaseLifecycle:
         po.insert()
         po.items.append(PurchaseOrderItem(product_barcode="PO002", product_name="PO Product 2", quantity_ordered=10, unit_price=5))
         po.update()
-        response = test_client.post(url_for("purchase.place_order", po_id=po.id), follow_redirects=True)
+        response = test_client.post(url_for("shopyo_ecommerce.purchase.place_order", po_id=po.id), follow_redirects=True)
         assert response.status_code == 200
         po = PurchaseOrder.query.get(po.id)
         assert po.status == "ordered"
@@ -86,7 +86,7 @@ class TestPurchaseLifecycle:
         po.items.append(PurchaseOrderItem(product_barcode="PO003", product_name="PO Product 3", quantity_ordered=10, unit_price=5))
         po.update()
         response = test_client.post(
-            url_for("purchase.receive", po_id=po.id),
+            url_for("shopyo_ecommerce.purchase.receive", po_id=po.id),
             data={f"qty_received_{po.items[0].id}": 10},
             follow_redirects=True,
         )

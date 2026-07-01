@@ -27,6 +27,7 @@ class Transaction(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
@@ -51,6 +52,7 @@ class TransactionItem(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
@@ -82,6 +84,7 @@ class Shift(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def update(self):
         db.session.commit()
@@ -98,6 +101,7 @@ class QuickKey(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     def delete(self):
         db.session.delete(self)

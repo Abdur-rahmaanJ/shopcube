@@ -18,4 +18,5 @@ import sys
 def test_no_args(capfd):
     subprocess.run([sys.executable, "__main__.py"], text=True)
     captured = capfd.readouterr()
-    assert "No arguments supplied" in captured.out
+    assert "ShopCube CLI" in captured.out
+    assert "Usage: shopcube" in captured.out
