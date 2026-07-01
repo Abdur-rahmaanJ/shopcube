@@ -46,7 +46,7 @@
               {%- elif t.method_of_payment == 'card' %} bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400
               {%- else %} bg-slate-100 dark:bg-slate-800 text-slate-500{% endif %}">{{ t.method_of_payment }}</span></td>
             <td class="text-xs text-slate-400">{{ t.cashier_id }}</td>
-            <td class="text-xs text-slate-400">{{ t.location_id or '-' }}</td>
+            <td class="text-xs text-slate-400">{{ t.location.name if t.location else '-' }}</td>
             <td class="text-xs text-slate-400">{% if t.discount_type %}{{ t.discount_type }} {{ t.discount_value }}{% endif %}</td>
             <td>
               <a href="{{ url_for('shopyo_ecommerce.pos.transaction_view', tx_id=t.id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700" title="View">

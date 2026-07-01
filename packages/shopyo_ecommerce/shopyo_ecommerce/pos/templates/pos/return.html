@@ -59,7 +59,7 @@
                     <p class="text-[10px] text-slate-400">@ {{ currency_symbol }}{{ '%.2f'|format(item.unit_price|float) }} ea</p>
                   </div>
                 </div>
-                <p class="text-xs font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(item.quantity * item.unit_price|float) }}</p>
+                <p class="text-xs font-bold text-slate-900 dark:text-white">{{ currency_symbol }}{{ '%.2f'|format(item.quantity|float * item.unit_price|float) }}</p>
               </div>
               {% endfor %}
             </div>

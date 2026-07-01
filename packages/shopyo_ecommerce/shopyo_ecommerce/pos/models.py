@@ -19,6 +19,7 @@ class Transaction(db.Model):
     card_last_four = db.Column(db.String(4), nullable=True)
     card_auth_code = db.Column(db.String(20), nullable=True)
 
+    location = db.relationship("Location", lazy=True)
     items = db.relationship('TransactionItem', backref='transaction', lazy=True, cascade="all, delete-orphan")
 
     def add(self):
