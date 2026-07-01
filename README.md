@@ -2,6 +2,8 @@
 
 <img src="https://github.com/Abdur-rahmaanJ/shopcube/raw/dev/assets/logo.png" width="250" />
 
+contribs <br> 🇲🇺 🇵🇰 🇳🇬 🇮🇳 🇻🇳 🇬🇭 🇬🇧
+
 [![First Timers Only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
 
 </div>
@@ -16,6 +18,13 @@
 # ShopCube
 
 E-commerce and POS platform built on the Shopyo Flask framework.
+
+- [x] 🛒 cart
+- [x] ⭐ wishlist
+- [x] 📑 orders
+- [x] 📤 upload by csv
+- [ ] 📊 charts
+- [x] 🖌️ theming
 
 ## Installation
 
@@ -36,9 +45,19 @@ Dashboard: http://127.0.0.1:5000/dashboard -- Email: `admin@admin.com`, Password
 
 ## Production
 
+Git clone
+
 ```bash
 pip install gunicorn
 gunicorn --bind 0.0.0.0:8000 shopcube.wsgi:application
+```
+
+For development:
+
+```bash
+pip install -e .
+shopcube initialise
+flask --debug run
 ```
 
 Environment variables:
