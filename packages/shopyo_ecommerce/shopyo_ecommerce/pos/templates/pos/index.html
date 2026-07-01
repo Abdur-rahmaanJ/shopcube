@@ -62,7 +62,7 @@
   .receipt .line-total { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; padding: 4px 0; }
   .receipt .item-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 1px 0; }
   .receipt .item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
-  @media print { body * { visibility: hidden; } .receipt, .receipt * { visibility: visible; } .receipt { position: static; width: 300px; margin: 0 auto; box-shadow: none; border-radius: 0; max-height: none; overflow: visible; } #receipt-modal, #receipt-modal.open { position: static; display: block; background: none; } .receipt .no-print { display: none; } }
+  @media print { body * { visibility: hidden; } .receipt, .receipt * { visibility: visible; } .receipt { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 300px; box-shadow: none; border-radius: 0; } #receipt-modal { background: none; } .receipt .no-print { display: none; } }
 </style>
 {% endblock %}
 
