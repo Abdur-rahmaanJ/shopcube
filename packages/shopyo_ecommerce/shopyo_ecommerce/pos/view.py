@@ -93,19 +93,24 @@ def transaction():
         if quantity < 0.01:
             errors.append(f"Invalid quantity for barcode {barcode}")
             continue
-        product = Product.query.filter_by(barcode=str(barcode)).first()
-        if product is None:
-            errors.append(f"Product not found: {barcode}")
-        elif not product.is_variable_qty and quantity != int(quantity):
-            errors.append(f"Quantity must be whole number for {product.name}")
-        elif not product.is_variable_qty and int(quantity) > product.in_stock:
-            errors.append(
-                f"Insufficient stock for {product.name}: "
-                f"requested {int(quantity)}, available {product.in_stock}"
-            )
-        else:
-            unit_price = float(item_data.get("unit_price", product.selling_price))
+        custom_desc = item_data.get("custom_description", "").strip()
+        if custom_desc:
+            unit_price = float(item_data.get("unit_price", 0))
             computed_total += unit_price * quantity
+        else:
+            product = Product.query.filter_by(barcode=str(barcode)).first()
+            if product is None:
+                errors.append(f"Product not found: {barcode}")
+            elif not product.is_variable_qty and quantity != int(quantity):
+                errors.append(f"Quantity must be whole number for {product.name}")
+            elif not product.is_variable_qty and int(quantity) > product.in_stock:
+                errors.append(
+                    f"Insufficient stock for {product.name}: "
+                    f"requested {int(quantity)}, available {product.in_stock}"
+                )
+            else:
+                unit_price = float(item_data.get("unit_price", product.selling_price))
+                computed_total += unit_price * quantity
 
     if errors:
         return jsonify({"success": False, "message": "; ".join(errors)}), 400
@@ -140,19 +145,28 @@ def transaction():
 
     for barcode, item_data in items_data.items():
         quantity = float(item_data["count"])
-        product = Product.query.filter_by(barcode=str(barcode)).first()
-        deduct = int(quantity) if not product.is_variable_qty else int(quantity)
-        product.in_stock -= deduct
-        if location_id:
-            current = product.stock_at(location_id)
-            product.set_stock(location_id, current - deduct)
-        product.log_adjustment(-deduct, "POS sale", f"Transaction via {payment_method}")
-        unit_price = float(item_data.get("unit_price", product.selling_price))
-        item = TransactionItem(
-            product_barcode=barcode,
-            quantity=quantity,
-            unit_price=unit_price,
-        )
+        custom_desc = item_data.get("custom_description", "").strip()
+        if custom_desc:
+            unit_price = float(item_data.get("unit_price", 0))
+            item = TransactionItem(
+                custom_description=custom_desc,
+                quantity=quantity,
+                unit_price=unit_price,
+            )
+        else:
+            product = Product.query.filter_by(barcode=str(barcode)).first()
+            deduct = int(quantity) if not product.is_variable_qty else int(quantity)
+            product.in_stock -= deduct
+            if location_id:
+                current = product.stock_at(location_id)
+                product.set_stock(location_id, current - deduct)
+            product.log_adjustment(-deduct, "POS sale", f"Transaction via {payment_method}")
+            unit_price = float(item_data.get("unit_price", product.selling_price))
+            item = TransactionItem(
+                product_barcode=barcode,
+                quantity=quantity,
+                unit_price=unit_price,
+            )
         transaction.items.append(item)
 
     db.session.add(transaction)
@@ -160,10 +174,16 @@ def transaction():
 
     receipt_items = []
     for item in transaction.items:
-        product = Product.query.filter_by(barcode=item.product_barcode).first()
+        if item.custom_description:
+            name = item.custom_description
+            barcode = ""
+        else:
+            product = Product.query.filter_by(barcode=item.product_barcode).first()
+            name = product.name if product else item.product_barcode or ""
+            barcode = item.product_barcode or ""
         receipt_items.append({
-            "barcode": item.product_barcode,
-            "name": product.name if product else item.product_barcode,
+            "barcode": barcode,
+            "name": name,
             "qty": item.quantity,
             "unit_price": float(item.unit_price),
             "subtotal": float(item.quantity * item.unit_price),

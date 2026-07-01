@@ -42,7 +42,8 @@ class TransactionItem(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     transaction_id = db.Column(db.Integer, db.ForeignKey('shopyo_ecommerce_transactions.id'), nullable=False)
-    product_barcode = db.Column(db.String(100), nullable=False)
+    product_barcode = db.Column(db.String(100), nullable=True)
+    custom_description = db.Column(db.String(500), nullable=True)
     quantity = db.Column(db.Numeric(10, 2), nullable=False)
     unit_price = db.Column(db.Numeric(10, 2), nullable=False)
 

@@ -82,10 +82,13 @@
     </div>
     {% endif %}
 
-    <!-- Search -->
-    <div class="relative mb-4">
-      <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10 text-sm"></i>
-      <input type="text" id="product-search" class="w-full !pl-9" placeholder="Scan barcode or search product..." autocomplete="off">
+    <!-- Search + Custom Item -->
+    <div class="flex items-center gap-2 mb-4">
+      <div class="relative flex-1">
+        <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10 text-sm"></i>
+        <input type="text" id="product-search" class="w-full !pl-9" placeholder="Scan barcode or search product..." autocomplete="off">
+      </div>
+      <button type="button" id="btn-custom-item" class="shrink-0 px-3 py-2.5 rounded-lg border border-dashed border-slate-300 text-[10px] font-bold text-slate-500 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all whitespace-nowrap" onclick="showCustomItemModal()"><i class="fa fa-plus mr-1"></i> Custom</button>
     </div>
 
     <!-- Quick Keys -->
@@ -324,6 +327,36 @@
   </div>
 </div>
 
+<!-- Custom Item Modal -->
+<div id="custom-item-modal" style="position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);">
+  <div style="background:white;border-radius:16px;padding:24px;max-width:340px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <h3 class="text-sm font-black text-slate-900 mb-4 uppercase tracking-tight">Add Custom Item</h3>
+    <div class="space-y-3">
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Description</label>
+        <input type="text" id="ci-description" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Item name" autocomplete="off">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Quantity</label>
+          <input type="number" id="ci-qty" value="1" min="1" step="1" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-bold text-center focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Unit Price</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">{{ currency_symbol }}</span>
+            <input type="number" id="ci-price" value="0" min="0" step="0.01" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-7 pr-4 text-xs font-bold text-center focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-5">
+      <button onclick="confirmCustomItem()" class="flex-1 py-2.5 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary-dark transition-all uppercase tracking-widest">Add to Cart</button>
+      <button onclick="$('#custom-item-modal').hide()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-[10px] font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 var cart = {};
@@ -411,6 +444,39 @@ function confirmVariableQty() {
   if (qty < 0.1) { showToast('Enter a valid quantity', 'warning'); return; }
   $('#variable-qty-modal').hide();
   addToCart(vqBarcode, vqName+' ('+qty+vqUnit+')', vqPrice, vqStock, '', vqPrice, qty);
+}
+
+var ciCounter = 0;
+function showCustomItemModal() {
+  ciCounter++;
+  $('#ci-description').val('');
+  $('#ci-qty').val(1);
+  $('#ci-price').val(0);
+  $('#custom-item-modal').css('display','flex');
+  setTimeout(function(){ $('#ci-description').focus(); }, 100);
+}
+function confirmCustomItem() {
+  var desc = $('#ci-description').val().trim();
+  if (!desc) { showToast('Enter a description', 'warning'); return; }
+  var qty = parseFloat($('#ci-qty').val()) || 1;
+  if (qty < 0.01) { showToast('Enter a valid quantity', 'warning'); return; }
+  var price = parseFloat($('#ci-price').val()) || 0;
+  if (price < 0) { showToast('Price cannot be negative', 'warning'); return; }
+  $('#custom-item-modal').hide();
+  var barcode = '__custom__' + Date.now() + '_' + ciCounter;
+  cart[barcode] = {
+    name: desc,
+    price: price,
+    unit_price: price,
+    qty: qty,
+    stock: Infinity,
+    size: '',
+    is_custom: true,
+    custom_description: desc
+  };
+  beep(800, 40, 0.08);
+  updateCartUI();
+  $('#product-search').focus();
 }
 
 $(document).on('click', '.cat-pill', function() { $('.cat-pill').removeClass('active'); $(this).addClass('active'); applySearch(); });
@@ -550,7 +616,11 @@ function processCheckout() {
   var codes = Object.keys(cart); if(codes.length===0) return;
   var st = parseFloat($('#cart-total').text().replace(currencySymbol,'')), disc = getDiscount(st), net = st - disc.amount, paid = parseFloat($('#amount-paid').val())||0;
   if(paid < net) { showToast('Total: '+currencySymbol+net.toFixed(2)+', Received: '+currencySymbol+paid.toFixed(2),'error'); return; }
-  var items = {}; codes.forEach(function(c){ items[c] = {count: cart[c].qty, unit_price: cart[c].unit_price}; });
+  var items = {}; codes.forEach(function(c){
+    var entry = {count: cart[c].qty, unit_price: cart[c].unit_price};
+    if (cart[c].is_custom) { entry.custom_description = cart[c].custom_description; }
+    items[c] = entry;
+  });
   var payload = JSON.stringify({
     items:items,
     amount_paid:paid,
