@@ -4,7 +4,7 @@ PyMySQL==1.0.2
 flask==2.2.0
 flask-login==0.6.2
 marshmallow-sqlalchemy
-Flask-Reuploaded==1.2.0
+Flask-Reuploaded==1.6.0
 Pillow>=9.5
 Flask-SQLAlchemy==2.5.1
 openpyxl==3.0.10
