@@ -7,6 +7,7 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from flask_login import login_required
+from shopyo_appadmin.admin import admin_required
 from shopyo_theme import get_active_front_theme
 from shopyo.api.html import notify_success
 
@@ -59,6 +60,7 @@ def validate_message():
 @contact_blueprint.route("/dashboard", methods=["GET"], defaults={"page": 1})
 @contact_blueprint.route("/dashboard/<int:page>", methods=["GET"])
 @login_required
+@admin_required
 def dashboard(page):
     context = {}
 
